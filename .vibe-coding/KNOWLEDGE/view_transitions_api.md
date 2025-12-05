@@ -1,0 +1,35 @@
+# View Transitions API 주요 변경 사항 요약 및 대응 전략 (2024-11 ~ 2025-11)
+
+View Transitions API는 2024년 11월부터 2025년 11월 사이에 **Cross-Document 지원 및 자동 매칭 기능**을 통해 API의 유효 범위를 확장했습니다. 특히 **`view-transition-name` 자동화**와 **타입 기반 스타일링**은 기존의 수동 클래스 관리 패턴을 공식적으로 대체했습니다.
+
+---
+
+## 1. 핵심 브레이킹 및 비권장 패턴
+
+| 변경 유형 | 버전 | 내용 | 대체 및 조치 사항 |
+| :--- | :--- | :--- | :--- |
+| **Deprecated Pattern** | Chrome 125+, Safari 18.2+ | **`<html>`에 클래스를 추가**하여 전환 종류를 구분하는 방식 (예: `document.documentElement.classList.add('forward')`). | **View Transition Types** (`{ types: ['forward'] }`)를 사용하여 전역 상태와 분리된 의미적 전환 타입을 넘겨야 합니다. |
+| **Pagination Logic Change** | Chrome 140+ | `ViewTransition.finished` Promise의 resolve 타이밍이 스펙에 맞춰 지연되었습니다. | 전환 완료 후 **정확한 레이아웃 측정을 가정하던 해키한 코드**는 `finished`를 신뢰할 수 있도록 로직을 정리해야 합니다. |
+| **Cross-Document** | Safari 18.2+ | **렌더 블로킹 요소** (`<script blocking="render">`, `<link rel="expect">`) 도입. | 페이지 간 전환 시 스냅샷 직전에 반드시 로드되어야 하는 **핵심 리소스**를 명시하여, 전환 도중 깨진 화면(Flickering) 발생을 방지해야 합니다. |
+
+---
+
+## 2. 신규 기능 및 자동화 전략
+
+| 기능 | 브라우저 지원 (2025년 기준) | 코드 설계 시 전략 |
+| :--- | :--- | :--- |
+| **`view-transition-name: auto`** | Safari 18.2+, Firefox 144+, Chrome 125+ | **대량 리스트/그리드**에서 수동으로 고유 이름을 지정하지 않고, 브라우저에 자동 매칭을 위임합니다. 서버 렌더링 시에도 DOM 키를 유지하면 유리합니다. |
+| **`view-transition-name: match-element`** | Safari 18.4+, Chrome 137+, Firefox 144+ | **리스트 → 디테일 페이지** 전환처럼 DOM 구조가 크게 바뀌어도, **동일 요소**로 판단해 애니메이션을 이어줍니다. ID 기반 이름 관리를 `match-element` 기반으로 대체합니다. |
+| **View Transition Types/Classes** | Safari 18.2+, Firefox 144+, Chrome 125+ | `document.startViewTransition(callback, { types: ['back'] })` 형태로 **전환의 의미**를 분리합니다. CSS에서 `:active-view-transition-type(back)` 셀렉터를 활용하여 스타일링을 중앙 집중화합니다. |
+| **Nested Groups** | Chrome 140+ | **그룹 전환을 중첩**하여 AppBar나 사이드바 같은 루트 레이아웃 요소를 고정하면서, 가운데 콘텐츠만 전환하는 등 복잡한 부분 전환을 설계할 수 있습니다. |
+| **Navigation API Hooks** | Chrome 141+ | Navigation API의 **Pre-commit Handler**를 활용하여, 전환 커밋 전에 비동기 작업 실패 시 View Transition과 네비게이션 자체를 롤백하는 방어 로직을 구현합니다. |
+
+---
+
+## 3. 결론 및 실무 전략
+
+View Transitions API는 **전역 상태에 의존하던 구식 패턴**에서 **타입 및 자동 매칭 기반의 의미론적 설계**로 전환을 강제하고 있습니다.
+
+1. **타입 기반 설계 표준화:** 신규 프로젝트는 `types` 옵션과 `::active-view-transition-type()` 셀렉터를 사용하여 전환 스타일을 정의하는 것을 기본으로 해야 합니다.
+2. **자동화 패턴 도입:** `auto` 및 `match-element`를 활용하여 수백 개의 DOM 요소를 관리하던 **수동 `view-transition-name` 할당**을 중단하십시오.
+3. **멀티 브라우저 대응:** Firefox 144의 지원으로 핵심 기능이 3대 브라우저에 공통으로 갖춰졌습니다. **폴리필 의존도를 낮추고** 새로운 표준 기능 위주로 코드를 작성하십시오.

@@ -1,0 +1,77 @@
+# -----------------------------------------------------------------------------
+# Project Meta: Context & Configuration
+# Instruction: AI가 비즈니스 로직, SEO 태그, 배포 설정을 잡을 때 이 값을 참조합니다.
+# -----------------------------------------------------------------------------
+
+[identity]
+name = "Skymachina"
+tagline = "The Ultimate Calculator for Engineers"
+description = "복잡한 공학 계산을 위한 직관적인 웹 도구 모음입니다."
+
+[urls]
+# 배포될 실제 도메인 (Sitemap 및 SEO Canonical 태그 생성 시 필수)
+production = "https://skymachina.com"
+# 개발 및 소스 관리를 위한 GitHub 리포지토리
+repository = "https://github.com/0disoft/skymachina"
+
+[localization]
+# 다국어 지원 설정 (typesafe-i18n 기준)
+default_locale = "en"
+# 지원할 20개국어 (ISO 2글자 코드 기준)
+# [기본] en:영어, ko:한국어, ja:일본어, zh:중국어(간체)
+# [유럽] es:스페인어, fr:프랑스어, de:독일어, pt:포르투갈어, it:이탈리아어, nl:네덜란드어, sv:스웨덴어, pl:폴란드어, ru:러시아어
+# [아시아/중동] ar:아랍어, hi:힌디어, id:인도네시아어, vi:베트남어, th:태국어, tl:필리핀어, tr:튀르키예어
+supported_locales = [
+  "en",
+  "ko",
+  "ja",
+  "zh",
+  "es",
+  "fr",
+  "de",
+  "pt",
+  "it",
+  "nl",
+  "sv",
+  "pl",
+  "ru",
+  "ar",
+  "hi",
+  "id",
+  "vi",
+  "th",
+  "tl",
+  "tr",
+]
+routing_strategy = "pathname" # URL 경로 기반 (/en/..., /zh/..., ...)
+detect_browser_locale = true # 사용자 브라우저 언어 자동 감지
+
+[design_vibe]
+# [Theme Settings]
+default_theme = "system"   # 초기 테마 (dark, light, system)
+enable_theme_toggle = true # 사용자가 테마를 바꿀 수 있는 토글 버튼(해/달) 제공 여부
+
+# [Styling]
+primary_color = "emerald-500" # 브랜드 메인 컬러
+radius_style = "rounded-none" # (Sharp) vs rounded-xl (Soft)
+
+# [Font Strategy: System UI]
+# 다국어 지원 및 성능 최적화를 위해 별도 웹폰트 대신 OS 기본 폰트를 사용합니다.
+font_style = "System"
+
+[seo_defaults]
+# 메타 태그 기본값
+default_keywords = ["calculator", "tool", "converter"]
+og_image_generator = true                              # 오픈그래프 이미지(og:image) 자동 생성 여부
+robots_txt = true                                      # robots.txt 자동 생성 여부
+
+[ai_standards]
+# LLM 및 AI 에이전트를 위한 최신 표준 (/llms.txt)
+generate_llms_txt = true
+ai_bot_policy = "allow"
+
+[pwa_manifest]
+# 앱 설치 및 오프라인 지원 (Service Worker)
+enabled = true            # PWA 기능 활성화
+offline_support = true    # 오프라인 캐싱 지원
+inject_register_sw = true # 서비스 워커 자동 등록
