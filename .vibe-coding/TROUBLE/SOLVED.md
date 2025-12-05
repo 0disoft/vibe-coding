@@ -7,17 +7,8 @@
 
 ## [SvelteKit / Bun]
 
-### 1. Hydration Mismatch (2025-12-05)
+### 1. Legacy CLI Deprecation (2025-12-05)
 
-- **증상:** `bun run dev` 시 서버/클라이언트 텍스트 불일치 경고 다수 발생.
-- **원인:** `detect_browser_locale = true` 설정 시 SSR(기본값)과 CSR(브라우저값)의 언어 설정 차이.
-- **해결:** `hooks.server.ts`에서 쿠키 값을 최우선으로 언어 감지하도록 수정.
-- **참조:** (원래 로그 파일은 삭제됨, 필요시 커밋 로그 #a1b2c3 참조)
-
-## [Database / D1]
-
-### 1. Schema Push Fail (2025-12-07)
-
-- **증상:** 로컬 마이그레이션 파일이 적용되지 않고 충돌 에러.
-- **원인:** 로컬 `.wrangler/state` 파일이 꼬임.
-- **해결:** 로컬 DB 파일 삭제 후 `wrangler d1 migrations apply` 재실행.
+- **증상:** `bun create svelte@latest` 실행 시 `'npm create svelte' has been replaced with 'npx sv create'` 메시지가 뜨며 설치가 진행되지 않음.
+- **원인:** Svelte 공식 CLI가 `create-svelte`에서 `sv`로 변경됨. Bun의 `create` 명령어는 구버전 패키지를 참조하고 있음.
+- **해결:** 구버전 명령어 대신 `bun x sv create ./` (또는 `npx sv create ./`) 명령어를 사용하여 프로젝트를 생성해야 함.
