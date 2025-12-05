@@ -82,3 +82,11 @@
   --input: 28% 0.02 240;
   --ring: 70% 0.18 155;
 }
+
+body {
+  background-color: oklch(var(--background));
+  color: oklch(var(--foreground));
+  /* 폰트 렌더링 최적화 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

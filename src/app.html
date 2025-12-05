@@ -1,28 +1,18 @@
 <!doctype html>
-<html lang="%paraglide.lang%">
+<!-- 서버 훅이 이 data-theme 값을 동적으로 교체합니다 -->
+<html lang="%paraglide.lang%" data-theme="">
 
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-	<script>
-		(function () {
-			try {
-				const stored = window.localStorage?.getItem('theme');
-				const prefersDark =
-					window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
-
-				const theme = stored || (prefersDark ? 'dark' : 'light');
-
-				document.documentElement.setAttribute('data-theme', theme);
-			} catch {
-				// 조용히 무시
-			}
-		})();
-	</script>
+	<!-- 
+      폰트 최적화 변경:
+      Google Fonts CDN 링크를 제거했습니다.
+      대신 UnoCSS의 presetWebFonts가 폰트를 관리하도록 하거나,
+      @fontsource 패키지를 사용하여 폰트를 자체 호스팅하는 것이
+      레이아웃 이동 CLS 현상을 줄이는 데 더 효과적입니다.
+    -->
 
 	%sveltekit.head%
 </head>
