@@ -4,212 +4,124 @@
 # -----------------------------------------------------------------------------
 
 [language_quality]
-# Code Standard & Formatting (CLI에서 선택한 항목)
-typescript = true # TS 사용 여부 (AI가 .ts/.js 파일 확장자 결정할 때 필수)
+typescript = true # TS 필수
 eslint = true     # 린터 사용
 prettier = true   # 포매터 사용
 
 [testing]
-# Test Runners (CLI에서 선택한 항목 + Bun Native)
-vitest = true     # UI 컴포넌트 및 로직 테스트 (Svelte 공식 추천)
-playwright = true # E2E(브라우저 조작) 테스트
-bun_test = true   # 백엔드/순수 로직 초고속 테스트 (Bun 내장)
+vitest = true     # UI/로직 테스트
+playwright = true # E2E 테스트
+bun_test = true   # 백엔드 초고속 테스트
 
 [core_framework]
-# Frontend & Meta Framework
-
 # [Web Standard]
-# SEO, 라우팅, SSR을 모두 지원하는 메인 웹 프레임워크
-sveltekit = false
-# Tailwind CSS보다 빠르고 가벼운 Atomic CSS 엔진
-unocss = false
-# Node.js를 대체하는 초고속 런타임이자 패키지 매니저
-bun = false
+sveltekit = true # 메인 웹 프레임워크 (Svelte 5)
+unocss = true    # 기존 템플릿 자산 활용 (Atomic CSS)
+bun = true       # 패키지 매니저 및 런타임
 
-# [Mobile & Desktop App]
-# SvelteKit 코드를 그대로 사용하여 모바일/데스크톱 앱 빌드 (Rust 기반, 생산성 1위)
-tauri = false
-# 구글이 만든 고성능 크로스 플랫폼 앱 프레임워크 (Dart 언어, 네이티브 퀄리티 1위)
+# [Browser Extension]
+wxt = false # 크롬 익스텐션 프레임워크 (Svelte + UnoCSS 연동)
+
+# [Mobile & Desktop]
 flutter = false
-# 임베디드 기기나 초경량 데스크톱 UI가 필요할 때 (Rust 기반)
 slint = false
 
 [backend_api]
-# Server & API Logic
-# [For Coolify/VPS] Bun 런타임의 성능을 끝까지 뽑아내는 백엔드 (CPU 연산 많을 때)
 elysiajs = false
-# [For Cloudflare Workers] 엣지 환경의 표준. D1/KV/R2 연동이 필요할 때 필수
 hono = false
-# [Integrated] 별도 백엔드 없이 SvelteKit 내부(+server.ts)만 사용할 때
 sveltekit_native_backend = false
-# [Common] 런타임 데이터 검증 및 API 스키마 정의 (Elysia는 기본 내장)
 typebox = false
 
 [workspace_monorepo]
-# Project Structure
-# 별도 도구 없이 Bun의 기본 기능만으로 모노레포 관리
 native_workspaces = false
+turborepo = false
 
 [database_orm]
-# Data Persistence & Caching
-
-# [Track A: Coolify/VPS Centralized]
-# Bun 네이티브 드라이버 고성능 DB (중앙 집중형)
+# [Main DB] Coolify(Docker)에 배포
 postgresql = false
-# 파일 기반 초경량 DB (VPS 볼륨 사용)
-sqlite_local = false
-
-# [Track B: Workers/Edge Distributed]
-# Cloudflare 네이티브 Serverless SQLite (Hono와 궁합 1위, 무료/빠름)
-cloudflare_d1 = false
-# Cloudflare 네이티브 Key-Value 스토리지 (단순 캐싱/설정 저장용)
-cloudflare_kv = false
-
-# [Hybrid / External]
-# 엣지 호환 분산형 SQLite (HTTP 연결, 외부망 필요 시)
-turso = false
-# 서버리스 Redis (외부망 캐싱/큐)
-upstash_redis = false
-
-# [Common]
-# TypeScript 전용 초경량 ORM
 drizzle = false
 
+# [Legacy / Alternative]
+sqlite_local = false
+cloudflare_d1 = false
+cloudflare_kv = false
+turso = false
+upstash_redis = false
+
 [storage_cms]
-# File Storage & Content Management
-# AWS S3 호환, 대역폭 비용 무료 (이미지/파일 저장 필수)
-cloudflare_r2 = false
-# 데이터베이스 기반 Headless CMS (Coolify 배포)
-directus = false
+cloudflare_r2 = false # 필요시 true로 변경 (이미지 저장용)
+directus = false      # Headless CMS (관리자 패널)
 
 [authentication]
-# User Identity
-# 내 DB에 유저 데이터 소유 (Self-hosted)
 better_auth = false
 
 [web3_crypto]
-# Blockchain & Smart Contracts
-# 솔라나 스마트 컨트랙트 프레임워크 (Rust)
-anchor = false
+anchor = false # Solana Smart Contract (Rust)
 
 [search_ai]
-# Search Engines & AI Integration
-# 오타 보정 텍스트 검색 엔진 (Coolify 배포)
-meilisearch = false
-# AI 벡터 데이터베이스 (Coolify 배포 - 또는 Postgres pgvector 사용 가능)
-qdrant = false
-# AI 챗봇 스트리밍 UI SDK
-vercel_ai_sdk = false
-# 통합 LLM API (최저가 모델 스위칭)
-openrouter_sdk = false
+meilisearch = false    # 키워드 검색 엔진
+qdrant = false         # 벡터 데이터베이스 (RAG 핵심)
+pgvector = false       # Qdrant 대신 Postgres 내장 벡터 사용 시 선택
+vercel_ai_sdk = false  # AI 스트리밍 UI 표준
+openrouter_sdk = false # LLM 모델 스위칭 허브
 
 [infrastructure_deployment]
-# Hosting & DevOps (Dual Track Strategy)
+# [Self-Hosted] 모든 인프라를 내 서버(Docker)에서 관리
+coolify = false        # VPS 관리 및 배포 도구 
+docker_compose = false # 로컬 개발 및 배포 정의서
 
-# [Track A: Heavy/Stateful]
-# Docker 컨테이너, 백엔드/DB/Postgres가 필요한 서비스 (내 VPS)
-coolify = false
-
-# [Track B: Light/Stateless]
-# 정적 사이트, SSR, API, 에이전트 등 대부분의 웹 서비스 (Cloudflare 통합 호스팅)
+# [Alternative]
 cloudflare_workers = false
-
-# 코드 푸시 시 빌드/테스트/배포 자동화
-github_actions = false
-# Git 기반 API 클라이언트
+github_actions = false     # CI/CD 파이프라인
 bruno = false
 
 [observability]
-# Monitoring & Analytics
-# 에러 로그 수집 (Sentry 대안, Coolify 배포)
-glitch_tip = false
-# 서비스 가동 상태 모니터링 (Coolify 배포)
-uptime_kuma = false
-# 방문자 분석 (GA4 대안, Coolify 배포)
-umami = false
+glitch_tip = false  # 에러 로그 수집 (Sentry 대안)
+uptime_kuma = false # 서버 상태 모니터링
+umami = false       # 방문자 분석 (GA4 대안)
 
 [automation_jobs]
-# Background Jobs & Workflow
-# 워크플로우 자동화 (Coolify 배포)
-n8n = false
-# 코드 기반 백그라운드 작업 관리
-trigger_dev = false
+n8n = false         # 워크플로우 자동화 (마케팅/운영)
+trigger_dev = false # 코드 기반 백그라운드 작업 (AI 생성 등)
 
 [payments_revenue]
-# Billing & Monetization
-# 글로벌 SaaS MoR (세금 자동 처리)
+# 상황에 맞춰 선택 
 lemon_squeezy = false
-# 한국 PG 결제 연동
 portone = false
-# 비트코인 결제 직접 처리 (수수료 0%, Coolify 배포)
 btcpay_server = false
-# 인앱 결제 및 구독 관리
 revenuecat = false
-# 해외 송금 및 수취
 wise = false
 
 [donations]
-# Support & Tipping
-# 수수료 0% 후원 플랫폼
 ko_fi = false
-# 오픈소스 후원
 github_sponsors = false
 
 [advertising]
-# Ad Networks & Monetization Partners
-
-# [Marketing / User Acquisition] 돈을 써서 유저를 데려올 때
-# 검색 광고의 제왕 (검색 의도가 명확한 유저 타겟팅)
+# 상황에 맞춰 선택
 google_ads = false
-# B2C 및 비주얼 중심 서비스의 필수 마케팅 채널 (페이스북/인스타그램)
 meta_ads = false
-# 크립토/Web3/개발자 타겟팅에 가장 효율적인 채널 (구 트위터)
 x_ads = false
-
-# [Monetization / Revenue] 내 사이트에 광고를 달아 돈을 벌 때
-# 구글 애드센스 (콘텐츠/블로그 사이트 기본 수익화)
 adsense = false
-# 애드센스와 연동하여 AI로 광고 수익(RPM)을 극대화해주는 플랫폼
 ezoic = false
-# 심사 없이 비트코인으로 수익 정산받는 익명 광고 (크립토/Web3 최적)
 a_ads = false
-# 심사가 유연하고 공격적인 포맷(소셜 바 등)을 지원하는 광고 네트워크 (AdSense 대안)
 adsterra = false
-# 모바일 게임/앱의 보상형 비디오 광고 수익화 플랫폼
 applovin = false
 
 [communication]
-# Email & Notifications
-# 이메일 발송 API
 resend = false
-# 통합 알림 인프라 (Coolify 배포)
 novu = false
-# 관리자용 시스템 알림 (Coolify 배포)
 ntfy = false
 
 [ui_ux_features]
-# Frontend Interactions
-# 네이티브 페이지 전환 효과
-view_transitions_api = false
-# Headless 텍스트 에디터
-tiptap = false
-# 금융 차트 시각화
-echarts = false
-# 타입 안전 다국어 처리
-typesafe_i18n = false
+view_transitions_api = true # 부드러운 페이지 이동
+tiptap = false              # 위지윅 에디터
+echarts = false             # 금융/데이터 차트
+paraglide_js = true         # 최신 i18n 표준
 
 [growth_support]
-# Experiments, Docs & Support
-# 제품 분석 및 기능 플래그
-posthog = false
-# 라이브 챗 및 고객 지원
-chatwoot = false
-# 사내 위키 및 문서 관리
-outline = false
+chatwoot = false # 고객 지원 채팅
+outline = false  # 내부 문서 관리 (Wiki)
 
 [community]
-# Comments & Discussions
-# GitHub Discussions 기반 댓글
-giscus = false
-# 자체 호스팅 댓글 시스템
-remark42 = false
+giscus = false   # 개발자용 댓글 (GitHub 연동)
+remark42 = false # 일반인용 댓글 (소셜 로그인)

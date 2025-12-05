@@ -3,3 +3,25 @@
 @import '@unocss/reset/sanitize/assets.css';
 
 /* Global Styles */
+/* [Light Mode] L C H 채널 값만 저장 */
+:root {
+  color-scheme: light dark;
+  --background: 99% 0.01 240;
+  --foreground: 20% 0.02 240;
+  --primary: 65% 0.18 155;
+}
+
+/* [Dark Mode] data-theme 속성 사용 */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --background: 15% 0.02 240;
+  --foreground: 98% 0.01 240;
+  --primary: 60% 0.18 155;
+}
+
+/* Fallback 없이 OKLCH 전용 */
+body {
+  background-color: oklch(var(--background));
+  color: oklch(var(--foreground));
+  transition: background-color 0.3s;
+}

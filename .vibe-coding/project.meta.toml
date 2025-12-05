@@ -15,7 +15,7 @@ production = "https://skymachina.com"
 repository = "https://github.com/0disoft/skymachina"
 
 [localization]
-# 다국어 지원 설정 (typesafe-i18n 기준)
+# 다국어 지원 설정 (Inlang Paraglide-JS 기준)
 default_locale = "en"
 # 지원할 20개국어 (ISO 2글자 코드 기준)
 # [기본] en:영어, ko:한국어, ja:일본어, zh:중국어(간체)

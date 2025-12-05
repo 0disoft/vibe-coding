@@ -1,12 +1,18 @@
+import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { playwright } from '@vitest/browser-playwright';
 import UnoCSS from 'unocss/vite';
 import { defineConfig } from 'vitest/config';
 
+
 export default defineConfig({
 	plugins: [
-		UnoCSS(),      // UnoCSS를 맨 앞에 둬야 함 (스타일 우선순위 문제)
-		sveltekit()
+		UnoCSS(),      // UnoCSS를 맨 앞에
+		sveltekit(),
+		paraglideVitePlugin({
+			project: './project.inlang',
+			outdir: './src/lib/paraglide'
+		})
 	],
 	test: {
 		expect: { requireAssertions: true },

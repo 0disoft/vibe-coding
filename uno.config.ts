@@ -21,6 +21,13 @@ export default defineConfig({
       cdn: 'https://esm.sh/',
     }),
   ],
+  theme: {
+    colors: {
+      background: 'oklch(var(--background) / <alpha-value>)',
+      foreground: 'oklch(var(--foreground) / <alpha-value>)',
+      primary: 'oklch(var(--primary) / <alpha-value>)',
+    }
+  },
   transformers: [
     transformerVariantGroup(),
   ],
