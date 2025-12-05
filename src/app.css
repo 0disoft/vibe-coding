@@ -1,12 +1,16 @@
-@import '@unocss/reset/tailwind.css';
-@import '@unocss/reset/tailwind-compact.css';
-
 :root {
   color-scheme: light dark;
 
   /* 베이스 */
   --background: 99% 0.01 240;
   --foreground: 20% 0.02 240;
+
+  /* 카드, 팝오버, 포커스 영역 등 */
+  --card: 99% 0.01 240;
+  --card-foreground: 20% 0.02 240;
+
+  --popover: 100% 0.01 240;
+  --popover-foreground: 20% 0.02 240;
 
   /* 주요 액션 */
   --primary: 65% 0.18 155;
@@ -15,6 +19,10 @@
   /* 보조 액션 / 서브 버튼 */
   --secondary: 95% 0.02 240;
   --secondary-foreground: 25% 0.02 240;
+
+  /* 강조 요소 (배지, 토글 등) */
+  --accent: 94% 0.02 240;
+  --accent-foreground: 25% 0.02 240;
 
   /* 약한 텍스트, 서브 카드 배경 등 */
   --muted: 96% 0.01 240;
@@ -43,11 +51,20 @@
   --background: 15% 0.02 240;
   --foreground: 98% 0.01 240;
 
+  --card: 18% 0.02 240;
+  --card-foreground: 98% 0.01 240;
+
+  --popover: 20% 0.02 240;
+  --popover-foreground: 98% 0.01 240;
+
   --primary: 60% 0.18 155;
   --primary-foreground: 8% 0.02 155;
 
   --secondary: 25% 0.02 240;
   --secondary-foreground: 96% 0.01 240;
+
+  --accent: 28% 0.02 240;
+  --accent-foreground: 96% 0.01 240;
 
   --muted: 22% 0.02 240;
   --muted-foreground: 85% 0.02 240;
@@ -64,10 +81,4 @@
   --border: 30% 0.02 240;
   --input: 28% 0.02 240;
   --ring: 70% 0.18 155;
-}
-
-body {
-  background-color: oklch(var(--background));
-  color: oklch(var(--foreground));
-  transition: background-color 0.3s, color 0.3s;
 }

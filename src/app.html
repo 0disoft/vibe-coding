@@ -5,19 +5,21 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 	<script>
 		(function () {
 			try {
-				var stored = localStorage.getItem('theme');
-				var prefersDark =
-					window.matchMedia &&
-					window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const stored = window.localStorage?.getItem('theme');
+				const prefersDark =
+					window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
 
-				var theme = stored || (prefersDark ? 'dark' : 'light');
+				const theme = stored || (prefersDark ? 'dark' : 'light');
 
 				document.documentElement.setAttribute('data-theme', theme);
-			} catch (e) {
-				// 로컬스토리지 막혀 있어도 죽지 않게 방어
+			} catch {
+				// 조용히 무시
 			}
 		})();
 	</script>

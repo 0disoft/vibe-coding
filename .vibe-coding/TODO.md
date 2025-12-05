@@ -34,28 +34,54 @@
 
 SPEC 내용이 확정된 후 진행합니다.
 
-- [ ] **[SCAF-001] 베이스 프로젝트 생성**
+- [ ] [SCAF-001] 베이스 프로젝트 생성
   - 행동: `bun x sv create ./` 명령어를 실행하여 최신 SvelteKit 프로젝트를 스캐폴딩한다.
-    - ⚠️ 주의: 구버전 명령어인 `bun create svelte@latest`는 사용하지 않는다.
-  - **옵션 선택 가이드:**
-    1. **템플릿:** Skeleton Project (권장) 및 TypeScript 선택
-    2. **툴링(Add-ons):** Prettier, ESLint, Vitest, Playwright **반드시 선택**
-    3. **어댑터:** `stack.manifest.toml`의 배포 타겟에 적절한 어댑터 선택
-  - 후속: 설치 완료 즉시 `bun install` 실행
+    - 주의: 구버전 명령어인 `bun create svelte@latest`는 사용하지 않는다.
+  - 옵션 선택 가이드:
+    1. 템플릿: Skeleton Project 선택, TypeScript 활성화
+    2. 툴링(Add-ons): Prettier, ESLint, Vitest, Playwright, ParaglideJS 반드시 선택
+    3. 어댑터: `stack.manifest.toml`의 배포 타깃에 맞는 어댑터 선택
+  - 후속: 설치 완료 직후 `bun install` 실행
 
-- [ ] **[SCAF-002] 추가 스택 주입 및 설정 (UnoCSS Hipster)**
+- [ ] [SCAF-002] 추가 스택 주입 및 설정 (UnoCSS)
   - 행동:
-    1. **패키지 설치:** 다음 명령어로 엔진, 리셋, 아이콘 팩을 설치한다.
-       `bun add -D unocss @unocss/reset @iconify-json/lucide`
-    2. **설정 파일 생성:** 루트에 `uno.config.ts`를 생성하고 **다음 구성을 빠짐없이 적용**한다.
-       - **Presets:** `presetWind4`, `presetAttributify`, `presetIcons` (전부 `unocss` 패키지에서 import)
-       - **Transformers:** `transformerVariantGroup`
-       - **Icons Config:**
-         - `collections`: 설치한 `@iconify-json/lucide`를 비동기 로드(`import(...).then(...)`)로 연결
-         - `scale`: 1.2
-         - `cdn`: '<https://esm.sh/>' (백업용)
-    3. **플러그인 연결:** `vite.config.ts`의 `plugins` 배열 **맨 앞**에 `UnoCSS()`를 추가한다.
-    4. **스타일 초기화:** `src/app.css` (또는 entry 파일) 최상단에 **Sanitize 리셋**을 import한다.
+    1. 패키지 설치  
+       `bun add -D unocss @unocss/preset-wind4 @unocss/preset-web-fonts @iconify-json/lucide`
+       - 설명:  
+         - unocss → 유틸리티 엔진 및 Vite 플러그인  
+         - @unocss/preset-wind4 → Tailwind v4 스타일 프리셋 및 reset 담당  
+         - @unocss/preset-web-fonts → 구글 폰트 연동용 프리셋  
+         - @iconify-json/lucide → 아이콘 컬렉션
+    2. 설정 파일 생성  
+       루트에 `uno.config.ts`를 생성하고 다음 구성을 기본값으로 사용한다.
+       - Presets
+         - presetWind4  
+           - 패키지: `@unocss/preset-wind4`  
+           - 옵션: `preflights.reset = true`, `preflights.theme.mode = 'on-demand'`  
+           - 역할: reset과 Tailwind v4 스타일 유틸리티 제공  
+         - presetAttributify  
+           - 패키지: `unocss`  
+           - 역할: `text="sm primary"` 형식의 속성 기반 문법 활성화  
+         - presetIcons  
+           - 패키지: `unocss`  
+           - 역할: 아이콘 유틸리티 제공  
+         - presetWebFonts  
+           - 패키지: `@unocss/preset-web-fonts`  
+           - 옵션 예시:
+             - provider: `google`  
+             - fonts.sans: `Inter`와 시스템 폰트 스택을 함께 등록  
+             - fonts.mono: `JetBrains Mono`와 기본 모노스페이스 스택 등록
+       - Transformers
+         - transformerVariantGroup 사용
+       - Icons 설정
+         - collections:  
+           - lucide 컬렉션을 비동기 로드로 연결  
+           - 예시: `lucide: () => import('@iconify-json/lucide/icons.json').then(m => m.default)`
+         - scale: 1.2  
+         - cdn: `https://esm.sh/` (아이콘 폴백용)
+    3. reset 관련 주의사항  
+       - 별도의 `@unocss/reset` 패키지는 설치하지 않는다.  
+       - 초기화는 presetWind4의 `preflights.reset`에 일임한다.
 
 ## 2단계: 구현 및 개발
 

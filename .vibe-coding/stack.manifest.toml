@@ -65,6 +65,9 @@ pgvector = false       # Qdrant 대신 Postgres 내장 벡터 사용 시 선택
 vercel_ai_sdk = false  # AI 스트리밍 UI 표준
 openrouter_sdk = false # LLM 모델 스위칭 허브
 
+[web_data_scraping]
+scraper_api = false # 스크래핑 API: 프록시 관리 및 차단 우회 기능을 외부 서비스로 위임
+
 [infrastructure_deployment]
 # [Self-Hosted] 모든 인프라를 내 서버(Docker)에서 관리
 coolify = false        # VPS 관리 및 배포 도구 
