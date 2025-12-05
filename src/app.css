@@ -1,27 +1,73 @@
-/* Sanitize Reset: 브라우저 기본기를 존중하며 일관성 확보 */
-@import '@unocss/reset/sanitize/sanitize.css';
-@import '@unocss/reset/sanitize/assets.css';
+@import '@unocss/reset/tailwind.css';
+@import '@unocss/reset/tailwind-compact.css';
 
-/* Global Styles */
-/* [Light Mode] L C H 채널 값만 저장 */
 :root {
   color-scheme: light dark;
+
+  /* 베이스 */
   --background: 99% 0.01 240;
   --foreground: 20% 0.02 240;
+
+  /* 주요 액션 */
   --primary: 65% 0.18 155;
+  --primary-foreground: 10% 0.02 155;
+
+  /* 보조 액션 / 서브 버튼 */
+  --secondary: 95% 0.02 240;
+  --secondary-foreground: 25% 0.02 240;
+
+  /* 약한 텍스트, 서브 카드 배경 등 */
+  --muted: 96% 0.01 240;
+  --muted-foreground: 40% 0.02 240;
+
+  /* 파괴적 액션 (삭제 등) */
+  --destructive: 60% 0.20 30;
+  --destructive-foreground: 98% 0.02 240;
+
+  /* 성공 / 경고 상태 */
+  --success: 70% 0.16 145;
+  --success-foreground: 10% 0.02 145;
+
+  --warning: 75% 0.18 85;
+  --warning-foreground: 15% 0.03 85;
+
+  /* 경계 / 입력 / 포커스 링 */
+  --border: 90% 0.01 240;
+  --input: 92% 0.01 240;
+  --ring: 65% 0.18 155;
 }
 
-/* [Dark Mode] data-theme 속성 사용 */
 :root[data-theme='dark'] {
   color-scheme: dark;
+
   --background: 15% 0.02 240;
   --foreground: 98% 0.01 240;
+
   --primary: 60% 0.18 155;
+  --primary-foreground: 8% 0.02 155;
+
+  --secondary: 25% 0.02 240;
+  --secondary-foreground: 96% 0.01 240;
+
+  --muted: 22% 0.02 240;
+  --muted-foreground: 85% 0.02 240;
+
+  --destructive: 58% 0.20 30;
+  --destructive-foreground: 98% 0.01 240;
+
+  --success: 65% 0.16 145;
+  --success-foreground: 8% 0.02 145;
+
+  --warning: 70% 0.18 85;
+  --warning-foreground: 10% 0.03 85;
+
+  --border: 30% 0.02 240;
+  --input: 28% 0.02 240;
+  --ring: 70% 0.18 155;
 }
 
-/* Fallback 없이 OKLCH 전용 */
 body {
   background-color: oklch(var(--background));
   color: oklch(var(--foreground));
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
