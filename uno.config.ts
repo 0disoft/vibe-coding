@@ -1,0 +1,27 @@
+// uno.config.ts 예시
+
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetWind4,
+  transformerVariantGroup,
+} from 'unocss';
+
+export default defineConfig({
+  presets: [
+    presetWind4(),
+    presetAttributify(),
+    presetIcons({
+      collections: {
+        lucide: () =>
+          import('@iconify-json/lucide/icons.json').then(m => m.default),
+      },
+      scale: 1.2,
+      cdn: 'https://esm.sh/',
+    }),
+  ],
+  transformers: [
+    transformerVariantGroup(),
+  ],
+});

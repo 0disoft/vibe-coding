@@ -36,16 +36,26 @@ SPEC 내용이 확정된 후 진행합니다.
 
 - [ ] **[SCAF-001] 베이스 프로젝트 생성**
   - 행동: `bun x sv create ./` 명령어를 실행하여 최신 SvelteKit 프로젝트를 스캐폴딩한다.
-    - ⚠️ 주의: 구버전 명령어인 `bun create svelte@latest`는 사용하지 않는다. (SOLVED.md 참조)
+    - ⚠️ 주의: 구버전 명령어인 `bun create svelte@latest`는 사용하지 않는다.
   - **옵션 선택 가이드:**
     1. **템플릿:** Skeleton Project (권장) 및 TypeScript 선택
     2. **툴링(Add-ons):** Prettier, ESLint, Vitest, Playwright **반드시 선택**
-    3. **어댑터:** `stack.manifest.toml`의 배포 타겟(Cloudflare/Node)에 맞는 어댑터 선택
+    3. **어댑터:** `stack.manifest.toml`의 배포 타겟에 적절한 어댑터 선택
   - 후속: 설치 완료 즉시 `bun install` 실행
 
-- [ ] **[SCAF-002] 핵심 설정 적용**
-  - 행동: `svelte.config.js`, `vite.config.ts`, `uno.config.ts` 등 기본 설정 파일 작성
-  - 참고: SPEC.md의 아키텍처 섹션을 준수하며, 설정 완료 후 `bun update`를 한 번 더 실행하여 의존성 트리를 최신화한다.
+- [ ] **[SCAF-002] 추가 스택 주입 및 설정 (UnoCSS Hipster)**
+  - 행동:
+    1. **패키지 설치:** 다음 명령어로 엔진, 리셋, 아이콘 팩을 설치한다.
+       `bun add -D unocss @unocss/reset @iconify-json/lucide`
+    2. **설정 파일 생성:** 루트에 `uno.config.ts`를 생성하고 **다음 구성을 빠짐없이 적용**한다.
+       - **Presets:** `presetWind4`, `presetAttributify`, `presetIcons` (전부 `unocss` 패키지에서 import)
+       - **Transformers:** `transformerVariantGroup`
+       - **Icons Config:**
+         - `collections`: 설치한 `@iconify-json/lucide`를 비동기 로드(`import(...).then(...)`)로 연결
+         - `scale`: 1.2
+         - `cdn`: '<https://esm.sh/>' (백업용)
+    3. **플러그인 연결:** `vite.config.ts`의 `plugins` 배열 **맨 앞**에 `UnoCSS()`를 추가한다.
+    4. **스타일 초기화:** `src/app.css` (또는 entry 파일) 최상단에 **Sanitize 리셋**을 import한다.
 
 ## 2단계: 구현 및 개발
 

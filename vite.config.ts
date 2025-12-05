@@ -1,9 +1,13 @@
-import { defineConfig } from 'vitest/config';
-import { playwright } from '@vitest/browser-playwright';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { playwright } from '@vitest/browser-playwright';
+import UnoCSS from 'unocss/vite';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [
+		UnoCSS(),      // UnoCSS를 맨 앞에 둬야 함 (스타일 우선순위 문제)
+		sveltekit()
+	],
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

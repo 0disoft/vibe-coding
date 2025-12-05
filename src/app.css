@@ -1,0 +1,5 @@
+/* Sanitize Reset: 브라우저 기본기를 존중하며 일관성 확보 */
+@import '@unocss/reset/sanitize/sanitize.css';
+@import '@unocss/reset/sanitize/assets.css';
+
+/* Global Styles */
