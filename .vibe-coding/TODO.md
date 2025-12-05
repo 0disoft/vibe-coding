@@ -35,12 +35,17 @@
 SPEC 내용이 확정된 후 진행합니다.
 
 - [ ] **[SCAF-001] 베이스 프로젝트 생성**
-  - 행동: 확정된 스택에 맞춰 초기 명령어 실행 (bun create, bun install 등)
-  - 확인: package.json 생성 여부
+  - 행동: `bun x sv create ./` 명령어를 실행하여 최신 SvelteKit 프로젝트를 스캐폴딩한다.
+    - ⚠️ 주의: 구버전 명령어인 `bun create svelte@latest`는 사용하지 않는다. (SOLVED.md 참조)
+  - **옵션 선택 가이드:**
+    1. **템플릿:** Skeleton Project (권장) 및 TypeScript 선택
+    2. **툴링(Add-ons):** Prettier, ESLint, Vitest, Playwright **반드시 선택**
+    3. **어댑터:** `stack.manifest.toml`의 배포 타겟(Cloudflare/Node)에 맞는 어댑터 선택
+  - 후속: 설치 완료 즉시 `bun install` 실행
 
 - [ ] **[SCAF-002] 핵심 설정 적용**
-  - 행동: svelte.config.js, vite.config.ts, uno.config.ts 등 기본 설정 파일 작성
-  - 참고: SPEC.md의 아키텍처 섹션 준수
+  - 행동: `svelte.config.js`, `vite.config.ts`, `uno.config.ts` 등 기본 설정 파일 작성
+  - 참고: SPEC.md의 아키텍처 섹션을 준수하며, 설정 완료 후 `bun update`를 한 번 더 실행하여 의존성 트리를 최신화한다.
 
 ## 2단계: 구현 및 개발
 

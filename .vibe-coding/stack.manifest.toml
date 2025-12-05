@@ -3,6 +3,18 @@
 # Instruction: 프로젝트 성격을 분석하여 가장 적합한 기술 스택을 true로 활성화하십시오.
 # -----------------------------------------------------------------------------
 
+[language_quality]
+# Code Standard & Formatting (CLI에서 선택한 항목)
+typescript = true # TS 사용 여부 (AI가 .ts/.js 파일 확장자 결정할 때 필수)
+eslint = true     # 린터 사용
+prettier = true   # 포매터 사용
+
+[testing]
+# Test Runners (CLI에서 선택한 항목 + Bun Native)
+vitest = true     # UI 컴포넌트 및 로직 테스트 (Svelte 공식 추천)
+playwright = true # E2E(브라우저 조작) 테스트
+bun_test = true   # 백엔드/순수 로직 초고속 테스트 (Bun 내장)
+
 [core_framework]
 # Frontend & Meta Framework
 
