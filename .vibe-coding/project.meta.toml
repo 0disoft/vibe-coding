@@ -51,10 +51,6 @@ detect_browser_locale = true # 사용자 브라우저 언어 자동 감지
 default_theme = "system"   # 초기 테마 (dark, light, system)
 enable_theme_toggle = true # 사용자가 테마를 바꿀 수 있는 토글 버튼(해/달) 제공 여부
 
-# [Styling]
-primary_color = "emerald-500" # 브랜드 메인 컬러
-radius_style = "rounded-none" # (Sharp) vs rounded-xl (Soft)
-
 # [Font Strategy: System UI]
 # 다국어 지원 및 성능 최적화를 위해 별도 웹폰트 대신 OS 기본 폰트를 사용합니다.
 font_style = "System"

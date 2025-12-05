@@ -1,5 +1,3 @@
-// uno.config.ts 예시
-
 import {
   defineConfig,
   presetAttributify,
