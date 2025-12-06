@@ -55,13 +55,16 @@ const toAlpha = (opacity?: string) => {
 };
 
 for (const color of semanticColors) {
+  const gradientColor = (opacity?: string) =>
+    toAlpha(opacity)
+      ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
+      : `oklch(var(--${color}))`;
+
   // bg-{color}, bg-{color}/50 형태 지원
   colorRules.push([
     new RegExp(`^bg-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      'background-color': toAlpha(opacity)
-        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
-        : `oklch(var(--${color}))`,
+      'background-color': gradientColor(opacity),
     }),
   ]);
 
@@ -69,9 +72,7 @@ for (const color of semanticColors) {
   colorRules.push([
     new RegExp(`^text-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      color: toAlpha(opacity)
-        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
-        : `oklch(var(--${color}))`,
+      color: gradientColor(opacity),
     }),
   ]);
 
@@ -79,9 +80,7 @@ for (const color of semanticColors) {
   colorRules.push([
     new RegExp(`^border-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      'border-color': toAlpha(opacity)
-        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
-        : `oklch(var(--${color}))`,
+      'border-color': gradientColor(opacity),
     }),
   ]);
 
@@ -89,9 +88,7 @@ for (const color of semanticColors) {
   colorRules.push([
     new RegExp(`^ring-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      '--un-ring-color': toAlpha(opacity)
-        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
-        : `oklch(var(--${color}))`,
+      '--un-ring-color': gradientColor(opacity),
     }),
   ]);
 
@@ -99,9 +96,39 @@ for (const color of semanticColors) {
   colorRules.push([
     new RegExp(`^outline-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      'outline-color': toAlpha(opacity)
-        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
-        : `oklch(var(--${color}))`,
+      'outline-color': gradientColor(opacity),
+    }),
+  ]);
+
+  // 그라디언트 from-/via-/to-
+  colorRules.push([
+    new RegExp(`^from-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      '--un-gradient-from': gradientColor(opacity),
+      '--un-gradient-stops': `var(--un-gradient-from), var(--un-gradient-to, ${gradientColor()})`,
+    }),
+  ]);
+
+  colorRules.push([
+    new RegExp(`^via-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      '--un-gradient-stops': `var(--un-gradient-from, ${gradientColor()}), ${gradientColor(opacity)}, var(--un-gradient-to, ${gradientColor()})`,
+    }),
+  ]);
+
+  colorRules.push([
+    new RegExp(`^to-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      '--un-gradient-to': gradientColor(opacity),
+    }),
+  ]);
+
+  // 그림자 색상 shadow-{color}
+  colorRules.push([
+    new RegExp(`^shadow-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      '--un-shadow-color': gradientColor(opacity),
+      'box-shadow': `var(--un-shadow, 0 10px 15px -3px var(--un-shadow-color), 0 4px 6px -4px var(--un-shadow-color))`,
     }),
   ]);
 }

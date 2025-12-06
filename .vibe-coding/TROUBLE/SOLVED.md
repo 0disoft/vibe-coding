@@ -60,3 +60,10 @@ export default defineConfig({
   - `preset-wind4`에서 OKLCH CSS 변수 기반 시맨틱 색상을 쓰려면 **rules로 직접 정의**해야 함
   - opacity modifier(`/50`)도 rules에서 직접 파싱해서 처리해야 함
   - `app.css`의 CSS 변수 형식은 그대로 유지: `--primary: 65% 0.18 155;`
+
+### 2. Svelte 템플릿 리터럴 파싱 오류 (2025-12-06)
+
+- **증상:** About 페이지에 코드 예시를 표시할 때 `` `${name}` ``가 Svelte 템플릿으로 해석되어 TS2304 오류(`Cannot find name 'color'` 등) 발생.
+- **원인:** `<code>` 블록 안의 백틱/중괄호가 Svelte 템플릿으로 파싱됨.
+- **해결:** 코드 문자열을 Svelte 표현식으로 감싸 직접 문자열로 주입하거나(예: `{"function ... ${name} ... "}`), 중괄호를 HTML 엔티티(`&#123;`)로 이스케이프하여 파싱을 막음.
+- **예시 적용:** `src/routes/about/+page.svelte`에서 코드 블록을 문자열 주입 + 중괄호 이스케이프 방식으로 수정.

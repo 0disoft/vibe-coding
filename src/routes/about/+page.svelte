@@ -62,6 +62,23 @@
 			</div>
 		</div>
 
+		<div class="rounded-xl border border-border bg-card p-6 shadow-sm">
+			<h2 class="text-lg font-semibold">그라디언트 & 섀도 유틸 프리뷰</h2>
+				<p class="mt-3 text-sm text-muted-foreground">
+					`from-` / `via-` / `to-` 색상과 `shadow-&#123;color&#125;` 유틸이 UnoCSS safelist에 추가되어 있습니다.
+				</p>
+			<div class="mt-4 grid gap-4 md:grid-cols-2">
+				<div class="rounded-xl p-6 text-card-foreground shadow shadow-primary bg-gradient-to-r from-primary/80 via-accent/80 to-link/80">
+					<h3 class="text-h3 font-semibold">Gradient Button</h3>
+					<p class="mt-2 text-body text-card-foreground/90">from-primary → via-accent → to-link</p>
+				</div>
+				<div class="rounded-xl bg-card/80 p-6 text-card-foreground shadow shadow-success">
+					<h3 class="text-h3 font-semibold">Shadow Success</h3>
+					<p class="mt-2 text-body text-card-foreground/90">shadow-success 적용된 카드</p>
+				</div>
+			</div>
+		</div>
+
 		<div class="flex gap-4">
 			<a
 				href="/"

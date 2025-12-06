@@ -1,19 +1,19 @@
 :root {
   color-scheme: light dark;
 
-  /* Font scale (1~9). 현재 매핑: 2단계 = 1.0, 5단계 ≈ 1.15 (기본) */
+  /* Font scale (1~9). 0.05 간격: 1=1.05 … 5=1.25(기본) … 9=1.45 */
   --fs-scale: 1;
-  font-size: calc(16px * var(--fs-scale));
+  font-size: calc(19px * var(--fs-scale));
 
   /* Base font sizes */
-  --fs-body-base: 1.4rem;
-  --fs-body-secondary-base: 1.25rem;
-  --fs-comment-base: 1.3rem;
-  --fs-code-base: 0.9rem;
-  --fs-h1-base: 2.6rem;
-  --fs-h2-base: 2.1rem;
-  --fs-h3-base: 1.7rem;
-  --fs-caption-base: 1.1rem;
+  --fs-body-base: 1.35rem;
+  --fs-body-secondary-base: 1.2rem;
+  --fs-comment-base: 1.25rem;
+  --fs-code-base: 0.85rem;
+  --fs-h1-base: 2.2rem;
+  --fs-h2-base: 1.8rem;
+  --fs-h3-base: 1.5rem;
+  --fs-caption-base: 1.0rem;
 
   /* Computed font tokens */
   --fs-body: var(--fs-body-base);
@@ -30,14 +30,14 @@
   --lh-heading: 1.3;
 
   /* gleam.run inspired light palette */
-  --background: 98.9% 0.008 102;
+  --background: 98.2% 0.008 102;
   --foreground: 41% 0.04 331;
 
   /* 카드, 팝오버, 포커스 영역 등 */
-  --card: 98.6% 0.0252 97;
+  --card: 96.0% 0.02 102;
   --card-foreground: 41% 0.04 331;
 
-  --popover: 98.6% 0.0252 97;
+  --popover: 97.4% 0.02 102;
   --popover-foreground: 41% 0.04 331;
 
   /* 주요 액션 */
@@ -83,39 +83,39 @@
 }
 
 :root[data-font-size='1'] {
-  --fs-scale: 0.95;
-}
-
-:root[data-font-size='2'] {
-  --fs-scale: 1.0;
-}
-
-:root[data-font-size='3'] {
   --fs-scale: 1.05;
 }
 
-:root[data-font-size='4'] {
-  --fs-scale: 1.1;
+:root[data-font-size='2'] {
+  --fs-scale: 1.10;
 }
 
-:root[data-font-size='5'] {
+:root[data-font-size='3'] {
   --fs-scale: 1.15;
 }
 
-:root[data-font-size='6'] {
-  --fs-scale: 1.2;
+:root[data-font-size='4'] {
+  --fs-scale: 1.20;
 }
 
-:root[data-font-size='7'] {
+:root[data-font-size='5'] {
   --fs-scale: 1.25;
 }
 
+:root[data-font-size='6'] {
+  --fs-scale: 1.30;
+}
+
+:root[data-font-size='7'] {
+  --fs-scale: 1.35;
+}
+
 :root[data-font-size='8'] {
-  --fs-scale: 1.3;
+  --fs-scale: 1.40;
 }
 
 :root[data-font-size='9'] {
-  --fs-scale: 1.35;
+  --fs-scale: 1.45;
 }
 
 :root[data-theme='dark'] {
@@ -136,12 +136,12 @@
   --primary-foreground: 14% 0.02 332;
 
   /* 보조 액션 / 서브 버튼 */
-  --secondary: 68% 0.0746 209;
-  --secondary-foreground: 96% 0.01 209;
+  --secondary: 88% 0.0746 209;
+  --secondary-foreground: 14% 0.02 209;
 
   /* 강조 요소 (배지, 토글 등) */
-  --accent: 50% 0.0252 97;
-  --accent-foreground: 96% 0.01 97;
+  --accent: 62% 0.0252 97;
+  --accent-foreground: 94% 0.01 97;
 
   /* 링크 */
   --link: 78% 0.12 209;
@@ -152,15 +152,15 @@
   --muted-foreground: 82% 0.015 106;
 
   /* 파괴적 액션 (삭제 등) */
-  --destructive: 68% 0.10 25;
-  --destructive-foreground: 96% 0.01 260;
+  --destructive: 88% 0.10 25;
+  --destructive-foreground: 14% 0.02 25;
 
   /* 성공 / 경고 상태 */
-  --success: 58% 0.09 150;
-  --success-foreground: 96% 0.01 150;
+  --success: 82% 0.09 150;
+  --success-foreground: 14% 0.02 150;
 
-  --warning: 66% 0.07 95;
-  --warning-foreground: 96% 0.02 95;
+  --warning: 86% 0.07 95;
+  --warning-foreground: 14% 0.02 95;
 
   /* 경계 / 입력 / 포커스 링 */
   --border: 36% 0.012 274;
