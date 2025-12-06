@@ -25,6 +25,7 @@ wxt = false # 크롬 익스텐션 프레임워크 (Svelte + UnoCSS 연동)
 # [Mobile & Desktop]
 flutter = false
 slint = false
+tauri = false
 
 [backend_api]
 elysiajs = false
