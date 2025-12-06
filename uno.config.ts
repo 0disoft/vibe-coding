@@ -8,9 +8,8 @@ import {
   transformerVariantGroup,
 } from 'unocss';
 
-// 반복되는 OKLCH 색상 정의를 자동화하기 위한 헬퍼
-// CSS 변수명과 UnoCSS 유틸리티 이름을 매핑
-const colors = [
+// 시맨틱 색상 이름들
+const semanticColors = [
   'background',
   'foreground',
   'card',
@@ -36,11 +35,51 @@ const colors = [
   'ring',
 ] as const;
 
-// 테마 색상 객체 생성
-const themeColors = colors.reduce((acc, name) => {
-  acc[name] = `oklch(var(--${name}) / <alpha-value>)`;
-  return acc;
-}, {} as Record<string, string>);
+// 커스텀 룰 생성: bg-primary, text-primary 등
+// preset-wind4의 기본 색상 시스템을 우회하여 직접 OKLCH CSS 변수 사용
+const colorRules: [RegExp, (match: RegExpMatchArray) => Record<string, string>][] = [];
+
+for (const color of semanticColors) {
+  // bg-{color}, bg-{color}/50 형태 지원
+  colorRules.push([
+    new RegExp(`^bg-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      'background-color': opacity
+        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+        : `oklch(var(--${color}))`,
+    }),
+  ]);
+
+  // text-{color}, text-{color}/50 형태 지원
+  colorRules.push([
+    new RegExp(`^text-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      color: opacity
+        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+        : `oklch(var(--${color}))`,
+    }),
+  ]);
+
+  // border-{color}, border-{color}/50 형태 지원
+  colorRules.push([
+    new RegExp(`^border-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      'border-color': opacity
+        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+        : `oklch(var(--${color}))`,
+    }),
+  ]);
+
+  // ring-{color}, ring-{color}/50 형태 지원
+  colorRules.push([
+    new RegExp(`^ring-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      '--un-ring-color': opacity
+        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+        : `oklch(var(--${color}))`,
+    }),
+  ]);
+}
 
 export default defineConfig({
   presets: [
@@ -66,8 +105,7 @@ export default defineConfig({
     }),
     presetTypography(),
   ],
-  theme: {
-    colors: themeColors,
-  },
+  // 커스텀 룰로 시맨틱 색상 유틸리티 직접 정의
+  rules: colorRules,
   transformers: [transformerVariantGroup()],
 });

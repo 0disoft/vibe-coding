@@ -180,7 +180,7 @@
 					<label class="mt-3 block space-y-2 text-xs">
 						<span class="text-muted-foreground">라벨 텍스트</span>
 						<input
-							class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition focus:(border-ring ring-2 ring-ring)"
+							class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition focus:(border-primary ring-2 ring-ring/30)"
 							placeholder="border-input · ring-ring"
 						/>
 					</label>
