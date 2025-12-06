@@ -65,13 +65,19 @@
 ### src/lib/
 
 | 파일 | 역할 |
-|------|------|
+|---|---|
+| `config.ts` | 사이트 전역 설정 상수 (이름, 설명, 링크 등) |
 | `index.ts` | $lib 배럴 export (런타임 코드용) |
 | `theme.svelte.ts` | 라이트/다크 테마 상태 관리, FOUC 방지 |
 | `font-size.svelte.ts` | 글자 크기 1~9단계 관리 |
 | `stores/persisted-state.svelte.ts` | 쿠키+DOM 동기화 퍼시스턴스 스토어 팩토리 |
 | `components/FontSizeSlider.svelte` | 폰트 크기 슬라이더 UI |
 | `components/CodeBlock.svelte` | 코드 하이라이팅 + 복사 버튼 재사용 컴포넌트 |
+| `components/Header.svelte` | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯) |
+| `components/header-actions/ThemeToggle.svelte` | 테마 토글 버튼 |
+| `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달 |
+| `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달 |
+| `components/Footer.svelte` | 공통 푸터 컴포넌트 (카피라이트, 약관 링크) |
 | `components/ui/index.ts` | UI 컴포넌트 배럴 파일 |
 | `prefs/constants.ts` | 쿠키 키 등 프리퍼런스 상수 |
 | `types/index.ts` | 타입 배럴 export ($lib/types용) |
