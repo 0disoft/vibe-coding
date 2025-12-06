@@ -54,8 +54,29 @@ const handleParaglide: Handle = ({ event, resolve }) =>
 		});
 	});
 
-// 3. 핸들러 병합 및 내보내기
-// sequence를 사용하면 나열된 순서대로 미들웨어가 실행됩니다.
-// 순서는 크게 상관없으나, 일반적으로 전역 설정인 테마를 먼저 처리하고
-// 라우팅과 관련된 다국어 처리를 뒤에 두는 것이 구조상 깔끔합니다.
-export const handle: Handle = sequence(handleThemeAndFont, handleParaglide);
+// 3. Accept-Language 기반 lang 보정
+// 기본 로케일이 en이라도 한국어 브라우저이면 lang="ko"로 교체하여 Pretendard 적용 범위가 작동하게 함
+const handleLangFallback: Handle = ({ event, resolve }) => {
+  const accept = event.request.headers.get('accept-language') ?? '';
+
+  // 매우 단순한 파서: q값 고려, ko 우선 매칭
+  const pickKo = (() => {
+    return accept
+      .split(',')
+      .map((part) => part.trim())
+      .some((part) => part.toLowerCase().startsWith('ko'));
+  })();
+
+  return resolve(event, {
+    transformPageChunk: ({ html }) => {
+      if (pickKo) {
+        html = html.replace(/lang="[^"]*"/, 'lang="ko"');
+      }
+      return html;
+    }
+  });
+};
+
+// 4. 핸들러 병합 및 내보내기
+// 순서: 테마/폰트 → Paraglide(lang 치환) → Accept-Language 기반 lang 보정
+export const handle: Handle = sequence(handleThemeAndFont, handleParaglide, handleLangFallback);

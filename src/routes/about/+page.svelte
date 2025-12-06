@@ -1,5 +1,17 @@
 <script lang="ts">
 	import { theme } from '$lib/theme.svelte';
+	import { onMount } from 'svelte';
+	import hljs from 'highlight.js/lib/core';
+	import javascript from 'highlight.js/lib/languages/javascript';
+
+	hljs.registerLanguage('javascript', javascript);
+	hljs.registerLanguage('js', javascript);
+
+	onMount(() => {
+		document.querySelectorAll('pre code').forEach((block) => {
+			hljs.highlightElement(block as HTMLElement);
+		});
+	});
 </script>
 
 <div class="px-6 py-10 md:px-10 md:py-16">
@@ -24,7 +36,7 @@
 			</div>
 		</div>
 
-		<div class="rounded-xl border border-border bg-card p-6 shadow-sm">
+		<div class="rounded-xl border border-border p-6 shadow-sm code-card">
 			<h2 class="text-lg font-semibold">링크 색상 프리뷰</h2>
 			<p class="mt-3 text-sm text-muted-foreground">
 				텍스트 본문 안에서 링크가 어떻게 보이는지 확인해보세요.
@@ -51,14 +63,14 @@
 			</ul>
 		</div>
 
-		<div class="rounded-xl border border-border bg-card p-6 shadow-sm">
+		<div class="rounded-xl border border-border p-6 shadow-sm code-card">
 			<h2 class="text-lg font-semibold">코드 폰트 스케일 프리뷰</h2>
 			<p class="mt-3 text-sm text-muted-foreground">
 				폰트 슬라이더(상단)로 크기를 조절하면 코드도 함께 스케일되는지 확인하세요.
 			</p>
 			<div class="mt-4 space-y-3 rounded-lg bg-muted/40 p-4">
 				<p class="text-sm text-muted-foreground">인라인 코드: <code>const answer = 42;</code></p>
-				<pre><code class="language-js">{"function greet(name) {\n  return `Hello, ${name}!`;\n}"}</code></pre>
+				<pre class="hljs"><code class="language-js">{"function greet(name) {\n  return `Hello, ${name}!`;\n}"}</code></pre>
 			</div>
 		</div>
 
