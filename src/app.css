@@ -2,85 +2,95 @@
   color-scheme: light dark;
 
   /* 베이스 */
-  --background: 99% 0.01 240;
-  --foreground: 20% 0.02 240;
+  --background: 96% 0.01 260;
+  --foreground: 22% 0.03 260;
 
   /* 카드, 팝오버, 포커스 영역 등 */
-  --card: 99% 0.01 240;
-  --card-foreground: 20% 0.02 240;
+  --card: 95% 0.01 260;
+  --card-foreground: 22% 0.03 260;
 
-  --popover: 100% 0.01 240;
-  --popover-foreground: 20% 0.02 240;
+  --popover: 96% 0.01 260;
+  --popover-foreground: 22% 0.03 260;
 
   /* 주요 액션 */
-  --primary: 65% 0.18 155;
-  --primary-foreground: 10% 0.02 155;
+  --primary: 70% 0.18 300;
+  --primary-foreground: 16% 0.02 300;
 
   /* 보조 액션 / 서브 버튼 */
-  --secondary: 95% 0.02 240;
-  --secondary-foreground: 25% 0.02 240;
+  --secondary: 88% 0.08 220;
+  --secondary-foreground: 18% 0.02 220;
 
   /* 강조 요소 (배지, 토글 등) */
-  --accent: 94% 0.02 240;
-  --accent-foreground: 25% 0.02 240;
+  --accent: 86% 0.09 240;
+  --accent-foreground: 20% 0.02 240;
 
   /* 약한 텍스트, 서브 카드 배경 등 */
-  --muted: 96% 0.01 240;
-  --muted-foreground: 40% 0.02 240;
+  --muted: 90% 0.015 260;
+  --muted-foreground: 50% 0.015 260;
 
   /* 파괴적 액션 (삭제 등) */
-  --destructive: 60% 0.20 30;
-  --destructive-foreground: 98% 0.02 240;
+  --destructive: 68% 0.12 25;
+  --destructive-foreground: 14% 0.02 260;
 
   /* 성공 / 경고 상태 */
-  --success: 70% 0.16 145;
-  --success-foreground: 10% 0.02 145;
+  --success: 74% 0.12 150;
+  --success-foreground: 16% 0.02 150;
 
-  --warning: 75% 0.18 85;
-  --warning-foreground: 15% 0.03 85;
+  --warning: 80% 0.14 95;
+  --warning-foreground: 18% 0.03 95;
 
   /* 경계 / 입력 / 포커스 링 */
-  --border: 90% 0.01 240;
-  --input: 92% 0.01 240;
-  --ring: 65% 0.18 155;
+  --border: 88% 0.01 260;
+  --input: 90% 0.01 260;
+  --ring: 70% 0.20 300;
+
+  /* 네비게이션/오버레이 */
+  --sidebar: 93% 0.015 260;
+  --sidebar-foreground: 24% 0.02 260;
+  --overlay: 16% 0.02 260;
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --background: 15% 0.02 240;
-  --foreground: 98% 0.01 240;
+  --background: 18% 0.015 260;
+  --foreground: 94% 0.01 260;
 
-  --card: 18% 0.02 240;
-  --card-foreground: 98% 0.01 240;
+  --card: 20% 0.015 260;
+  --card-foreground: 94% 0.01 260;
 
-  --popover: 20% 0.02 240;
-  --popover-foreground: 98% 0.01 240;
+  --popover: 22% 0.015 260;
+  --popover-foreground: 94% 0.01 260;
 
-  --primary: 60% 0.18 155;
-  --primary-foreground: 8% 0.02 155;
+  --primary: 64% 0.20 300;
+  --primary-foreground: 12% 0.02 300;
 
-  --secondary: 25% 0.02 240;
-  --secondary-foreground: 96% 0.01 240;
+  --secondary: 34% 0.08 220;
+  --secondary-foreground: 92% 0.01 220;
 
-  --accent: 28% 0.02 240;
-  --accent-foreground: 96% 0.01 240;
+  --accent: 38% 0.10 240;
+  --accent-foreground: 92% 0.01 240;
 
-  --muted: 22% 0.02 240;
-  --muted-foreground: 85% 0.02 240;
+  --muted: 28% 0.015 260;
+  --muted-foreground: 78% 0.015 260;
 
-  --destructive: 58% 0.20 30;
-  --destructive-foreground: 98% 0.01 240;
+  --destructive: 58% 0.12 25;
+  --destructive-foreground: 94% 0.01 260;
 
-  --success: 65% 0.16 145;
-  --success-foreground: 8% 0.02 145;
+  --success: 56% 0.12 150;
+  --success-foreground: 93% 0.01 150;
 
-  --warning: 70% 0.18 85;
-  --warning-foreground: 10% 0.03 85;
+  --warning: 60% 0.14 95;
+  --warning-foreground: 92% 0.02 95;
 
-  --border: 30% 0.02 240;
-  --input: 28% 0.02 240;
-  --ring: 70% 0.18 155;
+  --border: 30% 0.015 260;
+  --input: 32% 0.015 260;
+  --ring: 66% 0.20 300;
+
+  /* 네비게이션/오버레이 */
+  --sidebar: 24% 0.015 260;
+  --sidebar-foreground: 92% 0.01 260;
+  --overlay: 6% 0.01 260;
 }
 
 body {

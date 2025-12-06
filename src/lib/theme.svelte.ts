@@ -16,7 +16,9 @@ function createTheme() {
       expires = '; expires=' + date.toUTCString();
     }
     // path=/ 는 사이트 전체에서 쿠키가 유효하도록 함
-    document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=Lax';
+    // HTTPS 환경에서는 Secure 플래그를 추가해 보안을 강화
+    const secure = location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=Lax' + secure;
   }
 
   // 쿠키에서 테마 값을 읽어오는 헬퍼 함수

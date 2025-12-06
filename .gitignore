@@ -1,5 +1,9 @@
 test-results
 node_modules
+coverage
+*.log
+*.tsbuildinfo
+.eslintcache
 
 # Output
 .output
@@ -8,10 +12,14 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
+.parcel-cache
+.turbo
 
 # OS
 .DS_Store
 Thumbs.db
+.idea/
+.vscode/
 
 # Env
 .env

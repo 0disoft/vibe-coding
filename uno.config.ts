@@ -33,6 +33,9 @@ const semanticColors = [
   'border',
   'input',
   'ring',
+  'sidebar',
+  'sidebar-foreground',
+  'overlay',
 ] as const;
 
 // 커스텀 룰 생성: bg-primary, text-primary 등
@@ -75,6 +78,16 @@ for (const color of semanticColors) {
     new RegExp(`^ring-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
       '--un-ring-color': opacity
+        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+        : `oklch(var(--${color}))`,
+    }),
+  ]);
+
+  // outline-{color}, outline-{color}/50 형태 지원
+  colorRules.push([
+    new RegExp(`^outline-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => ({
+      'outline-color': opacity
         ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
         : `oklch(var(--${color}))`,
     }),
