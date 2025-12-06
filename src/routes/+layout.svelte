@@ -20,6 +20,11 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<title>Vibe Coding Starter</title>
+	<meta
+		name="description"
+		content="SvelteKit 2 + Svelte 5 + UnoCSS 테마/폰트 토큰 템플릿. 라이트/다크 테마와 폰트 스케일을 쿠키로 유지하고 FOUC 없이 SSR 적용합니다."
+	/>
 </svelte:head>
 
 <!-- 

@@ -55,10 +55,10 @@ const toAlpha = (opacity?: string) => {
 };
 
 for (const color of semanticColors) {
-  const gradientColor = (opacity?: string) =>
-    toAlpha(opacity)
-      ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
-      : `oklch(var(--${color}))`;
+  const gradientColor = (opacity?: string) => {
+    const alpha = toAlpha(opacity);
+    return alpha ? `oklch(var(--${color}) / ${alpha})` : `oklch(var(--${color}))`;
+  };
 
   // bg-{color}, bg-{color}/50 형태 지원
   colorRules.push([
@@ -196,6 +196,7 @@ export default defineConfig({
   presets: [
     presetWind4({
       reset: true,
+      // dark 옵션은 사용하지 않음: data-theme + OKLCH 변수 기반 커스텀 다크 모드만 사용
     }),
     presetAttributify(),
     presetIcons({
@@ -220,22 +221,18 @@ export default defineConfig({
   rules: [...colorRules, ...typographyRules],
   // 동적 클래스 사용 대비(예: CMS에서 bg-primary 문자열 주입)
   safelist: [
-    // 색상 유틸 기본 세트
-    'bg-primary',
-    'text-primary',
-    'bg-secondary',
-    'text-secondary',
-    'bg-accent',
-    'text-accent',
-    'bg-success',
-    'text-success',
-    'bg-warning',
-    'text-warning',
-    'bg-destructive',
-    'text-destructive',
-    'bg-link',
-    'text-link',
-    // 상태/구조
+    ...semanticColors.flatMap((c) => [
+      `bg-${c}`,
+      `text-${c}`,
+      `border-${c}`,
+      `ring-${c}`,
+      `outline-${c}`,
+      `from-${c}`,
+      `via-${c}`,
+      `to-${c}`,
+      `shadow-${c}`,
+    ]),
+    // 구조적 기본값
     'bg-card',
     'text-card-foreground',
     'bg-popover',

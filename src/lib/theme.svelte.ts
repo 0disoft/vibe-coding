@@ -8,7 +8,15 @@ import { THEME_COOKIE } from '$lib/prefs/constants';
 
 type Theme = 'light' | 'dark';
 
-const store = createPersistedState<Theme>(THEME_COOKIE, 'light', ['light', 'dark']);
+const store = createPersistedState<Theme>(
+  THEME_COOKIE,
+  'light',
+  ['light', 'dark'],
+  (v) => {
+    if (!document?.documentElement) return;
+    document.documentElement.setAttribute('data-theme', v);
+  },
+);
 
 export const theme = {
   get current() {

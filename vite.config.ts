@@ -36,6 +36,9 @@ export default defineConfig({
 					name: 'server',
 					environment: 'node',
 					include: ['src/**/*.{test,spec}.{js,ts}'],
+					// 주의:
+					// - 현재는 "UI 전용 폴더"라는 가정으로 src/lib/components/** 를 제외
+					// - 만약 components 아래에 서버 전용 유틸이 추가되면 이 exclude를 재검토할 것
 					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/lib/components/**']
 				}
 			}

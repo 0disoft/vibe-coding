@@ -178,6 +178,13 @@ body {
   color: oklch(var(--foreground));
   font-size: var(--fs-body);
   line-height: var(--lh-body);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Apple SD Gothic Neo",
+    "Noto Sans",
+    sans-serif;
   /* 폰트 렌더링 최적화 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

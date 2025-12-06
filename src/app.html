@@ -3,22 +3,18 @@
 <html lang="%paraglide.lang%" data-theme="" data-font-size="5">
 
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<!-- 
-      폰트 최적화 변경:
-      Google Fonts CDN 링크를 제거했습니다.
-      대신 UnoCSS의 presetWebFonts가 폰트를 관리하도록 하거나,
-      @fontsource 패키지를 사용하여 폰트를 자체 호스팅하는 것이
-      레이아웃 이동 CLS 현상을 줄이는 데 더 효과적입니다.
-    -->
+  <!-- 
+    UnoCSS의 presetWebFonts로 폰트를 관리하세요.
+  -->
 
-	%sveltekit.head%
+  %sveltekit.head%
 </head>
 
 <body data-sveltekit-preload-data="hover">
-	<div style="display: contents">%sveltekit.body%</div>
+  <div style="display: contents">%sveltekit.body%</div>
 </body>
 
 </html>

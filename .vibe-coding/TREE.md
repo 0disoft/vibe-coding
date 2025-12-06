@@ -1,6 +1,7 @@
 # TREE
 
 프로젝트 핵심 파일과 컴포넌트를 폴더 구조별로 요약합니다.
+새 파일을 추가할 때는 아래 기존에 작성된 규칙을 따라 TREE를 갱신하세요.
 
 ## /
 
@@ -27,5 +28,11 @@
 - `stores/persisted-state.svelte.ts`: 쿠키와 DOM data-* 속성을 동기화하는 공용 퍼시스턴스 스토어 팩토리입니다.
 - components/
   - `FontSizeSlider.svelte`: 폰트 크기 1~9 단계를 슬라이더로 제어하며 `font-size` 스토어를 업데이트합니다.
+  - ui/
+    - `index.ts`: UI 컴포넌트 배럴 파일로 이 디렉터리나 상위의 UI 컴포넌트들을 모아 export합니다.
 - prefs/
   - `constants.ts`: 쿠키 키(테마, 폰트 크기 등)와 공통 프리퍼런스 상수를 중앙 관리합니다.
+
+## Types
+
+- src/app.d.ts: SvelteKit 전역 타입 확장(Locals: paraglide, theme, fontSize 등).
