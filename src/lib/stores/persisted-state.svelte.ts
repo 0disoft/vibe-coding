@@ -1,5 +1,7 @@
 import { browser } from '$app/environment';
 
+// Note: 이 파일은 Svelte runes($state)을 사용하므로 .svelte.ts 확장자를 유지하세요.
+
 /**
  * 쿠키와 DOM data-* 속성에 동기화되는 영속 스토어를 생성합니다.
  *
