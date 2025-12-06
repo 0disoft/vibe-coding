@@ -8,11 +8,13 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	plugins: [
 		UnoCSS(),      // UnoCSS를 맨 앞에
-		sveltekit(),
 		paraglideVitePlugin({
 			project: './project.inlang',
-			outdir: './src/lib/paraglide'
-		})
+			outdir: './src/lib/paraglide',
+			// @ts-expect-error: Paraglide 2.x 옵션 인식 오류 무시
+			experimentalUseVirtualModules: true
+		}),
+		sveltekit()
 	],
 	test: {
 		expect: { requireAssertions: true },

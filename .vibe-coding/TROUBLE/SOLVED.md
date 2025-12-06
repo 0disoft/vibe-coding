@@ -79,9 +79,26 @@ pnpm dlx sv create ./
 
 ## [Paraglide / i18n]
 
-### 1. 외부 모듈 타입 인식 오류 시 우회 (하드코딩)
+### 1. Paraglide 모듈 타입 인식 오류 및 API 버전 불일치
 
 - **증상:** `TS2305: Module '"$lib/paraglide/runtime"' has no exported member...`
-- **원인:** 자동 생성된 JS 모듈이 TypeScript 컴파일러에 의해 제대로 인덱싱되지 않거나, `.gitignore` 설정 등의 이유로 IDE에서 타입 정의를 찾지 못함.
-- **해결:** 의존성 모듈 import를 제거하고, 필요한 데이터(지원 언어 목록 등)를 컴포넌트 내부 상수나 설정 파일로 복사하여 임시로 사용.
-- **적용 시점:** 외부 라이브러리 연동 시 알 수 없는 타입/빌드 오류로 개발 진행이 막힐 때 우선 조치.
+- **원인:**
+  1. Paraglide 1.x → 2.x API 변경 (`languageTag` → `getLocale` 등)으로 인한 멤버 이름 불일치.
+  2. Paraglide가 생성하는 가상 모듈을 IDE가 실시간으로 인식하지 못함.
+- **해결 패턴:**
+  1. **Vite 설정:** `virtual modules` 활성화
+
+     ```ts
+     // vite.config.ts
+     paraglideVitePlugin({ ..., experimentalUseVirtualModules: true }) 
+     ```
+
+  2. **API 호환성 확보:** 안전한 import 및 우회
+
+     ```ts
+     import * as runtime from '$lib/paraglide/runtime';
+     const getLocale = (runtime as any).getLocale ?? (runtime as any).languageTag;
+     ```
+
+  3. **재컴파일:** `vite.config.ts` 플러그인 순서 (`paraglide` -> `sveltekit`) 조정 후 재빌드.
+- **적용 시점:** 최신 Paraglide 라이브러리 연동 시 타입 오류가 발생할 때.
