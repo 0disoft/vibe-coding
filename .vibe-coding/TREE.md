@@ -21,12 +21,19 @@
     ├── hooks.server.ts
     └── lib/
         ├── index.ts
+        ├── config.ts
         ├── theme.svelte.ts
         ├── font-size.svelte.ts
         ├── stores/
         │   └── persisted-state.svelte.ts
         ├── components/
-        │   ├── FontSizeSlider.svelte
+        │   ├── CodeBlock.svelte
+        │   ├── Footer.svelte
+        │   ├── Header.svelte
+        │   ├── header-actions/
+        │   │   ├── FontSizePicker.svelte
+        │   │   ├── LanguagePicker.svelte
+        │   │   └── ThemeToggle.svelte
         │   └── ui/
         │       └── index.ts
         ├── prefs/
@@ -71,7 +78,6 @@
 | `theme.svelte.ts` | 라이트/다크 테마 상태 관리, FOUC 방지 |
 | `font-size.svelte.ts` | 글자 크기 1~9단계 관리 |
 | `stores/persisted-state.svelte.ts` | 쿠키+DOM 동기화 퍼시스턴스 스토어 팩토리 |
-| `components/FontSizeSlider.svelte` | 폰트 크기 슬라이더 UI |
 | `components/CodeBlock.svelte` | 코드 하이라이팅 + 복사 버튼 재사용 컴포넌트 |
 | `components/Header.svelte` | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯) |
 | `components/header-actions/ThemeToggle.svelte` | 테마 토글 버튼 |

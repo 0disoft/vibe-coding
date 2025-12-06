@@ -1,23 +1,77 @@
 <script lang="ts">
-	import * as runtime from '$lib/paraglide/runtime';
 	import { page } from '$app/state';
+	import * as runtime from '$lib/paraglide/runtime';
 
-	// Paraglide API 버전 호환성 처리 (1.x ~ 2.x)
-	// availableLanguageTags -> locales 또는 availableLocales
-	// languageTag() -> getLocale()
-	const availableLanguageTags: string[] = (runtime as any).availableLocales ?? (runtime as any).locales ?? (runtime as any).availableLanguageTags ?? [];
-	const getLanguageTag = (runtime as any).getLocale ?? (runtime as any).languageTag ?? (() => 'en');
+	// Paraglide API 호환성 및 안전장치
+	// 1. 런타임에서 언어 목록 가져오기 시도, 실패 시 기본 목록 사용
+	const defaultLocales = [
+		'en',
+		'ko',
+		'ja',
+		'zh',
+		'es',
+		'fr',
+		'de',
+		'pt',
+		'it',
+		'nl',
+		'sv',
+		'pl',
+		'ru',
+		'ar',
+		'hi',
+		'id',
+		'vi',
+		'th',
+		'tl',
+		'tr'
+	];
+	const availableLanguageTags: string[] =
+		(runtime as any).availableLocales ??
+		(runtime as any).locales ??
+		(runtime as any).availableLanguageTags ??
+		defaultLocales;
+
+	// 2. 현재 언어 판별: URL이 가장 정확하므로 URL 우선 파싱
+	// Paraglide 내부 상태가 늦게 갱신될 수 있으므로 page.url을 직접 신뢰
+	let currentLang = $derived.by(() => {
+		const path = page.url.pathname;
+		const segment = path.split('/')[1]; // "/ko/..." -> "ko"
+		if (availableLanguageTags.includes(segment)) {
+			return segment;
+		}
+		// URL에 언어 코드가 없거나(루트), 유효하지 않으면 기본값(en) 또는 runtime 상태 확인
+		const runtimeLang = (runtime as any).getLocale?.() ?? (runtime as any).languageTag?.();
+		return runtimeLang ?? 'en';
+	});
 
 	let showLanguageModal = $state(false);
+	let modalRef: HTMLDivElement | undefined = $state();
+	let buttonRef: HTMLButtonElement | undefined = $state();
 
 	function toggleLanguageModal() {
 		showLanguageModal = !showLanguageModal;
 	}
+
+	function handleOutsideClick(event: MouseEvent) {
+		if (
+			showLanguageModal &&
+			modalRef &&
+			!modalRef.contains(event.target as Node) &&
+			buttonRef &&
+			!buttonRef.contains(event.target as Node)
+		) {
+			showLanguageModal = false;
+		}
+	}
 </script>
+
+<svelte:window onclick={handleOutsideClick} />
 
 <div class="relative">
 	<button
 		type="button"
+		bind:this={buttonRef}
 		onclick={toggleLanguageModal}
 		class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 		aria-label="언어 변경"
@@ -27,23 +81,19 @@
 
 	<!-- 언어 선택 모달 -->
 	{#if showLanguageModal}
-		<!-- 배경 클릭 시 닫기 -->
-		<button
-			type="button"
-			class="fixed inset-0 z-40"
-			onclick={() => (showLanguageModal = false)}
-			aria-label="닫기"
-		></button>
-
-		<div class="absolute right-0 top-full z-50 mt-2 w-32 rounded-lg bg-popover p-2 shadow-lg">
+		<div
+			bind:this={modalRef}
+			class="absolute right-0 top-full z-50 mt-2 w-32 rounded-lg bg-popover p-2 shadow-lg"
+		>
 			<div class="mb-2 px-2 text-xs font-medium text-muted-foreground">
-				언어 (현재: {getLanguageTag()})
+				언어 (현재: {currentLang})
 			</div>
 			<div class="grid gap-1 max-h-[300px] overflow-y-auto">
 				{#each availableLanguageTags as lang}
 					<a
 						href="/{lang}"
-						class="inline-flex h-8 w-full items-center justify-start px-2 rounded-md text-sm transition-colors {lang === getLanguageTag()
+						class="inline-flex h-8 w-full items-center justify-start px-2 rounded-md text-sm transition-colors {lang ===
+						currentLang
 							? 'bg-primary text-primary-foreground'
 							: 'hover:bg-accent hover:text-accent-foreground'}"
 						data-sveltekit-reload

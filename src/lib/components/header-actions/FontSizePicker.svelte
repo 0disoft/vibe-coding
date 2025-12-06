@@ -11,11 +11,29 @@
 		fontSize.set(level);
 		showFontSizeModal = false;
 	}
+
+	let modalRef: HTMLDivElement | undefined = $state();
+	let buttonRef: HTMLButtonElement | undefined = $state();
+
+	function handleOutsideClick(event: MouseEvent) {
+		if (
+			showFontSizeModal &&
+			modalRef &&
+			!modalRef.contains(event.target as Node) &&
+			buttonRef &&
+			!buttonRef.contains(event.target as Node)
+		) {
+			showFontSizeModal = false;
+		}
+	}
 </script>
+
+<svelte:window onclick={handleOutsideClick} />
 
 <div class="relative">
 	<button
 		type="button"
+		bind:this={buttonRef}
 		onclick={toggleFontSizeModal}
 		class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 		aria-label="글자 크기 변경"
@@ -25,15 +43,10 @@
 
 	<!-- 폰트 크기 모달 -->
 	{#if showFontSizeModal}
-		<!-- 배경 클릭 시 닫기 -->
-		<button
-			type="button"
-			class="fixed inset-0 z-40"
-			onclick={() => (showFontSizeModal = false)}
-			aria-label="닫기"
-		></button>
-
-		<div class="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg bg-popover p-2 shadow-lg">
+		<div
+			bind:this={modalRef}
+			class="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg bg-popover p-2 shadow-lg"
+		>
 			<div class="mb-2 px-2 text-xs font-medium text-muted-foreground">
 				글자 크기 (현재: {fontSize.current})
 			</div>
@@ -42,7 +55,8 @@
 					<button
 						type="button"
 						onclick={() => selectFontSize(level)}
-						class="inline-flex h-8 w-full items-center justify-center rounded-md text-sm transition-colors {fontSize.current === level
+						class="inline-flex h-8 w-full items-center justify-center rounded-md text-sm transition-colors {fontSize.current ===
+						level
 							? 'bg-primary text-primary-foreground'
 							: 'hover:bg-accent hover:text-accent-foreground'}"
 					>
