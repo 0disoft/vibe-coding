@@ -10,6 +10,7 @@ import {
 } from 'unocss';
 
 // 시맨틱 색상 이름들
+// semanticColors에 이름을 추가/삭제할 때는 src/app.css의 대응 CSS 변수(--{color})도 함께 유지보수할 것.
 const semanticColors = [
   'background',
   'foreground',
@@ -190,5 +191,31 @@ export default defineConfig({
   ],
   // 커스텀 룰로 시맨틱 색상 유틸리티 직접 정의
   rules: [...colorRules, ...typographyRules],
+  // 동적 클래스 사용 대비(예: CMS에서 bg-primary 문자열 주입)
+  safelist: [
+    // 색상 유틸 기본 세트
+    'bg-primary',
+    'text-primary',
+    'bg-secondary',
+    'text-secondary',
+    'bg-accent',
+    'text-accent',
+    'bg-success',
+    'text-success',
+    'bg-warning',
+    'text-warning',
+    'bg-destructive',
+    'text-destructive',
+    'bg-link',
+    'text-link',
+    // 상태/구조
+    'bg-card',
+    'text-card-foreground',
+    'bg-popover',
+    'text-popover-foreground',
+    'bg-muted',
+    'text-muted-foreground',
+    'border-border',
+  ],
   transformers: [transformerVariantGroup()],
 });

@@ -25,22 +25,22 @@ const handleThemeAndFont: Handle = async ({ event, resolve }) => {
 	const theme = rawTheme === 'light' || rawTheme === 'dark' ? rawTheme : null;
 	const fontSize = event.cookies.get(FONT_SIZE_COOKIE); // 기대값: '1' ~ '9'
 
-	// resolve 함수는 페이지 렌더링을 계속 진행시킵니다.
-	// transformPageChunk를 이용해 HTML이 브라우저로 전송되기 직전에 수정합니다.
-	return resolve(event, {
-		transformPageChunk: ({ html }) => {
-			// 쿠키에 저장된 테마가 있다면 html 태그의 data-theme 속성을 해당 값으로 교체합니다.
-			if (theme) {
-				html = html.replace('data-theme=""', `data-theme="${theme}"`);
-			}
-			// 폰트 크기 쿠키가 1~9 사이라면 data-font-size 기본값(5)을 교체합니다.
-			if (fontSize && /^[1-9]$/.test(fontSize)) {
-				html = html.replace('data-font-size="5"', `data-font-size="${fontSize}"`);
-			}
-			// 테마 쿠키가 없다면 HTML을 수정하지 않고 그대로 둡니다.
-			return html;
-		}
-	});
+  // resolve 함수는 페이지 렌더링을 계속 진행시킵니다.
+  // transformPageChunk를 이용해 HTML이 브라우저로 전송되기 직전에 수정합니다.
+  return resolve(event, {
+    transformPageChunk: ({ html }) => {
+      // 쿠키에 저장된 테마가 있다면 html 태그의 data-theme 속성을 해당 값으로 교체합니다.
+      if (theme) {
+        html = html.replace(/data-theme="[^"]*"/, `data-theme="${theme}"`);
+      }
+      // 폰트 크기 쿠키가 1~9 사이라면 data-font-size 기본값(5)을 교체합니다.
+      if (fontSize && /^[1-9]$/.test(fontSize)) {
+        html = html.replace(/data-font-size="[^"]*"/, `data-font-size="${fontSize}"`);
+      }
+      // 테마 쿠키가 없다면 HTML을 수정하지 않고 그대로 둡니다.
+      return html;
+    }
+  });
 };
 
 // 2. 다국어 처리 핸들러 (기존 코드 유지)

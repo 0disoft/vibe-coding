@@ -1,41 +1,4 @@
-5. theme / fontSize 모듈 구조 자체는 아주 좋음
+2. UnoCSS Safelist 고려
+현재 uno.config.ts는 정적 분석을 통해 사용된 클래스만 CSS로 생성합니다. 하지만 만약 CMS나 DB에서 bg-primary 같은 문자열을 받아와 동적으로 렌더링해야 할 경우, UnoCSS가 이를 감지하지 못해 스타일이 깨질 수 있습니다.
 
-theme.svelte.ts, font-size.svelte.ts 구조는 그대로 써도 될 수준이라, 딱 두 가지만 더 챙기면 완성형에 가깝다
-
-쿠키 이름과 로직 상수화
-
-hooks.server.ts
-
-event.cookies.get('theme')
-
-event.cookies.get('fontSize')
-
-theme.svelte.ts
-
-getCookie('theme'), setCookie('theme', …)
-
-font-size.svelte.ts
-
-fontSize 문자열 직접 사용
-
-지금은 곳곳에 "theme", "fontSize"가 흩어져 있어서
-나중에 이름을 바꾸고 싶을 때 실수할 여지가 크다
-
-src/lib/prefs/constants.ts 같은 데에
-
-export const THEME_COOKIE = 'theme';
-export const FONT_SIZE_COOKIE = 'fontSize';
-
-
-이 정도만 만들어두고 세 파일 모두 그걸 import해서 쓰면, 템플릿을 여러 프로젝트에 붙여도 유지보수가 훨씬 쉬워진다
-
-init 시 “서버가 이미 해둔 일은 건드리지 않는” 전략
-
-이건 이미 잘 하고 있는데, 이 철학이 아주 좋다
-
-서버에서 data-theme를 세팅했다면 클라이언트는 current에만 동기화하고 DOM은 건드리지 않는다
-
-data-font-size도 있으면 그대로 신뢰하고 쿠키만 나중에 필요할 때 쓴다
-
-이 흐름을 그대로 문서화해두면
-“왜 init에서 굳이 DOM을 안 건드리지?” 같은 의문을 미래의 내가 안 품게 된다
+해결책: 템플릿 단계에서는 괜찮지만, 향후 동적 색상 할당이 필요한 컴포넌트를 만들 계획이라면 safelist 옵션을 기억해 두십시오.
