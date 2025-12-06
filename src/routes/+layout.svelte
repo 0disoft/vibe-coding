@@ -2,11 +2,12 @@
 	import favicon from '$lib/assets/favicon.svg';
 	// 전역 CSS 및 UnoCSS 유틸리티
 	import { onMount } from 'svelte';
+	// app.css 보다 먼저 불러와야 함
 	import 'virtual:uno.css';
 	import '../app.css';
 	// 전역 테마 스토어
-	import { theme } from '$lib/theme.svelte';
 	import { fontSize } from '$lib/font-size.svelte';
+	import { theme } from '$lib/theme.svelte';
 
 	let { children } = $props();
 

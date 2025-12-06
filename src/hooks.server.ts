@@ -14,14 +14,16 @@
  */
 
 import { paraglideMiddleware } from '$lib/paraglide/server';
+import { FONT_SIZE_COOKIE, THEME_COOKIE } from '$lib/prefs/constants';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 
 // 1. 테마/폰트 크기 처리 핸들러
 // 쿠키를 확인하여 HTML에 data-theme, data-font-size 속성을 주입하는 역할을 합니다.
 const handleThemeAndFont: Handle = async ({ event, resolve }) => {
-	const theme = event.cookies.get('theme');
-	const fontSize = event.cookies.get('fontSize'); // 기대값: '1' ~ '9'
+	const rawTheme = event.cookies.get(THEME_COOKIE);
+	const theme = rawTheme === 'light' || rawTheme === 'dark' ? rawTheme : null;
+	const fontSize = event.cookies.get(FONT_SIZE_COOKIE); // 기대값: '1' ~ '9'
 
 	// resolve 함수는 페이지 렌더링을 계속 진행시킵니다.
 	// transformPageChunk를 이용해 HTML이 브라우저로 전송되기 직전에 수정합니다.

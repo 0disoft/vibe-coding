@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import { FONT_SIZE_COOKIE } from '$lib/prefs/constants';
 
 export type FontSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
@@ -24,7 +25,7 @@ function createFontSize() {
     const found = document.cookie
       .split(';')
       .map((item) => item.trim())
-      .find((item) => item.startsWith('fontSize='));
+      .find((item) => item.startsWith(`${FONT_SIZE_COOKIE}=`));
     if (!found) return null;
     const num = Number(found.split('=')[1]);
     return isValid(num) ? (num as FontSize) : null;
@@ -33,7 +34,7 @@ function createFontSize() {
   function setDom(value: FontSize) {
     if (!browser) return;
     document.documentElement.setAttribute('data-font-size', String(value));
-    setCookie('fontSize', String(value), 365);
+    setCookie(FONT_SIZE_COOKIE, String(value), 365);
   }
 
   function init() {

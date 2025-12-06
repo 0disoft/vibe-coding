@@ -25,6 +25,8 @@ const semanticColors = [
   'muted-foreground',
   'accent',
   'accent-foreground',
+  'link',
+  'link-foreground',
   'destructive',
   'destructive-foreground',
   'success',

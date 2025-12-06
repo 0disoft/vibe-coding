@@ -4,6 +4,7 @@
 // 3) theme.current를 직접 바꾸지 말고 항상 set, toggle을 거친다.
 
 import { browser } from '$app/environment';
+import { THEME_COOKIE } from '$lib/prefs/constants';
 
 type Theme = 'light' | 'dark';
 
@@ -44,7 +45,8 @@ function createTheme() {
 
     // 1. 서버가 HTML에 심어둔 data-theme 속성 값 확인
     // 이 값이 있으면 SSR 시점에 이미 테마가 적용된 것이므로 깜빡임이 없습니다.
-    const serverAttr = document.documentElement.getAttribute('data-theme') as Theme | null;
+    const attr = document.documentElement.getAttribute('data-theme');
+    const serverAttr = attr === 'light' || attr === 'dark' ? (attr as Theme) : null;
 
     if (serverAttr) {
       // 서버에서 성공적으로 테마를 적용했다면, 그 값을 현재 상태로 동기화만 하고
@@ -54,7 +56,8 @@ function createTheme() {
     }
 
     // 2. 서버가 data-theme을 못 찾은 경우 (쿠키가 없는 첫 방문 등)
-    const storedCookie = getCookie('theme') as Theme | null;
+    const storedRaw = getCookie(THEME_COOKIE);
+    const storedCookie = storedRaw === 'light' || storedRaw === 'dark' ? (storedRaw as Theme) : null;
 
     let initialTheme: Theme;
 
@@ -69,7 +72,7 @@ function createTheme() {
     // 4. 상태 및 DOM에 적용 (서버 처리 실패 시 fallback)
     current = initialTheme;
     document.documentElement.setAttribute('data-theme', current);
-    setCookie('theme', current, 365);
+    setCookie(THEME_COOKIE, current, 365);
   }
 
   function set(value: Theme) {
@@ -77,7 +80,7 @@ function createTheme() {
     if (browser) {
       // 테마 변경 버튼을 눌렀을 때만 DOM과 쿠키를 업데이트합니다.
       document.documentElement.setAttribute('data-theme', value);
-      setCookie('theme', value, 365);
+      setCookie(THEME_COOKIE, value, 365);
     }
   }
 

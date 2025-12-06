@@ -1,254 +1,41 @@
-네, 아주 훌륭한 접근입니다. \*\*루트 폰트 사이즈(Root Font Size)\*\*를 기반으로 스케일링 시스템을 구축하면 가장 효율적입니다.
+5. theme / fontSize 모듈 구조 자체는 아주 좋음
 
-UnoCSS와 요즘 웹 표준은 대부분 `rem` 단위를 사용합니다 (`text-xl`은 `1.25rem`, `p-4`는 `1rem`). `rem`은 루트(`html`) 요소의 폰트 사이즈에 비례하므로, 우리는 **`html` 태그의 폰트 사이즈만 1\~9단계로 조절**하면 웹사이트 전체(제목, 본문, 버튼, 여백까지) 비율이 깨지지 않고 자연스럽게 커지거나 작아지게 만들 수 있습니다.
+theme.svelte.ts, font-size.svelte.ts 구조는 그대로 써도 될 수준이라, 딱 두 가지만 더 챙기면 완성형에 가깝다
 
-요청하신 \*\*"상수화(시맨틱 폰트 정의)"\*\*와 \*\*"1\~9단계 스케일링"\*\*을 완벽하게 구현하는 코드를 제안합니다.
+쿠키 이름과 로직 상수화
 
-### 1\. `src/app.css`: 1\~9단계 스케일 정의
+hooks.server.ts
 
-브라우저 기본 폰트 크기(16px)를 기준으로 퍼센트를 조정하여 단계를 나눕니다.
+event.cookies.get('theme')
 
-  * **5단계(기본):** 100% (16px)
-  * **간격:** 단계당 6.25% (약 1px)씩 증감
+event.cookies.get('fontSize')
 
-<!-- end list -->
+theme.svelte.ts
 
-```css
-/* src/app.css */
+getCookie('theme'), setCookie('theme', …)
 
-/* ... 기존 색상 변수들 ... */
+font-size.svelte.ts
 
-/* 폰트 스케일링 시스템 */
-:root {
-  /* 기본값 (5단계) */
-  font-size: 100%; 
-}
+fontSize 문자열 직접 사용
 
-/* data-font-scale 속성에 따라 루트 폰트 사이즈 변경 */
-/* 1단계: 12px 상당 */
-:root[data-font-scale="1"] { font-size: 75%; }
-/* 2단계: 13px 상당 */
-:root[data-font-scale="2"] { font-size: 81.25%; }
-/* 3단계: 14px 상당 */
-:root[data-font-scale="3"] { font-size: 87.5%; }
-/* 4단계: 15px 상당 */
-:root[data-font-scale="4"] { font-size: 93.75%; }
-/* 5단계: 16px 상당 (기본) */
-:root[data-font-scale="5"] { font-size: 100%; }
-/* 6단계: 17px 상당 */
-:root[data-font-scale="6"] { font-size: 106.25%; }
-/* 7단계: 18px 상당 */
-:root[data-font-scale="7"] { font-size: 112.5%; }
-/* 8단계: 19px 상당 */
-:root[data-font-scale="8"] { font-size: 118.75%; }
-/* 9단계: 20px 상당 */
-:root[data-font-scale="9"] { font-size: 125%; }
+지금은 곳곳에 "theme", "fontSize"가 흩어져 있어서
+나중에 이름을 바꾸고 싶을 때 실수할 여지가 크다
 
-/* ... 나머지 스타일 ... */
-```
+src/lib/prefs/constants.ts 같은 데에
 
-### 2\. `uno.config.ts`: 시맨틱 폰트 상수화
+export const THEME_COOKIE = 'theme';
+export const FONT_SIZE_COOKIE = 'fontSize';
 
-단순히 `text-lg`, `text-sm`을 쓰는 대신, 의미 있는 이름(제목, 본문, 댓글 등)으로 폰트 스타일을 **상수화**하여 등록합니다. 이렇게 하면 나중에 "본문 폰트를 좀 더 키울까?" 할 때 여기서만 수정하면 됩니다.
 
-```typescript
-// uno.config.ts 수정
+이 정도만 만들어두고 세 파일 모두 그걸 import해서 쓰면, 템플릿을 여러 프로젝트에 붙여도 유지보수가 훨씬 쉬워진다
 
-// 폰트 시맨틱 정의
-// [폰트크기, { 추가옵션 }]
-// rem 단위를 사용해야 위에서 설정한 스케일링이 적용됩니다.
-const semanticFontSizes = {
-  // 거대한 헤드라인 (영웅 섹션 등)
-  'h-display': ['2.25rem', { lineHeight: '1.2', fontWeight: '800', letterSpacing: '-0.02em' }],
-  // 주요 페이지 제목
-  'h-title': ['1.5rem', { lineHeight: '1.3', fontWeight: '700', letterSpacing: '-0.01em' }],
-  // 섹션 소제목
-  'h-section': ['1.25rem', { lineHeight: '1.4', fontWeight: '600' }],
-  // 일반 본문
-  'body': ['1rem', { lineHeight: '1.6', fontWeight: '400' }],
-  // 강조된 본문 (리드문 등)
-  'body-lg': ['1.125rem', { lineHeight: '1.6', fontWeight: '500' }],
-  // 작은 본문 (댓글, 카드 내용)
-  'body-sm': ['0.875rem', { lineHeight: '1.5', fontWeight: '400' }],
-  // 아주 작은 텍스트 (캡션, 라벨)
-  'caption': ['0.75rem', { lineHeight: '1.4', fontWeight: '500', letterSpacing: '0.02em' }],
-};
+init 시 “서버가 이미 해둔 일은 건드리지 않는” 전략
 
-export default defineConfig({
-  // ... 기존 프리셋들 ...
-  theme: {
-    colors: generateThemeColors(), // 지난번 코드
-    fontSize: semanticFontSizes,   // 여기에 폰트 정의 추가!
-  },
-  // ...
-});
+이건 이미 잘 하고 있는데, 이 철학이 아주 좋다
 
-/**
- * [사용법]
- * class="text-h-title" -> 제목 스타일 적용
- * class="text-body" -> 본문 스타일 적용
- * class="text-caption" -> 캡션 스타일 적용
- */
-```
+서버에서 data-theme를 세팅했다면 클라이언트는 current에만 동기화하고 DOM은 건드리지 않는다
 
-### 3\. `src/lib/font.svelte.ts`: 상태 관리 로직
+data-font-size도 있으면 그대로 신뢰하고 쿠키만 나중에 필요할 때 쓴다
 
-테마 설정과 거의 동일한 구조로, 쿠키를 이용해 상태를 저장하고 불러옵니다.
-
-```typescript
-// src/lib/font.svelte.ts
-import { browser } from '$app/environment';
-
-// 1~9 사이의 타입 정의
-type FontScale = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-
-function createFontManager() {
-  let current = $state<FontScale>(5); // 기본값 5
-
-  function setCookie(value: number) {
-    if (!browser) return;
-    const expires = new Date();
-    expires.setFullYear(expires.getFullYear() + 1); // 1년 유지
-    // 쿠키 이름: font-scale
-    document.cookie = `font-scale=${value}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
-  }
-
-  function init() {
-    if (!browser) return;
-
-    // 1. 서버 SSR 값 확인 (깜빡임 방지)
-    const serverAttr = document.documentElement.getAttribute('data-font-scale');
-    if (serverAttr) {
-      const parsed = parseInt(serverAttr, 10);
-      if (!isNaN(parsed) && parsed >= 1 && parsed <= 9) {
-        current = parsed as FontScale;
-        return; // 이미 적용되어 있으므로 종료
-      }
-    }
-
-    // 2. 쿠키 확인 (서버 처리가 안된 경우)
-    const match = document.cookie.match(/font-scale=(\d+)/);
-    if (match && match[1]) {
-      const parsed = parseInt(match[1], 10);
-      if (parsed >= 1 && parsed <= 9) {
-        current = parsed as FontScale;
-        document.documentElement.setAttribute('data-font-scale', current.toString());
-        return;
-      }
-    }
-
-    // 3. 아무것도 없으면 기본값 5 적용
-    current = 5;
-    document.documentElement.setAttribute('data-font-scale', '5');
-  }
-
-  function set(value: number) {
-    // 1~9 범위 제한
-    const safeValue = Math.min(Math.max(Math.floor(value), 1), 9) as FontScale;
-    current = safeValue;
-    
-    if (browser) {
-      document.documentElement.setAttribute('data-font-scale', safeValue.toString());
-      setCookie(safeValue);
-    }
-  }
-
-  return {
-    get current() { return current; },
-    init,
-    set
-  };
-}
-
-export const font = createFontManager();
-```
-
-### 4\. `src/hooks.server.ts`: 서버 사이드 처리 추가
-
-테마 핸들러(`handleTheme`)와 구조가 같으므로, 이를 합치거나 별도 핸들러로 만들어 연결합니다. 여기서는 깔끔하게 분리하여 연결하는 방식을 보여드립니다.
-
-```typescript
-// src/hooks.server.ts
-
-// ... imports ...
-
-// [기존] 테마 핸들러
-const handleTheme: Handle = async ({ event, resolve }) => {
-    const theme = event.cookies.get('theme');
-    return resolve(event, {
-        transformPageChunk: ({ html }) => {
-            if (theme) return html.replace('data-theme=""', `data-theme="${theme}"`);
-            return html;
-        }
-    });
-};
-
-// [신규] 폰트 스케일 핸들러
-const handleFontScale: Handle = async ({ event, resolve }) => {
-    const scale = event.cookies.get('font-scale');
-    
-    return resolve(event, {
-        transformPageChunk: ({ html }) => {
-            // app.html에 data-font-scale="" 속성을 미리 만들어둬야 합니다.
-            if (scale) {
-                return html.replace('data-font-scale=""', `data-font-scale="${scale}"`);
-            }
-            // 쿠키가 없으면 기본값 5로 설정 (선택사항, JS가 어차피 처리하지만 SSR을 위해 추천)
-            return html.replace('data-font-scale=""', 'data-font-scale="5"');
-        }
-    });
-};
-
-// ... handleParaglide ...
-
-// sequence에 추가
-export const handle: Handle = sequence(handleTheme, handleFontScale, handleParaglide);
-```
-
-### 5\. `src/app.html` 수정
-
-`data-font-scale` 속성을 추가해 둡니다.
-
-```html
-<!doctype html>
-<html lang="%paraglide.lang%" data-theme="" data-font-scale="">
-```
-
-### 사용 예시 (UI 슬라이더 컴포넌트)
-
-이제 어디서든 아래처럼 사용하면 됩니다.
-
-```svelte
-<script lang="ts">
-  import { font } from '$lib/font.svelte';
-</script>
-
-<div class="p-4 border rounded-lg bg-card text-card-foreground">
-  <div class="mb-4">
-    <h3 class="text-h-section mb-2">화면 설정</h3>
-    <p class="text-body-sm text-muted-foreground">글자 크기를 조절해보세요.</p>
-  </div>
-  
-  <div class="flex items-center gap-4">
-    <span class="text-sm">가</span>
-    <input 
-      type="range" 
-      min="1" 
-      max="9" 
-      value={font.current} 
-      oninput={(e) => font.set(e.currentTarget.valueAsNumber)}
-      class="w-full accent-primary"
-    />
-    <span class="text-xl">가</span>
-  </div>
-  
-  <div class="mt-4 p-4 bg-muted rounded">
-    <p class="text-body">
-      현재 폰트 크기는 <span class="font-bold text-primary">{font.current}단계</span>입니다.<br/>
-      제목, 본문, 댓글 등 모든 텍스트가 비율에 맞춰 조절됩니다.
-    </p>
-  </div>
-</div>
-```
-
-이렇게 하면 **에너지 낭비 없이** 초기 설정만으로 모든 프로젝트에 강력한 폰트 제어 시스템을 탑재할 수 있습니다. `rem` 단위를 사용하는 모든 간격(margin, padding)도 미세하게 같이 조절되기 때문에 레이아웃 균형이 유지된다는 장점이 있습니다.
+이 흐름을 그대로 문서화해두면
+“왜 init에서 굳이 DOM을 안 건드리지?” 같은 의문을 미래의 내가 안 품게 된다
