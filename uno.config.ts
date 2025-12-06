@@ -132,6 +132,14 @@ for (const color of semanticColors) {
   ]);
 }
 
+/**
+ * 타이포그래피 유틸리티 룰 (UI용)
+ * 
+ * 사용 철학:
+ * - 일반 UI 컴포넌트(버튼, 카드, 네비게이션 등)는 이 유틸리티 사용 (text-body, text-h1 등)
+ * - 긴 글(블로그, 문서)은 presetTypography의 prose 클래스 사용
+ * - prose 영역에서 OKLCH 토큰 색상이 필요하면 app.css에서 .prose 오버라이드 추가
+ */
 const typographyRules: Rule<object>[] = [
   [
     'text-body',
@@ -195,7 +203,9 @@ export default defineConfig({
   presets: [
     presetWind4({
       reset: true,
-      // dark 옵션은 사용하지 않음: data-theme + OKLCH 변수 기반 커스텀 다크 모드만 사용
+      // ⚠️ 이 템플릿에서는 UnoCSS의 dark: 유틸리티를 사용하지 않음.
+      // 다크 모드는 data-theme 속성과 OKLCH 시맨틱 토큰(bg-background, text-foreground 등)으로만 처리.
+      // 따라서 dark:bg-black 같은 클래스는 쓰지 말 것.
     }),
     presetAttributify(),
     presetIcons({
@@ -206,6 +216,7 @@ export default defineConfig({
       scale: 1.2,
       cdn: 'https://esm.sh/',
     }),
+    // prose 클래스 제공 (블로그, 문서 등 긴 글용). UI에는 typographyRules 유틸 사용.
     presetTypography(),
   ],
   theme: {

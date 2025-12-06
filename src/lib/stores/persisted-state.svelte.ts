@@ -19,7 +19,7 @@ export function createPersistedState<T extends string | number>(
   let current = $state<T>(initial);
 
   const isValid = (val: unknown): val is T =>
-    allowedValues ? (allowedValues as readonly unknown[]).includes(val) : true;
+    val != null && (allowedValues ? (allowedValues as readonly unknown[]).includes(val) : true);
 
   const attrKey = `data-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
 
