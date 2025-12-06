@@ -130,3 +130,13 @@ npm 웹이 403을 뿜어서 정확한 “요일까지 찍힌 날짜”는 대부
 [3]: https://www.answeroverflow.com/m/1399746215033176145?utm_source=chatgpt.com "UnhandledPromiseRejection on login redirect with SvelteKit"
 [4]: https://raw.githubusercontent.com/opral/monorepo/refs/heads/main/inlang/packages/paraglide/paraglide-js/docs-api/runtime/type/-internal-.md?utm_source=chatgpt.com "https://raw.githubusercontent.com/opral/monorepo/r..."
 [5]: https://www.npmjs.com/package/%40inlang%2Fparaglide-js?utm_source=chatgpt.com "inlang/paraglide-js"
+
+---
+
+## 2.6.0 이후 변경점
+
+@inlang/paraglide-js 2.5.0 → 2.6.0에서 핵심은 둘이다.
+
+메시지 함수 반환 타입이 string에서 LocalizedString이라는 브랜드 타입으로 바뀜
+컴파일된 메시지에서 입력 객체를 i.name이 아니라 i?.name처럼 optional chaining으로 다룸
+둘 다 마이그레이션 부담은 거의 없고, 타입과 런타임에서 보호막이 하나씩 더 생겼다고 보면 된다.
