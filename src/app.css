@@ -1,5 +1,16 @@
+/* Pretendard + JetBrains Mono (로컬 호스팅) */
+@import 'pretendard/dist/web/variable/pretendardvariable.css';
+@import '@fontsource-variable/jetbrains-mono';
+
 :root {
   color-scheme: light dark;
+
+  /* Font stacks */
+  /* 기본(비한국어) 환경은 시스템 폰트 우선 */
+  --font-sans: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, "Helvetica Neue",
+    sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 
   /* Font scale (1~9). 0.05 간격: 1=1.05 … 5=1.25(기본) … 9=1.45 */
   --fs-scale: 1;
@@ -80,6 +91,13 @@
   --sidebar: 97% 0.012 106;
   --sidebar-foreground: 32% 0.025 331;
   --overlay: 24% 0.015 274;
+}
+
+/* 한국어(lang=ko) 문맥에서만 Pretendard를 적용 */
+:lang(ko) {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    "Segoe UI", Roboto, "Helvetica Neue", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
 
 :root[data-font-size='1'] {
@@ -178,13 +196,7 @@ body {
   color: oklch(var(--foreground));
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Apple SD Gothic Neo",
-    "Noto Sans",
-    sans-serif;
+  font-family: var(--font-sans);
   /* 폰트 렌더링 최적화 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -219,6 +231,7 @@ code,
 pre {
   font-size: var(--fs-code);
   line-height: 1.5;
+  font-family: var(--font-mono);
 }
 
 pre {

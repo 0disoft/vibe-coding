@@ -1,5 +1,4 @@
 import presetTypography from '@unocss/preset-typography';
-import presetWebFonts from '@unocss/preset-web-fonts';
 import presetWind4 from '@unocss/preset-wind4';
 import {
   defineConfig,
@@ -207,16 +206,14 @@ export default defineConfig({
       scale: 1.2,
       cdn: 'https://esm.sh/',
     }),
-    presetWebFonts({
-      provider: 'google',
-      themeKey: 'font',
-      fonts: {
-        sans: 'Inter:400,500,600,700',
-        mono: 'JetBrains Mono:400,600',
-      },
-    }),
     presetTypography(),
   ],
+  theme: {
+    fontFamily: {
+      sans: 'var(--font-sans)',
+      mono: 'var(--font-mono)',
+    },
+  },
   // 커스텀 룰로 시맨틱 색상 유틸리티 직접 정의
   rules: [...colorRules, ...typographyRules],
   // 동적 클래스 사용 대비(예: CMS에서 bg-primary 문자열 주입)
