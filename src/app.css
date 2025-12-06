@@ -1,96 +1,104 @@
 :root {
   color-scheme: light dark;
 
-  /* 베이스 */
-  --background: 96% 0.01 260;
-  --foreground: 22% 0.03 260;
+  /* gleam.run inspired light palette */
+  --background: 98.9% 0.008 102;
+  --foreground: 41% 0.04 331;
 
   /* 카드, 팝오버, 포커스 영역 등 */
-  --card: 95% 0.01 260;
-  --card-foreground: 22% 0.03 260;
+  --card: 98.6% 0.0252 97;
+  --card-foreground: 41% 0.04 331;
 
-  --popover: 96% 0.01 260;
-  --popover-foreground: 22% 0.03 260;
+  --popover: 98.6% 0.0252 97;
+  --popover-foreground: 41% 0.04 331;
 
   /* 주요 액션 */
-  --primary: 70% 0.18 300;
-  --primary-foreground: 16% 0.02 300;
+  --primary: 85.14% 0.1265 332;
+  --primary-foreground: 19% 0.015 332;
 
   /* 보조 액션 / 서브 버튼 */
-  --secondary: 88% 0.08 220;
-  --secondary-foreground: 18% 0.02 220;
+  --secondary: 91.07% 0.0746 209;
+  --secondary-foreground: 20% 0.02 209;
 
   /* 강조 요소 (배지, 토글 등) */
-  --accent: 86% 0.09 240;
-  --accent-foreground: 20% 0.02 240;
+  --accent: 98.6% 0.0252 97;
+  --accent-foreground: 24% 0.02 97;
 
   /* 약한 텍스트, 서브 카드 배경 등 */
-  --muted: 90% 0.015 260;
-  --muted-foreground: 50% 0.015 260;
+  --muted: 93% 0.01 106;
+  --muted-foreground: 45% 0.02 106;
 
-  /* 파괴적 액션 (삭제 등) */
-  --destructive: 68% 0.12 25;
-  --destructive-foreground: 14% 0.02 260;
+  /* 파괴적 액션 (삭제 등) - 파스텔 톤 */
+  --destructive: 72% 0.10 25;
+  --destructive-foreground: 18% 0.02 260;
 
-  /* 성공 / 경고 상태 */
-  --success: 74% 0.12 150;
-  --success-foreground: 16% 0.02 150;
+  /* 성공 / 경고 상태 - 파스텔 톤 */
+  --success: 78% 0.09 150;
+  --success-foreground: 18% 0.02 150;
 
-  --warning: 80% 0.14 95;
-  --warning-foreground: 18% 0.03 95;
+  --warning: 86% 0.07 95;
+  --warning-foreground: 20% 0.03 95;
 
   /* 경계 / 입력 / 포커스 링 */
-  --border: 88% 0.01 260;
-  --input: 90% 0.01 260;
-  --ring: 70% 0.20 300;
+  --border: 92% 0.008 106;
+  --input: 93% 0.008 106;
+  --ring: 85.14% 0.1265 332;
 
   /* 네비게이션/오버레이 */
-  --sidebar: 93% 0.015 260;
-  --sidebar-foreground: 24% 0.02 260;
-  --overlay: 16% 0.02 260;
+  --sidebar: 97% 0.012 106;
+  --sidebar-foreground: 32% 0.025 331;
+  --overlay: 24% 0.015 274;
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --background: 18% 0.015 260;
-  --foreground: 94% 0.01 260;
+  /* gleam.run inspired dark palette */
+  --background: 30.09% 0.0314 274;
+  --foreground: 94% 0.01 106;
 
-  --card: 20% 0.015 260;
-  --card-foreground: 94% 0.01 260;
+  --card: 33% 0.0314 274;
+  --card-foreground: 94% 0.01 106;
 
-  --popover: 22% 0.015 260;
-  --popover-foreground: 94% 0.01 260;
+  --popover: 35% 0.0314 274;
+  --popover-foreground: 94% 0.01 106;
 
-  --primary: 64% 0.20 300;
-  --primary-foreground: 12% 0.02 300;
+  /* 주요 액션 */
+  --primary: 82% 0.1265 332;
+  --primary-foreground: 14% 0.02 332;
 
-  --secondary: 34% 0.08 220;
-  --secondary-foreground: 92% 0.01 220;
+  /* 보조 액션 / 서브 버튼 */
+  --secondary: 45% 0.0746 209;
+  --secondary-foreground: 96% 0.01 209;
 
-  --accent: 38% 0.10 240;
-  --accent-foreground: 92% 0.01 240;
+  /* 강조 요소 (배지, 토글 등) */
+  --accent: 50% 0.0252 97;
+  --accent-foreground: 96% 0.01 97;
 
-  --muted: 28% 0.015 260;
-  --muted-foreground: 78% 0.015 260;
+  /* 약한 텍스트, 서브 카드 배경 등 */
+  --muted: 38% 0.015 274;
+  --muted-foreground: 82% 0.015 106;
 
-  --destructive: 58% 0.12 25;
-  --destructive-foreground: 94% 0.01 260;
+  /* 파괴적 액션 (삭제 등) */
+  --destructive: 48% 0.10 25;
+  --destructive-foreground: 96% 0.01 260;
 
-  --success: 56% 0.12 150;
-  --success-foreground: 93% 0.01 150;
+  /* 성공 / 경고 상태 */
+  --success: 38% 0.09 150;
+  --success-foreground: 96% 0.01 150;
 
-  --warning: 60% 0.14 95;
-  --warning-foreground: 92% 0.02 95;
+  --warning: 46% 0.07 95;
+  --warning-foreground: 96% 0.02 95;
 
-  --border: 30% 0.015 260;
-  --input: 32% 0.015 260;
-  --ring: 66% 0.20 300;
+  /* 경계 / 입력 / 포커스 링 */
+  --border: 36% 0.012 274;
+  --input: 38% 0.012 274;
+  --ring: 82% 0.1265 332;
 
   /* 네비게이션/오버레이 */
-  --sidebar: 24% 0.015 260;
-  --sidebar-foreground: 92% 0.01 260;
-  --overlay: 6% 0.01 260;
+  --sidebar: 26% 0.015 274;
+  --sidebar-foreground: 90% 0.01 106;
+  --overlay: 10% 0.01 274;
 }
 
 body {

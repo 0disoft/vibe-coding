@@ -1,34 +1,46 @@
-theme.svelte.ts
+UnoCSS 컬러 룰: 타입과 작은 유틸
 
-전체적인 방향
+지금 colorRules는 이렇게 되어 있지.
 
-쿠키를 직접 읽고 쓰면서
-
-data-theme를 html 루트에 세팅하는 구조라서
-
-템플릿 입장에서는 “어디서나 가져다 쓰기 쉬운 전역 테마 매니저” 느낌이라 좋음.
-
-좋은 점
-
-서버에서 이미 data-theme을 심어줬으면 그 값을 그대로 신뢰하고 DOM을 다시 건드리지 않음
-이게 깜빡임 줄이는 핵심 포인트.
-
-쿠키 없으면 시스템 다크 모드 선호도를 보고 초기값을 정함.
-
-생각해볼 수 있는 개선 포인트
-
-SameSite와 Secure 옵션
-
-현재는 SameSite=Lax만 들어가 있고, Secure는 빠져 있음.
-
-템플릿 차원에서 “https 쓸 게 확실한 프로젝트들이다”라는 전제가 있다면
-
-document.cookie =
-  name +
-  "=" +
-  (value || "") +
-  expires +
-  "; path=/; SameSite=Lax; Secure";
+const colorRules: [RegExp, (match: RegExpMatchArray) => Record<string, string>][] = [];
 
 
-이런 식으로 올려두는 것도 고려해볼 만함.
+이것도 동작은 하는데, 나중에 룰이 늘어날 걸 생각하면 UnoCSS 쪽 타입을 끌고 오는 편이 유지보수에 좋아.
+
+예를 들어:
+
+import type { Rule } from 'unocss';
+
+const colorRules: Rule<{}>[] = [];
+
+const toAlpha = (opacity?: string) => {
+  if (!opacity) return '';
+  const n = Number(opacity);
+  const clamped = Math.min(100, Math.max(0, n));
+  return String(clamped / 100);
+};
+
+for (const color of semanticColors) {
+  colorRules.push([
+    new RegExp(`^bg-${color}(?:\\/(\\d+))?$`),
+    ([, opacity]) => {
+      const alpha = toAlpha(opacity);
+      return {
+        'background-color': alpha
+          ? `oklch(var(--${color}) / ${alpha})`
+          : `oklch(var(--${color}))`
+      };
+    }
+  ]);
+
+  // text, border, ring, outline도 같은 방식
+}
+
+
+장점은:
+
+나중에 UnoCSS 버전이 바뀌어도 타입 추론이 조금 더 잘 붙고
+
+toAlpha 하나만 손보면 모든 유틸이 같이 정리됨
+
+완전 필수는 아닌데 “템플릿에서 복붙을 많이 할 코드”라면 이런 작은 유틸로 중복을 줄여두는 게 좋더라.

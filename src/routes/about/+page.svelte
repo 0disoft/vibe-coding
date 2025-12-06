@@ -24,6 +24,33 @@
 			</div>
 		</div>
 
+		<div class="rounded-xl border border-border bg-card p-6 shadow-sm">
+			<h2 class="text-lg font-semibold">링크 색상 프리뷰</h2>
+			<p class="mt-3 text-sm text-muted-foreground">
+				텍스트 본문 안에서 링크가 어떻게 보이는지 확인해보세요.
+			</p>
+			<ul class="mt-4 space-y-2 text-sm">
+				<li>
+					<a
+						href="https://gleam.run"
+						target="_blank"
+						rel="noreferrer"
+						class="font-semibold text-foreground underline decoration-primary/70 underline-offset-4 transition hover:text-foreground hover:decoration-primary"
+					>
+						gleam.run 공식 사이트 열기
+					</a>
+				</li>
+				<li>
+					<a
+						href="/"
+						class="font-semibold text-accent-foreground underline decoration-accent/60 underline-offset-4 transition hover:text-accent-foreground/90 hover:decoration-accent-foreground/80"
+					>
+						홈으로 돌아가기 링크
+					</a>
+				</li>
+			</ul>
+		</div>
+
 		<div class="flex gap-4">
 			<a
 				href="/"
