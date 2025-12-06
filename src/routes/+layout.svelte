@@ -6,12 +6,14 @@
 	import '../app.css';
 	// 전역 테마 스토어
 	import { theme } from '$lib/theme.svelte';
+	import { fontSize } from '$lib/font-size.svelte';
 
 	let { children } = $props();
 
 	// 컴포넌트 마운트 시 클라이언트에서 테마 상태를 초기화하고 서버 상태와 동기화합니다.
 	onMount(() => {
 		theme.init();
+		fontSize.init();
 	});
 </script>
 

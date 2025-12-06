@@ -6,6 +6,7 @@ import {
   presetAttributify,
   presetIcons,
   transformerVariantGroup,
+  type Rule,
 } from 'unocss';
 
 // 시맨틱 색상 이름들
@@ -40,15 +41,23 @@ const semanticColors = [
 
 // 커스텀 룰 생성: bg-primary, text-primary 등
 // preset-wind4의 기본 색상 시스템을 우회하여 직접 OKLCH CSS 변수 사용
-const colorRules: [RegExp, (match: RegExpMatchArray) => Record<string, string>][] = [];
+const colorRules: Rule<object>[] = [];
+
+const toAlpha = (opacity?: string) => {
+  if (!opacity) return '';
+  const n = Number(opacity);
+  if (Number.isNaN(n)) return '';
+  const clamped = Math.min(100, Math.max(0, n));
+  return String(clamped / 100);
+};
 
 for (const color of semanticColors) {
   // bg-{color}, bg-{color}/50 형태 지원
   colorRules.push([
     new RegExp(`^bg-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      'background-color': opacity
-        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+      'background-color': toAlpha(opacity)
+        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
         : `oklch(var(--${color}))`,
     }),
   ]);
@@ -57,8 +66,8 @@ for (const color of semanticColors) {
   colorRules.push([
     new RegExp(`^text-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      color: opacity
-        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+      color: toAlpha(opacity)
+        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
         : `oklch(var(--${color}))`,
     }),
   ]);
@@ -67,8 +76,8 @@ for (const color of semanticColors) {
   colorRules.push([
     new RegExp(`^border-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      'border-color': opacity
-        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+      'border-color': toAlpha(opacity)
+        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
         : `oklch(var(--${color}))`,
     }),
   ]);
@@ -77,8 +86,8 @@ for (const color of semanticColors) {
   colorRules.push([
     new RegExp(`^ring-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      '--un-ring-color': opacity
-        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+      '--un-ring-color': toAlpha(opacity)
+        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
         : `oklch(var(--${color}))`,
     }),
   ]);
@@ -87,12 +96,71 @@ for (const color of semanticColors) {
   colorRules.push([
     new RegExp(`^outline-${color}(?:\\/(\\d+))?$`),
     ([, opacity]) => ({
-      'outline-color': opacity
-        ? `oklch(var(--${color}) / ${Number(opacity) / 100})`
+      'outline-color': toAlpha(opacity)
+        ? `oklch(var(--${color}) / ${toAlpha(opacity)})`
         : `oklch(var(--${color}))`,
     }),
   ]);
 }
+
+const typographyRules: Rule<object>[] = [
+  [
+    'text-body',
+    {
+      'font-size': 'var(--fs-body)',
+      'line-height': 'var(--lh-body)',
+    },
+  ],
+  [
+    'text-body-secondary',
+    {
+      'font-size': 'var(--fs-body-secondary)',
+      'line-height': 'var(--lh-body)',
+    },
+  ],
+  [
+    'text-comment',
+    {
+      'font-size': 'var(--fs-comment)',
+      'line-height': 'var(--lh-body)',
+    },
+  ],
+  [
+    'text-code',
+    {
+      'font-size': 'var(--fs-code)',
+      'line-height': '1.5',
+    },
+  ],
+  [
+    'text-h1',
+    {
+      'font-size': 'var(--fs-h1)',
+      'line-height': 'var(--lh-heading)',
+    },
+  ],
+  [
+    'text-h2',
+    {
+      'font-size': 'var(--fs-h2)',
+      'line-height': 'var(--lh-heading)',
+    },
+  ],
+  [
+    'text-h3',
+    {
+      'font-size': 'var(--fs-h3)',
+      'line-height': 'var(--lh-heading)',
+    },
+  ],
+  [
+    'text-caption',
+    {
+      'font-size': 'var(--fs-caption)',
+      'line-height': '1.4',
+    },
+  ],
+];
 
 export default defineConfig({
   presets: [
@@ -119,6 +187,6 @@ export default defineConfig({
     presetTypography(),
   ],
   // 커스텀 룰로 시맨틱 색상 유틸리티 직접 정의
-  rules: colorRules,
+  rules: [...colorRules, ...typographyRules],
   transformers: [transformerVariantGroup()],
 });

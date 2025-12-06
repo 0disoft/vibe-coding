@@ -1,3 +1,8 @@
+// 사용법
+// 1) 루트 레이아웃의 클라이언트 진입 지점에서 단 한 번 theme.init()을 호출한다.
+// 2) 테마 토글 버튼에서는 theme.toggle() 또는 theme.set('light' | 'dark')만 사용한다.
+// 3) theme.current를 직접 바꾸지 말고 항상 set, toggle을 거친다.
+
 import { browser } from '$app/environment';
 
 type Theme = 'light' | 'dark';

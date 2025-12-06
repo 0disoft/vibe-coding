@@ -23,3 +23,5 @@
 ### lib/
 
 - `theme.svelte.ts`: 라이트/다크 테마 상태를 관리하고, SSR의 `data-theme` 값과 쿠키·시스템 설정을 동기화해 FOUC 없이 테마를 초기화합니다.
+- `font-size.svelte.ts`: 글자 크기 1~9 단계를 쿠키와 `data-font-size` 속성으로 동기화해 전역 폰트 스케일을 관리합니다.
+- `components/FontSizeSlider.svelte`: 폰트 크기 1~9 단계를 슬라이더로 제어하며 `font-size` 스토어를 업데이트합니다.

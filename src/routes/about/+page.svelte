@@ -51,6 +51,17 @@
 			</ul>
 		</div>
 
+		<div class="rounded-xl border border-border bg-card p-6 shadow-sm">
+			<h2 class="text-lg font-semibold">코드 폰트 스케일 프리뷰</h2>
+			<p class="mt-3 text-sm text-muted-foreground">
+				폰트 슬라이더(상단)로 크기를 조절하면 코드도 함께 스케일되는지 확인하세요.
+			</p>
+			<div class="mt-4 space-y-3 rounded-lg bg-muted/40 p-4">
+				<p class="text-sm text-muted-foreground">인라인 코드: <code>const answer = 42;</code></p>
+				<pre><code class="language-js">{"function greet(name) {\n  return `Hello, ${name}!`;\n}"}</code></pre>
+			</div>
+		</div>
+
 		<div class="flex gap-4">
 			<a
 				href="/"

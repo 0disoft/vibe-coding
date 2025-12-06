@@ -1,6 +1,7 @@
 <script lang="ts">
 	// 전역 테마 스토어 사용
 	import { theme } from '$lib/theme.svelte';
+	import FontSizeSlider from '$lib/components/FontSizeSlider.svelte';
 
 	// Svelte 5에서는 전역 theme 스토어를 직접 참조하여 반응성을 얻습니다.
 </script>
@@ -20,6 +21,8 @@
 				<span class="text-xs uppercase tracking-wide text-muted-foreground">
 					현재 테마: {theme.current}
 				</span>
+
+				<FontSizeSlider />
 
 				<!-- About 페이지로 이동하는 버튼 (클라이언트 라우팅 테스트) -->
 				<a
@@ -95,12 +98,12 @@
 
 				<div class="rounded-xl border border-border bg-card/70 p-4">
 					<div class="text-xs font-medium text-muted-foreground">Secondary</div>
-					<button
-						type="button"
-						class="mt-3 inline-flex w-full items-center justify-center rounded-lg border border-border bg-secondary px-4 py-3 text-sm font-medium text-secondary-foreground transition hover:bg-accent hover:text-accent-foreground"
-					>
-						Secondary Button
-					</button>
+				<button
+					type="button"
+					class="mt-3 inline-flex w-full items-center justify-center rounded-lg border border-border bg-secondary px-4 py-3 text-sm font-medium text-secondary-foreground transition hover:bg-secondary/90 hover:text-secondary-foreground"
+				>
+					Secondary Button
+				</button>
 					<p class="mt-2 text-xs text-muted-foreground">
 						보조 액션, Cancel 버튼 등 상대적으로 덜 중요한 액션에 사용.
 					</p>
