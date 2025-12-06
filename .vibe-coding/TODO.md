@@ -57,8 +57,8 @@ SPEC 내용이 확정된 후 진행합니다.
        - Presets
          - presetWind4  
            - 패키지: `@unocss/preset-wind4`  
-           - 옵션: `preflights.reset = true`, `preflights.theme.mode = 'on-demand'`  
-           - 역할: reset과 Tailwind v4 스타일 유틸리티 제공  
+           - 옵션: `preflights.reset = true`
+           - 역할: CSS 초기화  
          - presetAttributify  
            - 패키지: `unocss`  
            - 역할: `text="sm primary"` 형식의 속성 기반 문법 활성화  
@@ -69,8 +69,8 @@ SPEC 내용이 확정된 후 진행합니다.
            - 패키지: `@unocss/preset-web-fonts`  
            - 옵션 예시:
              - provider: `google`  
-             - fonts.sans: `Inter`와 시스템 폰트 스택을 함께 등록  
-             - fonts.mono: `JetBrains Mono`와 기본 모노스페이스 스택 등록
+             - fonts.sans: 필요한 폰트 스택 등록  
+             - fonts.mono: 필요한 폰트 스택 등록
        - Transformers
          - transformerVariantGroup 사용
        - Icons 설정
