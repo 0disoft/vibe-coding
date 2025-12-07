@@ -1,5 +1,4 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
 	// 전역 CSS 및 UnoCSS 유틸리티
 	import { onMount } from 'svelte';
 	// app.css 보다 먼저 불러와야 함
@@ -12,6 +11,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import { siteConfig } from '$lib/config';
+	import { page } from '$app/state';
 
 	let { children } = $props();
 
@@ -20,10 +20,12 @@
 		theme.init();
 		fontSize.init();
 	});
+
+	let isOfflinePage = $derived(page.url.pathname === '/offline' || page.url.pathname.endsWith('/offline'));
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="/favicon.svg" />
 	<title>{siteConfig.name}</title>
 	<meta name="description" content={siteConfig.description} />
 </svelte:head>
@@ -33,9 +35,13 @@
 	data-theme 속성은 hooks.server.ts에서 SSR 시점에 이미 적용됩니다.
 -->
 <div class="flex min-h-screen flex-col bg-background font-sans antialiased text-foreground">
-	<Header siteName={siteConfig.name} />
-	<main class="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10">
+	{#if !isOfflinePage}
+		<Header siteName={siteConfig.name} />
+		<main class="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10">
+			{@render children()}
+		</main>
+		<Footer siteName={siteConfig.name} />
+	{:else}
 		{@render children()}
-	</main>
-	<Footer siteName={siteConfig.name} />
+	{/if}
 </div>
