@@ -9,5 +9,9 @@
 	"offline_retry": "Spróbuj ponownie",
 	"error_not_found": "Nie znaleziono strony. Strona, której szukasz, nie istnieje.",
 	"error_unexpected": "Wystąpił nieoczekiwany błąd.",
-	"error_go_home": "Strona główna"
+	"error_go_home": "Strona główna",
+	"footer_terms": "Warunki korzystania",
+	"footer_privacy": "Polityka prywatności",
+	"footer_rights": "Wszelkie prawa zastrzeżone.",
+	"home_get_started": "Rozpocznij"
 }

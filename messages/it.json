@@ -9,5 +9,9 @@
 	"offline_retry": "Riprova",
 	"error_not_found": "Pagina non trovata. La pagina che stai cercando non esiste.",
 	"error_unexpected": "Si è verificato un errore imprevisto.",
-	"error_go_home": "Torna alla home"
+	"error_go_home": "Torna alla home",
+	"footer_terms": "Termini di servizio",
+	"footer_privacy": "Informativa sulla privacy",
+	"footer_rights": "Tutti i diritti riservati.",
+	"home_get_started": "Inizia"
 }

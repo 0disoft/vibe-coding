@@ -9,5 +9,9 @@
 	"offline_retry": "إعادة المحاولة",
 	"error_not_found": "الصفحة غير موجودة. الصفحة التي تبحث عنها غير موجودة.",
 	"error_unexpected": "حدث خطأ غير متوقع.",
-	"error_go_home": "الرئيسية"
+	"error_go_home": "الرئيسية",
+	"footer_terms": "شروط الخدمة",
+	"footer_privacy": "سياسة الخصوصية",
+	"footer_rights": "جميع الحقوق محفوظة.",
+	"home_get_started": "ابدأ الآن"
 }

@@ -9,5 +9,9 @@
 	"offline_retry": "Retry",
 	"error_not_found": "Page not found. The requested page does not exist.",
 	"error_unexpected": "An unexpected error occurred.",
-	"error_go_home": "Go Home"
+	"error_go_home": "Go Home",
+	"footer_terms": "Terms of Service",
+	"footer_privacy": "Privacy Policy",
+	"footer_rights": "All rights reserved.",
+	"home_get_started": "Get Started"
 }

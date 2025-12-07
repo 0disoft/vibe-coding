@@ -9,5 +9,9 @@
 	"offline_retry": "Subukang muli",
 	"error_not_found": "Hindi nahanap ang pahina. Ang pahina na hinahanap mo ay hindi umiiral.",
 	"error_unexpected": "May nangyaring hindi inaasahang error.",
-	"error_go_home": "Pumunta sa home"
+	"error_go_home": "Pumunta sa home",
+	"footer_terms": "Mga Tuntunin ng Serbisyo",
+	"footer_privacy": "Patakaran sa Privacy",
+	"footer_rights": "Lahat ng karapatan ay nakalaan.",
+	"home_get_started": "Magsimula"
 }

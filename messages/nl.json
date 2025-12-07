@@ -9,5 +9,9 @@
 	"offline_retry": "Opnieuw proberen",
 	"error_not_found": "Pagina niet gevonden. De pagina die je zoekt bestaat niet.",
 	"error_unexpected": "Er is een onverwachte fout opgetreden.",
-	"error_go_home": "Naar home"
+	"error_go_home": "Naar home",
+	"footer_terms": "Servicevoorwaarden",
+	"footer_privacy": "Privacybeleid",
+	"footer_rights": "Alle rechten voorbehouden.",
+	"home_get_started": "Aan de slag"
 }

@@ -9,5 +9,9 @@
 	"offline_retry": "Tentar novamente",
 	"error_not_found": "Página não encontrada. A página que você procura não existe.",
 	"error_unexpected": "Ocorreu um erro inesperado.",
-	"error_go_home": "Ir para o início"
+	"error_go_home": "Ir para o início",
+	"footer_terms": "Termos de Serviço",
+	"footer_privacy": "Política de Privacidade",
+	"footer_rights": "Todos os direitos reservados.",
+	"home_get_started": "Começar"
 }

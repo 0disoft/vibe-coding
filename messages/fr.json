@@ -9,5 +9,9 @@
 	"offline_retry": "Réessayer",
 	"error_not_found": "Page non trouvée. La page que vous recherchez n'existe pas.",
 	"error_unexpected": "Une erreur inattendue s'est produite.",
-	"error_go_home": "Retour à l'accueil"
+	"error_go_home": "Retour à l'accueil",
+	"footer_terms": "Conditions d'utilisation",
+	"footer_privacy": "Politique de confidentialité",
+	"footer_rights": "Tous droits réservés.",
+	"home_get_started": "Commencer"
 }

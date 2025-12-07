@@ -9,5 +9,9 @@
 	"offline_retry": "다시 시도",
 	"error_not_found": "페이지를 찾을 수 없습니다. 요청하신 페이지가 존재하지 않습니다.",
 	"error_unexpected": "예기치 않은 오류가 발생했습니다.",
-	"error_go_home": "홈으로"
+	"error_go_home": "홈으로",
+	"footer_terms": "이용약관",
+	"footer_privacy": "개인정보처리방침",
+	"footer_rights": "All rights reserved.",
+	"home_get_started": "시작하기"
 }

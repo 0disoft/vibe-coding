@@ -9,5 +9,9 @@
 	"offline_retry": "Thử lại",
 	"error_not_found": "Không tìm thấy trang. Trang bạn đang tìm kiếm không tồn tại.",
 	"error_unexpected": "Đã xảy ra lỗi không mong muốn.",
-	"error_go_home": "Về trang chủ"
+	"error_go_home": "Về trang chủ",
+	"footer_terms": "Điều khoản dịch vụ",
+	"footer_privacy": "Chính sách bảo mật",
+	"footer_rights": "Đã đăng ký bản quyền.",
+	"home_get_started": "Bắt đầu"
 }

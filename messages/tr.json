@@ -9,5 +9,9 @@
 	"offline_retry": "Tekrar dene",
 	"error_not_found": "Sayfa bulunamadı. Aradığınız sayfa mevcut değil.",
 	"error_unexpected": "Beklenmeyen bir hata oluştu.",
-	"error_go_home": "Ana sayfaya dön"
+	"error_go_home": "Ana sayfaya dön",
+	"footer_terms": "Hizmet Şartları",
+	"footer_privacy": "Gizlilik Politikası",
+	"footer_rights": "Tüm hakları saklıdır.",
+	"home_get_started": "Başla"
 }

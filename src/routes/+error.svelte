@@ -19,7 +19,7 @@
 		{/if}
 	</p>
 	<a 
-		href={localizeUrl('/')}
+		href={localizeUrl('/').href}
 		class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold transition-all rounded-md shadow-lg bg-primary text-primary-foreground hover:opacity-90 active:scale-95"
 	>
 		{m.error_go_home()}

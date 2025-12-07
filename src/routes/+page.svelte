@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { siteConfig } from '$lib/config';
+	import * as m from '$lib/paraglide/messages.js';
 </script>
 
 <div class="container flex flex-col items-center justify-center gap-4 py-24 text-center md:py-32">
@@ -17,7 +18,7 @@
 			href="/docs"
 			class="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
 		>
-			시작하기
+			{m.home_get_started()}
 		</a>
 		<a
 			href={siteConfig.links.github}
