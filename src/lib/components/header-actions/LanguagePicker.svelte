@@ -58,8 +58,15 @@
 	let modalRef: HTMLDivElement | undefined = $state();
 	let buttonRef: HTMLButtonElement | undefined = $state();
 
+	// 닫기 로직 통합 헬퍼
+	function closeLanguageModal() {
+		if (!showLanguageModal) return;
+		showLanguageModal = false;
+		buttonRef?.focus(); // 항상 포커스 복귀
+	}
+
 	function toggleLanguageModal() {
-		showLanguageModal = !showLanguageModal;
+		showLanguageModal ? closeLanguageModal() : (showLanguageModal = true);
 	}
 
 	function handleOutsideClick(event: MouseEvent) {
@@ -70,12 +77,20 @@
 			buttonRef &&
 			!buttonRef.contains(event.target as Node)
 		) {
-			showLanguageModal = false;
+			closeLanguageModal();
+		}
+	}
+
+	// ESC 키로 모달 닫기 (접근성 필수)
+	function handleKeyDown(event: KeyboardEvent) {
+		if (showLanguageModal && event.key === 'Escape') {
+			event.stopPropagation(); // 다른 ESC 핸들러로 전파 방지
+			closeLanguageModal();
 		}
 	}
 </script>
 
-<svelte:window onclick={handleOutsideClick} />
+<svelte:window onclick={handleOutsideClick} onkeydown={handleKeyDown} />
 
 <div class="relative">
 	<button
@@ -84,6 +99,8 @@
 		onclick={toggleLanguageModal}
 		class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 		aria-label="언어 변경"
+		aria-haspopup="dialog"
+		aria-expanded={showLanguageModal}
 	>
 		<span class="i-lucide-languages h-4 w-4"></span>
 	</button>
@@ -93,8 +110,11 @@
 		<div
 			bind:this={modalRef}
 			class="absolute right-0 top-full z-50 mt-2 w-36 rounded-lg bg-popover p-2 shadow-lg"
+			role="dialog"
+			aria-modal="true"
+			aria-label="언어 선택"
 		>
-			<div class="grid gap-1 max-h-[300px] overflow-y-auto">
+			<div class="grid gap-1 max-h-[300px] overflow-y-auto thin-scrollbar">
 				{#each availableLanguageTags as lang}
 					<a
 						href={localizeUrl(page.url.pathname + page.url.search, { locale: lang }).href}
@@ -103,7 +123,9 @@
 							? 'bg-primary text-primary-foreground'
 							: 'hover:bg-accent hover:text-accent-foreground'}"
 						data-sveltekit-reload
-						onclick={() => (showLanguageModal = false)}
+						onclick={closeLanguageModal}
+						aria-current={lang === currentLang ? 'page' : undefined}
+						hreflang={lang}
 					>
 						{getLanguageName(lang)}
 					</a>
@@ -112,3 +134,27 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.thin-scrollbar {
+		scrollbar-width: thin;
+		scrollbar-color: oklch(var(--muted-foreground) / 0.3) transparent;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar {
+		width: 4px;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar-thumb {
+		background: oklch(var(--muted-foreground) / 0.3);
+		border-radius: 2px;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+		background: oklch(var(--muted-foreground) / 0.5);
+	}
+</style>
