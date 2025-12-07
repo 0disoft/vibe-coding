@@ -121,6 +121,7 @@ view_transitions_api = true # 부드러운 페이지 이동
 tiptap = false              # 위지윅 에디터
 echarts = false             # 금융/데이터 차트
 paraglide_js = true         # 최신 i18n 표준
+marked = true               # 마크다운 → HTML 변환
 
 [growth_support]
 chatwoot = false # 고객 지원 채팅
