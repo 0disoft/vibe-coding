@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "สวัสดี, {name}!",
-  "nav_docs": "เอกสาร",
-  "nav_pricing": "ราคา",
-  "nav_portfolio": "ผลงาน",
-  "nav_dashboard": "แดชบอร์ด",
-  "offline_title": "คุณออฟไลน์อยู่",
-  "offline_message": "กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตและลองอีกครั้ง",
-  "offline_retry": "ลองอีกครั้ง",
-  "error_not_found": "ไม่พบหน้า หน้าที่คุณกำลังหาไม่มีอยู่",
-  "error_unexpected": "เกิดข้อผิดพลาดที่ไม่คาดคิด",
-  "error_go_home": "หน้าแรก"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "เอกสาร",
+	"nav_pricing": "ราคา",
+	"nav_portfolio": "ผลงาน",
+	"nav_dashboard": "แดชบอร์ด",
+	"offline_title": "คุณออฟไลน์อยู่",
+	"offline_message": "กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตและลองอีกครั้ง",
+	"offline_retry": "ลองอีกครั้ง",
+	"error_not_found": "ไม่พบหน้า หน้าที่คุณกำลังหาไม่มีอยู่",
+	"error_unexpected": "เกิดข้อผิดพลาดที่ไม่คาดคิด",
+	"error_go_home": "หน้าแรก"
 }

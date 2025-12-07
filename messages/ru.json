@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "Привет, {name}!",
-  "nav_docs": "Документация",
-  "nav_pricing": "Цены",
-  "nav_portfolio": "Портфолио",
-  "nav_dashboard": "Панель управления",
-  "offline_title": "Вы офлайн",
-  "offline_message": "Пожалуйста, проверьте подключение к интернету и попробуйте снова.",
-  "offline_retry": "Повторить",
-  "error_not_found": "Страница не найдена. Запрашиваемая страница не существует.",
-  "error_unexpected": "Произошла непредвиденная ошибка.",
-  "error_go_home": "На главную"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "Документация",
+	"nav_pricing": "Цены",
+	"nav_portfolio": "Портфолио",
+	"nav_dashboard": "Панель управления",
+	"offline_title": "Вы офлайн",
+	"offline_message": "Пожалуйста, проверьте подключение к интернету и попробуйте снова.",
+	"offline_retry": "Повторить",
+	"error_not_found": "Страница не найдена. Запрашиваемая страница не существует.",
+	"error_unexpected": "Произошла непредвиденная ошибка.",
+	"error_go_home": "На главную"
 }

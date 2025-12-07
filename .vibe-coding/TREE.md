@@ -10,6 +10,7 @@
 ├── vite.config.ts
 ├── uno.config.ts
 ├── bun.lock
+├── messages/
 ├── project.inlang/
 │   └── settings.json
 └── src/
@@ -51,6 +52,12 @@
 | `vite.config.ts` | Vite 번들링 설정과 플러그인 구성 |
 | `uno.config.ts` | UnoCSS 테마 토큰, 프리셋, 디자인 시스템 설정 |
 | `bun.lock` | Bun 패키지 버전 고정 잠금 파일 |
+
+### messages/
+
+| 폴더 | 역할 |
+|------|------|
+| `messages/` | Paraglide i18n 메시지 파일 (20개 언어 지원) |
 
 ### project.inlang/
 

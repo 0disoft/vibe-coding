@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "Hallo, {name}!",
-  "nav_docs": "Documentatie",
-  "nav_pricing": "Prijzen",
-  "nav_portfolio": "Portfolio",
-  "nav_dashboard": "Dashboard",
-  "offline_title": "Je bent offline",
-  "offline_message": "Controleer je internetverbinding en probeer het opnieuw.",
-  "offline_retry": "Opnieuw proberen",
-  "error_not_found": "Pagina niet gevonden. De pagina die je zoekt bestaat niet.",
-  "error_unexpected": "Er is een onverwachte fout opgetreden.",
-  "error_go_home": "Naar home"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "Documentatie",
+	"nav_pricing": "Prijzen",
+	"nav_portfolio": "Portfolio",
+	"nav_dashboard": "Dashboard",
+	"offline_title": "Je bent offline",
+	"offline_message": "Controleer je internetverbinding en probeer het opnieuw.",
+	"offline_retry": "Opnieuw proberen",
+	"error_not_found": "Pagina niet gevonden. De pagina die je zoekt bestaat niet.",
+	"error_unexpected": "Er is een onverwachte fout opgetreden.",
+	"error_go_home": "Naar home"
 }

@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "नमस्ते, {name}!",
-  "nav_docs": "दस्तावेज़",
-  "nav_pricing": "मूल्य",
-  "nav_portfolio": "पोर्टफोलियो",
-  "nav_dashboard": "डैशबोर्ड",
-  "offline_title": "आप ऑफ़लाइन हैं",
-  "offline_message": "कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।",
-  "offline_retry": "पुनः प्रयास करें",
-  "error_not_found": "पेज नहीं मिला। आप जिस पेज की तलाश कर रहे हैं वह मौजूद नहीं है।",
-  "error_unexpected": "एक अप्रत्याशित त्रुटि हुई।",
-  "error_go_home": "होम पेज"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "दस्तावेज़",
+	"nav_pricing": "मूल्य",
+	"nav_portfolio": "पोर्टफोलियो",
+	"nav_dashboard": "डैशबोर्ड",
+	"offline_title": "आप ऑफ़लाइन हैं",
+	"offline_message": "कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।",
+	"offline_retry": "पुनः प्रयास करें",
+	"error_not_found": "पेज नहीं मिला। आप जिस पेज की तलाश कर रहे हैं वह मौजूद नहीं है।",
+	"error_unexpected": "एक अप्रत्याशित त्रुटि हुई।",
+	"error_go_home": "होम पेज"
 }

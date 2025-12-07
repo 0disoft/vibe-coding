@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "Hej, {name}!",
-  "nav_docs": "Dokumentation",
-  "nav_pricing": "Priser",
-  "nav_portfolio": "Portfolio",
-  "nav_dashboard": "Instrumentpanel",
-  "offline_title": "Du är offline",
-  "offline_message": "Kontrollera din internetanslutning och försök igen.",
-  "offline_retry": "Försök igen",
-  "error_not_found": "Sidan hittades inte. Sidan du letar efter finns inte.",
-  "error_unexpected": "Ett oväntat fel inträffade.",
-  "error_go_home": "Till startsidan"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "Dokumentation",
+	"nav_pricing": "Priser",
+	"nav_portfolio": "Portfolio",
+	"nav_dashboard": "Instrumentpanel",
+	"offline_title": "Du är offline",
+	"offline_message": "Kontrollera din internetanslutning och försök igen.",
+	"offline_retry": "Försök igen",
+	"error_not_found": "Sidan hittades inte. Sidan du letar efter finns inte.",
+	"error_unexpected": "Ett oväntat fel inträffade.",
+	"error_go_home": "Till startsidan"
 }

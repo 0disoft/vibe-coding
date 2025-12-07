@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "Bonjour, {name} !",
-  "nav_docs": "Documentation",
-  "nav_pricing": "Tarifs",
-  "nav_portfolio": "Portfolio",
-  "nav_dashboard": "Tableau de bord",
-  "offline_title": "Vous êtes hors ligne",
-  "offline_message": "Veuillez vérifier votre connexion internet et réessayer.",
-  "offline_retry": "Réessayer",
-  "error_not_found": "Page non trouvée. La page que vous recherchez n'existe pas.",
-  "error_unexpected": "Une erreur inattendue s'est produite.",
-  "error_go_home": "Retour à l'accueil"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "Documentation",
+	"nav_pricing": "Tarifs",
+	"nav_portfolio": "Portfolio",
+	"nav_dashboard": "Tableau de bord",
+	"offline_title": "Vous êtes hors ligne",
+	"offline_message": "Veuillez vérifier votre connexion internet et réessayer.",
+	"offline_retry": "Réessayer",
+	"error_not_found": "Page non trouvée. La page que vous recherchez n'existe pas.",
+	"error_unexpected": "Une erreur inattendue s'est produite.",
+	"error_go_home": "Retour à l'accueil"
 }

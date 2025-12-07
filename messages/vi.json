@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "Xin chào, {name}!",
-  "nav_docs": "Tài liệu",
-  "nav_pricing": "Bảng giá",
-  "nav_portfolio": "Thư viện",
-  "nav_dashboard": "Bảng điều khiển",
-  "offline_title": "Bạn đang ngoại tuyến",
-  "offline_message": "Vui lòng kiểm tra kết nối internet và thử lại.",
-  "offline_retry": "Thử lại",
-  "error_not_found": "Không tìm thấy trang. Trang bạn đang tìm kiếm không tồn tại.",
-  "error_unexpected": "Đã xảy ra lỗi không mong muốn.",
-  "error_go_home": "Về trang chủ"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "Tài liệu",
+	"nav_pricing": "Bảng giá",
+	"nav_portfolio": "Thư viện",
+	"nav_dashboard": "Bảng điều khiển",
+	"offline_title": "Bạn đang ngoại tuyến",
+	"offline_message": "Vui lòng kiểm tra kết nối internet và thử lại.",
+	"offline_retry": "Thử lại",
+	"error_not_found": "Không tìm thấy trang. Trang bạn đang tìm kiếm không tồn tại.",
+	"error_unexpected": "Đã xảy ra lỗi không mong muốn.",
+	"error_go_home": "Về trang chủ"
 }

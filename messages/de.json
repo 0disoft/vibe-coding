@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "Hallo, {name}!",
-  "nav_docs": "Dokumentation",
-  "nav_pricing": "Preise",
-  "nav_portfolio": "Portfolio",
-  "nav_dashboard": "Dashboard",
-  "offline_title": "Sie sind offline",
-  "offline_message": "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
-  "offline_retry": "Erneut versuchen",
-  "error_not_found": "Seite nicht gefunden. Die gesuchte Seite existiert nicht.",
-  "error_unexpected": "Ein unerwarteter Fehler ist aufgetreten.",
-  "error_go_home": "Zur Startseite"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "Dokumentation",
+	"nav_pricing": "Preise",
+	"nav_portfolio": "Portfolio",
+	"nav_dashboard": "Dashboard",
+	"offline_title": "Sie sind offline",
+	"offline_message": "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+	"offline_retry": "Erneut versuchen",
+	"error_not_found": "Seite nicht gefunden. Die gesuchte Seite existiert nicht.",
+	"error_unexpected": "Ein unerwarteter Fehler ist aufgetreten.",
+	"error_go_home": "Zur Startseite"
 }

@@ -1,6 +1,5 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from ko!",
 	"nav_docs": "문서",
 	"nav_pricing": "가격",
 	"nav_portfolio": "포트폴리오",

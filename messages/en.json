@@ -1,6 +1,5 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from en!",
 	"nav_docs": "Docs",
 	"nav_pricing": "Pricing",
 	"nav_portfolio": "Portfolio",
@@ -8,7 +7,7 @@
 	"offline_title": "You are offline",
 	"offline_message": "Please check your internet connection and try again.",
 	"offline_retry": "Retry",
-	"error_not_found": "Page not found. The page you are looking for doesn't exist.",
+	"error_not_found": "Page not found. The requested page does not exist.",
 	"error_unexpected": "An unexpected error occurred.",
 	"error_go_home": "Go Home"
 }

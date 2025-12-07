@@ -7,10 +7,6 @@
 	"plugin.inlang.messageFormat": {
 		"pathPattern": "./messages/{locale}.json"
 	},
-	"compile": {
-		"target": "plugin.inlang.messageFormat",
-		"outdir": "./src/lib/paraglide"
-	},
 	"baseLocale": "en",
 	"locales": [
 		"en",

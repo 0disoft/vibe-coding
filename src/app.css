@@ -14,7 +14,7 @@
 
   /* Font scale (1~9). 0.05 간격: 1=1.05 … 5=1.25(기본) … 9=1.45 */
   --fs-scale: 1;
-  font-size: calc(19px * var(--fs-scale));
+  font-size: calc(17px * var(--fs-scale));
 
   /* Base font sizes */
   --fs-body-base: 1.35rem;
@@ -42,16 +42,16 @@
 
   /* gleam.run inspired light palette */
   --background: 98.2% 0.008 102;
-  --foreground: 41% 0.04 331;
+  --foreground: 35% 0.04 331;
 
   /* 카드, 팝오버, 포커스 영역 등 */
   --card: 96.0% 0.02 102;
   --code-card: 95.0% 0.02 102;
-  --code-card-foreground: 41% 0.04 331;
-  --card-foreground: 41% 0.04 331;
+  --code-card-foreground: 35% 0.04 331;
+  --card-foreground: 35% 0.04 331;
 
   --popover: 97.4% 0.02 102;
-  --popover-foreground: 41% 0.04 331;
+  --popover-foreground: 35% 0.04 331;
 
   /* 주요 액션 */
   --primary: 94% 0.1265 332;
@@ -147,15 +147,15 @@ body:lang(ko-KR) {
 
   /* gleam.run inspired dark palette */
   --background: 30.09% 0.0314 274;
-  --foreground: 94% 0.01 106;
+  --foreground: 96% 0.01 106;
 
   --card: 33% 0.0314 274;
   --code-card: 27% 0.0314 274;
-  --code-card-foreground: 94% 0.01 106;
-  --card-foreground: 94% 0.01 106;
+  --code-card-foreground: 96% 0.01 106;
+  --card-foreground: 96% 0.01 106;
 
   --popover: 35% 0.0314 274;
-  --popover-foreground: 94% 0.01 106;
+  --popover-foreground: 96% 0.01 106;
 
   /* 주요 액션 */
   --primary: 86% 0.1265 332;
@@ -165,17 +165,17 @@ body:lang(ko-KR) {
   --secondary: 88% 0.0746 209;
   --secondary-foreground: 14% 0.02 209;
 
-  /* 강조 요소 (배지, 토글 등) */
-  --accent: 62% 0.0252 97;
+  /* 강조 요소 (배지, 토글, hover 등) */
+  --accent: 45% 0.04 274;
   --accent-foreground: 94% 0.01 97;
 
   /* 링크 */
   --link: 78% 0.12 209;
   --link-foreground: 94% 0.01 209;
 
-  /* 약한 텍스트, 서브 카드 배경 등 */
-  --muted: 38% 0.015 274;
-  --muted-foreground: 85% 0.015 106;
+  /* 약한 텍스트, 서브 카드 배경, hover 등 */
+  --muted: 42% 0.02 274;
+  --muted-foreground: 88% 0.015 106;
 
   /* 파괴적 액션 (삭제 등) */
   --destructive: 88% 0.10 25;

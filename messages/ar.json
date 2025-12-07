@@ -1,14 +1,13 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello_world": "مرحباً، {name}!",
-  "nav_docs": "المستندات",
-  "nav_pricing": "الأسعار",
-  "nav_portfolio": "المعرض",
-  "nav_dashboard": "لوحة التحكم",
-  "offline_title": "أنت غير متصل",
-  "offline_message": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
-  "offline_retry": "إعادة المحاولة",
-  "error_not_found": "الصفحة غير موجودة. الصفحة التي تبحث عنها غير موجودة.",
-  "error_unexpected": "حدث خطأ غير متوقع.",
-  "error_go_home": "الرئيسية"
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"nav_docs": "المستندات",
+	"nav_pricing": "الأسعار",
+	"nav_portfolio": "المعرض",
+	"nav_dashboard": "لوحة التحكم",
+	"offline_title": "أنت غير متصل",
+	"offline_message": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
+	"offline_retry": "إعادة المحاولة",
+	"error_not_found": "الصفحة غير موجودة. الصفحة التي تبحث عنها غير موجودة.",
+	"error_unexpected": "حدث خطأ غير متوقع.",
+	"error_go_home": "الرئيسية"
 }
