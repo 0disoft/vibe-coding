@@ -20,6 +20,12 @@
     ├── hooks.ts
     ├── hooks.client.ts
     ├── hooks.server.ts
+    ├── styles/
+    │   ├── tokens.css
+    │   ├── base.css
+    │   ├── scrollbar.css
+    │   ├── syntax.css
+    │   └── prose.css
     └── lib/
         ├── index.ts
         ├── config.ts
@@ -70,11 +76,21 @@
 | 파일 | 역할 |
 |------|------|
 | `app.html` | 루트 HTML 템플릿. `data-theme`, `%paraglide.lang%` 속성 주입 |
-| `app.css` | 전역 스타일, CSS 변수, 테마 색상, 폰트 정의 |
+| `app.css` | 스타일 모듈 진입점. styles/ 폴더의 CSS 파일들을 import |
 | `app.d.ts` | SvelteKit 전역 타입 확장 (Locals, PageData 등) |
 | `hooks.ts` | locale 프리픽스 제거 reroute 훅 |
 | `hooks.client.ts` | 클라이언트 전용 훅 (브라우저 API, 분석 등) |
 | `hooks.server.ts` | 서버 훅 (테마 쿠키 주입, Paraglide 미들웨어) |
+
+### src/styles/
+
+| 파일 | 역할 |
+|------|------|
+| `tokens.css` | CSS 변수: 색상 팔레트, 폰트 스택, 사이즈 스케일, 다크모드 |
+| `base.css` | 기본 HTML 요소 스타일 (body, h1-h3, code, pre) |
+| `scrollbar.css` | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일) |
+| `syntax.css` | highlight.js 구문 강조 색상 테마 (라이트/다크) |
+| `prose.css` | .prose 마크다운 콘텐츠 타이포그래피 |
 
 ### src/lib/
 

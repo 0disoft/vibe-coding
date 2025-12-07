@@ -1,0 +1,77 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Base Styles
+   기본 HTML 요소 스타일: body, headings, paragraphs, code
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body {
+  background-color: oklch(var(--background));
+  color: oklch(var(--foreground));
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-family: var(--font-sans);
+  /* 폰트 렌더링 최적화 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+}
+
+p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+small,
+.text-caption {
+  font-size: var(--fs-caption);
+}
+
+code,
+pre {
+  font-size: var(--fs-code);
+  line-height: 1.5;
+  font-family: var(--font-mono);
+}
+
+pre {
+  background-color: oklch(var(--card));
+  border: none;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.code-card {
+  background-color: oklch(var(--code-card));
+  color: oklch(var(--code-card-foreground));
+}
+
+.code-card pre,
+.code-card pre code,
+.code-card code.hljs,
+.code-card pre.hljs {
+  background-color: oklch(var(--code-card));
+  color: oklch(var(--code-card-foreground));
+  border: none;
+}
+
+/* 중첩 code 요소가 줄 단위로 박스가 나뉘는 현상 방지 */
+pre code {
+  display: block;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
