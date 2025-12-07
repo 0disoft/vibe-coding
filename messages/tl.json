@@ -1,0 +1,14 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "hello_world": "Kumusta, {name}!",
+  "nav_docs": "Mga Dokumento",
+  "nav_pricing": "Presyo",
+  "nav_portfolio": "Portfolio",
+  "nav_dashboard": "Dashboard",
+  "offline_title": "Ikaw ay offline",
+  "offline_message": "Pakisuri ang iyong koneksyon sa internet at subukang muli.",
+  "offline_retry": "Subukang muli",
+  "error_not_found": "Hindi nahanap ang pahina. Ang pahina na hinahanap mo ay hindi umiiral.",
+  "error_unexpected": "May nangyaring hindi inaasahang error.",
+  "error_go_home": "Pumunta sa home"
+}

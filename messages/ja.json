@@ -1,0 +1,14 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "hello_world": "こんにちは、{name}さん！",
+  "nav_docs": "ドキュメント",
+  "nav_pricing": "料金",
+  "nav_portfolio": "ポートフォリオ",
+  "nav_dashboard": "ダッシュボード",
+  "offline_title": "オフラインです",
+  "offline_message": "インターネット接続を確認して、もう一度お試しください。",
+  "offline_retry": "再試行",
+  "error_not_found": "ページが見つかりません。お探しのページは存在しません。",
+  "error_unexpected": "予期しないエラーが発生しました。",
+  "error_go_home": "ホームへ"
+}

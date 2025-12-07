@@ -1,0 +1,14 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "hello_world": "Merhaba, {name}!",
+  "nav_docs": "Belgeler",
+  "nav_pricing": "Fiyatlandırma",
+  "nav_portfolio": "Portföy",
+  "nav_dashboard": "Kontrol Paneli",
+  "offline_title": "Çevrimdışısınız",
+  "offline_message": "Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin.",
+  "offline_retry": "Tekrar dene",
+  "error_not_found": "Sayfa bulunamadı. Aradığınız sayfa mevcut değil.",
+  "error_unexpected": "Beklenmeyen bir hata oluştu.",
+  "error_go_home": "Ana sayfaya dön"
+}

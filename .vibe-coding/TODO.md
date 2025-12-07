@@ -101,3 +101,57 @@ SPEC 내용이 확정된 후 진행합니다.
 > 4. **검수 (Post-work):** 구현 완료 직후 `.vibe-coding/REVIEW.md` 파일을 로드하여 체크리스트를 점검하고, 통과 시 완료 처리한다.
 
 - [ ] (1단계 완료 후 생성될 세부 작업 목록)
+
+---
+
+## 배포 전 점검 (Pre-deployment Checklist)
+
+프로덕션 배포 전 반드시 확인해야 할 항목입니다.
+
+### 프로젝트 메타데이터 검증
+
+- [ ] **[DEPLOY-001] 패키지 정보 일치 확인**
+  - 파일: `package.json`, `bun.lock`
+  - 확인 사항:
+    - `name` 속성이 실제 프로젝트명과 일치하는지 확인
+    - `version` 속성이 배포 버전과 일치하는지 확인
+    - `description`이 프로젝트를 정확히 설명하는지 확인
+
+- [ ] **[DEPLOY-002] 사이트 설정 검증**
+  - 파일: `src/lib/config.ts`
+  - 확인 사항:
+    - `siteConfig.name`: 실제 서비스명으로 변경했는지
+    - `siteConfig.description`: 서비스 설명이 적절한지
+    - `siteConfig.keywords`: SEO 키워드가 올바른지
+    - `siteConfig.links.github`: 실제 저장소 URL인지
+
+### PWA 및 메타 정보
+
+- [ ] **[DEPLOY-003] PWA 매니페스트 검증**
+  - 파일: `static/manifest.json`
+  - 확인 사항:
+    - `name`, `short_name`이 서비스명과 일치하는지
+    - `theme_color`, `background_color`가 브랜드 색상인지
+    - 아이콘 파일이 존재하고 경로가 올바른지
+
+- [ ] **[DEPLOY-004] Favicon 및 아이콘 교체**
+  - 파일: `static/favicon.svg` (또는 다른 아이콘 파일)
+  - 확인 사항:
+    - 기본 아이콘을 프로젝트 고유 아이콘으로 교체했는지
+
+### 다국어 및 콘텐츠
+
+- [ ] **[DEPLOY-005] 번역 메시지 검토**
+  - 폴더: `messages/`
+  - 확인 사항:
+    - 모든 언어 파일에 필요한 번역 키가 있는지
+    - 플레이스홀더 텍스트가 남아있지 않은지
+
+### 환경 및 보안
+
+- [ ] **[DEPLOY-006] 환경 변수 및 비밀 정보**
+  - 파일: `.env`, `.env.production` (해당 시)
+  - 확인 사항:
+    - 프로덕션 환경 변수가 올바르게 설정되었는지
+    - 개발용 키/토큰이 프로덕션 값으로 교체되었는지
+    - `.env` 파일이 `.gitignore`에 포함되어 있는지

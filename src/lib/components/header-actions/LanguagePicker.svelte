@@ -2,30 +2,33 @@
 	import { page } from '$app/state';
 	import * as runtime from '$lib/paraglide/runtime';
 
+	// 언어 코드 → 사람이 읽기 쉬운 이름 맵
+	const languageNames: Record<string, string> = {
+		en: 'English',
+		ko: '한국어',
+		ja: '日本語',
+		zh: '中文',
+		es: 'Español',
+		fr: 'Français',
+		de: 'Deutsch',
+		pt: 'Português',
+		it: 'Italiano',
+		nl: 'Nederlands',
+		sv: 'Svenska',
+		pl: 'Polski',
+		ru: 'Русский',
+		ar: 'العربية',
+		hi: 'हिन्दी',
+		id: 'Bahasa',
+		vi: 'Tiếng Việt',
+		th: 'ไทย',
+		tl: 'Tagalog',
+		tr: 'Türkçe'
+	};
+
 	// Paraglide API 호환성 및 안전장치
 	// 1. 런타임에서 언어 목록 가져오기 시도, 실패 시 기본 목록 사용
-	const defaultLocales = [
-		'en',
-		'ko',
-		'ja',
-		'zh',
-		'es',
-		'fr',
-		'de',
-		'pt',
-		'it',
-		'nl',
-		'sv',
-		'pl',
-		'ru',
-		'ar',
-		'hi',
-		'id',
-		'vi',
-		'th',
-		'tl',
-		'tr'
-	];
+	const defaultLocales = Object.keys(languageNames);
 	const availableLanguageTags: string[] =
 		(runtime as any).availableLocales ??
 		(runtime as any).locales ??
@@ -44,6 +47,11 @@
 		const runtimeLang = (runtime as any).getLocale?.() ?? (runtime as any).languageTag?.();
 		return runtimeLang ?? 'en';
 	});
+
+	// 언어 코드를 읽기 쉬운 이름으로 변환
+	function getLanguageName(code: string): string {
+		return languageNames[code] ?? code.toUpperCase();
+	}
 
 	let showLanguageModal = $state(false);
 	let modalRef: HTMLDivElement | undefined = $state();
@@ -83,11 +91,8 @@
 	{#if showLanguageModal}
 		<div
 			bind:this={modalRef}
-			class="absolute right-0 top-full z-50 mt-2 w-32 rounded-lg bg-popover p-2 shadow-lg"
+			class="absolute right-0 top-full z-50 mt-2 w-36 rounded-lg bg-popover p-2 shadow-lg"
 		>
-			<div class="mb-2 px-2 text-xs font-medium text-muted-foreground">
-				언어 (현재: {currentLang})
-			</div>
 			<div class="grid gap-1 max-h-[300px] overflow-y-auto">
 				{#each availableLanguageTags as lang}
 					<a
@@ -99,7 +104,7 @@
 						data-sveltekit-reload
 						onclick={() => (showLanguageModal = false)}
 					>
-						{lang.toUpperCase()}
+						{getLanguageName(lang)}
 					</a>
 				{/each}
 			</div>

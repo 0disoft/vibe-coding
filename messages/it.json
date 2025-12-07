@@ -1,0 +1,14 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "hello_world": "Ciao, {name}!",
+  "nav_docs": "Documentazione",
+  "nav_pricing": "Prezzi",
+  "nav_portfolio": "Portfolio",
+  "nav_dashboard": "Pannello",
+  "offline_title": "Sei offline",
+  "offline_message": "Controlla la tua connessione internet e riprova.",
+  "offline_retry": "Riprova",
+  "error_not_found": "Pagina non trovata. La pagina che stai cercando non esiste.",
+  "error_unexpected": "Si è verificato un errore imprevisto.",
+  "error_go_home": "Torna alla home"
+}

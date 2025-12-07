@@ -1,0 +1,14 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "hello_world": "Cześć, {name}!",
+  "nav_docs": "Dokumentacja",
+  "nav_pricing": "Cennik",
+  "nav_portfolio": "Portfolio",
+  "nav_dashboard": "Panel",
+  "offline_title": "Jesteś offline",
+  "offline_message": "Sprawdź połączenie internetowe i spróbuj ponownie.",
+  "offline_retry": "Spróbuj ponownie",
+  "error_not_found": "Nie znaleziono strony. Strona, której szukasz, nie istnieje.",
+  "error_unexpected": "Wystąpił nieoczekiwany błąd.",
+  "error_go_home": "Strona główna"
+}

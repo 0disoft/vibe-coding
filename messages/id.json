@@ -1,0 +1,14 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "hello_world": "Halo, {name}!",
+  "nav_docs": "Dokumentasi",
+  "nav_pricing": "Harga",
+  "nav_portfolio": "Portofolio",
+  "nav_dashboard": "Dasbor",
+  "offline_title": "Anda sedang offline",
+  "offline_message": "Silakan periksa koneksi internet Anda dan coba lagi.",
+  "offline_retry": "Coba lagi",
+  "error_not_found": "Halaman tidak ditemukan. Halaman yang Anda cari tidak ada.",
+  "error_unexpected": "Terjadi kesalahan yang tidak terduga.",
+  "error_go_home": "Ke beranda"
+}
