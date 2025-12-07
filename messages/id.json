@@ -13,5 +13,22 @@
 	"footer_terms": "Ketentuan Layanan",
 	"footer_privacy": "Kebijakan Privasi",
 	"footer_rights": "Hak cipta dilindungi.",
-	"home_get_started": "Mulai"
+	"home_get_started": "Mulai",
+	"privacy_table_processor": "Pemroses",
+	"privacy_table_purpose": "Tujuan",
+	"privacy_table_country": "Negara",
+	"privacy_table_items": "Item Data",
+	"privacy_table_retention": "Periode Penyimpanan",
+	"privacy_processor_cloudflare_purpose": "Web hosting dan komputasi edge (Workers)",
+	"privacy_processor_cloudflare_country": "AS",
+	"privacy_processor_cloudflare_items": "IP Akses, Info Browser, URL Permintaan",
+	"privacy_processor_cloudflare_retention": "Hingga 30 hari",
+	"privacy_processor_resend_purpose": "Pengiriman email",
+	"privacy_processor_resend_country": "AS",
+	"privacy_processor_resend_items": "Alamat email, Catatan pengiriman",
+	"privacy_processor_resend_retention": "30 hari dari pengiriman",
+	"privacy_processor_lemonsqueezy_purpose": "Pemrosesan pembayaran",
+	"privacy_processor_lemonsqueezy_country": "AS",
+	"privacy_processor_lemonsqueezy_items": "Email, Info pembayaran, Catatan transaksi",
+	"privacy_processor_lemonsqueezy_retention": "Sesuai hukum yang berlaku"
 }

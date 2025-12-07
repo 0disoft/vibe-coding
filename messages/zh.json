@@ -13,5 +13,22 @@
 	"footer_terms": "服务条款",
 	"footer_privacy": "隐私政策",
 	"footer_rights": "版权所有。",
-	"home_get_started": "开始使用"
+	"home_get_started": "开始使用",
+	"privacy_table_processor": "受托方",
+	"privacy_table_purpose": "受托业务",
+	"privacy_table_country": "国家",
+	"privacy_table_items": "收集项目",
+	"privacy_table_retention": "保留期限",
+	"privacy_processor_cloudflare_purpose": "网站托管和边缘计算 (Workers)",
+	"privacy_processor_cloudflare_country": "美国",
+	"privacy_processor_cloudflare_items": "访问IP、浏览器信息、请求URL",
+	"privacy_processor_cloudflare_retention": "最多30天",
+	"privacy_processor_resend_purpose": "邮件发送",
+	"privacy_processor_resend_country": "美国",
+	"privacy_processor_resend_items": "电子邮件地址、发送记录",
+	"privacy_processor_resend_retention": "自发送之日起30天",
+	"privacy_processor_lemonsqueezy_purpose": "支付处理",
+	"privacy_processor_lemonsqueezy_country": "美国",
+	"privacy_processor_lemonsqueezy_items": "电子邮件、支付信息、交易记录",
+	"privacy_processor_lemonsqueezy_retention": "根据相关法律"
 }

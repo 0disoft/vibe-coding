@@ -13,5 +13,22 @@
 	"footer_terms": "ข้อกำหนดการให้บริการ",
 	"footer_privacy": "นโยบายความเป็นส่วนตัว",
 	"footer_rights": "สงวนลิขสิทธิ์",
-	"home_get_started": "เริ่มต้นใช้งาน"
+	"home_get_started": "เริ่มต้นใช้งาน",
+	"privacy_table_processor": "ผู้ประมวลผล",
+	"privacy_table_purpose": "วัตถุประสงค์",
+	"privacy_table_country": "ประเทศ",
+	"privacy_table_items": "รายการข้อมูล",
+	"privacy_table_retention": "ระยะเวลาการเก็บรักษา",
+	"privacy_processor_cloudflare_purpose": "เว็บโฮสติ้งและเอดจ์คอมพิวติ้ง (Workers)",
+	"privacy_processor_cloudflare_country": "สหรัฐอเมริกา",
+	"privacy_processor_cloudflare_items": "IP การเข้าถึง, ข้อมูลเบราว์เซอร์, URL คำขอ",
+	"privacy_processor_cloudflare_retention": "สูงสุด 30 วัน",
+	"privacy_processor_resend_purpose": "การส่งอีเมล",
+	"privacy_processor_resend_country": "สหรัฐอเมริกา",
+	"privacy_processor_resend_items": "ที่อยู่อีเมล, บันทึกการส่ง",
+	"privacy_processor_resend_retention": "30 วันหลังจากส่ง",
+	"privacy_processor_lemonsqueezy_purpose": "การประมวลผลการชำระเงิน",
+	"privacy_processor_lemonsqueezy_country": "สหรัฐอเมริกา",
+	"privacy_processor_lemonsqueezy_items": "อีเมล, ข้อมูลการชำระเงิน, บันทึกธุรกรรม",
+	"privacy_processor_lemonsqueezy_retention": "ตามกฎหมายที่บังคับใช้"
 }

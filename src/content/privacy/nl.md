@@ -39,11 +39,7 @@ Het Bedrijf verstrekt in principe geen persoonlijke informatie aan externe parti
 
 Daarnaast delegeert het Bedrijf de verwerking van persoonlijke informatie aan externe specialisten (inclusief internationale overdracht) voor de exploitatie van de dienst als volgt.
 
-| Verwerker | Doel | Land | Gegevens | Bewaartermijn |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Webhosting en edge computing (Workers) | VS | Toegangs-IP, Browserinfo, Verzoek-URL | Tot 30 dagen |
-| Resend Inc. | E-mailverzending | VS | E-mailadres, Verzendregistraties | 30 dagen na verzending |
-| Lemon Squeezy LLC | Betalingsverwerking | VS | E-mail, Betalingsinfo, Transactieregistraties | Volgens toepasselijke wetten |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Artikel 5 (Vernietiging van Persoonlijke Informatie)
 

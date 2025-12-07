@@ -13,5 +13,22 @@
 	"footer_terms": "Điều khoản dịch vụ",
 	"footer_privacy": "Chính sách bảo mật",
 	"footer_rights": "Đã đăng ký bản quyền.",
-	"home_get_started": "Bắt đầu"
+	"home_get_started": "Bắt đầu",
+	"privacy_table_processor": "Bên Xử Lý",
+	"privacy_table_purpose": "Mục Đích",
+	"privacy_table_country": "Quốc Gia",
+	"privacy_table_items": "Hạng Mục Dữ Liệu",
+	"privacy_table_retention": "Thời Gian Lưu Trữ",
+	"privacy_processor_cloudflare_purpose": "Lưu trữ web và điện toán biên (Workers)",
+	"privacy_processor_cloudflare_country": "Hoa Kỳ",
+	"privacy_processor_cloudflare_items": "IP truy cập, thông tin trình duyệt, URL yêu cầu",
+	"privacy_processor_cloudflare_retention": "Lên đến 30 ngày",
+	"privacy_processor_resend_purpose": "Gửi email",
+	"privacy_processor_resend_country": "Hoa Kỳ",
+	"privacy_processor_resend_items": "Địa chỉ email, hồ sơ gửi",
+	"privacy_processor_resend_retention": "30 ngày kể từ khi gửi",
+	"privacy_processor_lemonsqueezy_purpose": "Xử lý thanh toán",
+	"privacy_processor_lemonsqueezy_country": "Hoa Kỳ",
+	"privacy_processor_lemonsqueezy_items": "Email, thông tin thanh toán, lịch sử giao dịch",
+	"privacy_processor_lemonsqueezy_retention": "Theo luật hiện hành"
 }

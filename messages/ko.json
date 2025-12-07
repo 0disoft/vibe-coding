@@ -13,5 +13,22 @@
 	"footer_terms": "이용약관",
 	"footer_privacy": "개인정보처리방침",
 	"footer_rights": "All rights reserved.",
-	"home_get_started": "시작하기"
+	"home_get_started": "시작하기",
+	"privacy_table_processor": "수탁업체",
+	"privacy_table_purpose": "위탁 업무",
+	"privacy_table_country": "국가",
+	"privacy_table_items": "수집 항목",
+	"privacy_table_retention": "보유 기간",
+	"privacy_processor_cloudflare_purpose": "웹 호스팅 및 엣지 컴퓨팅 (Workers)",
+	"privacy_processor_cloudflare_country": "미국",
+	"privacy_processor_cloudflare_items": "접속 IP, 브라우저 정보, 요청 URL",
+	"privacy_processor_cloudflare_retention": "최대 30일",
+	"privacy_processor_resend_purpose": "이메일 발송",
+	"privacy_processor_resend_country": "미국",
+	"privacy_processor_resend_items": "이메일 주소, 발송 내역",
+	"privacy_processor_resend_retention": "발송일로부터 30일",
+	"privacy_processor_lemonsqueezy_purpose": "결제 처리",
+	"privacy_processor_lemonsqueezy_country": "미국",
+	"privacy_processor_lemonsqueezy_items": "이메일, 결제 정보, 거래 내역",
+	"privacy_processor_lemonsqueezy_retention": "관계 법령에 따름"
 }

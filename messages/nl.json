@@ -13,5 +13,22 @@
 	"footer_terms": "Servicevoorwaarden",
 	"footer_privacy": "Privacybeleid",
 	"footer_rights": "Alle rechten voorbehouden.",
-	"home_get_started": "Aan de slag"
+	"home_get_started": "Aan de slag",
+	"privacy_table_processor": "Verwerker",
+	"privacy_table_purpose": "Doel",
+	"privacy_table_country": "Land",
+	"privacy_table_items": "Gegevensitems",
+	"privacy_table_retention": "Bewaartermijn",
+	"privacy_processor_cloudflare_purpose": "Webhosting en edge computing (Workers)",
+	"privacy_processor_cloudflare_country": "VS",
+	"privacy_processor_cloudflare_items": "Toegangs-IP, browserinfo, verzoek-URL",
+	"privacy_processor_cloudflare_retention": "Tot 30 dagen",
+	"privacy_processor_resend_purpose": "E-mailbezorging",
+	"privacy_processor_resend_country": "VS",
+	"privacy_processor_resend_items": "E-mailadres, bezorglogboeken",
+	"privacy_processor_resend_retention": "30 dagen na bezorging",
+	"privacy_processor_lemonsqueezy_purpose": "Betalingsverwerking",
+	"privacy_processor_lemonsqueezy_country": "VS",
+	"privacy_processor_lemonsqueezy_items": "E-mail, betalingsinfo, transactierecords",
+	"privacy_processor_lemonsqueezy_retention": "Volgens toepasselijke wetten"
 }

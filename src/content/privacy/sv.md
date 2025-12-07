@@ -39,11 +39,7 @@ Företaget tillhandahåller i princip inte personuppgifter till externa parter. 
 
 Dessutom överlåter Företaget behandling av personuppgifter till externa specialister (inklusive internationell överföring) för drift av tjänsten enligt följande.
 
-| Behandlare | Syfte | Land | Uppgifter | Lagringsperiod |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Webbhotell och edge computing (Workers) | USA | Åtkomst-IP, Webbläsarinfo, Begäran-URL | Upp till 30 dagar |
-| Resend Inc. | E-postutskick | USA | E-postadress, Sändningsregister | 30 dagar efter sändning |
-| Lemon Squeezy LLC | Betalningshantering | USA | E-post, Betalningsinfo, Transaktionsregister | Enligt tillämpliga lagar |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Artikel 5 (Förstöring av Personuppgifter)
 

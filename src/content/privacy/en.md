@@ -39,11 +39,7 @@ The Company does not provide personal information to external parties in princip
 
 Additionally, the Company entrusts personal information processing to external specialists (including international transfer) for service operation as follows.
 
-| Processor | Purpose | Country | Data Items | Retention Period |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Web hosting and edge computing (Workers) | USA | Access IP, Browser info, Request URL | Up to 30 days |
-| Resend Inc. | Email delivery | USA | Email address, Delivery records | 30 days from delivery |
-| Lemon Squeezy LLC | Payment processing | USA | Email, Payment info, Transaction records | Per applicable laws |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Article 5 (Destruction of Personal Information)
 

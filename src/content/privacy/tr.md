@@ -39,11 +39,7 @@
 
 Ayrıca Şirket, hizmet işletimi için kişisel bilgi işlemeyi aşağıdaki şekilde harici uzmanlara (uluslararası transfer dahil) emanet eder.
 
-| İşlemci | Amaç | Ülke | Veriler | Saklama Süresi |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Web barındırma ve edge computing (Workers) | ABD | Erişim IP, Tarayıcı bilgisi, İstek URL | 30 güne kadar |
-| Resend Inc. | E-posta gönderimi | ABD | E-posta adresi, Gönderim kayıtları | Gönderimden 30 gün |
-| Lemon Squeezy LLC | Ödeme işleme | ABD | E-posta, Ödeme bilgisi, İşlem kayıtları | Geçerli yasalara göre |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Madde 5 (Kişisel Bilgilerin İmhası)
 

@@ -39,11 +39,7 @@ Perusahaan pada prinsipnya tidak memberikan informasi pribadi kepada pihak ekste
 
 Selain itu, Perusahaan mempercayakan pemrosesan informasi pribadi kepada spesialis eksternal (termasuk transfer internasional) untuk pengoperasian layanan sebagai berikut.
 
-| Pemroses | Tujuan | Negara | Data | Periode Penyimpanan |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Web hosting dan edge computing (Workers) | AS | IP akses, Info browser, URL permintaan | Hingga 30 hari |
-| Resend Inc. | Pengiriman email | AS | Alamat email, Catatan pengiriman | 30 hari dari pengiriman |
-| Lemon Squeezy LLC | Pemrosesan pembayaran | AS | Email, Info pembayaran, Catatan transaksi | Sesuai hukum yang berlaku |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Pasal 5 (Penghancuran Informasi Pribadi)
 

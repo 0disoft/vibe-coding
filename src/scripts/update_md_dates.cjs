@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const path = require('path');
 
@@ -22,13 +23,13 @@ function processDirectory(directory) {
       processDirectory(fullPath);
     } else if (file.endsWith('.md')) {
       let content = fs.readFileSync(fullPath, 'utf8');
-      // Regex to find lines like "> Last Updated: December 7, 2025" or "> 최종 수정일: 2025년 12월 7일"
-      // Captures the prefix (e.g., "> Last Updated:") and replaces the date part.
-      // Support both standard colon (:) and full-width colon (：)
+      // "> Last Updated: December 7, 2025" 또는 "> 최종 수정일: 2025년 12월 7일" 같은 줄을 찾는 정규식
+      // 접두사(예: "> Last Updated:")를 캡처하고 날짜 부분을 교체합니다.
+      // 표준 콜론(:)과 전각 콜론(：) 모두 지원
       const regex = /^(>.*?[:：])\s*.*?2025.*$/gm;
 
       if (regex.test(content)) {
-        // $1 is the prefix including the colon
+        // $1은 콜론을 포함한 접두사입니다.
         const newContent = content.replace(regex, '$1 {{LAST_UPDATED}}');
 
         if (content !== newContent) {
@@ -36,7 +37,7 @@ function processDirectory(directory) {
           console.log(`Updated: ${file}`);
         }
       } else {
-        // Check if file might have different format (debug info)
+        // 파일 형식이 다를 수 있음 (디버그 정보)
         // console.log(`Skipped (no match): ${file}`);
       }
     }

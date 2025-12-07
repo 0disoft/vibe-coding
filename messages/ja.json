@@ -13,5 +13,22 @@
 	"footer_terms": "利用規約",
 	"footer_privacy": "プライバシーポリシー",
 	"footer_rights": "All rights reserved.",
-	"home_get_started": "始める"
+	"home_get_started": "始める",
+	"privacy_table_processor": "委託先",
+	"privacy_table_purpose": "委託業務",
+	"privacy_table_country": "国",
+	"privacy_table_items": "収集項目",
+	"privacy_table_retention": "保有期間",
+	"privacy_processor_cloudflare_purpose": "ウェブホスティングおよびエッジコンピューティング (Workers)",
+	"privacy_processor_cloudflare_country": "米国",
+	"privacy_processor_cloudflare_items": "アクセスIP、ブラウザ情報、リクエストURL",
+	"privacy_processor_cloudflare_retention": "最大30日",
+	"privacy_processor_resend_purpose": "メール配信",
+	"privacy_processor_resend_country": "米国",
+	"privacy_processor_resend_items": "メールアドレス、配信履歴",
+	"privacy_processor_resend_retention": "配信日から30日",
+	"privacy_processor_lemonsqueezy_purpose": "決済処理",
+	"privacy_processor_lemonsqueezy_country": "米国",
+	"privacy_processor_lemonsqueezy_items": "メール、決済情報、取引履歴",
+	"privacy_processor_lemonsqueezy_retention": "関連法令に従う"
 }

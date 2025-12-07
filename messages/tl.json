@@ -13,5 +13,22 @@
 	"footer_terms": "Mga Tuntunin ng Serbisyo",
 	"footer_privacy": "Patakaran sa Privacy",
 	"footer_rights": "Lahat ng karapatan ay nakalaan.",
-	"home_get_started": "Magsimula"
+	"home_get_started": "Magsimula",
+	"privacy_table_processor": "Tagapagproseso",
+	"privacy_table_purpose": "Layunin",
+	"privacy_table_country": "Bansa",
+	"privacy_table_items": "Mga Item ng Data",
+	"privacy_table_retention": "Panahon ng Pagpapanatili",
+	"privacy_processor_cloudflare_purpose": "Web hosting at edge computing (Workers)",
+	"privacy_processor_cloudflare_country": "USA",
+	"privacy_processor_cloudflare_items": "Access IP, Impormasyon sa browser, URL ng Request",
+	"privacy_processor_cloudflare_retention": "Hanggang 30 araw",
+	"privacy_processor_resend_purpose": "Paghahatid ng email",
+	"privacy_processor_resend_country": "USA",
+	"privacy_processor_resend_items": "Email address, Mga rekord ng paghahatid",
+	"privacy_processor_resend_retention": "30 araw mula sa paghahatid",
+	"privacy_processor_lemonsqueezy_purpose": "Pagproseso ng pagbabayad",
+	"privacy_processor_lemonsqueezy_country": "USA",
+	"privacy_processor_lemonsqueezy_items": "Email, Impormasyon sa pagbabayad, Mga rekord ng transaksyon",
+	"privacy_processor_lemonsqueezy_retention": "Ayon sa mga naaangkop na batas"
 }

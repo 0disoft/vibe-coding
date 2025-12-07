@@ -13,5 +13,22 @@
 	"footer_terms": "Nutzungsbedingungen",
 	"footer_privacy": "Datenschutzrichtlinie",
 	"footer_rights": "Alle Rechte vorbehalten.",
-	"home_get_started": "Loslegen"
+	"home_get_started": "Loslegen",
+	"privacy_table_processor": "Auftragsverarbeiter",
+	"privacy_table_purpose": "Zweck",
+	"privacy_table_country": "Land",
+	"privacy_table_items": "Datenelemente",
+	"privacy_table_retention": "Aufbewahrungsfrist",
+	"privacy_processor_cloudflare_purpose": "Webhosting und Edge Computing (Workers)",
+	"privacy_processor_cloudflare_country": "USA",
+	"privacy_processor_cloudflare_items": "Zugriffs-IP, Browser-Info, Anfrage-URL",
+	"privacy_processor_cloudflare_retention": "Bis zu 30 Tage",
+	"privacy_processor_resend_purpose": "E-Mail-Versand",
+	"privacy_processor_resend_country": "USA",
+	"privacy_processor_resend_items": "E-Mail-Adresse, Zustellprotokolle",
+	"privacy_processor_resend_retention": "30 Tage ab Zustellung",
+	"privacy_processor_lemonsqueezy_purpose": "Zahlungsabwicklung",
+	"privacy_processor_lemonsqueezy_country": "USA",
+	"privacy_processor_lemonsqueezy_items": "E-Mail, Zahlungsinfos, Transaktionsdaten",
+	"privacy_processor_lemonsqueezy_retention": "Gemäß geltenden Gesetzen"
 }

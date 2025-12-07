@@ -39,11 +39,7 @@ Firma zasadniczo nie udostępnia danych osobowych stronom zewnętrznym. Jednak n
 
 Ponadto Firma powierza przetwarzanie danych osobowych zewnętrznym specjalistom (w tym transfer międzynarodowy) w celu prowadzenia usługi w następujący sposób.
 
-| Podmiot Przetwarzający | Cel | Kraj | Dane | Okres Przechowywania |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Hosting internetowy i edge computing (Workers) | USA | IP dostępu, Info o przeglądarce, URL żądania | Do 30 dni |
-| Resend Inc. | Wysyłka e-maili | USA | Adres e-mail, Rejestry wysyłki | 30 dni od wysyłki |
-| Lemon Squeezy LLC | Przetwarzanie płatności | USA | E-mail, Info o płatnościach, Rejestry transakcji | Zgodnie z obowiązującymi przepisami |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Artykuł 5 (Niszczenie Danych Osobowych)
 

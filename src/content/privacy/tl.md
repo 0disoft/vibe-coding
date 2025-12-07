@@ -39,11 +39,7 @@ Sa prinsipyo, hindi nagbibigay ang Kumpanya ng personal na impormasyon sa mga pa
 
 Bilang karagdagan, ang Kumpanya ay nagtatagubilin ng pagpoproseso ng personal na impormasyon sa mga panlabas na espesyalista (kabilang ang international transfer) para sa operasyon ng serbisyo tulad ng sumusunod.
 
-| Processor | Layunin | Bansa | Data | Panahon ng Pagpapanatili |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Web hosting at edge computing (Workers) | USA | IP ng pag-access, Info ng browser, Request URL | Hanggang 30 araw |
-| Resend Inc. | Pagpapadala ng email | USA | Email address, Mga rekord ng pagpapadala | 30 araw mula sa pagpapadala |
-| Lemon Squeezy LLC | Pagpoproseso ng pagbabayad | USA | Email, Info ng pagbabayad, Mga rekord ng transaksyon | Ayon sa mga naaangkop na batas |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Artikulo 5 (Pagsira ng Personal na Impormasyon)
 

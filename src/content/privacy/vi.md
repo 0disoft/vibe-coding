@@ -39,11 +39,7 @@ Công ty về nguyên tắc không cung cấp thông tin cá nhân cho các bên
 
 Ngoài ra, Công ty ủy thác xử lý thông tin cá nhân cho các chuyên gia bên ngoài (bao gồm chuyển giao quốc tế) để vận hành dịch vụ như sau.
 
-| Đơn vị Xử lý | Mục đích | Quốc gia | Dữ liệu | Thời gian Lưu giữ |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Lưu trữ web và edge computing (Workers) | Hoa Kỳ | IP truy cập, Thông tin trình duyệt, URL yêu cầu | Tối đa 30 ngày |
-| Resend Inc. | Gửi email | Hoa Kỳ | Địa chỉ email, Hồ sơ gửi | 30 ngày từ khi gửi |
-| Lemon Squeezy LLC | Xử lý thanh toán | Hoa Kỳ | Email, Thông tin thanh toán, Hồ sơ giao dịch | Theo luật áp dụng |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Điều 5 (Tiêu hủy Thông tin Cá nhân)
 

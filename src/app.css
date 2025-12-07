@@ -400,8 +400,9 @@ code.hljs {
   border-left-color: oklch(var(--border));
 }
 
-.prose :where(code) {
-  /* 필요 시 주석 해제하여 활성화 */
-  /* color: oklch(var(--foreground)); */
-  /* background-color: oklch(var(--muted) / 0.3); */
+/* 개인정보처리방침 테이블 스타일 조정 */
+.prose table th:nth-child(3),
+.prose table td:nth-child(3) {
+  white-space: nowrap;
+  min-width: 60px;
 }

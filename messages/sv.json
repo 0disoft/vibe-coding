@@ -13,5 +13,22 @@
 	"footer_terms": "Användarvillkor",
 	"footer_privacy": "Integritetspolicy",
 	"footer_rights": "Alla rättigheter förbehållna.",
-	"home_get_started": "Kom igång"
+	"home_get_started": "Kom igång",
+	"privacy_table_processor": "Personuppgiftsbiträde",
+	"privacy_table_purpose": "Syfte",
+	"privacy_table_country": "Land",
+	"privacy_table_items": "Datapunkter",
+	"privacy_table_retention": "Lagringstid",
+	"privacy_processor_cloudflare_purpose": "Webbhotell och edge computing (Workers)",
+	"privacy_processor_cloudflare_country": "USA",
+	"privacy_processor_cloudflare_items": "Åtkomst-IP, webbläsarinfo, begäran-URL",
+	"privacy_processor_cloudflare_retention": "Upp till 30 dagar",
+	"privacy_processor_resend_purpose": "E-postleverans",
+	"privacy_processor_resend_country": "USA",
+	"privacy_processor_resend_items": "E-postadress, leveransloggar",
+	"privacy_processor_resend_retention": "30 dagar från leverans",
+	"privacy_processor_lemonsqueezy_purpose": "Betalningshantering",
+	"privacy_processor_lemonsqueezy_country": "USA",
+	"privacy_processor_lemonsqueezy_items": "E-post, betalningsinfo, transaktionshistorik",
+	"privacy_processor_lemonsqueezy_retention": "Enligt tillämpliga lagar"
 }

@@ -13,5 +13,22 @@
 	"footer_terms": "شروط الخدمة",
 	"footer_privacy": "سياسة الخصوصية",
 	"footer_rights": "جميع الحقوق محفوظة.",
-	"home_get_started": "ابدأ الآن"
+	"home_get_started": "ابدأ الآن",
+	"privacy_table_processor": "المعالج",
+	"privacy_table_purpose": "الغرض",
+	"privacy_table_country": "البلد",
+	"privacy_table_items": "عناصر البيانات",
+	"privacy_table_retention": "فترة الاحتفاظ",
+	"privacy_processor_cloudflare_purpose": "استضافة الويب والحوسبة الطرفية (Workers)",
+	"privacy_processor_cloudflare_country": "الولايات المتحدة",
+	"privacy_processor_cloudflare_items": "IP الوصول، معلومات المتصفح، عنوان URL للطلب",
+	"privacy_processor_cloudflare_retention": "حتى 30 يومًا",
+	"privacy_processor_resend_purpose": "توصيل البريد الإلكتروني",
+	"privacy_processor_resend_country": "الولايات المتحدة",
+	"privacy_processor_resend_items": "عنوان البريد الإلكتروني، سجلات التسليم",
+	"privacy_processor_resend_retention": "30 يومًا من التسليم",
+	"privacy_processor_lemonsqueezy_purpose": "معالجة المدفوعات",
+	"privacy_processor_lemonsqueezy_country": "الولايات المتحدة",
+	"privacy_processor_lemonsqueezy_items": "البريد الإلكتروني، معلومات الدفع، سجلات المعاملات",
+	"privacy_processor_lemonsqueezy_retention": "وفقًا للقوانين المعمول بها"
 }

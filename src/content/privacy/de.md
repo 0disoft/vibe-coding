@@ -39,11 +39,7 @@ Das Unternehmen gibt personenbezogene Daten grundsätzlich nicht an externe Part
 
 Darüber hinaus beauftragt das Unternehmen externe Spezialisten (einschließlich internationaler Übermittlung) mit der Verarbeitung personenbezogener Daten für den Betrieb des Dienstes wie folgt.
 
-| Verarbeiter | Zweck | Land | Daten | Aufbewahrungsdauer |
-|-----------|---------|---------|------------|------------------|
-| Cloudflare, Inc. | Webhosting und Edge Computing (Workers) | USA | Zugriffs-IP, Browserinfo, Anfrage-URL | Bis zu 30 Tage |
-| Resend Inc. | E-Mail-Versand | USA | E-Mail-Adresse, Versandprotokolle | 30 Tage nach Versand |
-| Lemon Squeezy LLC | Zahlungsabwicklung | USA | E-Mail, Zahlungsinfo, Transaktionsprotokolle | Gemäß geltenden Gesetzen |
+{{DATA_PROCESSORS_TABLE}}
 
 ## Artikel 5 (Vernichtung personenbezogener Daten)
 

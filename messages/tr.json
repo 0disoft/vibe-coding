@@ -13,5 +13,22 @@
 	"footer_terms": "Hizmet Şartları",
 	"footer_privacy": "Gizlilik Politikası",
 	"footer_rights": "Tüm hakları saklıdır.",
-	"home_get_started": "Başla"
+	"home_get_started": "Başla",
+	"privacy_table_processor": "İşleyici",
+	"privacy_table_purpose": "Amaç",
+	"privacy_table_country": "Ülke",
+	"privacy_table_items": "Veri Kalemleri",
+	"privacy_table_retention": "Saklama Süresi",
+	"privacy_processor_cloudflare_purpose": "Web barındırma ve sınır bilişim (Workers)",
+	"privacy_processor_cloudflare_country": "ABD",
+	"privacy_processor_cloudflare_items": "Erişim IP'si, Tarayıcı bilgisi, İstek URL'si",
+	"privacy_processor_cloudflare_retention": "30 güne kadar",
+	"privacy_processor_resend_purpose": "E-posta gönderimi",
+	"privacy_processor_resend_country": "ABD",
+	"privacy_processor_resend_items": "E-posta adresi, Teslimat kayıtları",
+	"privacy_processor_resend_retention": "Teslimattan itibaren 30 gün",
+	"privacy_processor_lemonsqueezy_purpose": "Ödeme işleme",
+	"privacy_processor_lemonsqueezy_country": "ABD",
+	"privacy_processor_lemonsqueezy_items": "E-posta, Ödeme bilgisi, İşlem kayıtları",
+	"privacy_processor_lemonsqueezy_retention": "İlgili yasalara göre"
 }

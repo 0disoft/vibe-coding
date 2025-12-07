@@ -9,28 +9,18 @@ export const siteConfig = {
     lastUpdated: '2025-12-07',
     cpoName: 'Sewon Lim (Founder & Engineer)',
     // 개인정보 수탁업체 (국외 이전 포함)
-    // Coolify, Umami, Chatwoot 등 self-hosted는 수탁업체 아님
     dataProcessors: [
       {
+        id: 'cloudflare',
         name: 'Cloudflare, Inc.',
-        purpose: '웹 호스팅 및 엣지 컴퓨팅 (Workers)',
-        country: '미국',
-        items: '접속 IP, 브라우저 정보, 요청 URL',
-        retention: '최대 30일',
       },
       {
+        id: 'resend',
         name: 'Resend Inc.',
-        purpose: '이메일 발송',
-        country: '미국',
-        items: '이메일 주소, 발송 내역',
-        retention: '발송일로부터 30일',
       },
       {
+        id: 'lemonsqueezy',
         name: 'Lemon Squeezy LLC',
-        purpose: '결제 처리',
-        country: '미국',
-        items: '이메일, 결제 정보, 거래 내역',
-        retention: '관계 법령에 따름',
       },
     ],
   },

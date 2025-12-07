@@ -13,5 +13,22 @@
 	"footer_terms": "सेवा की शर्तें",
 	"footer_privacy": "गोपनीयता नीति",
 	"footer_rights": "सर्वाधिकार सुरक्षित।",
-	"home_get_started": "शुरू करें"
+	"home_get_started": "शुरू करें",
+	"privacy_table_processor": "प्रोसेसर",
+	"privacy_table_purpose": "उद्देश्य",
+	"privacy_table_country": "देश",
+	"privacy_table_items": "डेटा आइटम",
+	"privacy_table_retention": "प्रतिधारण अवधि",
+	"privacy_processor_cloudflare_purpose": "वेब होस्टिंग और एज कंप्यूटिंग (Workers)",
+	"privacy_processor_cloudflare_country": "यूएसए",
+	"privacy_processor_cloudflare_items": "एक्सेस आईपी, ब्राउज़र जानकारी, अनुरोध यूआरएल",
+	"privacy_processor_cloudflare_retention": "30 दिनों तक",
+	"privacy_processor_resend_purpose": "ईमेल वितरण",
+	"privacy_processor_resend_country": "यूएसए",
+	"privacy_processor_resend_items": "ईमेल पता, वितरण रिकॉर्ड",
+	"privacy_processor_resend_retention": "वितरण से 30 दिन",
+	"privacy_processor_lemonsqueezy_purpose": "भुगतान प्रसंस्करण",
+	"privacy_processor_lemonsqueezy_country": "यूएसए",
+	"privacy_processor_lemonsqueezy_items": "ईमेल, भुगतान जानकारी, लेनदेन रिकॉर्ड",
+	"privacy_processor_lemonsqueezy_retention": "लागू कानूनों के अनुसार"
 }

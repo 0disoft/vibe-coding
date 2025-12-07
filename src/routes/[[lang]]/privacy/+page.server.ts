@@ -1,4 +1,5 @@
 import { siteConfig } from '$lib/config';
+import * as m from '$lib/paraglide/messages';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
 import { error } from '@sveltejs/kit';
 import fs from 'fs/promises';
@@ -15,6 +16,7 @@ export const load: PageServerLoad = async ({ url }) => {
   const lang = extractLocaleFromUrl(url.href) || 'en';
 
   // 마크다운 파일 경로 설정
+  // CWD가 프로젝트 루트라고 가정
   const contentDir = path.resolve('src/content/privacy');
   let filePath = path.join(contentDir, `${lang}.md`);
 
@@ -42,6 +44,34 @@ export const load: PageServerLoad = async ({ url }) => {
     .replace(/\{\{EMAIL\}\}/g, siteConfig.email)
     .replace(/\{\{CPO_NAME\}\}/g, siteConfig.policy.cpoName)
     .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(siteConfig.policy.lastUpdated)));
+
+  // 수탁업체 테이블 생성
+  const tableHeaders = `| ${m.privacy_table_processor({}, { locale: actualLang })} | ${m.privacy_table_purpose({}, { locale: actualLang })} | ${m.privacy_table_country({}, { locale: actualLang })} | ${m.privacy_table_items({}, { locale: actualLang })} | ${m.privacy_table_retention({}, { locale: actualLang })} |`;
+  const tableSeparator = '|---|---|---|---|---|';
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const tableRows = siteConfig.policy.dataProcessors.map((processor) => {
+    // ID를 기반으로 메시지 키 생성
+    const id = processor.id;
+    // 동적 키 접근을 위해 any로 캐스팅 (m은 모듈 네임스페이스)
+    const messages = m as any;
+
+    const purposeKey = `privacy_processor_${id}_purpose`;
+    const countryKey = `privacy_processor_${id}_country`;
+    const itemsKey = `privacy_processor_${id}_items`;
+    const retentionKey = `privacy_processor_${id}_retention`;
+
+    const purpose = typeof messages[purposeKey] === 'function' ? messages[purposeKey]({}, { locale: actualLang }) : '-';
+    const country = typeof messages[countryKey] === 'function' ? messages[countryKey]({}, { locale: actualLang }) : '-';
+    const items = typeof messages[itemsKey] === 'function' ? messages[itemsKey]({}, { locale: actualLang }) : '-';
+    const retention = typeof messages[retentionKey] === 'function' ? messages[retentionKey]({}, { locale: actualLang }) : '-';
+
+    return `| ${processor.name} | ${purpose} | ${country} | ${items} | ${retention} |`;
+  }).join('\n');
+
+  const processorsTable = `${tableHeaders}\n${tableSeparator}\n${tableRows}`;
+
+  markdown = markdown.replace(/\{\{DATA_PROCESSORS_TABLE\}\}/g, processorsTable);
 
   // 마크다운을 HTML로 변환
   const content = await marked(markdown);
