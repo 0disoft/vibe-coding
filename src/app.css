@@ -14,3 +14,5 @@
 @import './styles/syntax.css';
 /* .prose 마크다운 콘텐츠 */
 @import './styles/prose.css';
+/* View Transitions (페이지 전환 효과) */
+@import './styles/transitions.css';

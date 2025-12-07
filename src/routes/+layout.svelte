@@ -1,6 +1,7 @@
 <script lang="ts">
 	// 전역 CSS 및 UnoCSS 유틸리티
 	import { onMount } from 'svelte';
+	import { onNavigate } from '$app/navigation';
 	// app.css 보다 먼저 불러와야 함
 	import 'virtual:uno.css';
 	import '../app.css';
@@ -19,6 +20,18 @@
 	onMount(() => {
 		theme.init();
 		fontSize.init();
+	});
+
+	// View Transitions API 활성화 (부드러운 페이지 전환)
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
 	});
 
 	let isOfflinePage = $derived(page.url.pathname === '/offline' || page.url.pathname.endsWith('/offline'));

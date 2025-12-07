@@ -1,0 +1,67 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   View Transitions
+   페이지 전환 시 부드러운 애니메이션 효과
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 기본 페이지 전환 효과 (Crossfade) */
+::view-transition-old(root) {
+  animation: fade-out 0.15s ease-out forwards;
+}
+
+::view-transition-new(root) {
+  animation: fade-in 0.15s ease-in forwards;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* 슬라이드 효과 (선택적으로 사용) */
+/*
+::view-transition-old(root) {
+  animation: slide-to-left 0.2s ease-out forwards;
+}
+
+::view-transition-new(root) {
+  animation: slide-from-right 0.2s ease-in forwards;
+}
+
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+}
+*/
+
+/* 개별 요소 전환을 위한 클래스 (필요 시 사용) */
+.view-transition-hero {
+  view-transition-name: hero;
+}
+
+.view-transition-card {
+  view-transition-name: card;
+}
