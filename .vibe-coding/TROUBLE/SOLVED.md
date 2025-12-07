@@ -102,3 +102,19 @@ pnpm dlx sv create ./
 
   3. **재컴파일:** `vite.config.ts` 플러그인 순서 (`paraglide` -> `sveltekit`) 조정 후 재빌드.
 - **적용 시점:** 최신 Paraglide 라이브러리 연동 시 타입 오류가 발생할 때.
+
+### 2. localizeUrl() 반환 타입이 URL 객체라 href에 할당 불가
+
+- **증상:** `Type 'URL' is not assignable to type 'string'` 오류가 `<a href={localizeUrl('/')}>` 사용 시 발생.
+- **원인:** Paraglide의 `localizeUrl()` 함수가 `string`이 아닌 `URL` 객체를 반환함.
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  <a href={localizeUrl('/')}>Home</a>
+
+  <!-- After (해결) -->
+  <a href={localizeUrl('/').href}>Home</a>
+  ```
+
+- **적용 시점:** Paraglide `localizeUrl()`을 사용하여 다국어 링크를 생성할 때.
