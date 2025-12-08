@@ -91,6 +91,7 @@
 | `scrollbar.css` | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일) |
 | `syntax.css` | highlight.js 구문 강조 색상 테마 (라이트/다크) |
 | `prose.css` | .prose 마크다운 콘텐츠 타이포그래피 |
+| `transitions.css` | View Transitions API 기반 페이지 전환 효과 |
 
 ### src/lib/
 

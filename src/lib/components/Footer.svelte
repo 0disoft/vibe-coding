@@ -27,6 +27,11 @@
 				href={localizeUrl('/privacy').href}
 				class="hover:text-foreground hover:underline underline-offset-4">{m.footer_privacy()}</a
 			>
+			<a
+				href={localizeUrl('/cookie').href}
+				class="hover:text-foreground hover:underline underline-offset-4"
+				>{m.footer_cookie_policy()}</a
+			>
 		</nav>
 	</div>
 </footer>

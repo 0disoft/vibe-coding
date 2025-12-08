@@ -118,3 +118,29 @@ pnpm dlx sv create ./
   ```
 
 - **적용 시점:** Paraglide `localizeUrl()`을 사용하여 다국어 링크를 생성할 때.
+
+### 3. 옵션 파라미터 함수를 onclick 핸들러로 직접 전달 시 타입 에러
+
+- **증상:** `Type '(options?: { focusButton?: boolean; }) => void' is not assignable to type 'MouseEventHandler<HTMLAnchorElement>'.` 오류 발생.
+- **원인:** `onclick={myFunction}`처럼 함수를 직접 전달하면, 브라우저가 MouseEvent를 첫 번째 인자로 넘기는데, 함수 시그니처가 `(options?: {...})` 형태일 경우 타입 불일치 발생.
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  <a href="/profile" onclick={closeUserMenu}>Profile</a>
+
+  <!-- After (해결) - 화살표 함수로 래핑 -->
+  <a href="/profile" onclick={() => closeUserMenu()}>Profile</a>
+  ```
+
+- **원리:** 화살표 함수가 MouseEvent를 받아서 무시하고, 내부에서 인자 없이 함수를 호출하므로 타입이 일치함.
+- **적용 시점:** 옵션 파라미터를 가진 함수(예: `closeModal({ animate: true })`)를 이벤트 핸들러로 사용할 때.
+
+### 4. 접근성: role="menuitem"에서 aria-pressed 미지원 오류
+
+- **증상:** `The attribute 'aria-pressed' is not supported by the role 'menuitem'` 린트 에러 발생.
+- **원인:** ARIA 명세상 `menuitem` 역할은 토글 상태(`aria-pressed`)를 가질 수 없음.
+- **해결:**
+  - 다중 선택(체크박스) 성격: `role="menuitemcheckbox"` + `aria-checked`
+  - 단일 선택(라디오) 성격: `role="menuitemradio"` + `aria-checked`
+- **적용 시점:** 폰트 크기 선택, 테마 선택 등 메뉴 내에서 옵션을 선택하는 UI 구현 시.

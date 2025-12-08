@@ -9,19 +9,22 @@
 
 	let showUserMenu = $state(false);
 	let showEmail = $state(false);
-	let menuRef: HTMLDivElement | undefined = $state();
-	let buttonRef: HTMLButtonElement | undefined = $state();
+	let menuRef = $state<HTMLDivElement | null>(null);
+	let buttonRef = $state<HTMLButtonElement | null>(null);
 
 	// 닫기 로직 통합 헬퍼
-	function closeUserMenu() {
+	// focusButton: 키보드로 닫을 때만 버튼에 포커스 복귀 (마우스 클릭 시는 불필요)
+	function closeUserMenu(options?: { focusButton?: boolean }) {
 		if (!showUserMenu) return;
 		showUserMenu = false;
-		showEmail = false; // 모달 닫힐 때 이메일 마스킹 상태로 리셋 (방송인 프라이버시 보호)
-		buttonRef?.focus();
+		showEmail = false; // 메뉴 닫힐 때 이메일 마스킹 상태로 리셋 (방송인 프라이버시 보호)
+		if (options?.focusButton) {
+			buttonRef?.focus();
+		}
 	}
 
 	function toggleUserMenu() {
-		showUserMenu ? closeUserMenu() : (showUserMenu = true);
+		showUserMenu ? closeUserMenu({ focusButton: true }) : (showUserMenu = true);
 	}
 
 	function handleOutsideClick(event: MouseEvent) {
@@ -32,7 +35,7 @@
 			buttonRef &&
 			!buttonRef.contains(event.target as Node)
 		) {
-			closeUserMenu();
+			closeUserMenu(); // 마우스 클릭 닫기: 포커스 이동 없음
 		}
 	}
 
@@ -40,7 +43,7 @@
 	function handleKeyDown(event: KeyboardEvent) {
 		if (showUserMenu && event.key === 'Escape') {
 			event.stopPropagation();
-			closeUserMenu();
+			closeUserMenu({ focusButton: true }); // 키보드 닫기: 버튼에 포커스 복귀
 		}
 	}
 
@@ -62,9 +65,7 @@
 	function maskEmail(email: string): string {
 		const [local, domain] = email.split('@');
 		if (!domain) return '***';
-		const maskedLocal = local.length > 1 
-			? local[0] + '***' 
-			: '***';
+		const maskedLocal = local.length > 1 ? local[0] + '***' : '***';
 		return `${maskedLocal}@${domain}`;
 	}
 </script>
@@ -74,14 +75,16 @@
 <div class="relative">
 	<button
 		type="button"
+		id="user-menu-button"
 		bind:this={buttonRef}
 		onclick={toggleUserMenu}
 		class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-accent {isLoggedIn
 			? 'text-success'
 			: 'text-warning'}"
 		aria-label={m.user_menu()}
-		aria-haspopup="dialog"
+		aria-haspopup="menu"
 		aria-expanded={showUserMenu}
+		aria-controls="user-menu"
 	>
 		<span class="i-lucide-user h-4 w-4"></span>
 	</button>
@@ -89,11 +92,11 @@
 	<!-- 사용자 메뉴 드롭다운 -->
 	{#if showUserMenu}
 		<div
+			id="user-menu"
 			bind:this={menuRef}
-			class="absolute right-0 top-full z-50 mt-2 w-56 rounded-lg bg-popover p-2 shadow-lg thin-scrollbar"
-			role="dialog"
-			aria-modal="true"
-			aria-label={m.user_menu()}
+			class="absolute right-0 top-full z-50 mt-2 w-56 max-h-80 overflow-y-auto rounded-lg bg-popover p-2 shadow-lg thin-scrollbar"
+			role="menu"
+			aria-labelledby="user-menu-button"
 		>
 			{#if isLoggedIn && user}
 				<!-- 로그인 상태 메뉴 -->
@@ -105,7 +108,10 @@
 						</p>
 						<button
 							type="button"
-							onclick={(e) => { e.stopPropagation(); showEmail = !showEmail; }}
+							onclick={(e) => {
+								e.stopPropagation();
+								showEmail = !showEmail;
+							}}
 							class="inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
 							aria-label={showEmail ? '이메일 숨기기' : '이메일 보기'}
 						>
@@ -122,7 +128,8 @@
 					<a
 						href={localizeUrl('/profile').href}
 						class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
-						onclick={closeUserMenu}
+						role="menuitem"
+						onclick={() => closeUserMenu()}
 					>
 						<span class="i-lucide-user h-4 w-4"></span>
 						{m.menu_profile()}
@@ -130,18 +137,20 @@
 					<a
 						href={localizeUrl('/settings').href}
 						class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
-						onclick={closeUserMenu}
+						role="menuitem"
+						onclick={() => closeUserMenu()}
 					>
 						<span class="i-lucide-settings h-4 w-4"></span>
 						{m.menu_settings()}
 					</a>
-					
+
 					<div class="my-1 border-t border-border"></div>
-					
+
 					<button
 						type="button"
 						onclick={handleLogout}
 						class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm text-destructive transition-colors hover:bg-destructive/10"
+						role="menuitem"
 					>
 						<span class="i-lucide-log-out h-4 w-4"></span>
 						{m.menu_logout()}
@@ -153,7 +162,8 @@
 					<a
 						href={localizeUrl('/login').href}
 						class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
-						onclick={closeUserMenu}
+						role="menuitem"
+						onclick={() => closeUserMenu()}
 					>
 						<span class="i-lucide-log-in h-4 w-4"></span>
 						{m.menu_login()}
@@ -161,7 +171,8 @@
 					<a
 						href={localizeUrl('/signup').href}
 						class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm font-medium text-link transition-colors hover:bg-link/10"
-						onclick={closeUserMenu}
+						role="menuitem"
+						onclick={() => closeUserMenu()}
 					>
 						<span class="i-lucide-user-plus h-4 w-4"></span>
 						{m.menu_signup()}
@@ -169,17 +180,19 @@
 				</div>
 			{/if}
 
-			<!-- 개발용: 로그인 상태 토글 버튼 (나중에 제거) -->
-			<div class="mt-2 pt-2 border-t border-border">
-				<button
-					type="button"
-					onclick={toggleLoginState}
-					class="inline-flex h-8 w-full items-center justify-center gap-2 px-2 rounded-md text-xs text-muted-foreground transition-colors hover:bg-accent"
-				>
-					<span class="i-lucide-bug h-3 w-3"></span>
-					DEV: Toggle Login State
-				</button>
-			</div>
+			<!-- 개발용: 로그인 상태 토글 버튼 (프로덕션에서는 표시되지 않음) -->
+			{#if import.meta.env.DEV}
+				<div class="mt-2 pt-2 border-t border-border">
+					<button
+						type="button"
+						onclick={toggleLoginState}
+						class="inline-flex h-8 w-full items-center justify-center gap-2 px-2 rounded-md text-xs text-muted-foreground transition-colors hover:bg-accent"
+					>
+						<span class="i-lucide-bug h-3 w-3"></span>
+						DEV: Toggle Login State
+					</button>
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>

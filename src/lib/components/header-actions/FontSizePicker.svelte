@@ -2,23 +2,25 @@
 	import { fontSize, type FontSize } from '$lib/font-size.svelte';
 
 	let showFontSizeModal = $state(false);
-	let modalRef: HTMLDivElement | undefined = $state();
-	let buttonRef: HTMLButtonElement | undefined = $state();
+	let modalRef = $state<HTMLDivElement | null>(null);
+	let buttonRef = $state<HTMLButtonElement | null>(null);
 
 	// 닫기 로직 통합 헬퍼
-	function closeFontSizeModal() {
+	function closeFontSizeModal(options?: { focusButton?: boolean }) {
 		if (!showFontSizeModal) return;
 		showFontSizeModal = false;
-		buttonRef?.focus(); // 항상 포커스 복귀
+		if (options?.focusButton) {
+			buttonRef?.focus();
+		}
 	}
 
 	function toggleFontSizeModal() {
-		showFontSizeModal ? closeFontSizeModal() : (showFontSizeModal = true);
+		showFontSizeModal ? closeFontSizeModal({ focusButton: true }) : (showFontSizeModal = true);
 	}
 
 	function selectFontSize(level: FontSize) {
 		fontSize.set(level);
-		closeFontSizeModal();
+		closeFontSizeModal({ focusButton: true }); // 선택 후 모달 닫힘 -> 버튼 포커스 복귀
 	}
 
 	function handleOutsideClick(event: MouseEvent) {
@@ -29,7 +31,7 @@
 			buttonRef &&
 			!buttonRef.contains(event.target as Node)
 		) {
-			closeFontSizeModal();
+			closeFontSizeModal(); // 마우스 클릭 닫기: 포커스 이동 없음
 		}
 	}
 
@@ -37,7 +39,7 @@
 	function handleKeyDown(event: KeyboardEvent) {
 		if (showFontSizeModal && event.key === 'Escape') {
 			event.stopPropagation(); // 다른 ESC 핸들러로 전파 방지
-			closeFontSizeModal();
+			closeFontSizeModal({ focusButton: true });
 		}
 	}
 </script>
@@ -47,12 +49,14 @@
 <div class="relative">
 	<button
 		type="button"
+		id="font-size-menu-button"
 		bind:this={buttonRef}
 		onclick={toggleFontSizeModal}
 		class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 		aria-label="글자 크기 변경"
 		aria-haspopup="dialog"
 		aria-expanded={showFontSizeModal}
+		aria-controls="font-size-menu"
 	>
 		<span class="i-lucide-type h-4 w-4"></span>
 	</button>
@@ -60,11 +64,11 @@
 	<!-- 폰트 크기 모달 -->
 	{#if showFontSizeModal}
 		<div
+			id="font-size-menu"
 			bind:this={modalRef}
 			class="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg bg-popover p-2 shadow-lg"
-			role="dialog"
-			aria-modal="true"
-			aria-label="글자 크기 선택"
+			role="menu"
+			aria-labelledby="font-size-menu-button"
 		>
 			<div class="mb-2 px-2 text-xs font-medium text-muted-foreground">
 				글자 크기 (현재: {fontSize.current})
@@ -78,7 +82,8 @@
 						level
 							? 'bg-primary text-primary-foreground'
 							: 'hover:bg-accent hover:text-accent-foreground'}"
-						aria-pressed={fontSize.current === level}
+						aria-checked={fontSize.current === level}
+						role="menuitemradio"
 					>
 						{level}
 					</button>

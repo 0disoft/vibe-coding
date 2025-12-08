@@ -55,18 +55,20 @@
 	}
 
 	let showLanguageModal = $state(false);
-	let modalRef: HTMLDivElement | undefined = $state();
-	let buttonRef: HTMLButtonElement | undefined = $state();
+	let modalRef = $state<HTMLDivElement | null>(null);
+	let buttonRef = $state<HTMLButtonElement | null>(null);
 
 	// 닫기 로직 통합 헬퍼
-	function closeLanguageModal() {
+	function closeLanguageModal(options?: { focusButton?: boolean }) {
 		if (!showLanguageModal) return;
 		showLanguageModal = false;
-		buttonRef?.focus(); // 항상 포커스 복귀
+		if (options?.focusButton) {
+			buttonRef?.focus();
+		}
 	}
 
 	function toggleLanguageModal() {
-		showLanguageModal ? closeLanguageModal() : (showLanguageModal = true);
+		showLanguageModal ? closeLanguageModal({ focusButton: true }) : (showLanguageModal = true);
 	}
 
 	function handleOutsideClick(event: MouseEvent) {
@@ -95,12 +97,14 @@
 <div class="relative">
 	<button
 		type="button"
+		id="language-menu-button"
 		bind:this={buttonRef}
 		onclick={toggleLanguageModal}
 		class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 		aria-label="언어 변경"
 		aria-haspopup="dialog"
 		aria-expanded={showLanguageModal}
+		aria-controls="language-menu"
 	>
 		<span class="i-lucide-languages h-4 w-4"></span>
 	</button>
@@ -108,11 +112,11 @@
 	<!-- 언어 선택 모달 -->
 	{#if showLanguageModal}
 		<div
+			id="language-menu"
 			bind:this={modalRef}
 			class="absolute right-0 top-full z-50 mt-2 w-36 rounded-lg bg-popover p-2 shadow-lg"
-			role="dialog"
-			aria-modal="true"
-			aria-label="언어 선택"
+			role="menu"
+			aria-labelledby="language-menu-button"
 		>
 			<div class="grid gap-1 max-h-[300px] overflow-y-auto thin-scrollbar">
 				{#each availableLanguageTags as lang}
@@ -123,9 +127,10 @@
 							? 'bg-primary text-primary-foreground'
 							: 'hover:bg-accent hover:text-accent-foreground'}"
 						data-sveltekit-reload
-						onclick={closeLanguageModal}
+						onclick={() => closeLanguageModal()}
 						aria-current={lang === currentLang ? 'page' : undefined}
 						hreflang={lang}
+						role="menuitem"
 					>
 						{getLanguageName(lang)}
 					</a>

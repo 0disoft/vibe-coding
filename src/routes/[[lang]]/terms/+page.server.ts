@@ -41,7 +41,7 @@ export const load: PageServerLoad = async ({ url }) => {
     .replace(/\{\{SITE_NAME\}\}/g, siteConfig.name)
     .replace(/\{\{EMAIL\}\}/g, siteConfig.email)
     .replace(/\{\{CPO_NAME\}\}/g, siteConfig.policy.cpoName)
-    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(siteConfig.policy.lastUpdated)));
+    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(siteConfig.policy.effectiveDate.terms)));
 
   // 마크다운을 HTML로 변환
   const content = await marked(markdown);

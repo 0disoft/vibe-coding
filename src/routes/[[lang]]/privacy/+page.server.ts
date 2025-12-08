@@ -43,7 +43,7 @@ export const load: PageServerLoad = async ({ url }) => {
     .replace(/\{\{SITE_NAME\}\}/g, siteConfig.name)
     .replace(/\{\{EMAIL\}\}/g, siteConfig.email)
     .replace(/\{\{CPO_NAME\}\}/g, siteConfig.policy.cpoName)
-    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(siteConfig.policy.lastUpdated)));
+    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(siteConfig.policy.effectiveDate.privacy)));
 
   // 수탁업체 테이블 생성
   const tableHeaders = `| ${m.privacy_table_processor({}, { locale: actualLang })} | ${m.privacy_table_purpose({}, { locale: actualLang })} | ${m.privacy_table_country({}, { locale: actualLang })} | ${m.privacy_table_items({}, { locale: actualLang })} | ${m.privacy_table_retention({}, { locale: actualLang })} |`;
