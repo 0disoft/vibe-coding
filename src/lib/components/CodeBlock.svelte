@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import hljs from 'highlight.js/lib/core';
 
 	// 지원 언어 목록
@@ -13,8 +12,8 @@
 		rust: ['rust', 'rs'],
 		json: ['json'],
 		yaml: ['yaml', 'yml'],
-		toml: ['toml'],
-		markdown: ['markdown', 'md'],
+		ini: ['ini', 'toml'], // TOML은 INI 하이라이터로 처리
+		markdown: ['markdown', 'md']
 	};
 
 	// 언어 import 맵
@@ -28,8 +27,8 @@
 		rust: () => import('highlight.js/lib/languages/rust'),
 		json: () => import('highlight.js/lib/languages/json'),
 		yaml: () => import('highlight.js/lib/languages/yaml'),
-		toml: () => import('highlight.js/lib/languages/ini'), // TOML은 INI 하이라이터 사용
-		markdown: () => import('highlight.js/lib/languages/markdown'),
+		ini: () => import('highlight.js/lib/languages/ini'),
+		markdown: () => import('highlight.js/lib/languages/markdown')
 	};
 
 	// 이미 등록된 언어 추적
@@ -46,11 +45,10 @@
 	let codeElement: HTMLElement | undefined = $state();
 
 	async function copyCode() {
-		if (codeElement) {
-			await navigator.clipboard.writeText(codeElement.textContent || '');
-			copied = true;
-			setTimeout(() => (copied = false), 2000);
-		}
+		// hljs가 DOM을 변경해도 원본 코드를 복사할 수 있도록 code prop 직접 사용
+		await navigator.clipboard.writeText(code);
+		copied = true;
+		setTimeout(() => (copied = false), 2000);
 	}
 
 	// 언어 이름 정규화 (예: 'ts' -> 'typescript', 'html' -> 'xml')
@@ -98,10 +96,25 @@
 		}
 	}
 
-	onMount(async () => {
+	// code 또는 language prop 변경 시 자동 재하이라이트 (Svelte 5 runes)
+	$effect(() => {
+		// 의존성 추적을 위해 참조
+		const currentCode = code;
+		const currentLang = language;
+
 		if (codeElement) {
-			await loadLanguage(language);
-			hljs.highlightElement(codeElement);
+			// hljs가 DOM을 <span>으로 변환한 상태에서 prop이 바뀌면 Svelte와 충돌 가능
+			// 따라서 하이라이트 전에 DOM을 원본 텍스트로 리셋
+			codeElement.textContent = currentCode;
+			// hljs는 이 속성으로 중복 하이라이트를 방지하므로 재하이라이트 시 제거
+			codeElement.removeAttribute('data-highlighted');
+
+			loadLanguage(currentLang).then(() => {
+				// 비동기 로딩 중 코드가 바뀌었을 수 있으므로 체크
+				if (codeElement && codeElement.textContent === currentCode) {
+					hljs.highlightElement(codeElement);
+				}
+			});
 		}
 	});
 </script>

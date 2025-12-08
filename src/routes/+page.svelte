@@ -1,32 +1,53 @@
 <script lang="ts">
-	import { siteConfig } from '$lib/config';
-	import * as m from '$lib/paraglide/messages.js';
+	import CodeBlock from '$lib/components/CodeBlock.svelte';
+
+	// TOML 코드 예시
+	const tomlCode = `[package]
+name = "my-app"
+version = "1.0.0"
+edition = "2024"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "1", features = ["full"] }
+
+[dev-dependencies]
+pretty_assertions = "1.4"`;
+
+	// TypeScript 코드 예시
+	const tsCode = `interface User {
+  id: number;
+  name: string;
+  email: string;
+  createdAt: Date;
+}
+
+async function fetchUser(id: number): Promise<User> {
+  const response = await fetch(\`/api/users/\${id}\`);
+  if (!response.ok) {
+    throw new Error('User not found');
+  }
+  return response.json();
+}
+
+const user = await fetchUser(123);
+console.log(user.name);`;
 </script>
 
-<div class="container flex flex-col items-center justify-center gap-4 py-24 text-center md:py-32">
-	<div class="space-y-4">
-		<h1 class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-			{siteConfig.name}
-		</h1>
-		<p class="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl">
-			{siteConfig.description}
-		</p>
-	</div>
+<div class="container py-12">
+	<h1 class="mb-8 text-center text-3xl font-bold">CodeBlock 테스트</h1>
 
-	<div class="flex gap-4">
-		<a
-			href="/docs"
-			class="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-		>
-			{m.home_get_started()}
-		</a>
-		<a
-			href={siteConfig.links.github}
-			target="_blank"
-			rel="noreferrer"
-			class="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-		>
-			GitHub
-		</a>
+	<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+		<!-- TOML 예시 (왼쪽) -->
+		<div>
+			<h2 class="mb-4 text-xl font-semibold">TOML</h2>
+			<CodeBlock code={tomlCode} language="toml" />
+		</div>
+
+		<!-- TypeScript 예시 (오른쪽) -->
+		<div>
+			<h2 class="mb-4 text-xl font-semibold">TypeScript</h2>
+			<CodeBlock code={tsCode} language="typescript" />
+		</div>
 	</div>
 </div>
