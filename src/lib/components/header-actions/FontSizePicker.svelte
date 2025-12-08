@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fontSize, type FontSize } from '$lib/font-size.svelte';
+	import { fontSize, type FontSize } from '$lib/stores';
 
 	let showFontSizeModal = $state(false);
 	let modalRef = $state<HTMLDivElement | null>(null);

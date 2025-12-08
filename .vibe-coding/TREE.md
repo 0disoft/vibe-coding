@@ -20,19 +20,34 @@
     ├── hooks.ts
     ├── hooks.client.ts
     ├── hooks.server.ts
+    ├── service-worker.ts
+    ├── content/                   # 콘텐츠 디렉토리 (Markdown 등)
+    ├── scripts/                   # 빌드 스크립트
     ├── styles/
     │   ├── tokens.css
     │   ├── base.css
     │   ├── scrollbar.css
     │   ├── prose.css
     │   └── transitions.css
+    ├── routes/                    # SvelteKit 페이지 라우트
     └── lib/
         ├── index.ts
-        ├── config.ts
-        ├── theme.svelte.ts
-        ├── font-size.svelte.ts
+        ├── constants/
+        │   ├── index.ts
+        │   ├── cookies.ts
+        │   ├── site.ts
+        │   └── policy.ts
         ├── stores/
-        │   └── persisted-state.svelte.ts
+        │   ├── index.ts
+        │   ├── persisted-state.svelte.ts
+        │   ├── theme.svelte.ts
+        │   └── font-size.svelte.ts
+        ├── paraglide/             # Paraglide 자동 생성 파일
+        │   ├── messages.js
+        │   ├── messages/          # 언어별 메시지 파일
+        │   ├── registry.js
+        │   ├── runtime.js
+        │   └── server.js
         ├── components/
         │   ├── CodeBlock.svelte
         │   ├── Footer.svelte
@@ -40,11 +55,10 @@
         │   ├── header-actions/
         │   │   ├── FontSizePicker.svelte
         │   │   ├── LanguagePicker.svelte
-        │   │   └── ThemeToggle.svelte
+        │   │   ├── ThemeToggle.svelte
+        │   │   └── UserMenu.svelte
         │   └── ui/
         │       └── index.ts
-        ├── prefs/
-        │   └── constants.ts
         └── types/
             └── index.ts
 ```
@@ -81,6 +95,7 @@
 | `hooks.ts` | locale 프리픽스 제거 reroute 훅 |
 | `hooks.client.ts` | 클라이언트 전용 훅 (브라우저 API, 분석 등) |
 | `hooks.server.ts` | 서버 훅 (테마 쿠키 주입, Paraglide 미들웨어) |
+| `service-worker.ts` | PWA 서비스 워커 (캐싱, 오프라인 지원) |
 
 ### src/styles/
 
@@ -96,17 +111,22 @@
 
 | 파일 | 역할 |
 |---|---|
-| `config.ts` | 사이트 전역 설정 상수 (이름, 설명, 링크 등) |
-| `index.ts` | $lib 배럴 export (런타임 코드용) |
-| `theme.svelte.ts` | 라이트/다크 테마 상태 관리, FOUC 방지 |
-| `font-size.svelte.ts` | 글자 크기 1~9단계 관리 |
+| `index.ts` | $lib 배럴 export (스토어, 상수 통합) |
+| `constants/index.ts` | 상수 배럴 export |
+| `constants/cookies.ts` | 쿠키 키 상수 (THEME_COOKIE, FONT_SIZE_COOKIE) |
+| `constants/site.ts` | 사이트 기본 정보 (name, description, email, links) |
+| `constants/policy.ts` | 정책 설정 (effectiveDate, cpoName, dataProcessors) |
+| `stores/index.ts` | 스토어 배럴 export |
 | `stores/persisted-state.svelte.ts` | 쿠키+DOM 동기화 퍼시스턴스 스토어 팩토리 |
+| `stores/theme.svelte.ts` | 라이트/다크 테마 상태 관리, FOUC 방지 |
+| `stores/font-size.svelte.ts` | 글자 크기 1~9단계 관리 |
+| `paraglide/` | Paraglide 자동 생성 폴더 (messages, runtime, registry, server) |
 | `components/CodeBlock.svelte` | Shiki 기반 코드 하이라이팅 + 복사 버튼 컴포넌트 |
 | `components/Header.svelte` | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯) |
+| `components/Footer.svelte` | 공통 푸터 컴포넌트 (카피라이트, 약관 링크) |
 | `components/header-actions/ThemeToggle.svelte` | 테마 토글 버튼 |
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달 |
 | `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달 |
-| `components/Footer.svelte` | 공통 푸터 컴포넌트 (카피라이트, 약관 링크) |
+| `components/header-actions/UserMenu.svelte` | 사용자 메뉴 (프로필, 로그인/로그아웃) |
 | `components/ui/index.ts` | UI 컴포넌트 배럴 파일 |
-| `prefs/constants.ts` | 쿠키 키 등 프리퍼런스 상수 |
 | `types/index.ts` | 타입 배럴 export ($lib/types용) |

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { siteConfig } from '$lib/config';
+	import { site } from '$lib/constants';
 	import type { PageData } from './$types';
 
 	// 서버에서 로드된 HTML 컨텐츠
@@ -8,13 +8,13 @@
 
 <svelte:head>
 	<title>
-		{data.lang === 'ko' ? '개인정보처리방침' : 'Privacy Policy'} | {siteConfig.name}
+		{data.lang === 'ko' ? '개인정보처리방침' : 'Privacy Policy'} | {site.name}
 	</title>
 	<meta
 		name="description"
 		content={data.lang === 'ko'
-			? `${siteConfig.name} 서비스 개인정보처리방침`
-			: `${siteConfig.name} Privacy Policy`}
+			? `${site.name} 서비스 개인정보처리방침`
+			: `${site.name} Privacy Policy`}
 	/>
 </svelte:head>
 

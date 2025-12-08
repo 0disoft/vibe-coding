@@ -1,4 +1,4 @@
-import { siteConfig } from '$lib/config';
+import { policy, site } from '$lib/constants';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
 import { error } from '@sveltejs/kit';
 import fs from 'fs/promises';
@@ -38,10 +38,10 @@ export const load: PageServerLoad = async ({ url }) => {
 
   // 템플릿 변수 치환
   markdown = markdown
-    .replace(/\{\{SITE_NAME\}\}/g, siteConfig.name)
-    .replace(/\{\{EMAIL\}\}/g, siteConfig.email)
-    .replace(/\{\{CPO_NAME\}\}/g, siteConfig.policy.cpoName)
-    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(siteConfig.policy.effectiveDate.terms)));
+    .replace(/\{\{SITE_NAME\}\}/g, site.name)
+    .replace(/\{\{EMAIL\}\}/g, site.email)
+    .replace(/\{\{CPO_NAME\}\}/g, policy.cpoName)
+    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(policy.effectiveDate.terms)));
 
   // 마크다운을 HTML로 변환
   const content = await marked(markdown);
@@ -52,3 +52,4 @@ export const load: PageServerLoad = async ({ url }) => {
     isFallback: actualLang !== lang
   };
 };
+

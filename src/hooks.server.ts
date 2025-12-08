@@ -13,17 +13,17 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
+import { FONT_SIZE_COOKIE, THEME_COOKIE } from '$lib/constants';
 import { paraglideMiddleware } from '$lib/paraglide/server';
-import { FONT_SIZE_COOKIE, THEME_COOKIE } from '$lib/prefs/constants';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 
 // 1. 테마/폰트 크기 처리 핸들러
 // 쿠키를 확인하여 HTML에 data-theme, data-font-size 속성을 주입하는 역할을 합니다.
 const handleThemeAndFont: Handle = async ({ event, resolve }) => {
-	const rawTheme = event.cookies.get(THEME_COOKIE);
-	const theme = rawTheme === 'light' || rawTheme === 'dark' ? rawTheme : null;
-	const fontSize = event.cookies.get(FONT_SIZE_COOKIE); // 기대값: '1' ~ '9'
+  const rawTheme = event.cookies.get(THEME_COOKIE);
+  const theme = rawTheme === 'light' || rawTheme === 'dark' ? rawTheme : null;
+  const fontSize = event.cookies.get(FONT_SIZE_COOKIE); // 기대값: '1' ~ '9'
 
   // resolve 함수는 페이지 렌더링을 계속 진행시킵니다.
   // transformPageChunk를 이용해 HTML이 브라우저로 전송되기 직전에 수정합니다.
@@ -46,13 +46,13 @@ const handleThemeAndFont: Handle = async ({ event, resolve }) => {
 // 2. 다국어 처리 핸들러 (기존 코드 유지)
 // 언어 설정에 따라 HTML의 lang 속성을 변경하고 라우팅을 제어합니다.
 const handleParaglide: Handle = ({ event, resolve }) =>
-	paraglideMiddleware(event.request, ({ request, locale }) => {
-		event.request = request;
+  paraglideMiddleware(event.request, ({ request, locale }) => {
+    event.request = request;
 
-		return resolve(event, {
-			transformPageChunk: ({ html }) => html.replace('%paraglide.lang%', locale)
-		});
-	});
+    return resolve(event, {
+      transformPageChunk: ({ html }) => html.replace('%paraglide.lang%', locale)
+    });
+  });
 
 // 3. Accept-Language 기반 lang 보정
 // 기본 로케일이 en이라도 한국어 브라우저이면 lang="ko"로 교체하여 Pretendard 적용 범위가 작동하게 함

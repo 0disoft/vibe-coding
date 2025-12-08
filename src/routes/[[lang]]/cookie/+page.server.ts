@@ -1,4 +1,4 @@
-import { siteConfig } from '$lib/config';
+import { policy, site } from '$lib/constants';
 import * as m from '$lib/paraglide/messages.js';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
 import { setLocale } from '$lib/paraglide/runtime.js';
@@ -41,10 +41,10 @@ export const load: PageServerLoad = async ({ url }) => {
     throw error(500, 'Failed to load content');
   }
 
-  // 제3자 서비스 목록 생성 (config.ts 기반 동적 생성)
+  // 제3자 서비스 목록 생성 (policy 기반 동적 생성)
   let thirdPartyServicesHtml = '';
-  if (siteConfig.policy.cookieServices) {
-    const categories = siteConfig.policy.cookieServices;
+  if (policy.cookieServices) {
+    const categories = policy.cookieServices;
 
     // 카테고리별 메시지 키 매핑
     const categoryTitles: Record<string, () => string> = {
@@ -64,7 +64,7 @@ export const load: PageServerLoad = async ({ url }) => {
       const title = categoryTitles[category] ? categoryTitles[category]() : category;
       const description = categoryDescriptions[category] ? categoryDescriptions[category]() : '';
       const services = serviceIds.map(id => {
-        const processor = siteConfig.policy.dataProcessors.find(p => p.id === id);
+        const processor = policy.dataProcessors.find(p => p.id === id);
         return processor ? processor.name : id;
       }).join(', ');
 
@@ -74,10 +74,10 @@ export const load: PageServerLoad = async ({ url }) => {
 
   // 템플릿 변수 치환
   markdown = markdown
-    .replace(/\{\{SITE_NAME\}\}/g, siteConfig.name)
-    .replace(/\{\{EMAIL\}\}/g, siteConfig.email)
-    .replace(/\{\{CPO_NAME\}\}/g, siteConfig.policy.cpoName)
-    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(siteConfig.policy.effectiveDate.cookie)))
+    .replace(/\{\{SITE_NAME\}\}/g, site.name)
+    .replace(/\{\{EMAIL\}\}/g, site.email)
+    .replace(/\{\{CPO_NAME\}\}/g, policy.cpoName)
+    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(policy.effectiveDate.cookie)))
     .replace(/\{\{THIRD_PARTY_SERVICES\}\}/g, thirdPartyServicesHtml);
 
   // 마크다운을 HTML로 변환
@@ -89,3 +89,4 @@ export const load: PageServerLoad = async ({ url }) => {
     isFallback: actualLang !== lang
   };
 };
+

@@ -3,8 +3,8 @@
 // 2) 테마 토글 버튼에서는 theme.toggle() 또는 theme.set('light' | 'dark')만 사용한다.
 // 3) theme.current를 직접 바꾸지 말고 항상 set, toggle을 거친다.
 
-import { createPersistedState } from '$lib/stores/persisted-state.svelte';
-import { THEME_COOKIE } from '$lib/prefs/constants';
+import { THEME_COOKIE } from '$lib/constants';
+import { createPersistedState } from './persisted-state.svelte';
 
 type Theme = 'light' | 'dark';
 

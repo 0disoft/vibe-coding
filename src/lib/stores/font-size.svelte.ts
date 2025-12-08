@@ -1,5 +1,5 @@
-import { FONT_SIZE_COOKIE } from '$lib/prefs/constants';
-import { createPersistedState } from '$lib/stores/persisted-state.svelte';
+import { FONT_SIZE_COOKIE } from '$lib/constants';
+import { createPersistedState } from './persisted-state.svelte';
 
 export type FontSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 

@@ -1,4 +1,4 @@
-import { siteConfig } from '$lib/config';
+import { policy, site } from '$lib/constants';
 import * as m from '$lib/paraglide/messages';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
 import { error } from '@sveltejs/kit';
@@ -40,17 +40,17 @@ export const load: PageServerLoad = async ({ url }) => {
 
   // 템플릿 변수 치환
   markdown = markdown
-    .replace(/\{\{SITE_NAME\}\}/g, siteConfig.name)
-    .replace(/\{\{EMAIL\}\}/g, siteConfig.email)
-    .replace(/\{\{CPO_NAME\}\}/g, siteConfig.policy.cpoName)
-    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(siteConfig.policy.effectiveDate.privacy)));
+    .replace(/\{\{SITE_NAME\}\}/g, site.name)
+    .replace(/\{\{EMAIL\}\}/g, site.email)
+    .replace(/\{\{CPO_NAME\}\}/g, policy.cpoName)
+    .replace(/\{\{LAST_UPDATED\}\}/g, new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(new Date(policy.effectiveDate.privacy)));
 
   // 수탁업체 테이블 생성
   const tableHeaders = `| ${m.privacy_table_processor({}, { locale: actualLang })} | ${m.privacy_table_purpose({}, { locale: actualLang })} | ${m.privacy_table_country({}, { locale: actualLang })} | ${m.privacy_table_items({}, { locale: actualLang })} | ${m.privacy_table_retention({}, { locale: actualLang })} |`;
   const tableSeparator = '|---|---|---|---|---|';
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const tableRows = siteConfig.policy.dataProcessors.map((processor) => {
+  const tableRows = policy.dataProcessors.map((processor) => {
     // ID를 기반으로 메시지 키 생성
     const id = processor.id;
     // 동적 키 접근을 위해 any로 캐스팅 (m은 모듈 네임스페이스)
@@ -82,3 +82,4 @@ export const load: PageServerLoad = async ({ url }) => {
     isFallback: actualLang !== lang
   };
 };
+

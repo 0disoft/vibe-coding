@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { siteConfig } from '$lib/config';
+	import { site } from '$lib/constants';
 	import type { PageData } from './$types';
 
 	// 서버에서 로드된 HTML 컨텐츠
@@ -8,13 +8,11 @@
 
 <svelte:head>
 	<title>
-		{data.lang === 'ko' ? '쿠키 정책' : 'Cookie Policy'} | {siteConfig.name}
+		{data.lang === 'ko' ? '쿠키 정책' : 'Cookie Policy'} | {site.name}
 	</title>
 	<meta
 		name="description"
-		content={data.lang === 'ko'
-			? `${siteConfig.name} 쿠키 정책`
-			: `${siteConfig.name} Cookie Policy`}
+		content={data.lang === 'ko' ? `${site.name} 쿠키 정책` : `${site.name} Cookie Policy`}
 	/>
 </svelte:head>
 

@@ -1,18 +1,18 @@
 <script lang="ts">
 	// 전역 CSS 및 UnoCSS 유틸리티
-	import { onMount } from 'svelte';
 	import { onNavigate } from '$app/navigation';
+	import { onMount } from 'svelte';
 	// app.css 보다 먼저 불러와야 함
 	import 'virtual:uno.css';
 	import '../app.css';
 	// 전역 테마 스토어
-	import { fontSize } from '$lib/font-size.svelte';
-	import { theme } from '$lib/theme.svelte';
+	import { fontSize, theme } from '$lib/stores';
+	// 사이트 설정
+	import { site } from '$lib/constants';
 	// 공통 레이아웃 컴포넌트
-	import Header from '$lib/components/Header.svelte';
-	import Footer from '$lib/components/Footer.svelte';
-	import { siteConfig } from '$lib/config';
 	import { page } from '$app/state';
+	import Footer from '$lib/components/Footer.svelte';
+	import Header from '$lib/components/Header.svelte';
 
 	let { children } = $props();
 
@@ -34,13 +34,15 @@
 		});
 	});
 
-	let isOfflinePage = $derived(page.url.pathname === '/offline' || page.url.pathname.endsWith('/offline'));
+	let isOfflinePage = $derived(
+		page.url.pathname === '/offline' || page.url.pathname.endsWith('/offline')
+	);
 </script>
 
 <svelte:head>
 	<link rel="icon" href="/favicon.svg" />
-	<title>{siteConfig.name}</title>
-	<meta name="description" content={siteConfig.description} />
+	<title>{site.name}</title>
+	<meta name="description" content={site.description} />
 </svelte:head>
 
 <!-- 
@@ -49,11 +51,11 @@
 -->
 <div class="flex min-h-screen flex-col bg-background font-sans antialiased text-foreground">
 	{#if !isOfflinePage}
-		<Header siteName={siteConfig.name} />
+		<Header siteName={site.name} />
 		<main class="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10">
 			{@render children()}
 		</main>
-		<Footer siteName={siteConfig.name} />
+		<Footer siteName={site.name} />
 	{:else}
 		{@render children()}
 	{/if}
