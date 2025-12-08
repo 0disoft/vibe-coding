@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# Cookie- en Vergelijkbare Technologieënbeleid
 
-Last Updated: {{LAST_UPDATED}}
+Laatst bijgewerkt: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+Dit beleid maakt **deel uit van het Privacybeleid** van {{SITE_NAME}} (hierna te noemen het "Bedrijf"). Om een snellere en gemakkelijkere website-ervaring te bieden en onze diensten te verbeteren, gebruikt het Bedrijf cookies en vergelijkbare technologieën.
 
-## 1. What are Cookies and Web Storage?
+## 1. Wat zijn cookies en webopslag?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+Cookies zijn kleine tekstbestanden die via uw browser op uw apparaat worden opgeslagen wanneer u een website bezoekt. Informatie die in cookies is opgeslagen, wordt naar de server verzonden wanneer u de website opnieuw bezoekt om u te identificeren of uw instellingen te behouden.
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+Webopslag (localStorage, sessionStorage, enz.) daarentegen is een technologie die gegevens binnen de browser opslaat. Deze gegevens worden niet automatisch opgenomen in HTTP-verzoeken en worden alleen naar de server verzonden als het Bedrijf deze expliciet via script leest en verzendt. Omdat het een grotere capaciteit heeft dan cookies en niet bij elk netwerkverzoek wordt verzonden, wordt het voornamelijk gebruikt voor het opslaan van weergave-instellingen of tijdelijke gegevens.
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+Zowel cookies als webopslag zijn technologieën die informatie op het apparaat van de gebruiker opslaan, en in sommige rechtsgebieden zijn ze onderworpen aan dezelfde beschermingsregels onder de relevante wetgeving.
 
-## 2. Types and Purposes
+## 2. Typen en Doeleinden
 
-We use the following technologies to perform essential functions and enhance convenience:
+Wij gebruiken de volgende technologieën om essentiële functies uit te voeren en het gemak te vergroten:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. Essentiële cookies en opslag
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+Deze zijn strikt noodzakelijk voor de kernfuncties van de website. Zonder deze technologieën kunnen basisdiensten zoals het behouden van de inlogstatus, paginanavigatie en het verwerken van betalingen niet worden gebruikt.
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- Voorbeelden: Onderhoud van inlogsessies (Cookies), Beveiligingsauthenticatietokens
+- Bewaarvoorbeeld: De meeste worden verwijderd wanneer de browser wordt gesloten of worden gedurende een beperkte periode bewaard die nodig is voor een veilige werking van de dienst. Specifieke bewaartermijnen worden gedetailleerd beschreven in het Privacybeleid.
 
-### 2.2. Functional & Performance Cookies
+### 2.2. Functionele & Prestatiecookies
 
-Used to remember your preferences or optimize website performance.
+Gebruikt om uw voorkeuren te onthouden of de websiteprestaties te optimaliseren.
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- Voorbeelden: Instellingen voor donkere of lichte modus (Lokale opslag), Taalinstellingen weergeven
+- Bewaarvoorbeeld: Kan blijven bestaan totdat de gebruiker ze handmatig uit de browser verwijdert.
 
 ### 2.3. Marketing & Analytics Cookies
 
-Used to analyze user interests or provide personalized advertisements.
+Gebruikt om gebruikersinteresses te analyseren of gepersonaliseerde advertenties te leveren.
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- Huidige status: Wij gebruiken geen marketing- of trackingcookies om gebruikersgedrag te volgen of individuele gebruikersprofielen aan te maken.
+- Principe: Als wij in de toekomst analysetools of advertentieplatforms (bijv. Google Ads) introduceren, beloven wij niet-essentiële cookies alleen te activeren na het verkrijgen van voorafgaande toestemming van de gebruiker in overeenstemming met de toepasselijke wetgeving.
 
-## 3. Third-Party Service Partners
+## 3. Externe servicepartners
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+Wij gebruiken professionele externe oplossingen voor een stabiele werking van de dienst. Tijdens dit proces kunnen cookies of vergelijkbare technologieën die door derden worden geleverd, op uw apparaat worden opgeslagen.
 
-**List of Major Partners**
+**Lijst van belangrijke partners**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+De soorten persoonsgegevens die worden verwerkt, bewaartermijnen en internationale overdrachtsgegevens door elke externe dienstverlener zijn onderworpen aan hun respectieve privacybeleid. Raadpleeg voor meer details ons Privacybeleid en het beleid van elke dienstverlener.
 
-## 4. Managing and Refusing Cookies
+## 4. Cookies beheren en weigeren
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+U heeft het recht om te kiezen of u cookies accepteert. U kunt cookies weigeren of verwijderen via uw webbrowserinstellingen.
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: Instellingen > Privacy en beveiliging > Cookies van derden blokkeren
+- Safari: Voorkeuren > Privacy > Blokkeer alle cookies
+- Edge: Instellingen > Cookies en sitemachtigingen > Cookies en sitegegevens beheren en verwijderen
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**Opmerking:** Als u essentiële cookies weigert, wordt u mogelijk uitgelogd of kunt u betalingen niet correct verwerken.
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+In regio's met versterkte gegevensrechten zoals de EU worden afzonderlijke toestemmingsprocedures toegepast voor niet-essentiële cookies. Voor gebruikers in dergelijke regio's gebruiken wij niet-essentiële cookies alleen op basis van voorafgaande toestemming binnen de reikwijdte die vereist is door de relevante wetgeving.
 
-## 5. Contact Us
+## 5. Neem contact met ons op
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+Als u vragen of opmerkingen heeft over ons Cookiebeleid, neem dan gerust contact met ons op via:
 
-- Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- E-mail: {{EMAIL}}
+- Functionaris voor Gegevensbescherming (FG): {{CPO_NAME}}

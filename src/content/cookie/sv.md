@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# Policy för kakor och liknande tekniker
 
-Last Updated: {{LAST_UPDATED}}
+Senast uppdaterad: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+Denna policy är **en del av Integritetspolicyn** för {{SITE_NAME}} (hädanefter kallat "Företaget"). För att tillhandahålla en snabbare och bekvämare webbplatsupplevelse och för att förbättra våra tjänster, använder Företaget kakor (cookies) och liknande tekniker.
 
-## 1. What are Cookies and Web Storage?
+## 1. Vad är kakor och webblagring?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+Kakor är små textfiler som lagras på din enhet via din webbläsare när du besöker en webbplats. Information som lagras i kakor skickas till servern när du besöker webbplatsen igen för att identifiera dig eller behålla dina inställningar.
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+Webblagring (localStorage, sessionStorage, etc.), däremot, är en teknik som lagrar data i webbläsaren. Dessa data inkluderas inte automatiskt i HTTP-förfrågningar och överförs endast till servern om Företaget uttryckligen läser dem via skript och skickar dem. Eftersom det har en större kapacitet än kakor och inte skickas med varje nätverksförfrågan, används det främst för att lagra visningsinställningar eller tillfälliga data.
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+Både kakor och webblagring är tekniker som lagrar information på användarens enhet, och i vissa jurisdiktioner omfattas de av samma skyddsregler enligt relevanta lagar.
 
-## 2. Types and Purposes
+## 2. Typer och syften
 
-We use the following technologies to perform essential functions and enhance convenience:
+Vi använder följande tekniker för att utföra väsentliga funktioner och förbättra bekvämligheten:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. Nödvändiga kakor och lagring
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+Dessa är absolut nödvändiga för webbplatsens kärnfunktioner. Utan dessa tekniker kan grundläggande tjänster som att upprätthålla inloggningsstatus, sidnavigering och betalningshantering inte användas.
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- Exempel: Underhåll av inloggningssession (Kakor), Säkerhetsautentiseringstokens
+- Lagringsexempel: De flesta raderas när webbläsaren stängs eller behålls under en begränsad period som är nödvändig för säker tjänstdrift. Specifika lagringsperioder beskrivs i Integritetspolicyn.
 
-### 2.2. Functional & Performance Cookies
+### 2.2. Funktionella & Prestandakakor
 
-Used to remember your preferences or optimize website performance.
+Används för att komma ihåg dina preferenser eller optimera webbplatsens prestanda.
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- Exempel: Inställningar för mörkt eller ljust läge (Lokal lagring), Inställningar för visningsspråk
+- Lagringsexempel: Kan finnas kvar tills användaren manuellt tar bort dem från webbläsaren.
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. Marknadsförings- & Analyskakor
 
-Used to analyze user interests or provide personalized advertisements.
+Används för att analysera användarintressen eller tillhandahålla personanpassade annonser.
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- Nuvarande status: Vi använder inte marknadsförings- eller spårningskakor för att spåra användarbeteende eller skapa individuella användarprofiler.
+- Princip: Om vi i framtiden introducerar analysverktyg eller annonsplattformar (t.ex. Google Ads), lovar vi att aktivera icke-nödvändiga kakor endast efter att ha inhämtat föregående användarsamtycke i enlighet med tillämpliga lagar.
 
-## 3. Third-Party Service Partners
+## 3. Tredjeparts tjänstepartners
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+Vi använder professionella externa lösningar för stabil drift av tjänsten. Under denna process kan kakor eller liknande tekniker som tillhandahålls av tredje part lagras på din enhet.
 
-**List of Major Partners**
+**Lista över större partners**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+Vilka typer av personuppgifter som behandlas, lagringsperioder och detaljer om internationell överföring av varje tredjeparts tjänsteleverantör omfattas av deras respektive integritetspolicyer. För mer information, se vår Integritetspolicy och varje tjänsteleverantörs policyer.
 
-## 4. Managing and Refusing Cookies
+## 4. Hantera och neka kakor
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+Du har rätt att välja om du vill acceptera kakor. Du kan neka eller radera kakor via inställningarna i din webbläsare.
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: Inställningar > Integritet och säkerhet > Blockera kakor från tredje part
+- Safari: Inställningar > Integritet > Blockera alla kakor
+- Edge: Inställningar > Cookies och webbplatsbehörigheter > Hantera och ta bort cookies och webbplatsdata
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**Obs:** Om du nekar nödvändiga kakor kan du bli utloggad eller inte kunna genomföra betalningar korrekt.
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+I regioner med stärkta datarättigheter som EU tillämpas separata samtyckesförfaranden för icke-nödvändiga kakor. För användare i sådana regioner använder vi icke-nödvändiga kakor endast baserat på föregående samtycke inom den omfattning som krävs av relevanta lagar.
 
-## 5. Contact Us
+## 5. Kontakta oss
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+Om du har några frågor eller kommentarer angående vår Kakpolicy, är du välkommen att kontakta oss på:
 
-- Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- E-post: {{EMAIL}}
+- Dataskyddsombud (DPO): {{CPO_NAME}}

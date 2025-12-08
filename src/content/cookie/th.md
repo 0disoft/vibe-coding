@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# นโยบายคุกกี้และเทคโนโลยีที่คล้ายคลึงกัน
 
-Last Updated: {{LAST_UPDATED}}
+อัปเดตล่าสุด: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+นโยบายนี้เป็น **ส่วนหนึ่งของนโยบายความเป็นส่วนตัว** ของ {{SITE_NAME}} (ซึ่งต่อไปนี้เรียกว่า "บริษัท") เพื่อมอบประสบการณ์เว็บไซต์ที่รวดเร็วและสะดวกยิ่งขึ้น และเพื่อปรับปรุงบริการของเรา บริษัทใช้คุกกี้และเทคโนโลยีที่คล้ายคลึงกัน
 
-## 1. What are Cookies and Web Storage?
+## 1. คุกกี้และ Web Storage คืออะไร?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+คุกกี้คือไฟล์ข้อความขนาดเล็กที่จัดเก็บไว้ในอุปกรณ์ของคุณผ่านเบราว์เซอร์เมื่อคุณเยี่ยมชมเว็บไซต์ ข้อมูลที่เก็บไว้ในคุกกี้จะถูกส่งไปยังเซิร์ฟเวอร์เมื่อคุณกลับมาที่เว็บไซต์อีกครั้งเพื่อระบุตัวตนของคุณหรือคงการตั้งค่าของคุณไว้
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+ในทางตรงกันข้าม Web Storage (localStorage, sessionStorage ฯลฯ) เป็นเทคโนโลยีที่จัดเก็บข้อมูลภายในเบราว์เซอร์ ข้อมูลนี้จะไม่รวมอยู่ในคำขอ HTTP โดยอัตโนมัติ และจะถูกส่งไปยังเซิร์ฟเวอร์ก็ต่อเมื่อบริษัทอ่านข้อมูลดังกล่าวผ่านสคริปต์และส่งไปเท่านั้น เนื่องจากมีความจุมากกว่าคุกกี้และไม่ได้ถูกส่งไปพร้อมกับทุกคำขอของเครือข่าย จึงใช้สำหรับจัดเก็บการตั้งค่าการแสดงผลหรือข้อมูลชั่วคราวเป็นหลัก
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+ทั้งคุกกี้และ Web Storage เป็นเทคโนโลยีที่จัดเก็บข้อมูลบนอุปกรณ์ของผู้ใช้ และในเขตอำนาจศาลบางแห่ง เทคโนโลยีเหล่านี้อยู่ภายใต้กฎการคุ้มครองเดียวกันตามกฎหมายที่เกี่ยวข้อง
 
-## 2. Types and Purposes
+## 2. ประเภทและวัตถุประสงค์
 
-We use the following technologies to perform essential functions and enhance convenience:
+เราใช้เทคโนโลยีต่อไปนี้เพื่อทำหน้าที่สำคัญและเพิ่มความสะดวกสบาย:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. คุกกี้และการจัดเก็บที่จำเป็น
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+สิ่งเหล่านี้จำเป็นอย่างยิ่งสำหรับฟังก์ชันหลักของเว็บไซต์ หากไม่มีเทคโนโลยีเหล่านี้ จะไม่สามารถใช้บริการพื้นฐาน เช่น การคงสถานะการเข้าสู่ระบบ การนำทางหน้าเว็บ และการประมวลผลการชำระเงินได้
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- ตัวอย่าง: การบำรุงรักษาเซสชันการเข้าสู่ระบบ (คุกกี้), โทเค็นการตรวจสอบความปลอดภัย
+- ตัวอย่างการเก็บรักษา: ส่วนใหญ่จะถูกลบเมื่อปิดเบราว์เซอร์หรือเก็บรักษาไว้นานเท่าที่จำเป็นสำหรับการดำเนินงานบริการที่ปลอดภัย ระยะเวลาการเก็บรักษาเฉพาะได้ระบุไว้ในนโยบายความเป็นส่วนตัว
 
-### 2.2. Functional & Performance Cookies
+### 2.2. คุกกี้เพื่อการทำงานและประสิทธิภาพ
 
-Used to remember your preferences or optimize website performance.
+ใช้เพื่อจดจำการตั้งค่าของคุณหรือปรับปรุงประสิทธิภาพของเว็บไซต์
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- ตัวอย่าง: การตั้งค่าโหมดมืดหรือโหมดสว่าง (Local Storage), การตั้งค่าภาษาที่แสดง
+- ตัวอย่างการเก็บรักษา: อาจคงอยู่จนกว่าผู้ใช้จะลบออกจากเบราว์เซอร์ด้วยตนเอง
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. คุกกี้เพื่อการตลาดและการวิเคราะห์
 
-Used to analyze user interests or provide personalized advertisements.
+ใช้เพื่อวิเคราะห์ความสนใจของผู้ใช้หรือแสดงโฆษณาที่ปรับให้เหมาะกับบุคคล
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- สถานะปัจจุบัน: เราไม่ใช้คุกกี้เพื่อการตลาดหรือการกำหนดเป้าหมายเพื่อติดตามพฤติกรรมของผู้ใช้หรือสร้างโปรไฟล์ผู้ใช้รายบุคคล
+- หลักการ: หากเราแนะนำเครื่องมือวิเคราะห์หรือแพลตฟอร์มโฆษณา (เช่น Google Ads) ในอนาคต เราสัญญาว่าจะเปิดใช้งานคุกกี้ที่ไม่จำเป็นก็ต่อเมื่อได้รับความยินยอมจากผู้ใช้ล่วงหน้าตามกฎหมายที่บังคับใช้
 
-## 3. Third-Party Service Partners
+## 3. พันธมิตรบริการบุคคลที่สาม
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+เราใช้โซลูชันภายนอกระดับมืออาชีพเพื่อการดำเนินงานบริการที่เสถียร ในระหว่างกระบวนการนี้ คุกกี้หรือเทคโนโลยีที่คล้ายคลึงกันที่ให้บริการโดยบุคคลที่สามอาจถูกจัดเก็บไว้ในอุปกรณ์ของคุณ
 
-**List of Major Partners**
+**รายชื่อพันธมิตรหลัก**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+ประเภทของข้อมูลส่วนบุคคลที่ประมวลผล ระยะเวลาการเก็บรักษา และรายละเอียดการโอนย้ายระหว่างประเทศโดยผู้ให้บริการบุคคลที่สามแต่ละรายจะอยู่ภายใต้นโยบายความเป็นส่วนตัวของแต่ละราย สำหรับรายละเอียดเพิ่มเติม โปรดดูนโยบายความเป็นส่วนตัวของเราและนโยบายของผู้ให้บริการแต่ละราย
 
-## 4. Managing and Refusing Cookies
+## 4. การจัดการและการปฏิเสธคุกกี้
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+คุณมีสิทธิ์เลือกว่าจะยอมรับคุกกี้หรือไม่ คุณสามารถปฏิเสธหรือลบคุกกี้ผ่านการตั้งค่าเว็บเบราว์เซอร์ของคุณ
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: การตั้งค่า > ความเป็นส่วนตัวและความปลอดภัย > บล็อกคุกกี้ของบุคคลที่สาม
+- Safari: การตั้งค่า > ความเป็นส่วนตัว > บล็อกคุกกี้ทั้งหมด
+- Edge: การตั้งค่า > คุกกี้และสิทธิ์ของไซต์ > จัดการและลบคุกกี้และข้อมูลไซต์
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**หมายเหตุ:** หากคุณปฏิเสธคุกกี้ที่จำเป็น คุณอาจออกจากระบบหรือไม่สามารถประมวลผลการชำระเงินได้อย่างถูกต้อง
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+ในภูมิภาคที่มีสิทธิ์ในข้อมูลที่เข้มงวด เช่น สหภาพยุโรป จะมีการใช้ขั้นตอนการยินยอมแยกต่างหากสำหรับคุกกี้ที่ไม่จำเป็น สำหรับผู้ใช้ในภูมิภาคดังกล่าว เราใช้คุกกี้ที่ไม่จำเป็นตามความยินยอมล่วงหน้าภายในขอบเขตที่กฎหมายที่เกี่ยวข้องกำหนดเท่านั้น
 
-## 5. Contact Us
+## 5. ติดต่อเรา
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+หากคุณมีคำถามหรือข้อเสนอแนะเกี่ยวกับนโยบายคุกกี้ของเรา โปรดติดต่อเราได้ที่:
 
-- Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- อีเมล: {{EMAIL}}
+- เจ้าหน้าที่คุ้มครองข้อมูล (CPO): {{CPO_NAME}}

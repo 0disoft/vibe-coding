@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# कुकी और समान तकनीक नीति
 
-Last Updated: {{LAST_UPDATED}}
+अंतिम अद्यतन: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+यह नीति {{SITE_NAME}} (इसके बाद "कंपनी" के रूप में संदर्भित) की **गोपनीयता नीति का हिस्सा** है। एक तेज़ और अधिक सुविधाजनक वेबसाइट अनुभव प्रदान करने और अपनी सेवाओं में सुधार करने के लिए, कंपनी कुकीज़ और समान तकनीकों का उपयोग करती है।
 
-## 1. What are Cookies and Web Storage?
+## 1. कुकीज़ और वेब स्टोरेज क्या हैं?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+कुकीज़ छोटी टेक्स्ट फ़ाइलें होती हैं जो आपके ब्राउज़र के माध्यम से आपके डिवाइस पर तब संग्रहीत की जाती हैं जब आप किसी वेबसाइट पर जाते हैं। कुकीज़ में संग्रहीत जानकारी सर्वर को भेजी जाती है जब आप आपकी पहचान करने या अपनी सेटिंग्स बनाए रखने के लिए वेबसाइट पर दोबारा जाते हैं।
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+इसके विपरीत, वेब स्टोरेज (localStorage, sessionStorage, आदि) एक ऐसी तकनीक है जो ब्राउज़र के भीतर डेटा संग्रहीत करती है। यह डेटा स्वचालित रूप से HTTP अनुरोधों में शामिल नहीं होता है और केवल तभी सर्वर को प्रेषित किया जाता है यदि कंपनी इसे स्पष्ट रूप से स्क्रिप्ट के माध्यम से पढ़ती है और भेजती है। चूंकि इसमें कुकीज़ की तुलना में बड़ी क्षमता होती है और यह हर नेटवर्क अनुरोध के साथ नहीं भेजा जाता है, इसलिए इसका उपयोग मुख्य रूप से डिस्प्ले सेटिंग्स या अस्थायी डेटा को संग्रहीत करने के लिए किया जाता है।
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+कुकीज़ और वेब स्टोरेज दोनों ऐसी तकनीकें हैं जो उपयोगकर्ता के डिवाइस पर जानकारी संग्रहीत करती हैं, और कुछ न्यायालयों में, वे प्रासंगिक कानूनों के तहत समान सुरक्षा नियमों के अधीन हैं।
 
-## 2. Types and Purposes
+## 2. प्रकार और उद्देश्य
 
-We use the following technologies to perform essential functions and enhance convenience:
+हम आवश्यक कार्यों को करने और सुविधा बढ़ाने के लिए निम्नलिखित तकनीकों का उपयोग करते हैं:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. आवश्यक कुकीज़ और स्टोरेज
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+ये वेबसाइट के मुख्य कार्यों के लिए अत्यंत आवश्यक हैं। इन तकनीकों के बिना, लॉगिन स्थिति बनाए रखना, पृष्ठ नेविगेशन और भुगतान संसाधित करने जैसी बुनियादी सेवाओं का उपयोग नहीं किया जा सकता है।
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- उदाहरण: लॉगिन सत्र रखरखाव (कुकीज़), सुरक्षा प्रमाणीकरण टोकन
+- प्रतिधारण उदाहरण: अधिकांश तब हटा दिए जाते हैं जब ब्राउज़र बंद हो जाता है या सुरक्षित सेवा संचालन के लिए आवश्यक सीमित अवधि के लिए बनाए रखा जाता है। विशिष्ट प्रतिधारण अवधि गोपनीयता नीति में विस्तृत हैं।
 
-### 2.2. Functional & Performance Cookies
+### 2.2. कार्यात्मक और प्रदर्शन कुकीज़
 
-Used to remember your preferences or optimize website performance.
+आपकी प्राथमिकताओं को याद रखने या वेबसाइट के प्रदर्शन को अनुकूलित करने के लिए उपयोग किया जाता है।
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- उदाहरण: डार्क मोड या लाइट मोड सेटिंग्स (स्थानीय स्टोरेज), डिस्प्ले भाषा सेटिंग्स
+- प्रतिधारण उदाहरण: तब तक रह सकते हैं जब तक कि उपयोगकर्ता उन्हें ब्राउज़र से मैन्युअल रूप से हटा नहीं देता।
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. विपणन और विश्लेषिकी कुकीज़
 
-Used to analyze user interests or provide personalized advertisements.
+उपयोगकर्ता की रुचियों का विश्लेषण करने या व्यक्तिगत विज्ञापन प्रदान करने के लिए उपयोग किया जाता है।
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- वर्तमान स्थिति: हम उपयोगकर्ता के व्यवहार को ट्रैक करने या व्यक्तिगत उपयोगकर्ता प्रोफ़ाइल बनाने के लिए विपणन या लक्ष्यीकरण कुकीज़ का उपयोग नहीं करते हैं।
+- सिद्धांत: यदि हम भविष्य में एनालिटिक्स टूल या विज्ञापन प्लेटफ़ॉर्म (जैसे, Google Ads) पेश करते हैं, तो हम लागू कानूनों के अनुसार पूर्व उपयोगकर्ता सहमति प्राप्त करने के बाद ही गैर-आवश्यक कुकीज़ को सक्रिय करने का वादा करते हैं।
 
-## 3. Third-Party Service Partners
+## 3. तृतीय-पक्ष सेवा भागीदार
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+हम स्थिर सेवा संचालन के लिए पेशेवर बाहरी समाधानों का उपयोग करते हैं। इस प्रक्रिया के दौरान, तीसरे पक्ष द्वारा प्रदान की गई कुकीज़ या समान तकनीकें आपके डिवाइस पर संग्रहीत की जा सकती हैं।
 
-**List of Major Partners**
+**प्रमुख भागीदारों की सूची**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+प्रत्येक तृतीय-पक्ष सेवा प्रदाता द्वारा संसाधित व्यक्तिगत डेटा के प्रकार, प्रतिधारण अवधि और अंतर्राष्ट्रीय हस्तांतरण विवरण उनकी संबंधित गोपनीयता नीतियों के अधीन हैं। अधिक विवरण के लिए, कृपया हमारी गोपनीयता नीति और प्रत्येक सेवा प्रदाता की नीतियों को देखें।
 
-## 4. Managing and Refusing Cookies
+## 4. कुकीज़ का प्रबंधन और अस्वीकार करना
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+आपके पास यह चुनने का अधिकार है कि कुकीज़ को स्वीकार करना है या नहीं। आप अपने वेब ब्राउज़र सेटिंग्स के माध्यम से कुकीज़ को अस्वीकार या हटा सकते हैं।
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: सेटिंग्स > गोपनीयता और सुरक्षा > तृतीय-पक्ष कुकीज़ को ब्लॉक करें
+- Safari: प्राथमिकताएं > गोपनीयता > सभी कुकीज़ को ब्लॉक करें
+- Edge: सेटिंग्स > कुकीज़ और साइट अनुमतियाँ > कुकीज़ और साइट डेटा को प्रबंधित और हटाएँ
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**नोट:** यदि आप आवश्यक कुकीज़ को अस्वीकार करते हैं, तो आप लॉग आउट हो सकते हैं या भुगतान को ठीक से संसाधित करने में असमर्थ हो सकते हैं।
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+यूरोपीय संघ जैसे डेटा अधिकारों वाले क्षेत्रों में, गैर-आवश्यक कुकीज़ के लिए अलग सहमति प्रक्रियाएं लागू की जाती हैं। ऐसे क्षेत्रों के उपयोगकर्ताओं के लिए, हम प्रासंगिक कानूनों द्वारा अपेक्षित दायरे के भीतर पूर्व सहमति के आधार पर ही गैर-आवश्यक कुकीज़ का उपयोग करते हैं।
 
-## 5. Contact Us
+## 5. हमसे संपर्क करें
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+यदि हमारी कुकी नीति के संबंध में आपके कोई प्रश्न या सुझाव हैं, तो कृपया हमसे बेझिझक संपर्क करें:
 
-- Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- ईमेल: {{EMAIL}}
+- डेटा सुरक्षा अधिकारी (CPO): {{CPO_NAME}}

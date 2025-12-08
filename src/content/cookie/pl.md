@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# Polityka plików cookie i podobnych technologii
 
-Last Updated: {{LAST_UPDATED}}
+Ostatnia aktualizacja: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+Niniejsza polityka stanowi **część Polityki Prywatności** serwisu {{SITE_NAME}} (zwanego dalej "Firmą"). Aby zapewnić szybsze i wygodniejsze korzystanie ze strony internetowej oraz ulepszać nasze usługi, Firma wykorzystuje pliki cookie i podobne technologie.
 
-## 1. What are Cookies and Web Storage?
+## 1. Czym są pliki cookie i pamięć internetowa (Web Storage)?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+Pliki cookie to małe pliki tekstowe zapisywane na Twoim urządzeniu przez przeglądarkę podczas odwiedzania strony internetowej. Informacje przechowywane w plikach cookie są wysyłane do serwera podczas ponownych odwiedzin witryny w celu identyfikacji użytkownika lub zachowania jego ustawień.
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+W przeciwieństwie do nich, pamięć internetowa (localStorage, sessionStorage itp.) to technologia przechowująca dane wewnątrz przeglądarki. Dane te nie są automatycznie dołączane do żądań HTTP i są przesyłane na serwer tylko wtedy, gdy Firma odczyta je wyraźnie za pomocą skryptu i wyśle. Ponieważ ma większą pojemność niż pliki cookie i nie jest wysyłana z każdym żądaniem sieciowym, jest używana głównie do przechowywania ustawień wyświetlania lub danych tymczasowych.
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+Zarówno pliki cookie, jak i pamięć internetowa to technologie przechowujące informacje na urządzeniu użytkownika i w niektórych jurysdykcjach podlegają tym samym zasadom ochrony na mocy odpowiednich przepisów prawa.
 
-## 2. Types and Purposes
+## 2. Rodzaje i cele
 
-We use the following technologies to perform essential functions and enhance convenience:
+Używamy następujących technologii do wykonywania podstawowych funkcji i zwiększania wygody:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. Niezbędne pliki cookie i pamięć
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+Są one ściśle niezbędne do działania podstawowych funkcji witryny. Bez tych technologii nie można korzystać z podstawowych usług, takich jak utrzymywanie statusu logowania, nawigacja po stronach i przetwarzanie płatności.
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- Przykłady: Utrzymanie sesji logowania (Cookie), Tokeny uwierzytelniania bezpieczeństwa
+- Przykład przechowywania: Większość jest usuwana po zamknięciu przeglądarki lub przechowywana przez ograniczony czas niezbędny do bezpiecznego działania usługi. Szczegółowe okresy przechowywania opisano w Polityce Prywatności.
 
-### 2.2. Functional & Performance Cookies
+### 2.2. Pliki cookie funkcjonalne i wydajnościowe
 
-Used to remember your preferences or optimize website performance.
+Używane do zapamiętywania preferencji użytkownika lub optymalizacji wydajności witryny.
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- Przykłady: Ustawienia trybu ciemnego lub jasnego (Pamięć lokalna), Ustawienia języka wyświetlania
+- Przykład przechowywania: Mogą pozostać do momentu ręcznego usunięcia ich przez użytkownika z przeglądarki.
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. Pliki cookie marketingowe i analityczne
 
-Used to analyze user interests or provide personalized advertisements.
+Używane do analizowania zainteresowań użytkowników lub dostarczania spersonalizowanych reklam.
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- Obecny status: Nie używamy plików cookie marketingowych ani targetujących do śledzenia zachowań użytkowników ani tworzenia indywidualnych profili użytkowników.
+- Zasada: Jeśli w przyszłości wprowadzimy narzędzia analityczne lub platformy reklamowe (np. Google Ads), obiecujemy aktywować nieistotne pliki cookie tylko po uzyskaniu uprzedniej zgody użytkownika zgodnie z obowiązującym prawem.
 
-## 3. Third-Party Service Partners
+## 3. Partnerzy serwisowi stron trzecich
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+Korzystamy z profesjonalnych rozwiązań zewnętrznych w celu stabilnego działania usługi. Podczas tego procesu pliki cookie lub podobne technologie dostarczane przez strony trzecie mogą być przechowywane na Twoim urządzeniu.
 
-**List of Major Partners**
+**Lista głównych partnerów**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+Rodzaje przetwarzanych danych osobowych, okresy przechowywania i szczegóły dotyczące międzynarodowego transferu przez każdego zewnętrznego dostawcę usług podlegają ich odpowiednim politykom prywatności. Więcej szczegółów można znaleźć w naszej Polityce Prywatności i politykach poszczególnych dostawców usług.
 
-## 4. Managing and Refusing Cookies
+## 4. Zarządzanie i odrzucanie plików cookie
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+Masz prawo wybrać, czy akceptujesz pliki cookie. Możesz odrzucić lub usunąć pliki cookie za pomocą ustawień przeglądarki internetowej.
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: Ustawienia > Prywatność i bezpieczeństwo > Blokuj pliki cookie innych firm
+- Safari: Preferencje > Prywatność > Blokuj wszystkie pliki cookie
+- Edge: Ustawienia > Pliki cookie i uprawnienia witryny > Zarządzaj i usuwaj pliki cookie i dane witryn
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**Uwaga:** Jeśli odrzucisz niezbędne pliki cookie, możesz zostać wylogowany lub nie być w stanie poprawnie przetwarzać płatności.
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+W regionach o wzmocnionych prawach do danych, takich jak UE, stosowane są oddzielne procedury zgody dla nieistotnych plików cookie. W przypadku użytkowników w takich regionach używamy nieistotnych plików cookie wyłącznie na podstawie uprzedniej zgody w zakresie wymaganym przez odpowiednie przepisy prawa.
 
-## 5. Contact Us
+## 5. Skontaktuj się z nami
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+Jeśli masz jakiekolwiek pytania lub uwagi dotyczące naszej Polityki plików cookie, skontaktuj się z nami pod adresem:
 
-- Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- E-mail: {{EMAIL}}
+- Inspektor Ochrony Danych (IOD): {{CPO_NAME}}

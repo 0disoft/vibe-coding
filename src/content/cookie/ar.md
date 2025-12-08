@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# سياسة ملفات تعريف الارتباط والتقنيات المماثلة
 
-Last Updated: {{LAST_UPDATED}}
+آخر تحديث: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+تعتبر هذه السياسة **جزءًا من سياسة الخصوصية** الخاصة بـ {{SITE_NAME}} (يشار إليها فيما بعد بـ "الشركة"). لتوفير تجربة موقع ويب أسرع وأكثر ملاءمة ولتحسين خدماتنا، تستخدم الشركة ملفات تعريف الارتباط والتقنيات المماثلة.
 
-## 1. What are Cookies and Web Storage?
+## 1. ما هي ملفات تعريف الارتباط والتخزين على الويب؟
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+ملفات تعريف الارتباط هي ملفات نصية صغيرة يتم تخزينها على جهازك عبر متصفحك عند زيارة موقع ويب. يتم إرسال المعلومات المخزنة في ملفات تعريف الارتباط إلى الخادم عند زيارة الموقع مرة أخرى للتعرف عليك أو الحفاظ على إعداداتك.
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+في المقابل، يعد التخزين على الويب (localStorage، sessionStorage، إلخ) تقنية لتخزين البيانات داخل المتصفح. لا يتم تضمين هذه البيانات تلقائيًا في طلبات HTTP ويتم نقلها فقط إلى الخادم إذا قامت الشركة بقراءتها صراحةً عبر برنامج نصي وإرسالها. نظرًا لأن سعتها أكبر من ملفات تعريف الارتباط ولا يتم إرسالها مع كل طلب شبكة، فهي تستخدم بشكل أساسي لتخزين إعدادات العرض أو البيانات المؤقتة.
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+تعد كل من ملفات تعريف الارتباط والتخزين على الويب تقنيات تخزن المعلومات على جهاز المستخدم، وفي بعض الولايات القضائية، تخضع لنفس قواعد الحماية بموجب القوانين ذات الصلة.
 
-## 2. Types and Purposes
+## 2. الأنواع والأغراض
 
-We use the following technologies to perform essential functions and enhance convenience:
+نستخدم التقنيات التالية لأداء الوظائف الأساسية وتعزيز الراحة:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. ملفات تعريف الارتباط والتخزين الأساسية
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+هذه ضرورية للغاية للوظائف الأساسية للموقع. بدون هذه التقنيات، لا يمكن استخدام الخدمات الأساسية مثل الحفاظ على حالة تسجيل الدخول، والتنقل في الصفحة، ومعالجة المدفوعات.
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- أمثلة: الحفاظ على جلسة تسجيل الدخول (ملفات تعريف الارتباط)، رموز المصادقة الأمنية
+- مثال على الاحتفاظ: يتم حذف معظمها عند إغلاق المتصفح أو الاحتفاظ بها لفترة محدودة ضرورية لتشغيل الخدمة بأمان. يتم توضيح فترات الاحتفاظ المحددة في سياسة الخصوصية.
 
-### 2.2. Functional & Performance Cookies
+### 2.2. ملفات تعريف الارتباط الوظيفية والأداء
 
-Used to remember your preferences or optimize website performance.
+تستخدم لتذكر تفضيلاتك أو تحسين أداء الموقع.
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- أمثلة: إعدادات الوضع الداكن أو الفاتح (التخزين المحلي)، إعدادات لغة العرض
+- مثال على الاحتفاظ: قد تظل حتى يقوم المستخدم بحذفها يدويًا من المتصفح.
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. ملفات تعريف الارتباط للتسويق والتحليلات
 
-Used to analyze user interests or provide personalized advertisements.
+تستخدم لتحليل اهتمامات المستخدم أو تقديم إعلانات مخصصة.
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- الوضع الحالي: نحن لا نستخدم ملفات تعريف الارتباط للتسويق أو الاستهداف لتتبع سلوك المستخدم أو إنشاء ملفات تعريف فردية للمستخدمين.
+- المبدأ: إذا قمنا بإدخال أدوات تحليل أو منصات إعلانية (مثل Google Ads) في المستقبل، فإننا نعد بتفعيل ملفات تعريف الارتباط غير الأساسية فقط بعد الحصول على موافقة مسبقة من المستخدم وفقًا للقوانين المعمول بها.
 
-## 3. Third-Party Service Partners
+## 3. شركاء الخدمة من الطرف الثالث
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+نستخدم حلولًا خارجية احترافية لتشغيل الخدمة بشكل مستقر. خلال هذه العملية، قد يتم تخزين ملفات تعريف الارتباط أو التقنيات المماثلة التي توفرها أطراف ثالثة على جهازك.
 
-**List of Major Partners**
+**قائمة الشركاء الرئيسيين**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+تخضع أنواع البيانات الشخصية التي تتم معالجتها، وفترات الاحتفاظ، وتفاصيل النقل الدولي من قبل كل مزود خدمة تابع لجهة خارجية لسياسات الخصوصية الخاصة بهم. لمزيد من التفاصيل، يرجى الرجوع إلى سياسة الخصوصية الخاصة بنا وسياسات كل مزود خدمة.
 
-## 4. Managing and Refusing Cookies
+## 4. إدارة ورفض ملفات تعريف الارتباط
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+لديك الحق في اختيار قبول ملفات تعريف الارتباط أم لا. يمكنك رفض أو حذف ملفات تعريف الارتباط عبر إعدادات متصفح الويب الخاص بك.
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: الإعدادات > الخصوصية والأمان > حظر ملفات تعريف الارتباط للجهات الخارجية
+- Safari: التفضيلات > الخصوصية > حظر جميع ملفات تعريف الارتباط
+- Edge: الإعدادات > ملفات تعريف الارتباط وأذونات الموقع > إدارة وحذف ملفات تعريف الارتباط وبيانات الموقع
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**ملاحظة:** إذا رفضت ملفات تعريف الارتباط الأساسية، فقد يتم تسجيل خروجك أو قد لا تتمكن من معالجة المدفوعات بشكل صحيح.
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+في المناطق ذات حقوق البيانات المعززة مثل الاتحاد الأوروبي، يتم تطبيق إجراءات موافقة منفصلة لملفات تعريف الارتباط غير الأساسية. بالنسبة للمستخدمين في مثل هذه المناطق، نستخدم ملفات تعريف الارتباط غير الأساسية فقط بناءً على موافقة مسبقة ضمن النطاق المطلوب بموجب القوانين ذات الصلة.
 
-## 5. Contact Us
+## 5. اتصل بنا
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+إذا كان لديك أي أسئلة أو تعليقات بخصوص سياسة ملفات تعريف الارتباط الخاصة بنا، فلا تتردد في الاتصال بنا على:
 
-- Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- البريد الإلكتروني: {{EMAIL}}
+- مسؤول حماية البيانات (CPO): {{CPO_NAME}}

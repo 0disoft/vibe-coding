@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# Patakaran sa Cookie at Katulad na Teknolohiya
 
-Last Updated: {{LAST_UPDATED}}
+Huling Na-update: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+Ang patakarang ito ay **bahagi ng Patakaran sa Privacy** ng {{SITE_NAME}} (mula rito ay tinutukoy bilang "Kumpanya"). Upang makapagbigay ng mas mabilis at mas maginhawang karanasan sa website at upang mapabuti ang aming mga serbisyo, ang Kumpanya ay gumagamit ng cookies at mga katulad na teknolohiya.
 
-## 1. What are Cookies and Web Storage?
+## 1. Ano ang Cookies at Web Storage?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+Ang cookies ay maliliit na text file na nakaimbak sa iyong device sa pamamagitan ng iyong browser kapag bumibisita ka sa isang website. Ang impormasyong nakaimbak sa cookies ay ipinapadala sa server kapag binisita mo muli ang website upang makilala ka o mapanatili ang iyong mga setting.
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+Sa kabaligtaran, ang Web Storage (localStorage, sessionStorage, atbp.) ay isang teknolohiya na nag-iimbak ng data sa loob ng browser. Ang data na ito ay hindi awtomatikong kasama sa mga kahilingan sa HTTP at ipinapadala lamang sa server kung tahasang binabasa ito ng Kumpanya sa pamamagitan ng script at ipinapadala ito. Dahil mayroon itong mas malaking kapasidad kaysa sa cookies at hindi ipinapadala sa bawat kahilingan sa network, pangunahing ginagamit ito para sa pag-iimbak ng mga setting ng display o pansamantalang data.
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+Ang parehong cookies at Web Storage ay mga teknolohiya na nag-iimbak ng impormasyon sa device ng user, at sa ilang hurisdiksyon, napapailalim ang mga ito sa parehong mga panuntunan sa proteksyon sa ilalim ng mga may-katuturang batas.
 
-## 2. Types and Purposes
+## 2. Mga Uri at Layunin
 
-We use the following technologies to perform essential functions and enhance convenience:
+Ginagamit namin ang mga sumusunod na teknolohiya upang maisagawa ang mahahalagang tungkulin at mapahusay ang kaginhawahan:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. Mahahalagang Cookies at Storage
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+Ang mga ito ay mahigpit na kinakailangan para sa mga pangunahing tungkulin ng website. Kung wala ang mga teknolohiyang ito, hindi magagamit ang mga pangunahing serbisyo tulad ng pagpapanatili ng katayuan sa pag-login, pag-navigate sa pahina, at pagproseso ng mga pagbabayad.
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- Mga Halimbawa: Pagpapanatili ng sesyon ng pag-login (Cookies), Mga token ng pagpapatunay ng seguridad
+- Halimbawa ng Pagpapanatili: Ang karamihan ay tinatanggal kapag isinara ang browser o pinananatili sa loob ng limitadong panahon na kinakailangan para sa ligtas na operasyon ng serbisyo. Ang mga partikular na panahon ng pagpapanatili ay detalyado sa Patakaran sa Privacy.
 
-### 2.2. Functional & Performance Cookies
+### 2.2. Functional at Performance Cookies
 
-Used to remember your preferences or optimize website performance.
+Ginagamit upang matandaan ang iyong mga kagustuhan o i-optimize ang pagganap ng website.
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- Mga Halimbawa: Mga setting ng dark mode o light mode (Local Storage), Mga setting ng wika ng display
+- Halimbawa ng Pagpapanatili: Maaaring manatili hanggang sa manwal na tanggalin ng user ang mga ito mula sa browser.
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. Marketing at Analytics Cookies
 
-Used to analyze user interests or provide personalized advertisements.
+Ginagamit upang suriin ang mga interes ng user o magbigay ng mga personalized na advertisement.
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- Kasalukuyang Katayuan: Hindi kami gumagamit ng mga cookies sa marketing o pag-target upang subaybayan ang gawi ng user o gumawa ng mga indibidwal na profile ng user.
+- Prinsipyo: Kung magpapakilala kami ng mga tool sa analytics o platform ng advertising (hal., Google Ads) sa hinaharap, nangangako kaming i-activate ang mga hindi mahahalagang cookies pagkatapos lamang makakuha ng paunang pahintulot ng user alinsunod sa mga naaangkop na batas.
 
-## 3. Third-Party Service Partners
+## 3. Mga Kasosyo sa Serbisyo ng Third-Party
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+Gumagamit kami ng mga propesyonal na panlabas na solusyon para sa matatag na operasyon ng serbisyo. Sa prosesong ito, ang cookies o mga katulad na teknolohiya na ibinigay ng mga third party ay maaaring maimbak sa iyong device.
 
-**List of Major Partners**
+**Listahan ng mga Pangunahing Kasosyo**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+Ang mga uri ng personal na data na naproseso, mga panahon ng pagpapanatili, at mga detalye ng internasyonal na paglilipat ng bawat third-party na service provider ay napapailalim sa kani-kanilang mga patakaran sa privacy. Para sa higit pang mga detalye, mangyaring sumangguni sa aming Patakaran sa Privacy at ang mga patakaran ng bawat service provider.
 
-## 4. Managing and Refusing Cookies
+## 4. Pamamahala at Pagtanggi sa Cookies
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+May karapatan kang pumili kung tatanggapin ang cookies. Maaari mong tanggihan o tanggalin ang cookies sa pamamagitan ng mga setting ng iyong web browser.
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: Mga Setting > Privacy at seguridad > I-block ang cookies ng third-party
+- Safari: Mga Kagustuhan > Privacy > I-block ang lahat ng cookies
+- Edge: Mga Setting > Cookies at pahintulot sa site > Pamahalaan at tanggalin ang cookies at data ng site
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**Paalala:** Kung tatanggihan mo ang mahahalagang cookies, maaari kang ma-log out o hindi maproseso nang maayos ang mga pagbabayad.
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+Sa mga rehiyon na may pinalakas na mga karapatan sa data tulad ng EU, inilalapat ang magkakahiwalay na pamamaraan ng pahintulot para sa mga hindi mahahalagang cookies. Para sa mga user sa mga naturang rehiyon, gumagamit lang kami ng mga hindi mahahalagang cookies batay sa paunang pahintulot sa loob ng saklaw na kinakailangan ng mga nauugnay na batas.
 
-## 5. Contact Us
+## 5. Makipag-ugnayan sa Amin
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+Kung mayroon kang anumang mga katanungan o komento tungkol sa aming Patakaran sa Cookie, mangyaring huwag mag-atubiling makipag-ugnayan sa amin sa:
 
 - Email: {{EMAIL}}
 - Data Protection Officer (CPO): {{CPO_NAME}}

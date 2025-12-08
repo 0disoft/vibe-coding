@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# Çerez ve Benzer Teknolojiler Politikası
 
-Last Updated: {{LAST_UPDATED}}
+Son Güncelleme: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+Bu politika, {{SITE_NAME}} (bundan böyle "Şirket" olarak anılacaktır) **Gizlilik Politikasının bir parçasıdır**. Şirket, daha hızlı ve daha uygun bir web sitesi deneyimi sağlamak ve hizmetlerimizi geliştirmek için çerezler ve benzer teknolojiler kullanmaktadır.
 
-## 1. What are Cookies and Web Storage?
+## 1. Çerezler ve Web Depolama Nedir?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+Çerezler, bir web sitesini ziyaret ettiğinizde tarayıcınız aracılığıyla cihazınızda saklanan küçük metin dosyalarıdır. Çerezlerde saklanan bilgiler, sizi tanımlamak veya ayarlarınızı korumak için web sitesini tekrar ziyaret ettiğinizde sunucuya gönderilir.
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+Aksine, Web Depolama (localStorage, sessionStorage vb.), tarayıcı içinde veri saklayan bir teknolojidir. Bu veriler HTTP isteklerine otomatik olarak dahil edilmez ve yalnızca Şirket bunları komut dosyası aracılığıyla açıkça okur ve gönderirse sunucuya iletilir. Çerezlerden daha büyük bir kapasiteye sahip olduğu ve her ağ isteğiyle gönderilmediği için, esas olarak ekran ayarlarını veya geçici verileri saklamak için kullanılır.
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+Hem çerezler hem de Web Depolama, kullanıcının cihazında bilgi saklayan teknolojilerdir ve bazı yargı bölgelerinde, ilgili yasalar uyarınca aynı koruma kurallarına tabidirler.
 
-## 2. Types and Purposes
+## 2. Türler ve Amaçlar
 
-We use the following technologies to perform essential functions and enhance convenience:
+Temel işlevleri yerine getirmek ve kolaylığı artırmak için aşağıdaki teknolojileri kullanıyoruz:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. Temel Çerezler ve Depolama
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+Bunlar, web sitesinin temel işlevleri için kesinlikle gereklidir. Bu teknolojiler olmadan, oturum açma durumunu koruma, sayfa gezintisi ve ödemeleri işleme gibi temel hizmetler kullanılamaz.
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- Örnekler: Oturum açma oturumu bakımı (Çerezler), Güvenlik kimlik doğrulama belirteçleri
+- Saklama Örneği: Çoğu, tarayıcı kapatıldığında silinir veya güvenli hizmet operasyonu için gerekli olan sınırlı bir süre boyunca saklanır. Belirli saklama süreleri Gizlilik Politikasında ayrıntılı olarak açıklanmıştır.
 
-### 2.2. Functional & Performance Cookies
+### 2.2. İşlevsel ve Performans Çerezleri
 
-Used to remember your preferences or optimize website performance.
+Tercihlerinizi hatırlamak veya web sitesi performansını optimize etmek için kullanılır.
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- Örnekler: Karanlık mod veya aydınlık mod ayarları (Yerel Depolama), Görüntüleme dili ayarları
+- Saklama Örneği: Kullanıcı bunları tarayıcıdan manuel olarak silene kadar kalabilir.
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. Pazarlama ve Analiz Çerezleri
 
-Used to analyze user interests or provide personalized advertisements.
+Kullanıcı ilgi alanlarını analiz etmek veya kişiselleştirilmiş reklamlar sağlamak için kullanılır.
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- Mevcut Durum: Kullanıcı davranışını izlemek veya bireysel kullanıcı profilleri oluşturmak için pazarlama veya hedefleme çerezleri kullanmıyoruz.
+- İlke: Gelecekte analiz araçları veya reklam platformları (örneğin Google Ads) sunarsak, zorunlu olmayan çerezleri yalnızca geçerli yasalara uygun olarak önceden kullanıcı izni aldıktan sonra etkinleştireceğimize söz veriyoruz.
 
-## 3. Third-Party Service Partners
+## 3. Üçüncü Taraf Hizmet Ortakları
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+İstikrarlı hizmet operasyonu için profesyonel harici çözümler kullanıyoruz. Bu süreçte, üçüncü taraflarca sağlanan çerezler veya benzer teknolojiler cihazınızda saklanabilir.
 
-**List of Major Partners**
+**Başlıca Ortakların Listesi**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+Her bir üçüncü taraf hizmet sağlayıcısı tarafından işlenen kişisel veri türleri, saklama süreleri ve uluslararası transfer ayrıntıları, ilgili gizlilik politikalarına tabidir. Daha fazla ayrıntı için lütfen Gizlilik Politikamıza ve her bir hizmet sağlayıcısının politikalarına bakın.
 
-## 4. Managing and Refusing Cookies
+## 4. Çerezleri Yönetme ve Reddetme
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+Çerezleri kabul edip etmemeyi seçme hakkına sahipsiniz. Web tarayıcısı ayarlarınız aracılığıyla çerezleri reddedebilir veya silebilirsiniz.
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: Ayarlar > Gizlilik ve güvenlik > Üçüncü taraf çerezleri engelle
+- Safari: Tercihler > Gizlilik > Tüm çerezleri engelle
+- Edge: Ayarlar > Çerezler ve site izinleri > Çerezleri ve site verilerini yönet ve sil
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**Not:** Temel çerezleri reddederseniz, oturumunuz kapatılabilir veya ödemeleri düzgün bir şekilde işleyemeyebilirsiniz.
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+AB gibi güçlendirilmiş veri haklarına sahip bölgelerde, zorunlu olmayan çerezler için ayrı onay prosedürleri uygulanır. Bu tür bölgelerdeki kullanıcılar için, zorunlu olmayan çerezleri yalnızca ilgili yasaların gerektirdiği kapsamda önceden onaya dayalı olarak kullanıyoruz.
 
-## 5. Contact Us
+## 5. Bize Ulaşın
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+Çerez Politikamızla ilgili herhangi bir sorunuz veya yorumunuz varsa, lütfen bizimle şu adresten iletişime geçmekten çekinmeyin:
 
-- Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- E-posta: {{EMAIL}}
+- Veri Koruma Görevlisi (CPO): {{CPO_NAME}}

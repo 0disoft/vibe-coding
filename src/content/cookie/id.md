@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# Kebijakan Cookie dan Teknologi Serupa
 
-Last Updated: {{LAST_UPDATED}}
+Terakhir Diperbarui: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+Kebijakan ini adalah **bagian dari Kebijakan Privasi** {{SITE_NAME}} (selanjutnya disebut sebagai "Perusahaan"). Untuk memberikan pengalaman situs web yang lebih cepat dan nyaman serta untuk meningkatkan layanan kami, Perusahaan menggunakan cookie dan teknologi serupa.
 
-## 1. What are Cookies and Web Storage?
+## 1. Apa itu Cookie dan Web Storage?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+Cookie adalah file teks kecil yang disimpan di perangkat Anda melalui browser saat Anda mengunjungi situs web. Informasi yang disimpan dalam cookie dikirim ke server saat Anda mengunjungi kembali situs web untuk mengidentifikasi Anda atau mempertahankan pengaturan Anda.
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+Sebaliknya, Web Storage (localStorage, sessionStorage, dll.) adalah teknologi yang menyimpan data di dalam browser. Data ini tidak secara otomatis disertakan dalam permintaan HTTP dan hanya dikirim ke server jika Perusahaan secara eksplisit membacanya melalui skrip dan mengirimkannya. Karena memiliki kapasitas yang lebih besar daripada cookie dan tidak dikirim dengan setiap permintaan jaringan, ini terutama digunakan untuk menyimpan pengaturan tampilan atau data sementara.
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+Baik cookie maupun Web Storage adalah teknologi yang menyimpan informasi di perangkat pengguna, dan di beberapa yurisdiksi, mereka tunduk pada aturan perlindungan yang sama berdasarkan hukum yang berlaku.
 
-## 2. Types and Purposes
+## 2. Jenis dan Tujuan
 
-We use the following technologies to perform essential functions and enhance convenience:
+Kami menggunakan teknologi berikut untuk melakukan fungsi penting dan meningkatkan kenyamanan:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. Cookie dan Penyimpanan Esensial
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+Ini sangat diperlukan untuk fungsi inti situs web. Tanpa teknologi ini, layanan dasar seperti mempertahankan status login, navigasi halaman, dan memproses pembayaran tidak dapat digunakan.
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- Contoh: Pemeliharaan sesi login (Cookie), Token autentikasi keamanan
+- Contoh Retensi: Sebagian besar dihapus saat browser ditutup atau dipertahankan untuk periode terbatas yang diperlukan untuk operasi layanan yang aman. Periode retensi spesifik dirinci dalam Kebijakan Privasi.
 
-### 2.2. Functional & Performance Cookies
+### 2.2. Cookie Fungsional & Kinerja
 
-Used to remember your preferences or optimize website performance.
+Digunakan untuk mengingat preferensi Anda atau mengoptimalkan kinerja situs web.
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- Contoh: Pengaturan mode gelap atau mode terang (Penyimpanan Lokal), Pengaturan bahasa tampilan
+- Contoh Retensi: Dapat tetap ada hingga pengguna menghapusnya secara manual dari browser.
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. Cookie Pemasaran & Analitik
 
-Used to analyze user interests or provide personalized advertisements.
+Digunakan untuk menganalisis minat pengguna atau menyediakan iklan yang dipersonalisasi.
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- Status Saat Ini: Kami tidak menggunakan cookie pemasaran atau penargetan untuk melacak perilaku pengguna atau membuat profil pengguna individu.
+- Prinsip: Jika kami memperkenalkan alat analitik atau platform periklanan (misalnya, Google Ads) di masa mendatang, kami berjanji untuk mengaktifkan cookie non-esensial hanya setelah mendapatkan persetujuan pengguna sebelumnya sesuai dengan hukum yang berlaku.
 
-## 3. Third-Party Service Partners
+## 3. Mitra Layanan Pihak Ketiga
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+Kami menggunakan solusi eksternal profesional untuk operasi layanan yang stabil. Selama proses ini, cookie atau teknologi serupa yang disediakan oleh pihak ketiga dapat disimpan di perangkat Anda.
 
-**List of Major Partners**
+**Daftar Mitra Utama**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+Jenis data pribadi yang diproses, periode retensi, dan detail transfer internasional oleh setiap penyedia layanan pihak ketiga tunduk pada kebijakan privasi masing-masing. Untuk detail lebih lanjut, silakan merujuk ke Kebijakan Privasi kami dan kebijakan setiap penyedia layanan.
 
-## 4. Managing and Refusing Cookies
+## 4. Mengelola dan Menolak Cookie
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+Anda memiliki hak untuk memilih apakah akan menerima cookie. Anda dapat menolak atau menghapus cookie melalui pengaturan browser web Anda.
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: Setelan > Privasi dan keamanan > Blokir cookie pihak ketiga
+- Safari: Preferensi > Privasi > Blokir semua cookie
+- Edge: Setelan > Cookie dan izin situs > Kelola dan hapus cookie dan data situs
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**Catatan:** Jika Anda menolak cookie esensial, Anda mungkin keluar atau tidak dapat memproses pembayaran dengan benar.
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+Di wilayah dengan hak data yang diperkuat seperti UE, prosedur persetujuan terpisah diterapkan untuk cookie non-esensial. Untuk pengguna di wilayah tersebut, kami menggunakan cookie non-esensial hanya berdasarkan persetujuan sebelumnya dalam lingkup yang disyaratkan oleh hukum yang relevan.
 
-## 5. Contact Us
+## 5. Hubungi Kami
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+Jika Anda memiliki pertanyaan atau komentar mengenai Kebijakan Cookie kami, jangan ragu untuk menghubungi kami di:
 
 - Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- Petugas Perlindungan Data (CPO): {{CPO_NAME}}

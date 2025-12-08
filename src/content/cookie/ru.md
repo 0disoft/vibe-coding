@@ -1,67 +1,67 @@
-# Cookie and Similar Technologies Policy
+# Политика использования файлов cookie и аналогичных технологий
 
-Last Updated: {{LAST_UPDATED}}
+Последнее обновление: {{LAST_UPDATED}}
 
-This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
+Эта политика является **частью Политики конфиденциальности** компании {{SITE_NAME}} (далее «Компания»). Чтобы обеспечить более быструю и удобную работу веб-сайта и улучшить наши услуги, Компания использует файлы cookie и аналогичные технологии.
 
-## 1. What are Cookies and Web Storage?
+## 1. Что такое файлы cookie и веб-хранилище?
 
-Cookies are small text files stored on your device via your browser when you visit a website. Information stored in cookies is sent to the server when you revisit the website to identify you or maintain your settings.
+Файлы cookie — это небольшие текстовые файлы, которые сохраняются на вашем устройстве через браузер при посещении веб-сайта. Информация, хранящаяся в файлах cookie, отправляется на сервер при повторном посещении веб-сайта для идентификации вас или сохранения ваших настроек.
 
-In contrast, Web Storage (localStorage, sessionStorage, etc.) is a technology that stores data within the browser. This data is not automatically included in HTTP requests and is only transmitted to the server if the Company explicitly reads it via script and sends it. Since it has a larger capacity than cookies and is not sent with every network request, it is primarily used for storing display settings or temporary data.
+В отличие от них, веб-хранилище (localStorage, sessionStorage и т. д.) — это технология, которая хранит данные внутри браузера. Эти данные не включаются автоматически в HTTP-запросы и передаются на сервер только в том случае, если Компания явно считывает их с помощью сценария и отправляет. Поскольку оно имеет большую емкость, чем файлы cookie, и не отправляется с каждым сетевым запросом, оно в основном используется для хранения настроек отображения или временных данных.
 
-Both cookies and Web Storage are technologies that store information on the user's device, and in some jurisdictions, they are subject to the same protection rules under relevant laws.
+И файлы cookie, и веб-хранилище — это технологии, которые хранят информацию на устройстве пользователя, и в некоторых юрисдикциях на них распространяются те же правила защиты в соответствии с применимыми законами.
 
-## 2. Types and Purposes
+## 2. Типы и цели
 
-We use the following technologies to perform essential functions and enhance convenience:
+Мы используем следующие технологии для выполнения основных функций и повышения удобства:
 
-### 2.1. Essential Cookies and Storage
+### 2.1. Обязательные файлы cookie и хранилище
 
-These are strictly necessary for the core functions of the website. Without these technologies, basic services such as maintaining login status, page navigation, and processing payments cannot be used.
+Они строго необходимы для основных функций веб-сайта. Без этих технологий невозможно использовать базовые услуги, такие как поддержание статуса входа в систему, навигация по страницам и обработка платежей.
 
-- Examples: Login session maintenance (Cookies), Security authentication tokens
-- Retention Example: Most are deleted when the browser is closed or maintained for a limited period necessary for safe service operation. Specific retention periods are detailed in the Privacy Policy.
+- Примеры: Поддержание сеанса входа (Cookie), Токены аутентификации безопасности
+- Пример хранения: Большинство удаляется при закрытии браузера или сохраняется в течение ограниченного периода, необходимого для безопасной работы службы. Конкретные сроки хранения подробно описаны в Политике конфиденциальности.
 
-### 2.2. Functional & Performance Cookies
+### 2.2. Функциональные и производительные файлы cookie
 
-Used to remember your preferences or optimize website performance.
+Используются для запоминания ваших предпочтений или оптимизации производительности веб-сайта.
 
-- Examples: Dark mode or light mode settings (Local Storage), Display language settings
-- Retention Example: May remain until the user manually deletes them from the browser.
+- Примеры: Настройки темного или светлого режима (Локальное хранилище), Настройки языка отображения
+- Пример хранения: Могут оставаться до тех пор, пока пользователь вручную не удалит их из браузера.
 
-### 2.3. Marketing & Analytics Cookies
+### 2.3. Маркетинговые и аналитические файлы cookie
 
-Used to analyze user interests or provide personalized advertisements.
+Используются для анализа интересов пользователей или предоставления персонализированной рекламы.
 
-- Current Status: We do not use marketing or targeting cookies to track user behavior or create individual user profiles.
-- Principle: If we introduce analytics tools or advertising platforms (e.g., Google Ads) in the future, we promise to activate non-essential cookies only after obtaining prior user consent in accordance with applicable laws.
+- Текущий статус: Мы не используем маркетинговые или целевые файлы cookie для отслеживания поведения пользователей или создания индивидуальных профилей пользователей.
+- Принцип: Если мы в будущем внедрим аналитические инструменты или рекламные платформы (например, Google Ads), мы обещаем активировать необязательные файлы cookie только после получения предварительного согласия пользователя в соответствии с применимым законодательством.
 
-## 3. Third-Party Service Partners
+## 3. Сторонние сервис-партнеры
 
-We use professional external solutions for stable service operation. During this process, cookies or similar technologies provided by third parties may be stored on your device.
+Мы используем профессиональные внешние решения для стабильной работы сервиса. В ходе этого процесса файлы cookie или аналогичные технологии, предоставляемые третьими лицами, могут сохраняться на вашем устройстве.
 
-**List of Major Partners**
+**Список основных партнеров**
 
 {{THIRD_PARTY_SERVICES}}
 
-The types of personal data processed, retention periods, and international transfer details by each third-party service provider are subject to their respective privacy policies. For more details, please refer to our Privacy Policy and the policies of each service provider.
+Типы обрабатываемых персональных данных, сроки хранения и детали международной передачи каждым сторонним поставщиком услуг регулируются их соответствующими политиками конфиденциальности. Для получения более подробной информации, пожалуйста, ознакомьтесь с нашей Политикой конфиденциальности и политиками каждого поставщика услуг.
 
-## 4. Managing and Refusing Cookies
+## 4. Управление файлами cookie и отказ от них
 
-You have the right to choose whether to accept cookies. You can refuse or delete cookies via your web browser settings.
+Вы имеете право выбирать, принимать ли файлы cookie. Вы можете отказаться от файлов cookie или удалить их через настройки вашего веб-браузера.
 
-- Chrome: Settings > Privacy and security > Block third-party cookies
-- Safari: Preferences > Privacy > Block all cookies
-- Edge: Settings > Cookies and site permissions > Manage and delete cookies and site data
+- Chrome: Настройки > Конфиденциальность и безопасность > Блокировать сторонние файлы cookie
+- Safari: Настройки > Конфиденциальность > Блокировать все файлы cookie
+- Edge: Настройки > Файлы cookie и разрешения сайтов > Управление и удаление файлов cookie и данных сайтов
 
-**Note:** If you refuse essential cookies, you may be logged out or unable to properly process payments.
+**Примечание:** Если вы откажетесь от обязательных файлов cookie, вы можете выйти из системы или не сможете правильно обрабатывать платежи.
 
-In regions with strengthened data rights such as the EU, separate consent procedures are applied for non-essential cookies. For users in such regions, we use non-essential cookies only based on prior consent within the scope required by relevant laws.
+В регионах с усиленными правами на данные, таких как ЕС, применяются отдельные процедуры получения согласия для необязательных файлов cookie. Для пользователей в таких регионах мы используем необязательные файлы cookie только на основании предварительного согласия в объеме, требуемом соответствующими законами.
 
-## 5. Contact Us
+## 5. Свяжитесь с нами
 
-If you have any questions or comments regarding our Cookie Policy, please feel free to contact us at:
+Если у вас есть какие-либо вопросы или комментарии относительно нашей Политики использования файлов cookie, пожалуйста, свяжитесь с нами по адресу:
 
-- Email: {{EMAIL}}
-- Data Protection Officer (CPO): {{CPO_NAME}}
+- Электронная почта: {{EMAIL}}
+- Ответственный за защиту данных (CPO): {{CPO_NAME}}
