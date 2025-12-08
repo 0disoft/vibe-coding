@@ -1,0 +1,175 @@
+코드 자체는 꽤 잘 짰어. Svelte 5 룬스 스타일이랑 Shiki 사용법도 자연스럽고, 복사 버튼 UX도 깔끔한 편이야.
+이제 “실서비스에서 부딪힐 법한 구석들”만 몇 개 짚어볼게. 🔍
+
+## 잘 된 부분
+
+* `normalizeLanguage`로 언어 alias 정리
+  ts → typescript, sh → bash 같은 매핑을 한 곳에 몰아둔 건 유지보수에 좋아.
+* 비동기 하이라이트 처리
+  `$effect` 안에서 `active` 플래그로 레이스 컨디션 막은 것도 좋고, 실패 시 `escapeHtml`로 폴백 처리한 것도 안전함.
+* XSS 대비
+  Shiki 결과는 내부에서 이미 escape 처리되고, 폴백도 `escapeHtml`이나 `{code}` 바인딩이라 코드에 `<script>` 들어와도 그대로 문자열로만 렌더링됨.
+* UI/UX
+  상단 우측 복사 버튼, `copied` 상태로 토스트처럼 피드백 주는 구조가 직관적이야. UnoCSS 셀렉터로 `pre`에만 라운드/패딩 적용한 것도 좋고.
+
+이제 “조금만 더 만져두면 나중에 고생 덜 할 포인트”들.
+
+## 1. 언어 정규화에서 안전한 기본값 주기
+
+지금은 `normalizeLanguage`가 모르는 언어를 받으면 그대로 문자열을 `BundledLanguage`로 캐스팅해서 넘겨.
+이럴 경우 Shiki에 없는 언어를 넣으면 계속 에러가 나고, 매번 `catch`로 떨어져서 콘솔이 지저분해질 수 있어.
+
+Shiki가 공식적으로 plain text용 언어로 `text`를 권장하고 있으니까, 여기에 안전하게 떨어지게 하는 게 좋아. ([shiki.style][1])
+
+예를 들어 이렇게 바꿀 수 있어.
+
+```ts
+	function normalizeLanguage(lang: string): BundledLanguage {
+		const langMap: Record<string, BundledLanguage> = {
+			ts: 'typescript',
+			js: 'javascript',
+			py: 'python',
+			rs: 'rust',
+			yml: 'yaml',
+			md: 'markdown',
+			toml: 'toml',
+			json: 'json',
+			jsonc: 'jsonc',
+			html: 'html',
+			css: 'css',
+			scss: 'scss',
+			svelte: 'svelte',
+			vue: 'vue',
+			astro: 'astro',
+			jsx: 'jsx',
+			tsx: 'tsx',
+			sh: 'bash',
+			bash: 'bash',
+			shell: 'bash',
+			sql: 'sql',
+			c: 'c',
+			cpp: 'cpp',
+			'c++': 'cpp',
+			java: 'java',
+			zig: 'zig',
+			julia: 'julia',
+			elixir: 'elixir',
+			gleam: 'gleam'
+		};
+
+		const normalized = lang.toLowerCase();
+
+		if (normalized in langMap) {
+			return langMap[normalized];
+		}
+
+		// 지원하지 않는 언어면 하이라이팅 없이 plain text로
+		return 'text';
+	}
+```
+
+이렇게 해두면
+
+* `lang="unknown"` 같은 게 들어와도 콘솔에 에러 안 남고
+* 폴백 `<pre><code>`를 따로 안 타도 깔끔하게 plain text로 렌더링됨.
+
+기존 `catch` 폴백은 “Shiki 내부 에러”에 대한 최후 방어막으로 그대로 두면 좋아.
+
+## 2. Shiki 성능, 어디까지 괜찮을까
+
+지금처럼 컴포넌트 안에서 `codeToHtml`를 직접 부르는 패턴은 “문서 몇 개, 코드블록 몇 개” 수준의 사이트에서는 충분히 괜찮아.
+다만, 나중에 기술 블로그나 문서 사이트로 커지면 이 부분이 병목이 될 수 있어.
+
+고려해볼 수 있는 옵션을 몇 가지만 기억해두면 좋겠어.
+
+1. 빌드 타임이나 서버에서 미리 하이라이트
+
+   * MD 문서를 미리 돌려서 HTML로 저장하거나
+   * `+page.server.ts`나 로더 단계에서 `codeToHtml` 한 번만 호출해 결과를 props로 내려주기.
+2. Shiki core + 커스텀 번들
+
+   * 지금은 `shiki` 전체를 가져오니까, 브라우저 번들에 불필요한 언어·테마가 많이 딸려올 수 있음.
+   * 나중에 극단적으로 최적화하고 싶으면 `@shikijs/core` + 커스텀 번들을 써서 필요한 언어·테마만 포함하는 구조도 있어. ([Shiki][2])
+
+지금 단계에서는 “CodeBlock을 수십 개씩 뿌리는 페이지가 생기면 그때 구조를 바꿀 여지가 있다” 정도만 알고 있으면 충분해.
+
+## 3. SSR·클라이언트 이중 렌더 전략
+
+현재 구조
+
+* 첫 렌더에서는 `highlightedHtml === ''`라서 로딩용 `<pre><code>{code}</code></pre>`가 보이고
+* `$effect`에서 Shiki 결과가 들어오면 그때부터 하이라이트된 코드가 보임.
+
+그래서
+
+* SSR 환경에서도 에러 없이 동작하고
+* 클라이언트에서만 하이라이트가 적용되는 “점진적 개선” 패턴이 됨.
+
+이게 나쁜 건 아닌데, 만약
+
+* SEO까지 고려해서 SSR 단계에서 이미 하이라이트된 HTML을 보내고 싶다
+* FOUC 없이 항상 완성된 코드블록만 보여주고 싶다
+
+이런 요구가 생기면, 그때는
+
+* Markdown 처리 파이프라인에서 Shiki를 돌리거나
+* `load` 단계에서 미리 `codeToHtml`을 호출한 뒤 이 컴포넌트는 `{@html}`만 찍는 단순 프리젠테이션 컴포넌트로 쓰는 방향을 고민해볼 수 있어.
+
+지금 수준에서는 “구조적으로 문제는 없고, 향후 확장 포인트가 여기다” 정도로 보면 될 것 같아.
+
+## 4. 복사 버튼 UX와 접근성
+
+복사 버튼도 전반적으로 괜찮은데, 두 가지만 곁들이면 더 좋아져.
+
+1. 텍스트 국제화
+
+   * `{copied ? '✓ Copied!' : '📋 Copy'}`
+   * 이 부분을 나중에 Paraglide 메시지로 빼두면 전체 UI랑 일관성이 맞겠지.
+2. 시각장애인용 피드백
+
+   * 버튼 `aria-label`이 상태에 따라 바뀌긴 하지만, 추가로 아래처럼 숨겨진 상태 영역을 두는 것도 방법이야.
+
+예시
+
+```svelte
+<button
+	type="button"
+	onclick={copyCode}
+	aria-label={copied ? 'Copied to clipboard' : 'Copy code'}
+	class="absolute right-2 top-2 z-10 rounded-md bg-muted/80 px-2 py-1 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+>
+	{copied ? '✓ Copied!' : '📋 Copy'}
+</button>
+<span class="sr-only" aria-live="polite">
+	{copied ? 'Code copied to clipboard' : ''}
+</span>
+```
+
+이건 필수까진 아니고, 접근성 점수 조금 더 챙기고 싶을 때 쓰면 돼.
+
+## 5. 사소하지만 짚어볼 만한 부분들
+
+* `setTimeout` 정리
+
+  * 페이지에서 빠르게 나갔다 들어와도 큰 문제는 없지만, 강박 수준으로 깔끔하게 가고 싶으면
+    타이머 아이디를 `$state`로 들고 있다가 컴포넌트 unmount 시 `clearTimeout` 해주는 것도 가능함.
+* 타입 정교화
+
+  * `Props`의 `language?: string`은 기본값 때문에 사실상 `string`이지만,
+    나중에 외부에서 `undefined`를 그대로 넣을 수 있으니 `language?: BundledLanguage | string`처럼 의도를 조금 더 적어줘도 좋음.
+
+정리하면, 지금 코드 상태는 “바로 실전에 써도 되는 수준”이고
+추가로 손보면 좋은 부분은
+
+* 모르는 언어에 대한 plain text 폴백
+* Shiki 성능·번들 전략을 장기적으로 어디에서 처리할지 설계
+* 국제화와 접근성 살짝 보강
+
+이 정도야. 전반적으로 탄탄해서, 이걸 템플릿으로 뽑아 써도 될 정도라고 봐도 될 것 같아. ✨
+
+LLM에게 다음과 같이 질문해 보세요.
+
+* 이 CodeBlock을 마크다운 렌더러랑 엮어서, MD 파일에서 자동으로 쓰이게 하려면 어떤 구조로 설계하는 게 좋을지 알려줘.
+
+[1]: https://shiki.style/languages?utm_source=chatgpt.com "Languages | Shiki"
+[2]: https://shiki.matsu.io/guide/install?utm_source=chatgpt.com "Installation & Usage - Shiki"

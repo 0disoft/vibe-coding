@@ -53,7 +53,8 @@
 			// mojo: Shiki 미지원 (2025-12 기준)
 		};
 		const normalized = lang.toLowerCase();
-		return (langMap[normalized] || normalized) as BundledLanguage;
+		// 별칭이 있으면 정식 이름으로 변환, 없으면 Shiki에게 그대로 전달
+		return (langMap[normalized] ?? normalized) as BundledLanguage;
 	}
 
 	async function copyCode() {
