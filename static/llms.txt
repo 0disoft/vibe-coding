@@ -1,0 +1,27 @@
+# Project Name
+
+> A brief one-line description of your project goes here.
+
+This file provides information about this website for AI assistants and large language models.
+
+## Documentation
+
+- [Getting Started](https://yoursite.com/docs/getting-started): Quick start guide for new users
+- [API Reference](https://yoursite.com/docs/api): Complete API documentation
+- [Configuration](https://yoursite.com/docs/config): Configuration options and settings
+
+## Features
+
+- [Feature Overview](https://yoursite.com/features): Main features and capabilities
+- [Integrations](https://yoursite.com/integrations): Third-party integrations
+
+## Resources
+
+- [Blog](https://yoursite.com/blog): Latest news and tutorials
+- [Changelog](https://yoursite.com/changelog): Version history and updates
+- [FAQ](https://yoursite.com/faq): Frequently asked questions
+
+## Contact
+
+- [About](https://yoursite.com/about): About us
+- [Support](https://yoursite.com/support): Get help and support

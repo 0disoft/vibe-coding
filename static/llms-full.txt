@@ -1,0 +1,97 @@
+# Project Name
+
+> A brief one-line description of your project goes here.
+
+This file contains complete documentation and content of this website for AI assistants and large language models.
+
+---
+
+## About
+
+[Project Name] is a [brief description of what the project does].
+
+### Key Features
+
+- Feature 1: Description of feature 1
+- Feature 2: Description of feature 2
+- Feature 3: Description of feature 3
+
+---
+
+## Getting Started
+
+### Installation
+
+```bash
+# Installation commands go here
+npm install your-package
+```
+
+### Quick Start
+
+1. Step one of getting started
+2. Step two of getting started
+3. Step three of getting started
+
+---
+
+## Documentation
+
+### Configuration
+
+Configuration options and how to use them:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| option1 | string | "default" | Description of option1 |
+| option2 | boolean | true | Description of option2 |
+
+### API Reference
+
+#### Function/Endpoint 1
+
+Description of this function or endpoint.
+
+**Parameters:**
+- `param1` (string): Description of param1
+- `param2` (number): Description of param2
+
+**Returns:** Description of return value
+
+#### Function/Endpoint 2
+
+Description of this function or endpoint.
+
+---
+
+## FAQ
+
+### Question 1?
+
+Answer to question 1.
+
+### Question 2?
+
+Answer to question 2.
+
+---
+
+## Changelog
+
+### v1.0.0 (YYYY-MM-DD)
+
+- Initial release
+- Feature A added
+- Feature B added
+
+---
+
+## Contact & Support
+
+- Website: https://yoursite.com
+- Email: support@yoursite.com
+- GitHub: https://github.com/your-org/your-repo
+
+---
+
+*This file is auto-generated. Last updated: YYYY-MM-DD*

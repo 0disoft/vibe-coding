@@ -111,14 +111,15 @@ SPEC 내용이 확정된 후 진행합니다.
 ### 프로젝트 메타데이터 검증
 
 - [ ] **[DEPLOY-001] 패키지 정보 일치 확인**
-  - 파일: `package.json`, `bun.lock`
+  - 파일: `package.json`
   - 확인 사항:
     - `name` 속성이 실제 프로젝트명과 일치하는지 확인
     - `version` 속성이 배포 버전과 일치하는지 확인
     - `description`이 프로젝트를 정확히 설명하는지 확인
+    - `postbuild` 스크립트의 `--domain` 값이 실제 배포 도메인인지 확인
 
 - [ ] **[DEPLOY-002] 사이트 설정 검증**
-  - 파일: `src/lib/config.ts`
+  - 파일: `src/lib/constants/site.ts`
   - 확인 사항:
     - `siteConfig.name`: 실제 서비스명으로 변경했는지
     - `siteConfig.description`: 서비스 설명이 적절한지
@@ -147,9 +148,19 @@ SPEC 내용이 확정된 후 진행합니다.
     - 모든 언어 파일에 필요한 번역 키가 있는지
     - 플레이스홀더 텍스트가 남아있지 않은지
 
+### SEO 및 AI 최적화
+
+- [ ] **[DEPLOY-006] AI 친화 파일 검증**
+  - 파일: `static/llms.txt`, `static/llms-full.txt`, `static/ai.txt`
+  - 확인 사항:
+    - 프로젝트 이름과 설명이 실제 서비스 정보로 교체되었는지
+    - 문서 링크가 실제 배포 URL로 업데이트되었는지
+    - 주요 기능 및 API 문서가 정확히 기술되어 있는지
+    - `ai.txt`의 학습/처리 권한 정책이 프로젝트 방침과 일치하는지
+
 ### 환경 및 보안
 
-- [ ] **[DEPLOY-006] 환경 변수 및 비밀 정보**
+- [ ] **[DEPLOY-007] 환경 변수 및 비밀 정보**
   - 파일: `.env`, `.env.production` (해당 시)
   - 확인 사항:
     - 프로덕션 환경 변수가 올바르게 설정되었는지

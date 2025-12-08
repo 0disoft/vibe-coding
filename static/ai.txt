@@ -1,0 +1,22 @@
+# ai.txt - AI Usage Policy
+# Documentation: https://site.spawning.ai/spawning-ai-txt
+
+User-agent: *
+
+# Training Data Usage
+# Disallow AI models from using this site's content for training
+Usage: training
+Disallow: /
+
+# Processing & RAG Usage
+# Allow AI to read and summarize content for user queries
+Usage: processing
+Allow: /
+
+# Specific restrictions (customize as needed)
+# Usage: training
+# Disallow: /blog
+# Disallow: /articles
+
+# Contact for licensing inquiries
+# Contact: ai-licensing@yoursite.com
