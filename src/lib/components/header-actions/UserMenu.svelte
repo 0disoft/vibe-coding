@@ -85,6 +85,7 @@
 		aria-haspopup="menu"
 		aria-expanded={showUserMenu}
 		aria-controls="user-menu"
+		data-testid="header-user-menu"
 	>
 		<span class="i-lucide-user h-4 w-4"></span>
 	</button>

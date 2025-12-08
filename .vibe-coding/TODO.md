@@ -108,6 +108,15 @@ SPEC 내용이 확정된 후 진행합니다.
 
 프로덕션 배포 전 반드시 확인해야 할 항목입니다.
 
+### 테스트 통과 확인
+
+- [ ] **[DEPLOY-000] 모든 테스트 통과 확인**
+  - 명령어: `bun run test` (Vitest + Playwright 통합 실행)
+  - 개별 실행:
+    - Vitest 단위 테스트: `bun run test:unit`
+    - Playwright E2E 테스트: `bunx playwright test`
+  - 조건: **모든 테스트가 통과해야만 배포 진행**
+
 ### 프로젝트 메타데이터 검증
 
 - [ ] **[DEPLOY-001] 패키지 정보 일치 확인**

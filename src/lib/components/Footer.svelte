@@ -22,17 +22,17 @@
 			<a
 				href={localizeUrl('/terms').href}
 				class="transition-colors hover:text-foreground hover:underline underline-offset-4"
-				>{m.footer_terms()}</a
+				data-testid="footer-terms-link">{m.footer_terms()}</a
 			>
 			<a
 				href={localizeUrl('/privacy').href}
 				class="transition-colors hover:text-foreground hover:underline underline-offset-4"
-				>{m.footer_privacy()}</a
+				data-testid="footer-privacy-link">{m.footer_privacy()}</a
 			>
 			<a
 				href={localizeUrl('/cookie').href}
 				class="transition-colors hover:text-foreground hover:underline underline-offset-4"
-				>{m.footer_cookie_policy()}</a
+				data-testid="footer-cookie-link">{m.footer_cookie_policy()}</a
 			>
 		</nav>
 	</div>

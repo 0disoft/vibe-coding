@@ -57,6 +57,7 @@
 		aria-haspopup="dialog"
 		aria-expanded={showFontSizeModal}
 		aria-controls="font-size-menu"
+		data-testid="header-font-size-picker"
 	>
 		<span class="i-lucide-type h-4 w-4"></span>
 	</button>

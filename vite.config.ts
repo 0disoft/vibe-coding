@@ -6,6 +6,8 @@ import { defineConfig } from 'vitest/config';
 
 
 export default defineConfig({
+	// info 레벨 메시지 숨김 (SvelteKit 설정 덮어쓰기 알림 등)
+	logLevel: 'warn',
 	plugins: [
 		UnoCSS(),      // UnoCSS를 맨 앞에
 		paraglideVitePlugin({
@@ -18,6 +20,29 @@ export default defineConfig({
 		}),
 		sveltekit()
 	],
+	build: {
+		// shiki 등 대용량 라이브러리로 인해 임계값 상향
+		chunkSizeWarningLimit: 1000,
+		rollupOptions: {
+			output: {
+				// 대용량 라이브러리를 별도 청크로 분리
+				manualChunks: (id) => {
+					// Shiki (코드 하이라이팅) - 가장 큰 청크
+					if (id.includes('shiki')) {
+						return 'shiki';
+					}
+					// Marked (마크다운 파서)
+					if (id.includes('marked')) {
+						return 'marked';
+					}
+					// 폰트 파일들
+					if (id.includes('@fontsource')) {
+						return 'fonts';
+					}
+				}
+			}
+		}
+	},
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

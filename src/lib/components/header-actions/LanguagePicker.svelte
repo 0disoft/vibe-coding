@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import * as runtime from '$lib/paraglide/runtime';
-	import { localizeUrl } from '$lib/paraglide/runtime';
+	import { getLocale, locales, localizeUrl } from '$lib/paraglide/runtime';
 
 	// 언어 코드 → 사람이 읽기 쉬운 이름 맵
 	const languageNames: Record<string, string> = {
@@ -27,26 +26,18 @@
 		tr: 'Türkçe'
 	};
 
-	// Paraglide API 호환성 및 안전장치
-	// 1. 런타임에서 언어 목록 가져오기 시도, 실패 시 기본 목록 사용
-	const defaultLocales = Object.keys(languageNames);
-	const availableLanguageTags: string[] =
-		(runtime as any).availableLocales ??
-		(runtime as any).locales ??
-		(runtime as any).availableLanguageTags ??
-		defaultLocales;
+	// Paraglide 2.x에서는 locales 배열 직접 사용
+	const availableLanguageTags = locales;
 
-	// 2. 현재 언어 판별: URL이 가장 정확하므로 URL 우선 파싱
-	// Paraglide 내부 상태가 늦게 갱신될 수 있으므로 page.url을 직접 신뢰
+	// 현재 언어 판별: URL이 가장 정확하므로 URL 우선 파싱
 	let currentLang = $derived.by(() => {
 		const path = page.url.pathname;
 		const segment = path.split('/')[1]; // "/ko/..." -> "ko"
-		if (availableLanguageTags.includes(segment)) {
+		if (availableLanguageTags.includes(segment as (typeof locales)[number])) {
 			return segment;
 		}
-		// URL에 언어 코드가 없거나(루트), 유효하지 않으면 기본값(en) 또는 runtime 상태 확인
-		const runtimeLang = (runtime as any).getLocale?.() ?? (runtime as any).languageTag?.();
-		return runtimeLang ?? 'en';
+		// URL에 언어 코드가 없거나(루트), 유효하지 않으면 getLocale() 사용
+		return getLocale();
 	});
 
 	// 언어 코드를 읽기 쉬운 이름으로 변환
@@ -105,6 +96,7 @@
 		aria-haspopup="dialog"
 		aria-expanded={showLanguageModal}
 		aria-controls="language-menu"
+		data-testid="header-language-picker"
 	>
 		<span class="i-lucide-languages h-4 w-4"></span>
 	</button>

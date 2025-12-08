@@ -8,8 +8,12 @@
 ```plaintext
 /
 ├── vite.config.ts
+├── svelte.config.js
+├── tsconfig.json
 ├── uno.config.ts
+├── playwright.config.ts
 ├── bun.lock
+├── e2e/                            # E2E 테스트 (Playwright)
 ├── messages/
 ├── project.inlang/
 │   └── settings.json
@@ -70,8 +74,17 @@
 | 파일 | 역할 |
 |------|------|
 | `vite.config.ts` | Vite 번들링 설정과 플러그인 구성 |
+| `svelte.config.js` | SvelteKit 설정 (어댑터, 프리프로세서) |
+| `tsconfig.json` | TypeScript 컴파일러 설정 |
 | `uno.config.ts` | UnoCSS 테마 토큰, 프리셋, 디자인 시스템 설정 |
+| `playwright.config.ts` | Playwright E2E 테스트 설정 (webServer, testDir) |
 | `bun.lock` | Bun 패키지 버전 고정 잠금 파일 |
+
+### e2e/
+
+| 파일 | 역할 |
+|------|------|
+| `layout.spec.ts` | 레이아웃 테스트 (헤더/푸터 요소 표시 검증) |
 
 ### messages/
 

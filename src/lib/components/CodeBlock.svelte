@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { codeToHtml, type BundledLanguage, type BundledTheme } from 'shiki';
+	import {
+		createHighlighter,
+		type BundledLanguage,
+		type BundledTheme,
+		type Highlighter
+	} from 'shiki';
 
 	interface Props {
 		code: string;
@@ -11,6 +16,38 @@
 
 	let copied = $state(false);
 	let highlightedHtml = $state('');
+
+	// 싱글톤 highlighter 인스턴스 (언어 추가 시 재사용)
+	let highlighterPromise: Promise<Highlighter> | null = null;
+	const loadedLanguages = new Set<string>();
+
+	// 프로젝트에서 주로 사용하는 언어들만 초기 로드
+	const INITIAL_LANGUAGES: BundledLanguage[] = [
+		'typescript',
+		'javascript',
+		'json',
+		'html',
+		'css',
+		'svelte',
+		'bash',
+		'markdown'
+	];
+
+	// 사용 가능한 테마 (필요시 추가)
+	const THEMES: BundledTheme[] = ['catppuccin-mocha', 'github-dark', 'github-light'];
+
+	// highlighter 인스턴스 가져오기 (lazy 로드)
+	async function getHighlighter(): Promise<Highlighter> {
+		if (!highlighterPromise) {
+			highlighterPromise = createHighlighter({
+				themes: THEMES,
+				langs: INITIAL_LANGUAGES
+			});
+			// 초기 언어들을 로드된 것으로 표시
+			INITIAL_LANGUAGES.forEach((lang) => loadedLanguages.add(lang));
+		}
+		return highlighterPromise;
+	}
 
 	// 언어 이름 정규화 (Shiki에서 지원하는 이름으로 변환)
 	function normalizeLanguage(lang: string): BundledLanguage {
@@ -30,7 +67,6 @@
 			css: 'css',
 			scss: 'scss',
 			svelte: 'svelte',
-			vue: 'vue',
 			astro: 'astro',
 			// JSX/TSX
 			jsx: 'jsx',
@@ -44,8 +80,10 @@
 			c: 'c',
 			cpp: 'cpp',
 			'c++': 'cpp',
+			go: 'go',
 			java: 'java',
 			zig: 'zig',
+			asm: 'asm',
 			// 함수형/기타 언어
 			julia: 'julia',
 			elixir: 'elixir',
@@ -74,20 +112,30 @@
 		const currentLang = normalizeLanguage(language);
 		const currentTheme = theme;
 
-		// Shiki로 HTML 생성
-		codeToHtml(currentCode, {
-			lang: currentLang,
-			theme: currentTheme
-		})
-			.then((html) => {
+		// 하이라이팅 실행
+		(async () => {
+			try {
+				const highlighter = await getHighlighter();
+
+				// 아직 로드되지 않은 언어면 동적 로드
+				if (!loadedLanguages.has(currentLang)) {
+					await highlighter.loadLanguage(currentLang);
+					loadedLanguages.add(currentLang);
+				}
+
+				const html = highlighter.codeToHtml(currentCode, {
+					lang: currentLang,
+					theme: currentTheme
+				});
+
 				if (active) highlightedHtml = html;
-			})
-			.catch((error) => {
+			} catch (error) {
 				if (active) {
 					console.error(`[CodeBlock] Failed to highlight code:`, error);
 					highlightedHtml = `<pre><code>${escapeHtml(currentCode)}</code></pre>`;
 				}
-			});
+			}
+		})();
 
 		return () => {
 			active = false; // 이전 비동기 작업 결과 무시
