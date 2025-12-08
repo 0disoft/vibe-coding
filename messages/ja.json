@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "決済処理",
 	"privacy_processor_lemonsqueezy_country": "米国",
 	"privacy_processor_lemonsqueezy_items": "メール、決済情報、取引履歴",
-	"privacy_processor_lemonsqueezy_retention": "関連法令に従う"
+	"privacy_processor_lemonsqueezy_retention": "関連法令に従う",
+	"user_menu": "ユーザーメニュー",
+	"menu_login": "ログイン",
+	"menu_signup": "新規登録",
+	"menu_profile": "プロフィール",
+	"menu_settings": "設定",
+	"menu_logout": "ログアウト"
 }

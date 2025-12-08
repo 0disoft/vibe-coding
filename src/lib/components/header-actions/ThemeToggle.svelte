@@ -5,7 +5,7 @@
 <button
 	type="button"
 	onclick={() => theme.toggle()}
-	class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+	class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 	aria-label="테마 변경"
 	aria-pressed={theme.current === 'dark'}
 >

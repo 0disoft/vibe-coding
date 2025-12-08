@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "Pemrosesan pembayaran",
 	"privacy_processor_lemonsqueezy_country": "AS",
 	"privacy_processor_lemonsqueezy_items": "Email, Info pembayaran, Catatan transaksi",
-	"privacy_processor_lemonsqueezy_retention": "Sesuai hukum yang berlaku"
+	"privacy_processor_lemonsqueezy_retention": "Sesuai hukum yang berlaku",
+	"user_menu": "Menu pengguna",
+	"menu_login": "Masuk",
+	"menu_signup": "Daftar",
+	"menu_profile": "Profil",
+	"menu_settings": "Pengaturan",
+	"menu_logout": "Keluar"
 }

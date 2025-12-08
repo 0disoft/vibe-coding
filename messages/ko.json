@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "결제 처리",
 	"privacy_processor_lemonsqueezy_country": "미국",
 	"privacy_processor_lemonsqueezy_items": "이메일, 결제 정보, 거래 내역",
-	"privacy_processor_lemonsqueezy_retention": "관계 법령에 따름"
+	"privacy_processor_lemonsqueezy_retention": "관계 법령에 따름",
+	"user_menu": "사용자 메뉴",
+	"menu_login": "로그인",
+	"menu_signup": "회원가입",
+	"menu_profile": "프로필",
+	"menu_settings": "설정",
+	"menu_logout": "로그아웃"
 }

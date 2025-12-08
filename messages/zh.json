@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "支付处理",
 	"privacy_processor_lemonsqueezy_country": "美国",
 	"privacy_processor_lemonsqueezy_items": "电子邮件、支付信息、交易记录",
-	"privacy_processor_lemonsqueezy_retention": "根据相关法律"
+	"privacy_processor_lemonsqueezy_retention": "根据相关法律",
+	"user_menu": "用户菜单",
+	"menu_login": "登录",
+	"menu_signup": "注册",
+	"menu_profile": "个人资料",
+	"menu_settings": "设置",
+	"menu_logout": "退出登录"
 }

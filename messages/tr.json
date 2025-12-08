@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "Ödeme işleme",
 	"privacy_processor_lemonsqueezy_country": "ABD",
 	"privacy_processor_lemonsqueezy_items": "E-posta, Ödeme bilgisi, İşlem kayıtları",
-	"privacy_processor_lemonsqueezy_retention": "İlgili yasalara göre"
+	"privacy_processor_lemonsqueezy_retention": "İlgili yasalara göre",
+	"user_menu": "Kullanıcı menüsü",
+	"menu_login": "Giriş yap",
+	"menu_signup": "Kayıt ol",
+	"menu_profile": "Profil",
+	"menu_settings": "Ayarlar",
+	"menu_logout": "Çıkış yap"
 }

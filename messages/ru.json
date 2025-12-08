@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "Обработка платежей",
 	"privacy_processor_lemonsqueezy_country": "США",
 	"privacy_processor_lemonsqueezy_items": "Email, платежная инфо, записи транзакций",
-	"privacy_processor_lemonsqueezy_retention": "Согласно применимым законам"
+	"privacy_processor_lemonsqueezy_retention": "Согласно применимым законам",
+	"user_menu": "Меню пользователя",
+	"menu_login": "Войти",
+	"menu_signup": "Регистрация",
+	"menu_profile": "Профиль",
+	"menu_settings": "Настройки",
+	"menu_logout": "Выйти"
 }

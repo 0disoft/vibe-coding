@@ -2,6 +2,7 @@
 	import ThemeToggle from '$lib/components/header-actions/ThemeToggle.svelte';
 	import LanguagePicker from '$lib/components/header-actions/LanguagePicker.svelte';
 	import FontSizePicker from '$lib/components/header-actions/FontSizePicker.svelte';
+	import UserMenu from '$lib/components/header-actions/UserMenu.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	import { localizeUrl } from '$lib/paraglide/runtime.js';
 	import type { Snippet } from 'svelte';
@@ -44,6 +45,7 @@
 			<ThemeToggle />
 			<LanguagePicker />
 			<FontSizePicker />
+			<UserMenu />
 		</div>
 	</div>
 </header>

@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "Betalningshantering",
 	"privacy_processor_lemonsqueezy_country": "USA",
 	"privacy_processor_lemonsqueezy_items": "E-post, betalningsinfo, transaktionshistorik",
-	"privacy_processor_lemonsqueezy_retention": "Enligt tillämpliga lagar"
+	"privacy_processor_lemonsqueezy_retention": "Enligt tillämpliga lagar",
+	"user_menu": "Användarmeny",
+	"menu_login": "Logga in",
+	"menu_signup": "Registrera",
+	"menu_profile": "Profil",
+	"menu_settings": "Inställningar",
+	"menu_logout": "Logga ut"
 }

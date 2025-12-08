@@ -97,7 +97,7 @@
 		type="button"
 		bind:this={buttonRef}
 		onclick={toggleLanguageModal}
-		class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+		class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 		aria-label="언어 변경"
 		aria-haspopup="dialog"
 		aria-expanded={showLanguageModal}

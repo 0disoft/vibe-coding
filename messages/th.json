@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "การประมวลผลการชำระเงิน",
 	"privacy_processor_lemonsqueezy_country": "สหรัฐอเมริกา",
 	"privacy_processor_lemonsqueezy_items": "อีเมล, ข้อมูลการชำระเงิน, บันทึกธุรกรรม",
-	"privacy_processor_lemonsqueezy_retention": "ตามกฎหมายที่บังคับใช้"
+	"privacy_processor_lemonsqueezy_retention": "ตามกฎหมายที่บังคับใช้",
+	"user_menu": "เมนูผู้ใช้",
+	"menu_login": "เข้าสู่ระบบ",
+	"menu_signup": "สมัครสมาชิก",
+	"menu_profile": "โปรไฟล์",
+	"menu_settings": "ตั้งค่า",
+	"menu_logout": "ออกจากระบบ"
 }

@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "भुगतान प्रसंस्करण",
 	"privacy_processor_lemonsqueezy_country": "यूएसए",
 	"privacy_processor_lemonsqueezy_items": "ईमेल, भुगतान जानकारी, लेनदेन रिकॉर्ड",
-	"privacy_processor_lemonsqueezy_retention": "लागू कानूनों के अनुसार"
+	"privacy_processor_lemonsqueezy_retention": "लागू कानूनों के अनुसार",
+	"user_menu": "उपयोगकर्ता मेनू",
+	"menu_login": "लॉग इन",
+	"menu_signup": "साइन अप",
+	"menu_profile": "प्रोफ़ाइल",
+	"menu_settings": "सेटिंग्स",
+	"menu_logout": "लॉग आउट"
 }

@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "Pagproseso ng pagbabayad",
 	"privacy_processor_lemonsqueezy_country": "USA",
 	"privacy_processor_lemonsqueezy_items": "Email, Impormasyon sa pagbabayad, Mga rekord ng transaksyon",
-	"privacy_processor_lemonsqueezy_retention": "Ayon sa mga naaangkop na batas"
+	"privacy_processor_lemonsqueezy_retention": "Ayon sa mga naaangkop na batas",
+	"user_menu": "Menu ng user",
+	"menu_login": "Mag-login",
+	"menu_signup": "Mag-sign up",
+	"menu_profile": "Profile",
+	"menu_settings": "Mga setting",
+	"menu_logout": "Mag-logout"
 }

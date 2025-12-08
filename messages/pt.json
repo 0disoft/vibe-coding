@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "Processamento de pagamentos",
 	"privacy_processor_lemonsqueezy_country": "EUA",
 	"privacy_processor_lemonsqueezy_items": "E-mail, informações de pagamento, registros de transações",
-	"privacy_processor_lemonsqueezy_retention": "Conforme leis aplicáveis"
+	"privacy_processor_lemonsqueezy_retention": "Conforme leis aplicáveis",
+	"user_menu": "Menu do usuário",
+	"menu_login": "Entrar",
+	"menu_signup": "Cadastrar",
+	"menu_profile": "Perfil",
+	"menu_settings": "Configurações",
+	"menu_logout": "Sair"
 }

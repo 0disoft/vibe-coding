@@ -94,16 +94,17 @@
   --muted: 93% 0.01 106;
   --muted-foreground: 45% 0.02 106;
 
-  /* 파괴적 액션 (삭제 등) - 파스텔 톤 */
-  --destructive: 85% 0.10 25;
-  --destructive-foreground: 18% 0.02 260;
+  /* 파괴적 액션 (삭제, 로그아웃 등) */
+  --destructive: 65% 0.15 25;
+  --destructive-foreground: 98% 0.01 25;
 
-  /* 성공 / 경고 상태 - 파스텔 톤 */
-  --success: 90% 0.09 150;
-  --success-foreground: 18% 0.02 150;
+  /* 성공 상태 (연두색) */
+  --success: 65% 0.15 150;
+  --success-foreground: 98% 0.01 150;
 
-  --warning: 95% 0.07 95;
-  --warning-foreground: 20% 0.03 95;
+  /* 경고 상태 (노란색) */
+  --warning: 70% 0.15 90;
+  --warning-foreground: 98% 0.01 90;
 
   /* 경계 / 입력 / 포커스 링 */
   --border: 92% 0.008 106;

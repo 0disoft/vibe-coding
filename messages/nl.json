@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "Betalingsverwerking",
 	"privacy_processor_lemonsqueezy_country": "VS",
 	"privacy_processor_lemonsqueezy_items": "E-mail, betalingsinfo, transactierecords",
-	"privacy_processor_lemonsqueezy_retention": "Volgens toepasselijke wetten"
+	"privacy_processor_lemonsqueezy_retention": "Volgens toepasselijke wetten",
+	"user_menu": "Gebruikersmenu",
+	"menu_login": "Inloggen",
+	"menu_signup": "Registreren",
+	"menu_profile": "Profiel",
+	"menu_settings": "Instellingen",
+	"menu_logout": "Uitloggen"
 }

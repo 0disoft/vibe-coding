@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "معالجة المدفوعات",
 	"privacy_processor_lemonsqueezy_country": "الولايات المتحدة",
 	"privacy_processor_lemonsqueezy_items": "البريد الإلكتروني، معلومات الدفع، سجلات المعاملات",
-	"privacy_processor_lemonsqueezy_retention": "وفقًا للقوانين المعمول بها"
+	"privacy_processor_lemonsqueezy_retention": "وفقًا للقوانين المعمول بها",
+	"user_menu": "قائمة المستخدم",
+	"menu_login": "تسجيل الدخول",
+	"menu_signup": "إنشاء حساب",
+	"menu_profile": "الملف الشخصي",
+	"menu_settings": "الإعدادات",
+	"menu_logout": "تسجيل الخروج"
 }

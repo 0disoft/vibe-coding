@@ -30,5 +30,11 @@
 	"privacy_processor_lemonsqueezy_purpose": "Xử lý thanh toán",
 	"privacy_processor_lemonsqueezy_country": "Hoa Kỳ",
 	"privacy_processor_lemonsqueezy_items": "Email, thông tin thanh toán, lịch sử giao dịch",
-	"privacy_processor_lemonsqueezy_retention": "Theo luật hiện hành"
+	"privacy_processor_lemonsqueezy_retention": "Theo luật hiện hành",
+	"user_menu": "Menu người dùng",
+	"menu_login": "Đăng nhập",
+	"menu_signup": "Đăng ký",
+	"menu_profile": "Hồ sơ",
+	"menu_settings": "Cài đặt",
+	"menu_logout": "Đăng xuất"
 }
