@@ -10,8 +10,6 @@
 @import './styles/base.css';
 /* 얇은 스크롤바 */
 @import './styles/scrollbar.css';
-/* highlight.js 구문 강조 */
-@import './styles/syntax.css';
 /* .prose 마크다운 콘텐츠 */
 @import './styles/prose.css';
 /* View Transitions (페이지 전환 효과) */

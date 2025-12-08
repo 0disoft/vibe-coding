@@ -1,0 +1,169 @@
+Svelte 5의 룬(Runes) 구문과 Shiki, UnoCSS를 활용하여 잘 작성된 코드입니다. 기능적으로는 작동하지만, 성능과 사용자 경험(UX) 측면에서 몇 가지 중요한 개선 사항이 있습니다. 특히 Shiki는 무거운 라이브러리이므로 클라이언트 사이드 렌더링 방식에 대한 주의가 필요합니다.
+
+요청하신 대로 검토 결과와 개선된 코드를 정리해 드립니다.
+
+### 코드 리뷰 평가표
+
+| 평가 항목 | 점수 (1-9) | 상세 의견 |
+| :--- | :--- | :--- |
+| **Svelte 5 문법** | 9 | $state, $effect, $props 등 룬 문법을 정확하고 깔끔하게 사용함 |
+| **기능 구현** | 8 | 코드 하이라이팅, 언어 정규화, 복사 기능 등 필수 기능 충실함 |
+| **스타일링** | 7 | UnoCSS의 variant group 문법과 유틸리티 클래스 활용이 좋음 (단, 커스텀 컬러 변수 의존성 존재) |
+| **성능 최적화** | 5 | $effect 내부에서 비동기 하이라이팅을 수행하면 페이지 로드 시 '깜빡임(FOUC)'과 성능 저하 발생 가능성 높음 |
+| **종합 점수** | **29** | **우수함 (몇 가지 최적화 필요)** |
+
+### 주요 개선 포인트 및 리스크 분석
+
+1.  **클라이언트 사이드 렌더링의 한계 (중요)**
+    현재 코드는 브라우저에서 컴포넌트가 마운트된 후(hydration) `$effect`가 실행되면서 하이라이팅을 시작합니다.
+
+      - 초기 로딩 시: 빈 화면 또는 스타일 없는 코드(fallback)가 잠깐 보였다가 하이라이팅된 코드로 바뀌는 **깜빡임 현상**이 발생합니다.
+      - 성능: Shiki 번들 크기가 매우 크기 때문에, 블로그처럼 코드 블록이 많은 페이지에서는 브라우저가 느려질 수 있습니다.
+      - *해결 방향:* 가능한 한 서버 사이드(SvelteKit의 `load` 함수나 `mdsvex` 등)에서 미리 HTML로 변환해서 내려주는 것이 정석입니다. 하지만 동적 컨텐츠라면 현재 방식이 최선일 수 있습니다.
+
+2.  **비동기 레이스 컨디션 (Race Condition)**
+    `code` prop이 빠르게 변경될 경우(예: 사용자가 입력을 빠르게 바꿀 때), 이전 요청의 하이라이팅 결과가 나중에 도착하여 현재 코드와 덮어씌워지는 문제가 발생할 수 있습니다. `$effect` 내에서 클린업 함수나 플래그를 사용하여 이를 방지해야 합니다.
+
+3.  **UnoCSS 색상 변수**
+    `bg-muted`, `text-muted-foreground` 같은 클래스는 shadcn-ui 계열의 설정입니다. `uno.config.ts`에 해당 색상들이 정의되어 있지 않다면 스타일이 깨질 수 있습니다.
+
+4.  **불필요한 리렌더링 방지**
+    `shiki`의 `codeToHtml`은 호출할 때마다 내부적으로 테마와 언어를 로드하므로 무거울 수 있습니다. 싱글톤 패턴이나 인스턴스 재사용을 고려할 수 있으나, 최신 Shiki API는 내부 캐싱을 잘 지원하므로 큰 문제는 아닙니다.
+
+### 개선된 솔루션 (역제안)
+
+기존 로직을 유지하되, **비동기 충돌 방지**와 **타입 안전성**, **접근성**을 강화한 코드입니다.
+
+src\\lib\\components\\CodeBlock.svelte
+
+```svelte
+<script lang="ts">
+  import { codeToHtml, type BundledLanguage, type BundledTheme } from 'shiki';
+
+  interface Props {
+    code: string;
+    language?: string;
+    theme?: BundledTheme;
+    class?: string; // 외부에서 스타일 주입 가능하도록 추가
+  }
+
+  let { 
+    code, 
+    language = 'typescript', 
+    theme = 'catppuccin-mocha',
+    class: className = '' 
+  }: Props = $props();
+
+  let copied = $state(false);
+  let highlightedHtml = $state('');
+  let isLoading = $state(true);
+
+  // 언어 이름 정규화
+  function normalizeLanguage(lang: string): BundledLanguage {
+    const normalized = lang.toLowerCase();
+    const langMap: Record<string, BundledLanguage> = {
+      ts: 'typescript',
+      js: 'javascript',
+      py: 'python',
+      rs: 'rust',
+      yml: 'yaml',
+      md: 'markdown',
+      sh: 'bash',
+      shell: 'bash',
+      c: 'c',
+      cpp: 'cpp',
+      'c++': 'cpp',
+      // 필요 시 추가
+    };
+    // 매핑에 없으면 원본 반환 (Shiki가 알아서 처리하거나 에러 발생)
+    return (langMap[normalized] || normalized) as BundledLanguage;
+  }
+
+  async function copyCode() {
+    try {
+      await navigator.clipboard.writeText(code);
+      copied = true;
+      setTimeout(() => (copied = false), 1500);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  }
+
+  // HTML 이스케이프 (보안 및 Fallback용)
+  function escapeHtml(text: string): string {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  $effect(() => {
+    let active = true; // 레이스 컨디션 방지용 플래그
+    isLoading = true;
+
+    const currentCode = code;
+    const currentLang = normalizeLanguage(language);
+    
+    // Shiki 하이라이팅 실행
+    codeToHtml(currentCode, {
+      lang: currentLang,
+      theme: theme
+    })
+      .then((html) => {
+        if (active) {
+          highlightedHtml = html;
+          isLoading = false;
+        }
+      })
+      .catch((error) => {
+        if (active) {
+          console.error(`[CodeBlock] Highlight error (${currentLang}):`, error);
+          // 에러 시 일반 텍스트 Fallback
+          highlightedHtml = `<pre class="shiki ${theme}" style="background-color:#eff1f5; color:#4c4f69"><code>${escapeHtml(currentCode)}</code></pre>`;
+          isLoading = false;
+        }
+      });
+
+    return () => {
+      active = false; // 컴포넌트가 파괴되거나 props가 바뀌면 이전 작업 무시
+    };
+  });
+</script>
+
+<div class="relative group my-4 overflow-hidden rounded-lg border border-border/50 bg-muted/30 {className}">
+  
+  <button
+    type="button"
+    onclick={copyCode}
+    aria-label={copied ? 'Copied successfully' : 'Copy code to clipboard'}
+    class="absolute right-2 top-2 z-10 flex h-8 items-center rounded-md bg-muted/80 px-3 text-xs font-medium text-muted-foreground transition-all hover:bg-background hover:text-foreground opacity-100 lg:opacity-0 lg:group-hover:opacity-100 focus:opacity-100"
+  >
+    {#if copied}
+      <span class="i-lucide-check mr-1 text-green-500"></span>
+      Copied!
+    {:else}
+      <span class="i-lucide-copy mr-1"></span>
+      Copy
+    {/if}
+  </button>
+
+  <div class="overflow-x-auto text-sm [&>pre]:!my-0 [&>pre]:!p-4 [&>pre]:!bg-transparent [&>pre]:font-mono">
+    {#if highlightedHtml}
+      {@html highlightedHtml}
+    {:else}
+      <pre class="p-4 text-muted-foreground animate-pulse"><code>{code}</code></pre>
+    {/if}
+  </div>
+</div>
+```
+
+### 변경 사항 요약
+
+1.  **Race Condition 방지:** `$effect` 내부에 `active` 플래그를 두어, 비동기 작업 중 `code`가 바뀌면 이전 작업 결과를 무시하도록 수정했습니다.
+2.  **접근성 및 UX:** `<button>`에 `aria-label`을 추가하고, 복사 아이콘(UnoCSS 아이콘 프리셋 사용 가정 `i-lucide-...`)을 넣어 시각적 피드백을 강화했습니다.
+3.  **스타일 개선:**
+      * `overflow-x-auto`를 추가하여 코드가 길어질 때 가로 스크롤이 생기도록 했습니다.
+      * `group-hover`를 사용하여 데스크탑에서는 마우스를 올렸을 때만 복사 버튼이 보이게 하여 코드를 가리는 문제를 줄였습니다.
+4.  **외부 Class 주입:** 컴포넌트 외부에서 마진이나 너비를 조절할 수 있도록 `class` prop을 추가했습니다.

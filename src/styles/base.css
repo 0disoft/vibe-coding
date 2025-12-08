@@ -46,7 +46,8 @@ pre {
   font-family: var(--font-mono);
 }
 
-pre {
+/* Shiki 코드블록(.shiki)은 자체 인라인 스타일 사용 */
+pre:not(.shiki) {
   background-color: oklch(var(--card));
   border: none;
   border-radius: 0.75rem;

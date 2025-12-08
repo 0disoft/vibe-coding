@@ -24,8 +24,8 @@
     │   ├── tokens.css
     │   ├── base.css
     │   ├── scrollbar.css
-    │   ├── syntax.css
-    │   └── prose.css
+    │   ├── prose.css
+    │   └── transitions.css
     └── lib/
         ├── index.ts
         ├── config.ts
@@ -89,7 +89,6 @@
 | `tokens.css` | CSS 변수: 색상 팔레트, 폰트 스택, 사이즈 스케일, 다크모드 |
 | `base.css` | 기본 HTML 요소 스타일 (body, h1-h3, code, pre) |
 | `scrollbar.css` | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일) |
-| `syntax.css` | highlight.js 구문 강조 색상 테마 (라이트/다크) |
 | `prose.css` | .prose 마크다운 콘텐츠 타이포그래피 |
 | `transitions.css` | View Transitions API 기반 페이지 전환 효과 |
 
@@ -102,7 +101,7 @@
 | `theme.svelte.ts` | 라이트/다크 테마 상태 관리, FOUC 방지 |
 | `font-size.svelte.ts` | 글자 크기 1~9단계 관리 |
 | `stores/persisted-state.svelte.ts` | 쿠키+DOM 동기화 퍼시스턴스 스토어 팩토리 |
-| `components/CodeBlock.svelte` | 코드 하이라이팅 + 복사 버튼 재사용 컴포넌트 |
+| `components/CodeBlock.svelte` | Shiki 기반 코드 하이라이팅 + 복사 버튼 컴포넌트 |
 | `components/Header.svelte` | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯) |
 | `components/header-actions/ThemeToggle.svelte` | 테마 토글 버튼 |
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달 |
