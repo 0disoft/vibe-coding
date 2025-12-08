@@ -5,7 +5,7 @@ const path = require('path');
 const messagesDir = path.join(process.cwd(), 'messages');
 console.log('Resolved messages directory:', messagesDir);
 
-// Cookie Policy Translation Data for 18 languages (plus ko, en already exist)
+// 18개 언어에 대한 쿠키 정책 번역 데이터 (ko, en은 이미 존재함)
 const translations = {
   ja: {
     footer_cookie_policy: "クッキーポリシー",
@@ -180,7 +180,7 @@ async function updateMessages() {
         const content = fs.readFileSync(filePath, 'utf8');
         const json = JSON.parse(content);
 
-        // Merge translations
+        // 번역 병합
         const updatedJson = { ...json, ...messages };
 
         fs.writeFileSync(filePath, JSON.stringify(updatedJson, null, '\t'), 'utf8');

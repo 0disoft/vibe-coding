@@ -5,9 +5,9 @@ const path = require('path');
 const messagesDir = path.join(process.cwd(), 'messages');
 console.log('Resolved messages directory:', messagesDir);
 
-// Translation data for 18 languages
+// 18개 언어에 대한 번역 데이터
 const translations = {
-  // East Asian
+  // 동아시아
   ja: {
     privacy_table_processor: "委託先",
     privacy_table_purpose: "委託業務",
@@ -46,7 +46,7 @@ const translations = {
     privacy_processor_lemonsqueezy_items: "电子邮件、支付信息、交易记录",
     privacy_processor_lemonsqueezy_retention: "根据相关法律"
   },
-  // European
+  // 유럽
   es: {
     privacy_table_processor: "Encargado",
     privacy_table_purpose: "Propósito",
@@ -237,7 +237,7 @@ const translations = {
     privacy_processor_lemonsqueezy_items: "E-posta, Ödeme bilgisi, İşlem kayıtları",
     privacy_processor_lemonsqueezy_retention: "İlgili yasalara göre"
   },
-  // Other Asian / Middle Eastern
+  // 기타 아시아 / 중동
   ar: {
     privacy_table_processor: "المعالج",
     privacy_table_purpose: "الغرض",
@@ -363,7 +363,7 @@ async function updateMessages() {
         const content = fs.readFileSync(filePath, 'utf8');
         const json = JSON.parse(content);
 
-        // Merge translations
+        // 번역 병합
         const updatedJson = { ...json, ...messages };
 
         fs.writeFileSync(filePath, JSON.stringify(updatedJson, null, '\t'), 'utf8');

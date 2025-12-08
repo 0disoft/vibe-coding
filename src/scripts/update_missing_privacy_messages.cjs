@@ -4,9 +4,9 @@ const path = require('path');
 
 const messagesDir = path.join(process.cwd(), 'messages');
 
-// Missing keys for Portone, GitHub, Giscus
-// Using English as baseline for all 18 languages to ensure keys exist.
-// Ideally these should be translated, but for now we ensure structural consistency.
+// Portone, GitHub, Giscus에 대한 누락된 키
+// 키가 존재하도록 모든 18개 언어에 대해 영어를 기준점으로 사용합니다.
+// 이상적으로는 번역되어야 하지만, 지금은 구조적 일관성을 보장합니다.
 
 const missingMessages = {
   privacy_processor_portone_purpose: "Domestic payment processing",
@@ -39,9 +39,9 @@ async function updateMissing() {
         const content = fs.readFileSync(filePath, 'utf8');
         const json = JSON.parse(content);
 
-        // Merge missing keys if they don't exist
-        // simple spread will overwrite if exists, but here we want to ensure they are added
-        // Since we know they are missing, spread is fine.
+        // 존재하지 않는 경우 누락된 키 병합
+        // 단순 spread는 존재할 경우 덮어쓰지만, 여기서는 추가되도록 보장하고 싶습니다.
+        // 누락된 것을 알고 있으므로 spread를 사용해도 무방합니다.
         const updatedJson = { ...json, ...missingMessages };
 
         fs.writeFileSync(filePath, JSON.stringify(updatedJson, null, '\t'), 'utf8');
