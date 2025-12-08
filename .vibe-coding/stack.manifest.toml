@@ -30,8 +30,8 @@ tauri = false
 [backend_api]
 elysiajs = false
 hono = false
-sveltekit_native_backend = false
-typebox = false
+sveltekit_native_backend = true
+typebox = true
 
 [workspace_monorepo]
 native_workspaces = false
@@ -54,7 +54,7 @@ cloudflare_r2 = false # 필요시 true로 변경 (이미지 저장용)
 directus = false      # Headless CMS (관리자 패널)
 
 [authentication]
-better_auth = false
+better_auth = true
 
 [security_protection]
 cap = true # Privacy-first PoW Captcha (Open Source)
@@ -120,6 +120,7 @@ novu = false
 ntfy = false
 
 [ui_ux_features]
+shiki = true                # 아름다운 코드 하이라이팅
 view_transitions_api = true # 부드러운 페이지 이동
 tiptap = false              # 위지윅 에디터
 echarts = false             # 금융/데이터 차트
