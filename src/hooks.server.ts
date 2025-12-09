@@ -21,60 +21,60 @@ import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위�
 // 1. 테마/폰트 크기 처리 핸들러
 // 쿠키를 확인하여 HTML에 data-theme, data-font-size 속성을 주입하는 역할을 합니다.
 const handleThemeAndFont: Handle = async ({ event, resolve }) => {
-  const rawTheme = event.cookies.get(THEME_COOKIE);
-  const theme = rawTheme === 'light' || rawTheme === 'dark' ? rawTheme : null;
-  const fontSize = event.cookies.get(FONT_SIZE_COOKIE); // 기대값: '1' ~ '9'
+	const rawTheme = event.cookies.get(THEME_COOKIE);
+	const theme = rawTheme === 'light' || rawTheme === 'dark' ? rawTheme : null;
+	const fontSize = event.cookies.get(FONT_SIZE_COOKIE); // 기대값: '1' ~ '9'
 
-  // resolve 함수는 페이지 렌더링을 계속 진행시킵니다.
-  // transformPageChunk를 이용해 HTML이 브라우저로 전송되기 직전에 수정합니다.
-  return resolve(event, {
-    transformPageChunk: ({ html }) => {
-      // 쿠키에 저장된 테마가 있다면 html 태그의 data-theme 속성을 해당 값으로 교체합니다.
-      if (theme) {
-        html = html.replace(/data-theme="[^"]*"/, `data-theme="${theme}"`);
-      }
-      // 폰트 크기 쿠키가 1~9 사이라면 data-font-size 기본값(5)을 교체합니다.
-      if (fontSize && /^[1-9]$/.test(fontSize)) {
-        html = html.replace(/data-font-size="[^"]*"/, `data-font-size="${fontSize}"`);
-      }
-      // 테마 쿠키가 없다면 HTML을 수정하지 않고 그대로 둡니다.
-      return html;
-    }
-  });
+	// resolve 함수는 페이지 렌더링을 계속 진행시킵니다.
+	// transformPageChunk를 이용해 HTML이 브라우저로 전송되기 직전에 수정합니다.
+	return resolve(event, {
+		transformPageChunk: ({ html }) => {
+			// 쿠키에 저장된 테마가 있다면 html 태그의 data-theme 속성을 해당 값으로 교체합니다.
+			if (theme) {
+				html = html.replace(/data-theme="[^"]*"/, `data-theme="${theme}"`);
+			}
+			// 폰트 크기 쿠키가 1~9 사이라면 data-font-size 기본값(5)을 교체합니다.
+			if (fontSize && /^[1-9]$/.test(fontSize)) {
+				html = html.replace(/data-font-size="[^"]*"/, `data-font-size="${fontSize}"`);
+			}
+			// 테마 쿠키가 없다면 HTML을 수정하지 않고 그대로 둡니다.
+			return html;
+		}
+	});
 };
 
 // 2. 다국어 처리 핸들러 (기존 코드 유지)
 // 언어 설정에 따라 HTML의 lang 속성을 변경하고 라우팅을 제어합니다.
 const handleParaglide: Handle = ({ event, resolve }) =>
-  paraglideMiddleware(event.request, ({ request, locale }) => {
-    event.request = request;
+	paraglideMiddleware(event.request, ({ request, locale }) => {
+		event.request = request;
 
-    return resolve(event, {
-      transformPageChunk: ({ html }) => html.replace('%paraglide.lang%', locale)
-    });
-  });
+		return resolve(event, {
+			transformPageChunk: ({ html }) => html.replace('%paraglide.lang%', locale)
+		});
+	});
 
 // 3. Accept-Language 기반 lang 보정
 // 기본 로케일이 en이라도 한국어 브라우저이면 lang="ko"로 교체하여 Pretendard 적용 범위가 작동하게 함
 const handleLangFallback: Handle = ({ event, resolve }) => {
-  const accept = event.request.headers.get('accept-language') ?? '';
+	const accept = event.request.headers.get('accept-language') ?? '';
 
-  // 매우 단순한 파서: q값 고려, ko 우선 매칭
-  const pickKo = (() => {
-    return accept
-      .split(',')
-      .map((part) => part.trim())
-      .some((part) => part.toLowerCase().startsWith('ko'));
-  })();
+	// 매우 단순한 파서: q값 고려, ko 우선 매칭
+	const pickKo = (() => {
+		return accept
+			.split(',')
+			.map((part) => part.trim())
+			.some((part) => part.toLowerCase().startsWith('ko'));
+	})();
 
-  return resolve(event, {
-    transformPageChunk: ({ html }) => {
-      if (pickKo) {
-        html = html.replace(/lang="[^"]*"/, 'lang="ko"');
-      }
-      return html;
-    }
-  });
+	return resolve(event, {
+		transformPageChunk: ({ html }) => {
+			if (pickKo) {
+				html = html.replace(/lang="[^"]*"/, 'lang="ko"');
+			}
+			return html;
+		}
+	});
 };
 
 // 4. 핸들러 병합 및 내보내기

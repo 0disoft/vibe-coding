@@ -4,19 +4,19 @@
 
 본 리포트는 해당 기간의 핵심 변경 사항을 분석하여, 실무 개발자가 즉시 적용해야 할 아키텍처 및 코드 변경 전략을 제시합니다.
 
------
+---
 
 ## 1. Executive Summary: 버전별 핵심 아키텍처 변화
 
-| 버전 | 핵심 키워드 | 아키텍처 영향도 (Impact) |
-| :--- | :--- | :--- |
-| **v4.6.x** | **Context & Security** | **[Global State]** `Context Storage` 도입으로 요청 스코프 데이터(Trace ID, User 등)의 전역 접근이 가능해져, 'Prop Drilling' 문제를 근본적으로 해결. |
-| **v4.7.0** | **Standardization** | **[Helper First]** `Proxy`, `JWK`, `Language`, `Standard Validator` 등 핵심 기능을 공식 미들웨어로 제공. 직접 구현한 유틸리티 코드의 제거(Deprecation) 신호. |
-| **v4.8.0** | **API Refinement** | **[Refactoring]** `Hono#fire` 폐기 및 `Route Helper` 도입으로 내부 API 접근 방식 변경. SSG 플러그인 시스템 도입으로 빌드 로직 모듈화. |
-| **v4.9.0** | **RPC & SSG** | **[Client Experience]** RPC 클라이언트의 에러 핸들링(`parseResponse`) 표준화 및 SSG 훅의 플러그인화 완료. |
-| **v4.10.x** | **Type Safety** | **[Reliability]** RPC 타입 추론 강화 및 `cloneRawRequest` 등 엣지 케이스 대응 유틸리티 추가. |
+| 버전        | 핵심 키워드            | 아키텍처 영향도 (Impact)                                                                                                                                     |
+| :---------- | :--------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **v4.6.x**  | **Context & Security** | **[Global State]** `Context Storage` 도입으로 요청 스코프 데이터(Trace ID, User 등)의 전역 접근이 가능해져, 'Prop Drilling' 문제를 근본적으로 해결.          |
+| **v4.7.0**  | **Standardization**    | **[Helper First]** `Proxy`, `JWK`, `Language`, `Standard Validator` 등 핵심 기능을 공식 미들웨어로 제공. 직접 구현한 유틸리티 코드의 제거(Deprecation) 신호. |
+| **v4.8.0**  | **API Refinement**     | **[Refactoring]** `Hono#fire` 폐기 및 `Route Helper` 도입으로 내부 API 접근 방식 변경. SSG 플러그인 시스템 도입으로 빌드 로직 모듈화.                        |
+| **v4.9.0**  | **RPC & SSG**          | **[Client Experience]** RPC 클라이언트의 에러 핸들링(`parseResponse`) 표준화 및 SSG 훅의 플러그인화 완료.                                                    |
+| **v4.10.x** | **Type Safety**        | **[Reliability]** RPC 타입 추론 강화 및 `cloneRawRequest` 등 엣지 케이스 대응 유틸리티 추가.                                                                 |
 
------
+---
 
 ## 2. Critical Deprecations & Action Plan
 
@@ -26,36 +26,36 @@
 
 `c.req` 객체의 속성으로 접근하던 방식이 독립된 헬퍼 함수로 변경되었습니다. 타입 안전성을 위해 즉시 교체하십시오.
 
-* **Deprecated:** `c.req.routePath`, `c.req.matchedRoutes`
-* **Replacement:**
+- **Deprecated:** `c.req.routePath`, `c.req.matchedRoutes`
+- **Replacement:**
 
-    ```ts
-    import { routePath, matchedRoutes } from 'hono/route'
-    // ...
-    const path = routePath(c)
-    ```
+  ```ts
+  import { routePath, matchedRoutes } from 'hono/route';
+  // ...
+  const path = routePath(c);
+  ```
 
 ### 2-2. Service Worker 진입점 변경 (v4.8.0)
 
 Cloudflare Workers 등 엣지 환경에서 사용하던 `app.fire()` 메서드가 제거되었습니다.
 
-* **Deprecated:** `app.fire(event)`
-* **Replacement:**
+- **Deprecated:** `app.fire(event)`
+- **Replacement:**
 
-    ```ts
-    import { fire } from 'hono/service-worker'
-    // ...
-    event.respondWith(fire(app, event))
-    ```
+  ```ts
+  import { fire } from 'hono/service-worker';
+  // ...
+  event.respondWith(fire(app, event));
+  ```
 
 ### 2-3. SSG 훅 옵션 폐기 (v4.9.0)
 
 `toSSG()` 함수의 인라인 훅 옵션들이 플러그인 시스템으로 이관되었습니다.
 
-* **Deprecated:** `beforeRequestHook`, `afterResponseHook` 등
-* **Replacement:** `plugins: [myCustomPlugin()]` 형태로 훅 로직을 별도 플러그인 객체로 분리하여 주입하십시오.
+- **Deprecated:** `beforeRequestHook`, `afterResponseHook` 등
+- **Replacement:** `plugins: [myCustomPlugin()]` 형태로 훅 로직을 별도 플러그인 객체로 분리하여 주입하십시오.
 
------
+---
 
 ## 3. Strategic Adoption: 도입해야 할 신규 패턴
 
@@ -63,10 +63,10 @@ Cloudflare Workers 등 엣지 환경에서 사용하던 `app.fire()` 메서드�
 
 다음 기능들을 직접 구현해 사용하고 있다면, Hono 공식 미들웨어로 교체하여 코드 양을 줄이고 안정성을 확보하십시오.
 
-* **Reverse Proxy:** `fetch` 기반의 수동 프록시 로직 → `hono/proxy`
-* **i18n:** 헤더/쿠키 파싱 로직 → `hono/language`
-* **Auth:** JWT/JWKS 검증 로직 → `hono/jwk` (Auth0, Clerk 연동 시 필수)
-* **Validation:** 개별 Zod 미들웨어 → `@hono/standard-validator` (스키마 라이브러리 교체 용이성 확보)
+- **Reverse Proxy:** `fetch` 기반의 수동 프록시 로직 → `hono/proxy`
+- **i18n:** 헤더/쿠키 파싱 로직 → `hono/language`
+- **Auth:** JWT/JWKS 검증 로직 → `hono/jwk` (Auth0, Clerk 연동 시 필수)
+- **Validation:** 개별 Zod 미들웨어 → `@hono/standard-validator` (스키마 라이브러리 교체 용이성 확보)
 
 ### 3-2. Context Storage 활용 (Architecture Upgrade)
 
@@ -76,10 +76,10 @@ Cloudflare Workers 등 엣지 환경에서 사용하던 `app.fire()` 메서드�
 
 v4.10.x의 보안 기능을 기본 템플릿에 포함시키십시오.
 
-* `secureHeaders`에 **CSP Nonce** 및 **Permissions-Policy** 설정 추가.
-* `csrf` 미들웨어와 `Sec-Fetch-Site` 검사를 결합하여 방어 수준 상향.
+- `secureHeaders`에 **CSP Nonce** 및 **Permissions-Policy** 설정 추가.
+- `csrf` 미들웨어와 `Sec-Fetch-Site` 검사를 결합하여 방어 수준 상향.
 
------
+---
 
 ## 4. Conclusion
 

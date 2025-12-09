@@ -90,7 +90,7 @@ pnpm dlx sv create ./
 
      ```ts
      // vite.config.ts
-     paraglideVitePlugin({ ..., experimentalUseVirtualModules: true }) 
+     paraglideVitePlugin({ ..., experimentalUseVirtualModules: true })
      ```
 
   2. **API 호환성 확보:** 안전한 import 및 우회
@@ -101,6 +101,7 @@ pnpm dlx sv create ./
      ```
 
   3. **재컴파일:** `vite.config.ts` 플러그인 순서 (`paraglide` -> `sveltekit`) 조정 후 재빌드.
+
 - **적용 시점:** 최신 Paraglide 라이브러리 연동 시 타입 오류가 발생할 때.
 
 ### 2. localizeUrl() 반환 타입이 URL 객체라 href에 할당 불가

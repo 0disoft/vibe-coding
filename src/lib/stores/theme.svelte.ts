@@ -8,23 +8,18 @@ import { createPersistedState } from './persisted-state.svelte';
 
 type Theme = 'light' | 'dark';
 
-const store = createPersistedState<Theme>(
-  THEME_COOKIE,
-  'light',
-  ['light', 'dark'],
-  (v) => {
-    if (!document?.documentElement) return;
-    document.documentElement.setAttribute('data-theme', v);
-  },
-);
+const store = createPersistedState<Theme>(THEME_COOKIE, 'light', ['light', 'dark'], (v) => {
+	if (!document?.documentElement) return;
+	document.documentElement.setAttribute('data-theme', v);
+});
 
 export const theme = {
-  get current() {
-    return store.current;
-  },
-  init: store.init,
-  set: store.set,
-  toggle() {
-    store.set(store.current === 'light' ? 'dark' : 'light');
-  },
+	get current() {
+		return store.current;
+	},
+	init: store.init,
+	set: store.set,
+	toggle() {
+		store.set(store.current === 'light' ? 'dark' : 'light');
+	}
 };

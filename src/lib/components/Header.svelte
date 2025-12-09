@@ -62,7 +62,7 @@
 			{#if nav}
 				{@render nav()}
 			{:else}
-				{#each navItems as item}
+				{#each navItems as item (item.href)}
 					{@const active = isActive(item.href)}
 					<a
 						href={localizeUrl(item.href).href}
@@ -136,7 +136,7 @@
 
 	<!-- 모바일 네비게이션 링크 -->
 	<nav aria-label="Mobile navigation" class="flex flex-col p-4">
-		{#each navItems as item}
+		{#each navItems as item (item.href)}
 			{@const active = isActive(item.href)}
 			<a
 				href={localizeUrl(item.href).href}

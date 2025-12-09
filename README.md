@@ -51,10 +51,10 @@ src/
 
 ## 프리퍼런스
 
-| 설정 | 저장소 | SSR 속성 |
-|------|--------|----------|
-| 테마 (light/dark) | 쿠키 `theme` | `data-theme` |
-| 폰트 크기 (1~9) | 쿠키 `fontSize` | `data-font-size` |
+| 설정              | 저장소          | SSR 속성         |
+| ----------------- | --------------- | ---------------- |
+| 테마 (light/dark) | 쿠키 `theme`    | `data-theme`     |
+| 폰트 크기 (1~9)   | 쿠키 `fontSize` | `data-font-size` |
 
 ## 테스트
 

@@ -1,10 +1,7 @@
 <script lang="ts">
-	import {
-		createHighlighter,
-		type BundledLanguage,
-		type BundledTheme,
-		type Highlighter
-	} from 'shiki';
+	// 동적 import를 위해 타입만 import (런타임 번들에 포함되지 않음)
+	import type { BundledLanguage, BundledTheme, Highlighter } from 'shiki';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	interface Props {
 		code: string;
@@ -19,7 +16,7 @@
 
 	// 싱글톤 highlighter 인스턴스 (언어 추가 시 재사용)
 	let highlighterPromise: Promise<Highlighter> | null = null;
-	const loadedLanguages = new Set<string>();
+	const loadedLanguages = new SvelteSet<string>();
 
 	// 프로젝트에서 주로 사용하는 언어들만 초기 로드
 	const INITIAL_LANGUAGES: BundledLanguage[] = [
@@ -36,9 +33,11 @@
 	// 사용 가능한 테마 (필요시 추가)
 	const THEMES: BundledTheme[] = ['catppuccin-mocha', 'github-dark', 'github-light'];
 
-	// highlighter 인스턴스 가져오기 (lazy 로드)
+	// highlighter 인스턴스 가져오기 (동적 import로 코드 스플리팅)
 	async function getHighlighter(): Promise<Highlighter> {
 		if (!highlighterPromise) {
+			// 동적 import: Shiki가 별도 청크로 분리됨
+			const { createHighlighter } = await import('shiki');
 			highlighterPromise = createHighlighter({
 				themes: THEMES,
 				langs: INITIAL_LANGUAGES
@@ -163,6 +162,7 @@
 		{copied ? '✓ Copied!' : '📋 Copy'}
 	</button>
 	{#if highlightedHtml}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- Shiki 라이브러리가 생성한 신뢰할 수 있는 HTML -->
 		{@html highlightedHtml}
 	{:else}
 		<!-- 로딩 중 fallback -->

@@ -10,7 +10,7 @@
 <div class="flex flex-col items-center justify-center flex-1 gap-6 text-center">
 	<h1 class="text-5xl font-bold tracking-tight">{m.offline_title()}</h1>
 	<p class="text-xl text-muted-foreground">{m.offline_message()}</p>
-	<button 
+	<button
 		class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold transition-all rounded-md shadow-lg bg-primary text-primary-foreground hover:opacity-90 active:scale-95"
 		onclick={() => window.location.reload()}
 	>

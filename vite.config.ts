@@ -4,12 +4,11 @@ import { playwright } from '@vitest/browser-playwright';
 import UnoCSS from 'unocss/vite';
 import { defineConfig } from 'vitest/config';
 
-
 export default defineConfig({
 	// info 레벨 메시지 숨김 (SvelteKit 설정 덮어쓰기 알림 등)
 	logLevel: 'warn',
 	plugins: [
-		UnoCSS(),      // UnoCSS를 맨 앞에
+		UnoCSS(), // UnoCSS를 맨 앞에
 		paraglideVitePlugin({
 			project: './project.inlang',
 			outdir: './src/lib/paraglide',
@@ -22,7 +21,7 @@ export default defineConfig({
 	],
 	build: {
 		// shiki 등 대용량 라이브러리로 인해 임계값 상향
-		chunkSizeWarningLimit: 1000,
+		// chunkSizeWarningLimit: 1000,
 		rollupOptions: {
 			output: {
 				// 대용량 라이브러리를 별도 청크로 분리

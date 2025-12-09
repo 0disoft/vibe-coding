@@ -17,9 +17,7 @@
 
 ## 4. 요청 사항 (Action Required)
 
--
-
----
+- ***
 
 ## 5. 해결 (Solution)
 

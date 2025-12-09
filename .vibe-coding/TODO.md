@@ -47,40 +47,40 @@ SPEC 내용이 확정된 후 진행합니다.
   - 행동:
     1. 패키지 설치  
        `bun add -D unocss @unocss/preset-wind4 @unocss/preset-web-fonts @iconify-json/lucide`
-       - 설명:  
-         - unocss → 유틸리티 엔진 및 Vite 플러그인  
-         - @unocss/preset-wind4 → Tailwind v4 스타일 프리셋 및 reset 담당  
-         - @unocss/preset-web-fonts → 구글 폰트 연동용 프리셋  
+       - 설명:
+         - unocss → 유틸리티 엔진 및 Vite 플러그인
+         - @unocss/preset-wind4 → Tailwind v4 스타일 프리셋 및 reset 담당
+         - @unocss/preset-web-fonts → 구글 폰트 연동용 프리셋
          - @iconify-json/lucide → 아이콘 컬렉션
     2. 설정 파일 생성  
        루트에 `uno.config.ts`를 생성하고 다음 구성을 기본값으로 사용한다.
        - Presets
-         - presetWind4  
-           - 패키지: `@unocss/preset-wind4`  
+         - presetWind4
+           - 패키지: `@unocss/preset-wind4`
            - 옵션: `preflights.reset = true`
-           - 역할: CSS 초기화  
-         - presetAttributify  
-           - 패키지: `unocss`  
-           - 역할: `text="sm primary"` 형식의 속성 기반 문법 활성화  
-         - presetIcons  
-           - 패키지: `unocss`  
-           - 역할: 아이콘 유틸리티 제공  
-         - presetWebFonts  
-           - 패키지: `@unocss/preset-web-fonts`  
+           - 역할: CSS 초기화
+         - presetAttributify
+           - 패키지: `unocss`
+           - 역할: `text="sm primary"` 형식의 속성 기반 문법 활성화
+         - presetIcons
+           - 패키지: `unocss`
+           - 역할: 아이콘 유틸리티 제공
+         - presetWebFonts
+           - 패키지: `@unocss/preset-web-fonts`
            - 옵션 예시:
-             - provider: `google`  
-             - fonts.sans: 필요한 폰트 스택 등록  
+             - provider: `google`
+             - fonts.sans: 필요한 폰트 스택 등록
              - fonts.mono: 필요한 폰트 스택 등록
        - Transformers
          - transformerVariantGroup 사용
        - Icons 설정
-         - collections:  
-           - lucide 컬렉션을 비동기 로드로 연결  
+         - collections:
+           - lucide 컬렉션을 비동기 로드로 연결
            - 예시: `lucide: () => import('@iconify-json/lucide/icons.json').then(m => m.default)`
-         - scale: 1.2  
+         - scale: 1.2
          - cdn: `https://esm.sh/` (아이콘 폴백용)
-    3. reset 관련 주의사항  
-       - 별도의 `@unocss/reset` 패키지는 설치하지 않는다.  
+    3. reset 관련 주의사항
+       - 별도의 `@unocss/reset` 패키지는 설치하지 않는다.
        - 초기화는 presetWind4의 `preflights.reset`에 일임한다.
 
 ## 2단계: 구현 및 개발

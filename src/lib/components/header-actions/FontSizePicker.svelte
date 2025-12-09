@@ -75,7 +75,7 @@
 				글자 크기 (현재: {fontSize.current})
 			</div>
 			<div class="grid grid-cols-3 gap-1">
-				{#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as const as level}
+				{#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as const as level (level)}
 					<button
 						type="button"
 						onclick={() => selectFontSize(level)}

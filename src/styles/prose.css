@@ -4,30 +4,30 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .prose {
-  color: oklch(var(--muted-foreground));
+	color: oklch(var(--muted-foreground));
 }
 
 .prose :where(p, ul, ol, li) {
-  color: oklch(var(--muted-foreground));
+	color: oklch(var(--muted-foreground));
 }
 
 .prose :where(h1, h2, h3, h4, h5, h6, strong, b, th) {
-  color: oklch(var(--foreground));
+	color: oklch(var(--foreground));
 }
 
 .prose :where(a) {
-  color: oklch(var(--link));
-  text-decoration: underline;
+	color: oklch(var(--link));
+	text-decoration: underline;
 }
 
 .prose :where(blockquote) {
-  color: oklch(var(--muted-foreground));
-  border-left-color: oklch(var(--border));
+	color: oklch(var(--muted-foreground));
+	border-left-color: oklch(var(--border));
 }
 
 /* 개인정보처리방침 테이블 스타일 조정 */
 .prose table th:nth-child(3),
 .prose table td:nth-child(3) {
-  white-space: nowrap;
-  min-width: 60px;
+	white-space: nowrap;
+	min-width: 60px;
 }

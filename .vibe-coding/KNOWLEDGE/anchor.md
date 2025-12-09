@@ -4,17 +4,17 @@
 
 본 리포트는 해당 기간의 변경 사항을 분석하여, 실무에서 즉시 적용 가능한 아키텍처 전략과 마이그레이션 포인트를 제시합니다.
 
------
+---
 
 ## 1. Executive Summary: 버전별 핵심 아키텍처 변화
 
-| 버전 | 릴리즈 시기 | 핵심 아키텍처 변화 (Paradigm Shift) |
-| :--- | :--- | :--- |
-| **v0.31.0** | '25.03 | **Flexibility:** 8바이트 고정 Discriminator 제약 해제. `LazyAccount`를 통한 대량 계정 처리 성능 최적화. |
-| **v0.31.1** | '25.04 | **Stability:** Rust 툴체인 및 의존성 이슈 해결. TS 클라이언트의 유연성(Wallet 없는 Provider) 확보. |
-| **v0.32.0** | '25.10 | **DevOps:** `anchor deploy` 시 IDL 업로드 자동화 및 `solana-verify` 기반의 검증 가능한 빌드 파이프라인 표준화. |
+| 버전        | 릴리즈 시기 | 핵심 아키텍처 변화 (Paradigm Shift)                                                                            |
+| :---------- | :---------- | :------------------------------------------------------------------------------------------------------------- |
+| **v0.31.0** | '25.03      | **Flexibility:** 8바이트 고정 Discriminator 제약 해제. `LazyAccount`를 통한 대량 계정 처리 성능 최적화.        |
+| **v0.31.1** | '25.04      | **Stability:** Rust 툴체인 및 의존성 이슈 해결. TS 클라이언트의 유연성(Wallet 없는 Provider) 확보.             |
+| **v0.32.0** | '25.10      | **DevOps:** `anchor deploy` 시 IDL 업로드 자동화 및 `solana-verify` 기반의 검증 가능한 빌드 파이프라인 표준화. |
 
------
+---
 
 ## 2. Critical Action Items: 마이그레이션 필수 점검
 
@@ -22,23 +22,23 @@
 
 Discriminator가 더 이상 8바이트 고정이 아니므로, 관련 로직의 전면적인 검토가 필요합니다.
 
-* **Impact:** 기존 `8 + data_len` 공식이나 `discriminator()` 메서드를 사용하는 코드는 컴파일 에러를 유발합니다.
-* **Action:**
-  * 스페이스 계산 로직을 `MyAccount::DISCRIMINATOR.len() + data_len`으로 동적 변경하십시오.
-  * `#[account(zero)]`를 사용하는 구조체에 `Discriminator` 트레이트 구현이 누락되지 않았는지 확인하십시오.
-  * 커스텀 Discriminator(`#[account(discriminator = ...)]`) 도입 시, 충돌 가능성을 배제하기 위해 명확한 네이밍 규칙이나 상수 관리가 필요합니다.
+- **Impact:** 기존 `8 + data_len` 공식이나 `discriminator()` 메서드를 사용하는 코드는 컴파일 에러를 유발합니다.
+- **Action:**
+  - 스페이스 계산 로직을 `MyAccount::DISCRIMINATOR.len() + data_len`으로 동적 변경하십시오.
+  - `#[account(zero)]`를 사용하는 구조체에 `Discriminator` 트레이트 구현이 누락되지 않았는지 확인하십시오.
+  - 커스텀 Discriminator(`#[account(discriminator = ...)]`) 도입 시, 충돌 가능성을 배제하기 위해 명확한 네이밍 규칙이나 상수 관리가 필요합니다.
 
 ### 2-2. 프로그램 검증 및 호출 로직 (v0.32.0)
 
-* **Program 타입 단순화:** 특정 프로그램이 실행 가능한지만 검증하면 되는 경우, 제네릭 없는 `Program<'info>` 타입을 사용하여 코드를 간소화하십시오. 불필요한 `UncheckedAccount` 사용을 줄여 보안성을 높일 수 있습니다.
-* **CPI 호출 최적화:** 별도의 코드 수정 없이 Anchor 내부적으로 `solana-invoke`를 사용하여 CU 소모를 줄입니다. CPI가 빈번한 프로그램이라면 성능 테스트를 통해 절감 효과를 확인해 볼 가치가 있습니다.
+- **Program 타입 단순화:** 특정 프로그램이 실행 가능한지만 검증하면 되는 경우, 제네릭 없는 `Program<'info>` 타입을 사용하여 코드를 간소화하십시오. 불필요한 `UncheckedAccount` 사용을 줄여 보안성을 높일 수 있습니다.
+- **CPI 호출 최적화:** 별도의 코드 수정 없이 Anchor 내부적으로 `solana-invoke`를 사용하여 CU 소모를 줄입니다. CPI가 빈번한 프로그램이라면 성능 테스트를 통해 절감 효과를 확인해 볼 가치가 있습니다.
 
 ### 2-3. 배포 및 검증 파이프라인 (v0.32.0)
 
-* **IDL 자동화:** `anchor deploy`가 IDL 업로드를 기본 수행합니다. CI/CD 파이프라인에서 IDL 업로드를 별도 단계로 분리해 두었다면, `--no-idl` 옵션을 추가하거나 파이프라인을 단순화하여 중복 업로드를 방지하십시오.
-* **Verifiable Build:** Docker 이미지 기반 검증에서 `solana-verify` CLI 도구 기반으로 전환되었습니다. 검증 스크립트를 업데이트하고, 로컬 개발 환경과 CI 환경에 해당 도구를 설치하십시오.
+- **IDL 자동화:** `anchor deploy`가 IDL 업로드를 기본 수행합니다. CI/CD 파이프라인에서 IDL 업로드를 별도 단계로 분리해 두었다면, `--no-idl` 옵션을 추가하거나 파이프라인을 단순화하여 중복 업로드를 방지하십시오.
+- **Verifiable Build:** Docker 이미지 기반 검증에서 `solana-verify` CLI 도구 기반으로 전환되었습니다. 검증 스크립트를 업데이트하고, 로컬 개발 환경과 CI 환경에 해당 도구를 설치하십시오.
 
------
+---
 
 ## 3. Strategic Recommendations: 코드 패턴 예시
 

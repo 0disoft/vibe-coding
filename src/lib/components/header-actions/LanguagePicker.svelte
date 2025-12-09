@@ -111,7 +111,7 @@
 			aria-labelledby="language-menu-button"
 		>
 			<div class="grid gap-1 max-h-[300px] overflow-y-auto thin-scrollbar">
-				{#each availableLanguageTags as lang}
+				{#each availableLanguageTags as lang (lang)}
 					<a
 						href={localizeUrl(page.url.pathname + page.url.search, { locale: lang }).href}
 						class="inline-flex h-8 w-full items-center justify-start px-2 rounded-md text-sm transition-colors {lang ===

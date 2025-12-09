@@ -1,20 +1,28 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"rewriteRelativeImportExtensions": true,
+		// JavaScript 파일도 프로젝트에 포함
 		"allowJs": true,
+		// JavaScript 파일도 타입 체크 수행
 		"checkJs": true,
+		// CommonJS 모듈의 default import 허용
 		"esModuleInterop": true,
+		// 파일명 대소문자 일관성 강제 (Windows/Mac 호환)
 		"forceConsistentCasingInFileNames": true,
+		// 번들러 환경에 맞는 모듈 해석 방식
+		"moduleResolution": "bundler",
+		// JSON 파일 import 허용
 		"resolveJsonModule": true,
+		// node_modules 타입 정의 검사 건너뛰기 (빌드 속도 향상)
 		"skipLibCheck": true,
+		// 소스맵 생성 (디버깅용)
 		"sourceMap": true,
+		// 엄격한 타입 검사 모드
 		"strict": true,
-		"moduleResolution": "bundler"
+		// import type 구문 강제 (런타임 번들 최적화)
+		"verbatimModuleSyntax": true
 	}
-	// Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
-	// except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
-	//
-	// To make changes to top-level options such as include and exclude, we recommend extending
-	// the generated config; see https://svelte.dev/docs/kit/configuration#typescript
+	// 경로 별칭은 SvelteKit이 자동 관리
+	// $lib: src/lib (기본 제공)
+	// 추가 별칭은 svelte.config.js의 kit.alias에서 설정
 }

@@ -4,7 +4,7 @@ OpenRouter TypeScript SDK는 릴리스별 변경 사항을 공개적으로 정�
 
 하지만 현재 SDK의 핵심 기능과 구조적인 제약을 분석하여, 코딩 시 반드시 고려해야 할 실무 포인트를 아래와 같이 정리합니다.
 
------
+---
 
 ## 1. SDK 구조 및 제약 사항
 
@@ -12,24 +12,24 @@ OpenRouter SDK는 **ESM(ECMAScript Module) 전용**이며, OpenRouter의 Chat Co
 
 ### 1-1. ESM 강제 및 초기화 패턴
 
-* **제약:** `@openrouter/sdk`는 **ESM 전용**이므로, CommonJS 환경에서는 `require()` 대신 동적 `import()`를 사용해야 합니다.
-* **초기화:** 모든 버전에서 `new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY })` 패턴을 일관되게 사용합니다.
+- **제약:** `@openrouter/sdk`는 **ESM 전용**이므로, CommonJS 환경에서는 `require()` 대신 동적 `import()`를 사용해야 합니다.
+- **초기화:** 모든 버전에서 `new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY })` 패턴을 일관되게 사용합니다.
 
 ### 1-2. 스트리밍 패턴
 
-* **사용법:** `openRouter.chat.send()` 호출 시 `stream: true` 옵션을 사용하며, 결과 객체는 **비동기 이터레이터**입니다.
-* **Action:** 스트림 결과를 처리할 때 `Promise`가 아닌 **`for await ... of`** 문법을 사용하여 청크(Chunk)를 순차적으로 읽어야 합니다.
+- **사용법:** `openRouter.chat.send()` 호출 시 `stream: true` 옵션을 사용하며, 결과 객체는 **비동기 이터레이터**입니다.
+- **Action:** 스트림 결과를 처리할 때 `Promise`가 아닌 **`for await ... of`** 문법을 사용하여 청크(Chunk)를 순차적으로 읽어야 합니다.
 
 <!-- end list -->
 
 ```ts
 // Streaming Pattern
 for await (const chunk of result) {
-  console.log(chunk.choices[0].delta.content);
+	console.log(chunk.choices[0].delta.content);
 }
 ```
 
------
+---
 
 ## 2. 코딩 시 핵심 기능 및 파라미터 구조
 
@@ -37,32 +37,34 @@ for await (const chunk of result) {
 
 ### 2-1. 고급 파라미터 (High-Level Parameters)
 
-| 기능 | SDK 파라미터 | 용도 |
-| :--- | :--- | :--- |
-| **Reasoning** | `reasoning: { effort: 'high' }` | 모델에게 중간 추론 과정에 더 많은 컴퓨팅 파워를 할당하도록 지시하여 결과 품질 향상. |
-| **Structured Output** | `response_format: { type: 'json_schema', json_schema: {...} }` | 응답 형식을 JSON 스키마에 맞춰 강제. (RAG, 툴 호출 결과 처리 시 필수) |
-| **Tool Calling** | `tools: [{ type: 'function', function: {...} }]` | 함수 호출(Tool Calling) 기능을 정의하고 모델이 사용할 수 있도록 활성화. |
+| 기능                  | SDK 파라미터                                                   | 용도                                                                                |
+| :-------------------- | :------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
+| **Reasoning**         | `reasoning: { effort: 'high' }`                                | 모델에게 중간 추론 과정에 더 많은 컴퓨팅 파워를 할당하도록 지시하여 결과 품질 향상. |
+| **Structured Output** | `response_format: { type: 'json_schema', json_schema: {...} }` | 응답 형식을 JSON 스키마에 맞춰 강제. (RAG, 툴 호출 결과 처리 시 필수)               |
+| **Tool Calling**      | `tools: [{ type: 'function', function: {...} }]`               | 함수 호출(Tool Calling) 기능을 정의하고 모델이 사용할 수 있도록 활성화.             |
 
 ### 2-2. 멀티모달 입력 구조
 
 멀티모달 입력은 메시지 배열 내부의 `content` 필드에 **객체 배열** 형태로 정의됩니다.
 
-* **Action:** 텍스트, 이미지, 오디오 등 여러 입력을 동시에 전달할 경우, 아래와 같이 `type` 필드를 명시하여 구조화해야 합니다.
+- **Action:** 텍스트, 이미지, 오디오 등 여러 입력을 동시에 전달할 경우, 아래와 같이 `type` 필드를 명시하여 구조화해야 합니다.
 
 <!-- end list -->
 
 ```ts
 // Multimodal Input Pattern
-messages: [{
-  role: "user",
-  content: [
-    { type: "input_text", text: "What is in this image?" },
-    { type: "input_image", image: { data: base64Image, format: "jpeg" } },
-  ],
-}]
+messages: [
+	{
+		role: 'user',
+		content: [
+			{ type: 'input_text', text: 'What is in this image?' },
+			{ type: 'input_image', image: { data: base64Image, format: 'jpeg' } }
+		]
+	}
+];
 ```
 
------
+---
 
 ## 3. 실무 버전 관리 전략 제안
 
