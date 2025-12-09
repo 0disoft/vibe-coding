@@ -92,7 +92,7 @@ async function updateMessages() {
         // Merge translations
         const updatedJson = { ...json, ...messages };
 
-        fs.writeFileSync(filePath, JSON.stringify(updatedJson, null, '\t') + '\n', 'utf8');
+        fs.writeFileSync(filePath, `${JSON.stringify(updatedJson, null, '\t')}\n`, 'utf8');
         console.log(`Updated ${lang}.json`);
       } catch (error) {
         console.error(`Error updating ${lang}.json:`, error);

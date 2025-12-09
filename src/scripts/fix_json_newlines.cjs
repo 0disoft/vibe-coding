@@ -19,7 +19,7 @@ files.forEach((file) => {
   const content = fs.readFileSync(filePath, 'utf8');
 
   if (!content.endsWith('\n')) {
-    fs.writeFileSync(filePath, content + '\n', 'utf8');
+    fs.writeFileSync(filePath, `${content}\n`, 'utf8');
     console.log(`Fixed newline: ${file}`);
     fixedCount++;
   }
