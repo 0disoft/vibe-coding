@@ -1,6 +1,6 @@
 # Patakaran sa Cookie at Katulad na Teknolohiya
 
-Huling Na-update: {{LAST_UPDATED}}
+> Huling Na-update: {{LAST_UPDATED}}
 
 Ang patakarang ito ay **bahagi ng Patakaran sa Privacy** ng {{SITE_NAME}} (mula rito ay tinutukoy bilang "Kumpanya"). Upang makapagbigay ng mas mabilis at mas maginhawang karanasan sa website at upang mapabuti ang aming mga serbisyo, ang Kumpanya ay gumagamit ng cookies at mga katulad na teknolohiya.
 

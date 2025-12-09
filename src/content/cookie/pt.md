@@ -1,6 +1,6 @@
 # Política de Cookies e Tecnologias Semelhantes
 
-Última atualização: {{LAST_UPDATED}}
+> Última atualização: {{LAST_UPDATED}}
 
 Esta política faz parte da Política de Privacidade da {{SITE_NAME}} (doravante a "Empresa"). A Empresa utiliza cookies e tecnologias semelhantes para fornecer aos utilizadores um ambiente de utilização do website mais rápido e conveniente e para melhorar os serviços.
 

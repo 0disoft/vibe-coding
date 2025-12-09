@@ -1,6 +1,6 @@
 # Richtlinie zu Cookies und ähnlichen Technologien
 
-Zuletzt aktualisiert: {{LAST_UPDATED}}
+> Zuletzt aktualisiert: {{LAST_UPDATED}}
 
 Diese Richtlinie ist Teil der Datenschutzerklärung von {{SITE_NAME}} (im Folgenden das „Unternehmen“). Das Unternehmen verwendet Cookies und ähnliche Technologien, um den Nutzern eine schnellere und bequemere Website-Nutzungsumgebung zu bieten und die Dienste zu verbessern.
 

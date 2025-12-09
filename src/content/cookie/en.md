@@ -1,6 +1,6 @@
 # Cookie and Similar Technologies Policy
 
-Last Updated: {{LAST_UPDATED}}
+> Last Updated: {{LAST_UPDATED}}
 
 This policy is **part of the Privacy Policy** of {{SITE_NAME}} (hereinafter referred to as the "Company"). To provide a faster and more convenient website experience and to improve our services, the Company uses cookies and similar technologies.
 

@@ -1,6 +1,6 @@
 # Chính sách Cookie và Các Công nghệ Tương tự
 
-Cập nhật lần cuối: {{LAST_UPDATED}}
+> Cập nhật lần cuối: {{LAST_UPDATED}}
 
 Chính sách này là **một phần của Chính sách Quyền riêng tư** của {{SITE_NAME}} (sau đây gọi là "Công ty"). Để cung cấp trải nghiệm trang web nhanh hơn và thuận tiện hơn cũng như để cải thiện dịch vụ của chúng tôi, Công ty sử dụng cookie và các công nghệ tương tự.
 

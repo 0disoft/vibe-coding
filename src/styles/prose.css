@@ -12,6 +12,8 @@
 
 .prose :where(p, ul, ol, li) {
 	color: oklch(var(--muted-foreground));
+	font-size: inherit;
+	line-height: inherit;
 }
 
 .prose :where(h1, h2, h3, h4, h5, h6, strong, b, th) {

@@ -13,12 +13,14 @@
 <div
   class="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center"
   role="alert"
-  aria-live="assertive"
+  aria-labelledby="error-title"
 >
-  <h1 class="text-5xl font-bold tracking-tight">{page.status}</h1>
+  <h1 id="error-title" class="text-5xl font-bold tracking-tight">{page.status}</h1>
   <p class="text-xl text-muted-foreground">
     {#if page.status === 404}
       {m.error_not_found()}
+    {:else if page.status >= 500}
+      {m.error_unexpected()}
     {:else}
       {page.error?.message ?? m.error_unexpected()}
     {/if}

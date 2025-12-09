@@ -1,6 +1,6 @@
 # Polityka plików cookie i podobnych technologii
 
-Ostatnia aktualizacja: {{LAST_UPDATED}}
+> Ostatnia aktualizacja: {{LAST_UPDATED}}
 
 Niniejsza polityka stanowi **część Polityki Prywatności** serwisu {{SITE_NAME}} (zwanego dalej "Firmą"). Aby zapewnić szybsze i wygodniejsze korzystanie ze strony internetowej oraz ulepszać nasze usługi, Firma wykorzystuje pliki cookie i podobne technologie.
 

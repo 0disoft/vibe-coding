@@ -11,9 +11,9 @@
 <div
   class="flex flex-col items-center justify-center min-h-screen gap-6 text-center bg-background text-foreground"
   role="alert"
-  aria-live="polite"
+  aria-labelledby="offline-title"
 >
-  <h1 class="text-5xl font-bold tracking-tight">{m.offline_title()}</h1>
+  <h1 id="offline-title" class="text-5xl font-bold tracking-tight">{m.offline_title()}</h1>
   <p class="text-xl text-muted-foreground">{m.offline_message()}</p>
   <button
     class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold transition-all rounded-md shadow-lg bg-primary text-primary-foreground hover:opacity-90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

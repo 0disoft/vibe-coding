@@ -1,6 +1,6 @@
 # Kebijakan Cookie dan Teknologi Serupa
 
-Terakhir Diperbarui: {{LAST_UPDATED}}
+> Terakhir Diperbarui: {{LAST_UPDATED}}
 
 Kebijakan ini adalah **bagian dari Kebijakan Privasi** {{SITE_NAME}} (selanjutnya disebut sebagai "Perusahaan"). Untuk memberikan pengalaman situs web yang lebih cepat dan nyaman serta untuk meningkatkan layanan kami, Perusahaan menggunakan cookie dan teknologi serupa.
 
