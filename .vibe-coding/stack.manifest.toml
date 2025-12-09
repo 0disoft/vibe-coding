@@ -5,8 +5,9 @@
 
 [language_quality]
 typescript = true # 정적 타입 검사로 런타임 오류 방지 및 안정성 강화 [Type, Safety, MS, Build]
-eslint = true     # 일관된 코드 스타일 유지 및 잠재적 문법 오류 탐지 [Lint, Quality, JS, Check]
-prettier = true   # 설정된 규칙에 맞춰 코드 서식을 자동으로 정렬 [Format, Style, DX, Config]
+eslint = false     # 일관된 코드 스타일 유지 및 잠재적 문법 오류 탐지 [Lint, Quality, JS, Check]
+prettier = false   # 설정된 규칙에 맞춰 코드 서식을 자동으로 정렬 [Format, Style, DX, Config]
+biome = true     # ESLint+Prettier를 대체하는 Rust 기반 초고속 린터/포맷터 [Lint, Format, Rust, Fast]
 
 [testing]
 vitest = true     # Vite 환경에서 즉시 실행되는 초고속 유닛 테스트 [Test, Vite, UI, Unit]
@@ -76,6 +77,9 @@ scraper_api = false   # 복잡한 프록시 회전과 캡차 우회를 대행하
 # [Self-Hosted] 모든 인프라를 내 서버(Docker)에서 관리
 coolify = false       # 내 서버를 Vercel처럼 편리하게 관리하는 오픈소스 PaaS 솔루션 [VPS, PaaS, Deploy, Self]
 docker_compose = false # 다중 컨테이너 환경을 정의하여 개발과 배포 환경의 일관성 유지 [Container, Yaml, Local, Stack]
+
+# [Cloud Platform]
+vercel = false        # 정적 사이트와 서버리스 함수를 원클릭 배포하는 클라우드 플랫폼 [Deploy, Cloud, Edge, JAM]
 
 # [Alternative]
 cloudflare_workers = false # 서버 관리 없이 전 세계 엣지 네트워크에서 코드를 실행하는 서버리스 [Serverless, Edge, Global, Scale]
