@@ -17,7 +17,7 @@
 
 .prose :where(a) {
 	color: oklch(var(--link));
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 .prose :where(blockquote) {

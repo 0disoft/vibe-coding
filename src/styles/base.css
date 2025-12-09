@@ -12,6 +12,32 @@ body {
 	/* 폰트 렌더링 최적화 */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	/* 렌더링 성능 및 가독성 최적화 */
+	text-rendering: optimizeLegibility;
+	/* 가짜 굵기 방지 및 Variable Font 최적화 */
+	font-synthesis: none;
+	font-optical-sizing: auto;
+	/* 기본 커닝 및 합자 설정 명시 */
+	font-kerning: normal;
+	font-variant-ligatures: common-ligatures contextual;
+	/* 고아(orphan) 방지: 마지막 줄에 단어 하나만 남는 것을 방지 */
+	text-wrap: pretty;
+	/* 밑줄 디테일: CJK 문자는 from-font보다 under가 더 안전함 */
+	text-decoration-skip-ink: auto;
+	text-underline-position: under;
+	text-underline-offset: 0.15em;
+	text-decoration-thickness: 1px;
+}
+
+a {
+	text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+	/* 제목 줄바꿈 균형 맞추기 */
+	text-wrap: balance;
 }
 
 h1 {
@@ -44,6 +70,9 @@ pre {
 	font-size: var(--fs-code);
 	line-height: 1.5;
 	font-family: var(--font-mono);
+	/* 코드 가독성: 합자 끄기, 0에 사선 긋기, 숫자 등폭 */
+	font-variant-ligatures: none;
+	font-variant-numeric: tabular-nums slashed-zero;
 }
 
 /* Shiki 코드블록(.shiki)은 자체 인라인 스타일 사용 */

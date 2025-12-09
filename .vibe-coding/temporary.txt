@@ -1,0 +1,338 @@
+font-feature-settings沼에 발을 들이셨군요 🕳️
+이제부터는 언어별로 “이거 켜두면 글이 한 단계 정돈된다” 싶은 것들만 골라 드릴게요.
+이미 잘 쓰고 있는 것들은 놔두고, 추가하면 좋은 것 위주로.
+
+---
+
+## 1. 공통으로 한 번 더 챙기면 좋은 것
+
+글로벌 기본 설정에서 쓸 만한 것들.
+
+1. 글 줄바꿈 품질 올리기
+
+긴 문단 많은 서비스면 이거 체감 큽니다.
+
+```css
+body {
+	/* ... 기존 설정들 ... */
+	text-wrap: pretty; /* 지원되는 브라우저에서만 살짝 더 예쁘게 줄바꿈 */
+}
+```
+
+지원 안 되는 브라우저에서는 그냥 무시라서 부담 없이 넣어도 됩니다.
+헤딩에는 `text-wrap: balance`도 꽤 좋습니다.
+
+```css
+h1, h2, h3 {
+	text-wrap: balance;
+}
+```
+
+2. 기본 커닝 확실히 켜두기
+
+엔진 기본값이긴 한데 명시해두면 안심용으로 좋습니다.
+
+```css
+body {
+	font-kerning: normal;
+	font-variant-ligatures: common-ligatures contextual;
+}
+```
+
+---
+
+## 2. 라틴 기반 언어 공통 꿀팁 (en, fr, de 같은 애들)
+
+CJK랑 섞여 있을 때랑, 순수 라틴 문단일 때를 나눠서 다루면 좋습니다.
+
+```css
+:lang(en),
+:lang(fr),
+:lang(de),
+:lang(es),
+:lang(it),
+:lang(pt),
+:lang(nl),
+:lang(sv) {
+	hyphens: auto;          /* 긴 단어 자연스럽게 쪼개기 */
+	overflow-wrap: anywhere;
+	font-variant-numeric: tabular-nums;  /* 테이블·폼에서 숫자 정렬 */
+}
+```
+
+폼 입력, 테이블 같은 데서 숫자 많이 쓰면 `tabular-nums`는 거의 필수에 가깝습니다.
+
+---
+
+## 3. CJK 공통 영역 다듬기
+
+이미 이렇게 있으니
+
+```css
+:lang(ko),
+:lang(ja),
+:lang(zh),
+:lang(zh-CN),
+:lang(zh-TW),
+:lang(zh-Hans),
+:lang(zh-Hant) {
+	text-autospace: normal;
+	text-spacing-trim: trim-start;
+}
+```
+
+여기에 살짝만 더 공격적으로 섞어서 써볼 만한 값이 있습니다.
+
+```css
+:lang(ko),
+:lang(ja),
+:lang(zh),
+:lang(zh-CN),
+:lang(zh-TW),
+:lang(zh-Hans),
+:lang(zh-Hant) {
+	/* 한중일 + 영어/숫자 사이 공백 자동 조정 */
+	text-autospace: ideograph-alpha ideograph-numeric;
+	text-spacing-trim: trim-start;
+}
+```
+
+이렇게 하면
+“한국어텍스트 English 123” 같은 구간에서 영문/숫자 주변 간격이 훨씬 자연스럽게 붙어요.
+지원 안 하는 브라우저에서는 그냥 무시되니 실사용에 무리 없습니다.
+
+---
+
+## 4. 한국어 블록 세부 튜닝
+
+이미 세팅이 아주 좋습니다. 여기에 두 가지만 더 제안.
+
+```css
+:lang(ko),
+html:lang(ko),
+html:lang(ko-KR),
+body:lang(ko),
+body:lang(ko-KR) {
+	/* ... 기존 설정들 ... */
+
+	/* 문장부호 매달기: 따옴표·마침표가 줄 끝에서 너무 안으로 들어가지 않게 */
+	hanging-punctuation: allow-end;
+
+	/* 긴 문단에서만 적용하고 싶으면 p에만 따로 */
+}
+```
+
+그리고 Pretendard가 기본 자간 -0.025em 기준이라
+UI 텍스트는 너무 조여 보일 수 있습니다. 그래서
+
+```css
+:lang(ko) small,
+:lang(ko) button,
+:lang(ko) input,
+:lang(ko) label {
+	letter-spacing: -0.01em; /* 작은 글씨는 살짝 덜 조이기 */
+}
+```
+
+이렇게 “문단과 UI” 자간을 분리해두면 훨씬 안정적으로 보입니다.
+
+---
+
+## 5. 일본어: palt 친구들 세트로 묶어 쓰기
+
+지금 설정도 상당히 좋습니다.
+
+```css
+:lang(ja),
+html:lang(ja),
+body:lang(ja) {
+	/* ... */
+
+	font-feature-settings: "palt", "pkna", "kern", "liga", "chws", "case";
+	line-break: strict;
+	letter-spacing: -0.02em;
+	font-variant-numeric: tabular-nums;
+	font-variant-east-asian: proportional-width;
+}
+```
+
+여기에 하나 더 고려할 수 있는 건 이 정도입니다.
+
+1. 일본어 본문에만 살짝 다른 자간
+
+```css
+:lang(ja) p {
+	letter-spacing: -0.01em;
+}
+:lang(ja) small,
+:lang(ja) button {
+	letter-spacing: 0;  /* UI는 너무 조이지 않게 */
+}
+```
+
+2. 일본어 전용 줄바꿈 힌트
+
+긴 헤딩이 많다면
+
+```css
+:lang(ja) h1,
+:lang(ja) h2,
+:lang(ja) h3 {
+	text-wrap: balance;
+}
+```
+
+헤딩이 “예쁘게 두 줄”로 나눠지는 느낌이 납니다.
+
+---
+
+## 6. 중국어(간체·번체)용 작은 보완
+
+지금 구조도 탄탄합니다.
+
+```css
+:lang(zh),
+:lang(zh-CN),
+:lang(zh-Hans),
+html:lang(zh),
+body:lang(zh) {
+	/* ... */
+	line-break: strict;
+	font-variant-east-asian: proportional-width;
+	word-break: normal;
+}
+```
+
+중국어는 긴 본문에서 양쪽 맞춤을 쓸 일이 꽤 있어서, 이럴 때:
+
+```css
+:lang(zh) p {
+	text-align: justify;
+	text-justify: inter-ideograph; /* 한자 단위로 자연스럽게 늘리기 */
+}
+```
+
+정리용 마케팅 페이지나 블로그에서 꽤 쓸 만합니다.
+번체도 동일하게 적용해도 됩니다.
+
+---
+
+## 7. RTL 스크립트(아랍어) 안정성 높이기
+
+지금도 기본은 잘 잡혀 있습니다.
+
+```css
+:lang(ar),
+html:lang(ar),
+body:lang(ar) {
+	direction: rtl;
+	text-align: start;
+	/* ... */
+}
+```
+
+여기에 “다른 언어랑 섞여 있을 때 깨짐 방지용”으로 하나 추가 추천.
+
+```css
+:lang(ar),
+html:lang(ar),
+body:lang(ar) {
+	unicode-bidi: isolate-override;
+}
+```
+
+이거 넣어두면 LTR 문장 안에 아랍어가 섞여 있어도
+부모 요소의 방향성에 덜 끌려다니고, 자기 블록 안에서 방향을 확실히 가져갑니다.
+
+---
+
+## 8. 힌디어·태국어용 작은 안전장치
+
+이미 핵심은 잘 지켰습니다. 이쪽은 “하지 말 것”을 잘 지키는 게 더 중요해서요.
+
+```css
+:lang(hi),
+html:lang(hi),
+body:lang(hi),
+:lang(th),
+html:lang(th),
+body:lang(th) {
+	letter-spacing: 0;          /* 자간 넣지 않기 */
+	font-feature-settings: "liga", "calt";
+	line-height: 1.8;
+}
+```
+
+여기에 공통으로
+
+```css
+:lang(hi),
+:lang(th) {
+	text-decoration-skip-ink: auto;
+	text-underline-position: under;
+}
+```
+
+밑줄 쳤을 때 모음/성조 기호를 덜 가립니다.
+
+---
+
+## 9. 키릴 문자(러시아어)용 미세 조정
+
+이미 이렇게 되어 있는데
+
+```css
+:lang(ru),
+html:lang(ru),
+body:lang(ru) {
+	--font-sans:
+		-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui,
+		sans-serif;
+	font-feature-settings: "kern", "liga", "calt", "case";
+	hyphens: auto;
+	font-variant-numeric: tabular-nums;
+}
+```
+
+여기에 긴 문단에서는 이렇게도 써볼 수 있습니다.
+
+```css
+:lang(ru) p {
+	text-align: justify;
+	text-justify: auto;
+}
+```
+
+필요할 때만 쓰는 옵션이라, 전역이 아니라 p 한정이 좋습니다.
+
+---
+
+## 10. 코드·숫자 전용 꿀팁
+
+마지막으로, `--font-mono`를 살려주는 설정 하나.
+
+```css
+code,
+pre,
+kbd,
+samp {
+	font-family: var(--font-mono);
+	font-variant-ligatures: none;               /* 코드에서 fi, fl 묶이지 않게 */
+	font-variant-numeric: tabular-nums slashed-zero;
+}
+```
+
+특히 `slashed-zero`는 0과 O가 많이 섞이는 코드 블록에서 시력 보호에 도움이 됩니다.
+
+---
+
+대략 정리하면
+
+* CJK에는 text-autospace랑 text-spacing-trim 조합
+* 일본어에는 palt/pkna + strict line-break
+* 한국어는 keep-all에 hanging-punctuation, 자간 이원화
+* 중국어는 justify + inter-ideograph
+* RTL에는 unicode-bidi: isolate-override
+* 라틴·키릴 쪽에는 hyphens와 tabular-nums
+
+이렇게만 깔아두면, 언어 바꿀 때마다 “이 서비스는 원래 이 언어였던 것처럼” 보이는 느낌이 꽤 강하게 납니다.

@@ -70,7 +70,11 @@ const handleLangFallback: Handle = ({ event, resolve }) => {
 	return resolve(event, {
 		transformPageChunk: ({ html }) => {
 			if (pickKo) {
-				html = html.replace(/lang="[^"]*"/, 'lang="ko"');
+				// [의도] 한국어 사용자에게는 영어 페이지도 Pretendard(Inter 베이스)로 보여주어
+				// 한글/영어가 섞여도 이질감 없는 디자인 일관성을 유지합니다.
+				// 단, 일본어(ja) 등 확실한 다른 언어 페이지에서는 폰트 충돌을 막기 위해
+				// 오직 기본 언어(en)일 때만 한국어(ko)로 설정을 덮어씁니다.
+				html = html.replace(/lang="en"/, 'lang="ko"');
 			}
 			return html;
 		}
