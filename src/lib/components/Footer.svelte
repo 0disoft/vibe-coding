@@ -1,13 +1,13 @@
 <script lang="ts">
-	import * as m from '$lib/paraglide/messages.js';
-	import { localizeUrl } from '$lib/paraglide/runtime.js';
+import * as m from '$lib/paraglide/messages.js';
+import { localizeUrl } from '$lib/paraglide/runtime.js';
 
-	interface Props {
-		siteName?: string;
-	}
+interface Props {
+	siteName?: string;
+}
 
-	let { siteName = 'Site' }: Props = $props();
-	const currentYear = new Date().getFullYear();
+let { siteName = 'Site' }: Props = $props();
+const currentYear = new Date().getFullYear();
 </script>
 
 <footer

@@ -1,5 +1,6 @@
-import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
 import type { ParaglideLocals } from '@inlang/paraglide-sveltekit';
+
+import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
 
 /**
  * SvelteKit 전역 타입 정의
@@ -24,5 +25,3 @@ declare global {
 		// interface Platform {}
 	}
 }
-
-export {};

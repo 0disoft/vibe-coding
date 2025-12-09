@@ -71,5 +71,7 @@
 	"privacy_processor_giscus_purpose": "Comment system",
 	"privacy_processor_giscus_country": "USA",
 	"privacy_processor_giscus_items": "Email, Profile info (via GitHub)",
-	"privacy_processor_giscus_retention": "Per GitHub data policy"
+	"privacy_processor_giscus_retention": "Per GitHub data policy",
+	"font_size_change": "Palitan ang Laki ng Font",
+	"font_size_current": "Laki ng Font (Kasalukuyan: {value})"
 }

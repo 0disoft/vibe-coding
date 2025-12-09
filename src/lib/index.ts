@@ -10,9 +10,8 @@
  * ⚠️ 타입 전용 export는 $lib/types/index.ts 를 사용하세요.
  */
 
+// 상수 (사이트 정보, 정책, 쿠키)
+export { FONT_SIZE_COOKIE, policy, site, THEME_COOKIE } from './constants';
+export type { FontSize } from './stores';
 // 스토어 (테마, 폰트 크기)
 export { fontSize, theme } from './stores';
-export type { FontSize } from './stores';
-
-// 상수 (사이트 정보, 정책, 쿠키)
-export { FONT_SIZE_COOKIE, THEME_COOKIE, policy, site } from './constants';

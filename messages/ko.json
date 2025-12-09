@@ -71,5 +71,7 @@
 	"menu_signup": "회원가입",
 	"menu_profile": "프로필",
 	"menu_settings": "설정",
-	"menu_logout": "로그아웃"
+	"menu_logout": "로그아웃",
+	"font_size_change": "글자 크기 변경",
+	"font_size_current": "글자 크기 (현재: {value})"
 }

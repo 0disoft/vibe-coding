@@ -4,10 +4,12 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* 기본 페이지 전환 효과 (Crossfade) */
+/* biome-ignore lint/correctness/noUnknownTypeSelector: View Transitions API의 유효한 CSS 구문 */
 ::view-transition-old(root) {
 	animation: fade-out 0.15s ease-out forwards;
 }
 
+/* biome-ignore lint/correctness/noUnknownTypeSelector: View Transitions API의 유효한 CSS 구문 */
 ::view-transition-new(root) {
 	animation: fade-in 0.15s ease-in forwards;
 }

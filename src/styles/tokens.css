@@ -7,21 +7,21 @@
    Font Imports (로컬 호스팅)
    ─────────────────────────────────────────────────────────── */
 /* 한국어 */
-@import 'pretendard/dist/web/variable/pretendardvariable.css';
+@import "pretendard/dist/web/variable/pretendardvariable.css";
 /* 일본어 */
-@import '@fontsource-variable/noto-sans-jp';
+@import "@fontsource-variable/noto-sans-jp";
 /* 중국어 (간체) */
-@import '@fontsource-variable/noto-sans-sc';
+@import "@fontsource-variable/noto-sans-sc";
 /* 아랍어 */
-@import '@fontsource-variable/noto-sans-arabic';
+@import "@fontsource-variable/noto-sans-arabic";
 /* 태국어 */
-@import '@fontsource-variable/noto-sans-thai';
+@import "@fontsource-variable/noto-sans-thai";
 /* 힌디어 (데바나가리) */
-@import '@fontsource-variable/noto-sans-devanagari';
+@import "@fontsource-variable/noto-sans-devanagari";
 /* 영어/라틴 문자 */
-@import '@fontsource-variable/inter';
+@import "@fontsource-variable/inter";
 /* 코드용 */
-@import '@fontsource-variable/jetbrains-mono';
+@import "@fontsource-variable/jetbrains-mono";
 
 :root {
 	color-scheme: light dark;
@@ -29,11 +29,11 @@
 	/* Font stacks */
 	/* 기본(라틴 문자 기반) - Inter 우선, 이모지 fallback 포함 */
 	--font-sans:
-		'Inter Variable', Inter, -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto,
-		'Helvetica Neue', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+		"Inter Variable", Inter, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto,
+		"Helvetica Neue", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 	--font-mono:
-		'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-		'Liberation Mono', 'Courier New', monospace;
+		"JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+		"Liberation Mono", "Courier New", monospace;
 
 	/* Font scale (1~9). 0.05 간격: 1=1.05 … 5=1.25(기본) … 9=1.45 */
 	--fs-scale: 1;
@@ -77,7 +77,7 @@
 	--popover-foreground: 35% 0.04 331;
 
 	/* 주요 액션 */
-	--primary: 94% 0.1265 332;
+	--primary: 90% 0.1265 332;
 	--primary-foreground: 19% 0.015 332;
 
 	/* 보조 액션 / 서브 버튼 */
@@ -89,7 +89,7 @@
 	--accent-foreground: 24% 0.02 97;
 
 	/* 링크 */
-	--link: 66% 0.12 209;
+	--link: 62% 0.12 209;
 	--link-foreground: 20% 0.02 209;
 
 	/* 약한 텍스트, 서브 카드 배경 등 */
@@ -97,7 +97,7 @@
 	--muted-foreground: 45% 0.02 106;
 
 	/* 파괴적 액션 (삭제, 로그아웃 등) */
-	--destructive: 65% 0.15 25;
+	--destructive: 60% 0.15 25;
 	--destructive-foreground: 98% 0.01 25;
 
 	/* 성공 상태 (연두색) */
@@ -105,7 +105,7 @@
 	--success-foreground: 98% 0.01 150;
 
 	/* 경고 상태 (노란색) */
-	--warning: 70% 0.15 90;
+	--warning: 70% 0.15 75;
 	--warning-foreground: 98% 0.01 90;
 
 	/* 경계 / 입력 / 포커스 링 */
@@ -130,9 +130,10 @@ html:lang(ko-KR),
 body:lang(ko),
 body:lang(ko-KR) {
 	--font-sans:
-		'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI',
-		Roboto, 'Helvetica Neue', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
-		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+		"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI",
+		Roboto, "Helvetica Neue", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
+		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+	font-weight: 450;
 }
 
 /* 일본어 - Noto Sans JP */
@@ -140,7 +141,7 @@ body:lang(ko-KR) {
 html:lang(ja),
 body:lang(ja) {
 	--font-sans:
-		'Noto Sans JP Variable', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo,
+		"Noto Sans JP Variable", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo,
 		system-ui, sans-serif;
 }
 
@@ -151,14 +152,14 @@ body:lang(ja) {
 html:lang(zh),
 body:lang(zh) {
 	--font-sans:
-		'Noto Sans SC Variable', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+		"Noto Sans SC Variable", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
 }
 
 /* 중국어 번체 - Noto Sans SC (fallback) */
 :lang(zh-TW),
 :lang(zh-Hant) {
 	--font-sans:
-		'Noto Sans SC Variable', 'Noto Sans SC', 'PingFang TC', 'Microsoft JhengHei', system-ui,
+		"Noto Sans SC Variable", "Noto Sans SC", "PingFang TC", "Microsoft JhengHei", system-ui,
 		sans-serif;
 }
 
@@ -167,7 +168,7 @@ body:lang(zh) {
 html:lang(ar),
 body:lang(ar) {
 	--font-sans:
-		'Noto Sans Arabic Variable', 'Noto Sans Arabic', 'Geeza Pro', 'Segoe UI', Tahoma, system-ui,
+		"Noto Sans Arabic Variable", "Noto Sans Arabic", "Geeza Pro", "Segoe UI", Tahoma, system-ui,
 		sans-serif;
 }
 
@@ -176,7 +177,7 @@ body:lang(ar) {
 html:lang(hi),
 body:lang(hi) {
 	--font-sans:
-		'Noto Sans Devanagari Variable', 'Noto Sans Devanagari', 'Kohinoor Devanagari', 'Mangal',
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari", "Kohinoor Devanagari", "Mangal",
 		system-ui, sans-serif;
 }
 
@@ -185,7 +186,7 @@ body:lang(hi) {
 html:lang(th),
 body:lang(th) {
 	--font-sans:
-		'Noto Sans Thai Variable', 'Noto Sans Thai', 'Leelawadee UI', 'Tahoma', system-ui, sans-serif;
+		"Noto Sans Thai Variable", "Noto Sans Thai", "Leelawadee UI", "Tahoma", system-ui, sans-serif;
 }
 
 /* 러시아어 - 시스템 폰트 (키릴 문자 지원) */
@@ -193,53 +194,53 @@ body:lang(th) {
 html:lang(ru),
 body:lang(ru) {
 	--font-sans:
-		-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, system-ui,
+		-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui,
 		sans-serif;
 }
 
 /* ───────────────────────────────────────────────────────────
    Font Size Scale Variants
    ─────────────────────────────────────────────────────────── */
-:root[data-font-size='1'] {
+:root[data-font-size="1"] {
 	--fs-scale: 1.05;
 }
 
-:root[data-font-size='2'] {
+:root[data-font-size="2"] {
 	--fs-scale: 1.1;
 }
 
-:root[data-font-size='3'] {
+:root[data-font-size="3"] {
 	--fs-scale: 1.15;
 }
 
-:root[data-font-size='4'] {
+:root[data-font-size="4"] {
 	--fs-scale: 1.2;
 }
 
-:root[data-font-size='5'] {
+:root[data-font-size="5"] {
 	--fs-scale: 1.25;
 }
 
-:root[data-font-size='6'] {
+:root[data-font-size="6"] {
 	--fs-scale: 1.3;
 }
 
-:root[data-font-size='7'] {
+:root[data-font-size="7"] {
 	--fs-scale: 1.35;
 }
 
-:root[data-font-size='8'] {
+:root[data-font-size="8"] {
 	--fs-scale: 1.4;
 }
 
-:root[data-font-size='9'] {
+:root[data-font-size="9"] {
 	--fs-scale: 1.45;
 }
 
 /* ───────────────────────────────────────────────────────────
    Dark Theme
    ─────────────────────────────────────────────────────────── */
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
 	color-scheme: dark;
 
 	/* gleam.run inspired dark palette */
@@ -267,7 +268,7 @@ body:lang(ru) {
 	--accent-foreground: 94% 0.01 97;
 
 	/* 링크 */
-	--link: 78% 0.12 209;
+	--link: 86% 0.12 209;
 	--link-foreground: 94% 0.01 209;
 
 	/* 약한 텍스트, 서브 카드 배경, hover 등 */
@@ -282,7 +283,7 @@ body:lang(ru) {
 	--success: 82% 0.09 150;
 	--success-foreground: 14% 0.02 150;
 
-	--warning: 86% 0.07 95;
+	--warning: 86% 0.1 45;
 	--warning-foreground: 14% 0.02 95;
 
 	/* 경계 / 입력 / 포커스 링 */

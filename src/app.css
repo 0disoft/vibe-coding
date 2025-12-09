@@ -4,12 +4,12 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* CSS 변수: 색상, 폰트, 사이즈 */
-@import './styles/tokens.css';
+@import "./styles/tokens.css";
 /* 기본 요소: body, h1-h3, code, pre */
-@import './styles/base.css';
+@import "./styles/base.css";
 /* 얇은 스크롤바 */
-@import './styles/scrollbar.css';
+@import "./styles/scrollbar.css";
 /* .prose 마크다운 콘텐츠 */
-@import './styles/prose.css';
+@import "./styles/prose.css";
 /* View Transitions (페이지 전환 효과) */
-@import './styles/transitions.css';
+@import "./styles/transitions.css";

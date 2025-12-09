@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import * as m from '$lib/paraglide/messages.js';
-	import { localizeUrl } from '$lib/paraglide/runtime.js';
+import { page } from '$app/state';
+import * as m from '$lib/paraglide/messages.js';
+import { localizeUrl } from '$lib/paraglide/runtime.js';
 </script>
 
 <svelte:head>

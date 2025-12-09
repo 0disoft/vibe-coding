@@ -1,9 +1,12 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+import { error } from '@sveltejs/kit';
+import { marked } from 'marked';
+
 import { policy, site } from '$lib/constants';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
-import { error } from '@sveltejs/kit';
-import fs from 'fs/promises';
-import { marked } from 'marked';
-import path from 'path';
+
 import type { PageServerLoad } from './$types';
 
 /**

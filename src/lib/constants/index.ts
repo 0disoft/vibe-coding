@@ -9,9 +9,7 @@
 
 // 쿠키 관련 상수
 export { FONT_SIZE_COOKIE, THEME_COOKIE } from './cookies';
-
-// 사이트 기본 정보
-export { site } from './site';
-
 // 정책 관련 설정
 export { policy } from './policy';
+// 사이트 기본 정보
+export { site } from './site';

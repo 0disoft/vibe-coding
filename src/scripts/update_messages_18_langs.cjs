@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const messagesDir = path.join(process.cwd(), 'messages');
 console.log('Resolved messages directory:', messagesDir);

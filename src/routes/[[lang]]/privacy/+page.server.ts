@@ -1,10 +1,12 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { error } from '@sveltejs/kit';
+import { marked } from 'marked';
+
 import { policy, site } from '$lib/constants';
 import * as m from '$lib/paraglide/messages';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
-import { error } from '@sveltejs/kit';
-import fs from 'fs/promises';
-import { marked } from 'marked';
-import path from 'path';
+
 import type { PageServerLoad } from './$types';
 
 /**
@@ -60,6 +62,7 @@ export const load: PageServerLoad = async ({ url }) => {
 			// ID를 기반으로 메시지 키 생성
 			const id = processor.id;
 			// 동적 키 접근을 위해 any로 캐스팅 (m은 모듈 네임스페이스)
+			// biome-ignore lint/suspicious/noExplicitAny: Paraglide 동적 메시지 키 접근에 필요
 			const messages = m as any;
 
 			const purposeKey = `privacy_processor_${id}_purpose`;

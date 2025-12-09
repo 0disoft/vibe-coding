@@ -7,6 +7,8 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	// info 레벨 메시지 숨김 (SvelteKit 설정 덮어쓰기 알림 등)
 	logLevel: 'warn',
+	// Vite/Vitest 버전 불일치로 인한 Plugin 타입 호환성 문제 우회
+	// vitest가 자체 vite 의존성을 가지고 있어 타입이 충돌함
 	plugins: [
 		UnoCSS(), // UnoCSS를 맨 앞에
 		paraglideVitePlugin({
@@ -18,7 +20,7 @@ export default defineConfig({
 			strategy: ['url', 'cookie', 'baseLocale']
 		}),
 		sveltekit()
-	],
+	] as any,
 	build: {
 		// shiki 등 대용량 라이브러리로 인해 임계값 상향
 		// chunkSizeWarningLimit: 1000,

@@ -7,11 +7,9 @@
  * import { theme, fontSize } from '$lib/stores';
  */
 
+// 폰트 크기 스토어
+export { type FontSize, fontSize } from './font-size.svelte';
 // 영속 스토어 팩토리
 export { createPersistedState } from './persisted-state.svelte';
-
 // 테마 스토어
 export { theme } from './theme.svelte';
-
-// 폰트 크기 스토어
-export { fontSize, type FontSize } from './font-size.svelte';

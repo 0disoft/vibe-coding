@@ -1,42 +1,43 @@
 <script lang="ts">
-	// 전역 CSS 및 UnoCSS 유틸리티
-	import { onNavigate } from '$app/navigation';
-	import { onMount } from 'svelte';
-	// app.css 보다 먼저 불러와야 함
-	import 'virtual:uno.css';
-	import '../app.css';
-	// 전역 테마 스토어
-	import { fontSize, theme } from '$lib/stores';
-	// 사이트 설정
-	import { site } from '$lib/constants';
-	// 공통 레이아웃 컴포넌트
-	import { page } from '$app/state';
-	import Footer from '$lib/components/Footer.svelte';
-	import Header from '$lib/components/Header.svelte';
+// 전역 CSS 및 UnoCSS 유틸리티
 
-	let { children } = $props();
+import { onMount } from 'svelte';
+import { onNavigate } from '$app/navigation';
+// app.css 보다 먼저 불러와야 함
+import 'virtual:uno.css';
+import '../app.css';
+// 공통 레이아웃 컴포넌트
+import { page } from '$app/state';
+import Footer from '$lib/components/Footer.svelte';
+import Header from '$lib/components/Header.svelte';
+// 사이트 설정
+import { site } from '$lib/constants';
+// 전역 테마 스토어
+import { fontSize, theme } from '$lib/stores';
 
-	// 컴포넌트 마운트 시 클라이언트에서 테마 상태를 초기화하고 서버 상태와 동기화합니다.
-	onMount(() => {
-		theme.init();
-		fontSize.init();
-	});
+let { children } = $props();
 
-	// View Transitions API 활성화 (부드러운 페이지 전환)
-	onNavigate((navigation) => {
-		if (!document.startViewTransition) return;
+// 컴포넌트 마운트 시 클라이언트에서 테마 상태를 초기화하고 서버 상태와 동기화합니다.
+onMount(() => {
+	theme.init();
+	fontSize.init();
+});
 
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve();
-				await navigation.complete;
-			});
+// View Transitions API 활성화 (부드러운 페이지 전환)
+onNavigate((navigation) => {
+	if (!document.startViewTransition) return;
+
+	return new Promise((resolve) => {
+		document.startViewTransition(async () => {
+			resolve();
+			await navigation.complete;
 		});
 	});
+});
 
-	let isOfflinePage = $derived(
-		page.url.pathname === '/offline' || page.url.pathname.endsWith('/offline')
-	);
+let isOfflinePage = $derived(
+	page.url.pathname === '/offline' || page.url.pathname.endsWith('/offline')
+);
 </script>
 
 <svelte:head>

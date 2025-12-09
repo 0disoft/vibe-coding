@@ -71,5 +71,7 @@
 	"menu_signup": "Zarejestruj się",
 	"menu_profile": "Profil",
 	"menu_settings": "Ustawienia",
-	"menu_logout": "Wyloguj się"
+	"menu_logout": "Wyloguj się",
+	"font_size_change": "Zmień rozmiar czcionki",
+	"font_size_current": "Rozmiar czcionki (Obecny: {value})"
 }

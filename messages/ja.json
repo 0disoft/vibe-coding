@@ -71,5 +71,7 @@
 	"privacy_processor_giscus_purpose": "Comment system",
 	"privacy_processor_giscus_country": "USA",
 	"privacy_processor_giscus_items": "Email, Profile info (via GitHub)",
-	"privacy_processor_giscus_retention": "Per GitHub data policy"
+	"privacy_processor_giscus_retention": "Per GitHub data policy",
+	"font_size_change": "文字サイズ変更",
+	"font_size_current": "文字サイズ (現在: {value})"
 }

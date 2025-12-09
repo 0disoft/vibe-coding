@@ -1,11 +1,11 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { error } from '@sveltejs/kit';
+import { marked } from 'marked';
 import { policy, site } from '$lib/constants';
 import * as m from '$lib/paraglide/messages.js';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
 import { setLocale } from '$lib/paraglide/runtime.js';
-import { error } from '@sveltejs/kit';
-import fs from 'fs/promises';
-import { marked } from 'marked';
-import path from 'path';
 import type { PageServerLoad } from './$types';
 
 /**

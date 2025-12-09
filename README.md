@@ -72,7 +72,7 @@ src/
 bun test:unit     # Vitest 유닛 테스트
 bun test:e2e      # Playwright E2E 테스트
 bun check         # svelte-check 타입 검사
-bun lint          # ESLint + Prettier
+bun lint          # Biome 린트 + 포맷팅
 ```
 
 ## 문서

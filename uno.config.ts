@@ -4,8 +4,8 @@ import {
 	defineConfig,
 	presetAttributify,
 	presetIcons,
-	transformerVariantGroup,
-	type Rule
+	type Rule,
+	transformerVariantGroup
 } from 'unocss';
 
 // 시맨틱 색상 이름들

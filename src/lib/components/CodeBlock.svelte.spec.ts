@@ -1,7 +1,7 @@
-import CodeBlock from '$lib/components/CodeBlock.svelte';
 import { describe, expect, it } from 'vitest';
-import { render } from 'vitest-browser-svelte';
 import { page } from 'vitest/browser';
+import { render } from 'vitest-browser-svelte';
+import CodeBlock from '$lib/components/CodeBlock.svelte';
 
 describe('CodeBlock.svelte', () => {
 	it('코드와 복사 버튼이 렌더링되어야 한다', async () => {

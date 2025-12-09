@@ -145,3 +145,54 @@ pnpm dlx sv create ./
   - 다중 선택(체크박스) 성격: `role="menuitemcheckbox"` + `aria-checked`
   - 단일 선택(라디오) 성격: `role="menuitemradio"` + `aria-checked`
 - **적용 시점:** 폰트 크기 선택, 테마 선택 등 메뉴 내에서 옵션을 선택하는 UI 구현 시.
+
+---
+
+## [Biome / Linter]
+
+### 1. Node.js 내장 모듈 import 시 node: 프로토콜 필수
+
+- **증상:** `A Node.js builtin module should be imported with the node: protocol.` 경고 발생.
+- **원인:** Biome의 `lint/style/useNodejsImportProtocol` 규칙이 Node.js 내장 모듈에 `node:` 접두사를 요구함.
+- **해결:**
+
+  ```typescript
+  // Before (경고)
+  import fs from 'fs/promises';
+  import path from 'path';
+
+  // After (해결)
+  import fs from 'node:fs/promises';
+  import path from 'node:path';
+  ```
+
+- **적용 시점:** Node.js 내장 모듈(`fs`, `path`, `os`, `crypto` 등)을 import할 때.
+
+### 2. Biome organizeImports 규칙: Import 정렬 순서
+
+- **증상:** `The imports and exports are not sorted.` 경고 발생.
+- **원인:** Biome의 `assist/source/organizeImports` 규칙이 특정 정렬 순서를 요구함.
+- **해결 - 올바른 정렬 순서:**
+
+  ```typescript
+  // 1. Node.js 내장 모듈 (node: 접두사)
+  import fs from 'node:fs/promises';
+  import path from 'node:path';
+
+  // 2. 외부 패키지 (scoped 패키지 포함)
+  import { error } from '@sveltejs/kit';
+  import { marked } from 'marked';
+
+  // 3. 프로젝트 내부 경로 별칭 ($lib 등)
+  import { policy, site } from '$lib/constants';
+  import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
+
+  // 4. 상대 경로 (type import 포함)
+  import type { PageServerLoad } from './$types';
+  ```
+
+- **주의사항:**
+  - 각 그룹 사이에 빈 줄을 추가해야 함
+  - 같은 그룹 내에서는 알파벳 순서로 정렬
+  - `bunx biome check --write <파일경로>`로 자동 수정 가능
+- **적용 시점:** Biome을 린터로 사용하고 `organizeImports` 규칙이 활성화된 프로젝트에서.

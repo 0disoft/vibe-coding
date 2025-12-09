@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 // src/scripts/update_md_dates.js -> src/content
 const targetDir = path.resolve(__dirname, '../content');
@@ -22,7 +22,7 @@ function processDirectory(directory) {
 		if (stat.isDirectory()) {
 			processDirectory(fullPath);
 		} else if (file.endsWith('.md')) {
-			let content = fs.readFileSync(fullPath, 'utf8');
+			const content = fs.readFileSync(fullPath, 'utf8');
 			// "> Last Updated: December 7, 2025" 또는 "> 최종 수정일: 2025년 12월 7일" 같은 줄을 찾는 정규식
 			// 접두사(예: "> Last Updated:")를 캡처하고 날짜 부분을 교체합니다.
 			// 표준 콜론(:)과 전각 콜론(：) 모두 지원

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const messagesDir = path.join(process.cwd(), 'messages');
 console.log('Resolved messages directory:', messagesDir);
@@ -190,8 +190,7 @@ const translations = {
 		cookie_cat_social: 'การเข้าสู่ระบบผ่านโซเชียลและชุมชน',
 		cookie_cat_desc_infrastructure:
 			'ใช้เพื่อความเสถียรของบริการ การป้องกัน DDoS และการเพิ่มประสิทธิภาพผ่านการแคช',
-		cookie_cat_desc_payments:
-			'ใช้เท่าที่จำเป็นสำหรับการประมวลผลการชำระเงินและการจัดการประวัติการสนับสนุนลูกค้า',
+		cookie_cat_desc_payments: 'ใช้เท่าที่จำเป็นสำหรับการประมวลผลการชำระเงินและการจัดการประวัติการสนับสนุนลูกค้า',
 		cookie_cat_desc_social:
 			'อาจใช้คุกกี้การตรวจสอบสิทธิ์และความปลอดภัยจากผู้ให้บริการเพื่อเสนอการเชื่อมโยงบัญชีโซเชียล'
 	},

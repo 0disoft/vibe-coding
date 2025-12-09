@@ -1,8 +1,8 @@
 <script lang="ts">
-	import CodeBlock from '$lib/components/CodeBlock.svelte';
+import CodeBlock from '$lib/components/CodeBlock.svelte';
 
-	// TOML 코드 예시
-	const tomlCode = `[package]
+// TOML 코드 예시
+const tomlCode = `[package]
 name = "my-app"
 version = "1.0.0"
 edition = "2024"
@@ -14,8 +14,8 @@ tokio = { version = "1", features = ["full"] }
 [dev-dependencies]
 pretty_assertions = "1.4"`;
 
-	// TypeScript 코드 예시
-	const tsCode = `interface User {
+// TypeScript 코드 예시
+const tsCode = `interface User {
   id: number;
   name: string;
   email: string;

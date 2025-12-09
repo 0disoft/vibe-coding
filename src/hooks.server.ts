@@ -13,10 +13,10 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
-import { FONT_SIZE_COOKIE, THEME_COOKIE } from '$lib/constants';
-import { paraglideMiddleware } from '$lib/paraglide/server';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
+import { FONT_SIZE_COOKIE, THEME_COOKIE } from '$lib/constants';
+import { paraglideMiddleware } from '$lib/paraglide/server';
 
 // 1. 테마/폰트 크기 처리 핸들러
 // 쿠키를 확인하여 HTML에 data-theme, data-font-size 속성을 주입하는 역할을 합니다.

@@ -29,9 +29,10 @@ export function createPersistedState<T extends string | number>(
 		if (days) {
 			const date = new Date(); // eslint-disable-line svelte/prefer-svelte-reactivity -- 단순 쿠키 만료 계산용
 			date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-			expires = '; expires=' + date.toUTCString();
+			expires = `; expires=${date.toUTCString()}`;
 		}
 		const secure = location.protocol === 'https:' ? '; Secure' : '';
+		// biome-ignore lint/suspicious/noDocumentCookie: 쿠키 기반 상태 영속화에 필수
 		document.cookie = `${key}=${value}${expires}; path=/; SameSite=Lax${secure}`;
 	}
 
