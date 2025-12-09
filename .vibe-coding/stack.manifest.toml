@@ -5,9 +5,7 @@
 
 [language_quality]
 typescript = true # 정적 타입 검사로 런타임 오류 방지 및 안정성 강화 [Type, Safety, MS, Build]
-eslint = false     # 일관된 코드 스타일 유지 및 잠재적 문법 오류 탐지 [Lint, Quality, JS, Check]
-prettier = false   # 설정된 규칙에 맞춰 코드 서식을 자동으로 정렬 [Format, Style, DX, Config]
-biome = true     # ESLint+Prettier를 대체하는 Rust 기반 초고속 린터/포맷터 [Lint, Format, Rust, Fast]
+biome = true      # ESLint+Prettier를 대체하는 Rust 기반 초고속 린터/포맷터 [Lint, Format, Rust, Fast]
 
 [testing]
 vitest = true     # Vite 환경에서 즉시 실행되는 초고속 유닛 테스트 [Test, Vite, UI, Unit]
@@ -45,7 +43,6 @@ drizzle = false              # SQL과 유사한 문법으로 최고의 타입 �
 
 # [Serverless / Managed DB]
 neon = false                 # scale-to-zero 지원으로 비용 효율적인 서버리스 PostgreSQL [Postgres, Serverless, Scale, Branch]
-planetscale = false          # Vitess 기반의 수평 확장 가능한 MySQL 호환 서버리스 DB [MySQL, Vitess, Branch, Scale]
 supabase = false             # PostgreSQL 기반 Auth/DB/Storage 통합 오픈소스 Firebase 대안 [BaaS, Auth, Postgres, Realtime]
 
 # [Legacy / Alternative]
