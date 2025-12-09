@@ -43,6 +43,11 @@ turborepo = false            # 지능형 캐싱을 통해 빌드 속도를 최�
 postgresql = false           # 복잡한 쿼리와 대용량 트랜잭션을 안정적으로 처리하는 관계형 데이터베이스 [SQL, RDBMS, Data, Docker]
 drizzle = false              # SQL과 유사한 문법으로 최고의 타입 안정성을 제공하는 경량 ORM [ORM, TS, SQL, Query]
 
+# [Serverless / Managed DB]
+neon = false                 # scale-to-zero 지원으로 비용 효율적인 서버리스 PostgreSQL [Postgres, Serverless, Scale, Branch]
+planetscale = false          # Vitess 기반의 수평 확장 가능한 MySQL 호환 서버리스 DB [MySQL, Vitess, Branch, Scale]
+supabase = false             # PostgreSQL 기반 Auth/DB/Storage 통합 오픈소스 Firebase 대안 [BaaS, Auth, Postgres, Realtime]
+
 # [Legacy / Alternative]
 sqlite_local = false         # 서버 설정 없이 단일 파일로 동작하여 관리가 쉬운 임베디드 DB [File, Local, Light, Embed]
 cloudflare_d1 = false        # 전역 엣지 네트워크 위에서 실행되는 서버리스 기반의 분산형 SQLite [Edge, SQL, Cloud, Worker]
