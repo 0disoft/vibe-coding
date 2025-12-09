@@ -1,6 +1,3 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
-
 import { error } from '@sveltejs/kit';
 import { marked } from 'marked';
 
@@ -9,34 +6,39 @@ import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
 
 import type { PageServerLoad } from './$types';
 
+// 빌드 타임에 모든 마크다운 파일을 문자열로 포함 (서버리스 환경 호환)
+const termsFiles = import.meta.glob('/src/content/terms/*.md', {
+	query: '?raw',
+	import: 'default',
+	eager: true
+}) as Record<string, string>;
+
+// 정적 문서이므로 빌드 타임에 프리렌더
+export const prerender = true;
+
 /**
  * 마크다운 파일을 로드하고 HTML로 변환
  * 해당 언어 파일이 없으면 영어(en)로 fallback
  */
-export const load: PageServerLoad = async ({ url }) => {
+export const load: PageServerLoad = ({ url }) => {
 	// Paraglide를 사용하여 URL에서 locale 추출
 	const lang = extractLocaleFromUrl(url.href) || 'en';
 
-	// 마크다운 파일 경로 설정
-	const contentDir = path.resolve('src/content/terms');
-	let filePath = path.join(contentDir, `${lang}.md`);
+	// 파일 경로 매칭 (import.meta.glob 키 형식)
+	const getFilePath = (locale: string) => `/src/content/terms/${locale}.md`;
+
+	let markdown = termsFiles[getFilePath(lang)];
+	let actualLang = lang;
 
 	// 해당 언어 파일이 없으면 영어로 fallback
-	let actualLang = lang;
-	try {
-		await fs.access(filePath);
-	} catch {
-		// Fallback to English
-		filePath = path.join(contentDir, 'en.md');
+	if (!markdown) {
+		markdown = termsFiles[getFilePath('en')];
 		actualLang = 'en';
-	}
 
-	// 마크다운 파일 읽기
-	let markdown: string;
-	try {
-		markdown = await fs.readFile(filePath, 'utf-8');
-	} catch {
-		throw error(500, 'Failed to load content');
+		// 영어 파일조차 없으면 500 에러
+		if (!markdown) {
+			throw error(500, 'Terms of service content not found');
+		}
 	}
 
 	// 템플릿 변수 치환
@@ -51,8 +53,8 @@ export const load: PageServerLoad = async ({ url }) => {
 			)
 		);
 
-	// 마크다운을 HTML로 변환
-	const content = await marked(markdown);
+	// 마크다운을 HTML로 변환 (marked는 동기 함수)
+	const content = marked.parse(markdown) as string;
 
 	return {
 		content,
