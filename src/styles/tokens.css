@@ -29,6 +29,9 @@
 :root {
 	color-scheme: light dark;
 
+	/* UnoCSS text-xs 오버라이드 (기본 0.75rem → 0.65rem) */
+	--text-xs-fontSize: 0.65rem;
+
 	/* Font stacks */
 	/* 기본(라틴 문자 기반) - 현재 테스트: Manrope */
 	--font-sans:
