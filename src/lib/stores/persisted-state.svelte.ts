@@ -79,8 +79,28 @@ export function createPersistedState<T extends string | number>(
 	/** camelCase → kebab-case 변환된 data 속성 키 */
 	const attrKey = `data-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
 
-	/** DOM 및 쿠키 동기화 */
-	function updateDom(value: T): void {
+	/**
+	 * 값 파싱 및 검증 헬퍼
+	 * @param rawValue 원본 문자열 값
+	 * @returns 유효한 값 또는 null
+	 */
+	function parseAndValidate(rawValue: string | null): T | null {
+		if (rawValue === null || rawValue === '') return null;
+
+		let parsed: unknown = rawValue;
+
+		if (typeof initial === 'number') {
+			const num = Number(rawValue);
+			// NaN 체크: Number("")=0, Number("abc")=NaN 방지
+			if (Number.isNaN(num)) return null;
+			parsed = num;
+		}
+
+		return isValid(parsed) ? (parsed as T) : null;
+	}
+
+	/** DOM 속성만 업데이트 (쿠키 제외) */
+	function updateDomOnly(value: T): void {
 		if (!browser) return;
 
 		if (domUpdater) {
@@ -88,6 +108,11 @@ export function createPersistedState<T extends string | number>(
 		} else {
 			document.documentElement.setAttribute(attrKey, String(value));
 		}
+	}
+
+	/** DOM 및 쿠키 동기화 */
+	function updateDom(value: T): void {
+		updateDomOnly(value);
 		setCookie(key, value);
 	}
 
@@ -95,34 +120,25 @@ export function createPersistedState<T extends string | number>(
 	function init(): void {
 		if (!browser) return;
 
-		// 1) SSR이 심어둔 data-* 우선
-		const attr = document.documentElement.getAttribute(attrKey);
-		if (attr !== null && attr !== '') {
-			const parsedAttr = typeof initial === 'number' ? Number(attr) : attr;
-			// NaN 체크: Number("")=0, Number("abc")=NaN 방지
-			if (typeof initial !== 'number' || !Number.isNaN(parsedAttr)) {
-				if (isValid(parsedAttr)) {
-					current = parsedAttr as T;
-					return;
-				}
-			}
+		// 1) SSR이 심어둔 data-* 우선 (가장 신뢰도 높음)
+		const fromDom = parseAndValidate(document.documentElement.getAttribute(attrKey));
+		if (fromDom !== null) {
+			current = fromDom;
+			// 쿠키 만료일 연장 (Keep-alive)
+			setCookie(key, fromDom);
+			return;
 		}
 
-		// 2) 쿠키 fallback
-		const cookieValue = getCookie(key);
-		if (cookieValue !== null && cookieValue !== '') {
-			const parsed = typeof initial === 'number' ? Number(cookieValue) : cookieValue;
-			// NaN 체크
-			if (typeof initial !== 'number' || !Number.isNaN(parsed)) {
-				if (isValid(parsed)) {
-					current = parsed as T;
-					updateDom(current); // DOM에 값이 없었으면 동기화
-					return;
-				}
-			}
+		// 2) 쿠키 Fallback
+		const fromCookie = parseAndValidate(getCookie(key));
+		if (fromCookie !== null) {
+			current = fromCookie;
+			// DOM에만 동기화 (쿠키는 이미 존재)
+			updateDomOnly(fromCookie);
+			return;
 		}
 
-		// 3) 기본값
+		// 3) 기본값 (아무것도 없을 때)
 		current = initial;
 		updateDom(initial);
 	}
