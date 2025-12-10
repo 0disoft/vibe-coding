@@ -87,6 +87,17 @@
 | `uno.config.ts`        | UnoCSS 테마 토큰, 프리셋, 디자인 시스템 설정    |
 | `playwright.config.ts` | Playwright E2E 테스트 설정 (webServer, testDir) |
 | `bun.lock`             | Bun 패키지 버전 고정 잠금 파일                  |
+| `.env`                 | 환경변수 (API 키 등, gitignore 포함)            |
+| `.env.example`         | 환경변수 템플릿 (버전 관리용)                   |
+
+### .vibe-coding/
+
+| 파일/폴더        | 역할                                                      |
+| ---------------- | --------------------------------------------------------- |
+| `TREE.md`        | 프로젝트 핵심 파일/컴포넌트 구조 문서                     |
+| `AGENTS.md`      | AI 에이전트 운영 지침 및 규칙                             |
+| `temporary.txt`  | 사용자/LLM이 긴 질문이나 응답을 임시 저장하는 스크래치패드 |
+| `INSIGHTS/`      | 전략적 인사이트, 아키텍처 결정, 레퍼런스 문서 모음        |
 
 ### e2e/
 

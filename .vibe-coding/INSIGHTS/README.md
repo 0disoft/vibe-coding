@@ -7,6 +7,9 @@
 | 파일 | 설명 |
 |------|------|
 | [multi-site-auth-strategy.md](./multi-site-auth-strategy.md) | 100개+ 사이트 운영 시 회원 정보 관리 전략 |
+| [central-auth-backend-design.md](./central-auth-backend-design.md) | 중앙 인증 백엔드 기능 축별 평가 및 로드맵 |
+| [tech-stack-reference.md](./tech-stack-reference.md) | 인디해커를 위한 기술 스택 카탈로그 |
+| [mcp-servers-reference.md](./mcp-servers-reference.md) | API 키 불필요 MCP 서버 추천 및 설정 가이드 |
 
 ## 작성 가이드
 
