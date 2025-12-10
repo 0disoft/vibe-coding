@@ -75,7 +75,32 @@ pre {
 	font-variant-numeric: tabular-nums slashed-zero;
 }
 
-/* Shiki 코드블록(.shiki)은 자체 인라인 스타일 사용 */
+/* Shiki 코드블록: 기본값 (태블릿+) - 가로 스크롤 */
+pre.shiki {
+	max-width: 100%;
+	overflow-x: auto;
+	white-space: pre;
+}
+
+/* 모바일에서만 줄바꿈 */
+@media (max-width: 767px) {
+
+	pre.shiki,
+	pre.shiki code,
+	pre.shiki span {
+		white-space: pre-wrap !important;
+		/* 공백/구두점에서만 줄바꿈, 단어 중간 끊김 방지 */
+		word-break: normal !important;
+		overflow-wrap: anywhere !important;
+		hyphens: none !important;
+	}
+
+	pre.shiki {
+		overflow-x: visible;
+	}
+}
+
+/* Shiki 외 일반 코드블록 */
 pre:not(.shiki) {
 	background-color: oklch(var(--card));
 	border: none;
