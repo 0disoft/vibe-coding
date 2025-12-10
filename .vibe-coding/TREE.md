@@ -64,6 +64,8 @@
         │   ├── CodeBlock.svelte
         │   ├── Footer.svelte
         │   ├── Header.svelte
+        │   ├── footer-actions/
+        │   │   └── FooterMenu.svelte
         │   ├── header-actions/
         │   │   ├── FontSizePicker.svelte
         │   │   ├── LanguagePicker.svelte
@@ -92,12 +94,20 @@
 
 ### .vibe-coding/
 
-| 파일/폴더        | 역할                                                      |
-| ---------------- | --------------------------------------------------------- |
-| `TREE.md`        | 프로젝트 핵심 파일/컴포넌트 구조 문서                     |
-| `AGENTS.md`      | AI 에이전트 운영 지침 및 규칙                             |
-| `temporary.txt`  | 사용자/LLM이 긴 질문이나 응답을 임시 저장하는 스크래치패드 |
-| `INSIGHTS/`      | 전략적 인사이트, 아키텍처 결정, 레퍼런스 문서 모음        |
+| 파일/폴더              | 역할                                                       |
+| ---------------------- | ---------------------------------------------------------- |
+| `TREE.md`              | 프로젝트 핵심 파일/컴포넌트 구조 문서                      |
+| `SPEC.md`              | 프로젝트 스펙 문서                                         |
+| `TODO.md`              | 할 일 목록 및 진행 상황                                    |
+| `API.md`               | API 엔드포인트 문서                                        |
+| `REVIEW.md`            | 코드 리뷰 가이드라인                                       |
+| `temporary.txt`        | 사용자/LLM이 긴 질문이나 응답을 임시 저장하는 스크래치패드 |
+| `project.meta.toml`    | 프로젝트 메타데이터 설정                                   |
+| `stack.manifest.toml`  | 기술 스택 매니페스트                                       |
+| `INSIGHTS/`            | 전략적 인사이트, 아키텍처 결정, 레퍼런스 문서 모음         |
+| `KNOWLEDGE/`           | 기술 지식 베이스 (언어별 가이드 등)                        |
+| `TROUBLE/`             | 문제 해결 기록 (SOLVED.md 등)                              |
+| `SOS/`                 | 긴급 이슈 및 디버깅 로그                                   |
 
 ### e2e/
 
@@ -166,5 +176,6 @@
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달                                         |
 | `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달                                    |
 | `components/header-actions/UserMenu.svelte`       | 사용자 메뉴 (프로필, 로그인/로그아웃)                          |
+| `components/footer-actions/FooterMenu.svelte`     | 푸터 더보기 메뉴 (후원, 정책, 사이트맵 등)                     |
 | `components/ui/index.ts`                          | UI 컴포넌트 배럴 파일                                          |
 | `types/index.ts`                                  | 타입 배럴 export ($lib/types용)                                |

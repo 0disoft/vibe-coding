@@ -49,10 +49,10 @@
 	--fs-scale: 1;
 
 	/* 뷰포트 높이 기반 동적 스케일링 (1080px 기준 정규화) */
-	/* sqrt() 함수로 극단값 완화, clamp()로 0.65~1.5 범위 제한 */
-	--vh-factor: clamp(0.65, sqrt(100dvh / 1080px), 1.5);
+	/* sqrt() 함수로 극단값 완화, clamp()로 0.65~1.8 범위 제한 */
+	--vh-factor: clamp(0.65, sqrt(100dvh / 1080px), 1.8);
 
-	font-size: calc(21px * var(--fs-scale) * var(--vh-factor));
+	font-size: calc(22px * var(--fs-scale) * var(--vh-factor));
 
 	/* Base font sizes */
 	--fs-body-base: 1.35rem;
