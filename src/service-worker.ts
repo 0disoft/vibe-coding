@@ -13,12 +13,15 @@ const CACHE = `cache-${version}`;
 /** 오프라인 폴백 경로 */
 const OFFLINE_PATH = '/offline';
 
-/** 캐싱 대상 자산 목록 */
+/** 캐싱 대상 자산 목록 (배열) */
 const ASSETS = [
 	...build, // SvelteKit 빌드 결과물 (JS, CSS)
 	...files, // static 폴더 내 정적 파일
 	...prerendered // 프리렌더링된 HTML 페이지 (offline 포함)
 ];
+
+/** 빌드 자산 Set (빠른 조회용) */
+const ASSET_SET = new Set([...build, ...files]);
 
 /** ServiceWorkerGlobalScope 타입 캐스팅 */
 const sw = self as unknown as ServiceWorkerGlobalScope;
@@ -27,11 +30,15 @@ const sw = self as unknown as ServiceWorkerGlobalScope;
 // 헬퍼 함수
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Range 요청이 필요한 미디어 파일 확장자 */
+const MEDIA_EXTENSIONS = /\.(mp4|webm|ogg|mov|mp3|wav|m4a)$/i;
+
 /**
  * 서비스 워커가 처리해야 할 요청인지 판별
  * - GET 요청만 처리
  * - http/https 스키마만 처리 (chrome-extension 등 제외)
  * - 동일 origin만 처리 (외부 리소스 제외)
+ * - 미디어 파일은 Range 요청 문제로 제외 (Safari 비디오 탐색 호환성)
  */
 function shouldHandleRequest(request: Request): boolean {
 	if (request.method !== 'GET') return false;
@@ -39,6 +46,9 @@ function shouldHandleRequest(request: Request): boolean {
 
 	const url = new URL(request.url);
 	if (url.origin !== sw.location.origin) return false;
+
+	// 미디어 파일은 Range 헤더 처리 문제로 제외
+	if (MEDIA_EXTENSIONS.test(url.pathname)) return false;
 
 	return true;
 }
@@ -65,10 +75,11 @@ async function networkFirst(request: Request): Promise<Response> {
 	try {
 		const response = await fetch(request);
 
-		// 페이지 이동(HTML) 요청이고 정상 응답이면 캐시에 저장
-		if (isNavigation && response.status === 200) {
+		// HTML 페이지 응답만 캐시에 저장 (API 응답, 에러 페이지 제외)
+		const isHtml = response.headers.get('content-type')?.includes('text/html');
+		if (isNavigation && response.ok && isHtml) {
 			const cache = await caches.open(CACHE);
-			cache.put(request, response.clone());
+			await cache.put(request, response.clone());
 		}
 
 		return response;
@@ -96,9 +107,19 @@ async function getOfflineFallback(): Promise<Response | undefined> {
 
 /**
  * 요청 URL이 빌드 자산인지 확인
+ * - Set을 사용한 O(1) 조회
+ * - /_app/ 경로는 무조건 자산 취급 (해시 변경 대응)
  */
 function isAssetRequest(url: URL): boolean {
-	return ASSETS.includes(url.pathname);
+	const pathname = url.pathname;
+
+	// Set에서 정확히 일치하는지 확인
+	if (ASSET_SET.has(pathname)) return true;
+
+	// /_app/ 하위는 모두 빌드 자산으로 취급 (immutable assets)
+	if (pathname.startsWith('/_app/')) return true;
+
+	return false;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
