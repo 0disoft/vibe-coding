@@ -1,7 +1,7 @@
 # MCP 서버 추천 가이드
 
 로컬에서 바로 사용 가능한 MCP(Model Context Protocol) 서버 모음.
-`bunx` 기반 설정 포함. 일부 서버는 API 키 필요.
+`bunx`/`uvx` 기반 설정 포함. 일부 서버는 API 키 필요.
 
 > 💡 MCP는 AI 에이전트가 외부 도구/데이터와 상호작용하는 표준 프로토콜 (Anthropic, 2024)
 
@@ -17,19 +17,7 @@
 
 ## ⭐ 추천 MCP 서버 목록
 
-### 1. Filesystem (파일시스템)
-
-로컬 파일/디렉토리 읽기, 쓰기, 검색.
-
-| 항목 | 내용 |
-|------|------|
-| 패키지 | `@modelcontextprotocol/server-filesystem` |
-| 런타임 | Node.js (bunx) |
-| 용도 | 파일 탐색, 코드 읽기/수정, 프로젝트 구조 파악 |
-
----
-
-### 2. Memory (지식 그래프 메모리)
+### 1. Memory (지식 그래프 메모리)
 
 세션 간 지속되는 지식 그래프 기반 메모리 시스템.
 
@@ -41,7 +29,7 @@
 
 ---
 
-### 3. Sequential Thinking (순차적 사고)
+### 2. Sequential Thinking (순차적 사고)
 
 복잡한 문제를 단계별로 분해하여 해결.
 
@@ -53,31 +41,19 @@
 
 ---
 
-### 4. Git
-
-Git 저장소 읽기, 검색, 커밋 히스토리 분석.
-
-| 항목 | 내용 |
-|------|------|
-| 패키지 | `@modelcontextprotocol/server-git` |
-| 런타임 | Node.js (bunx) |
-| 용도 | 커밋 분석, 브랜치 비교, 코드 변경 이력 추적 |
-
----
-
-### 5. Fetch (웹 콘텐츠)
+### 3. Fetch (웹 콘텐츠)
 
 웹 페이지를 가져와 LLM 친화적 형식으로 변환.
 
 | 항목 | 내용 |
 |------|------|
-| 패키지 | `@modelcontextprotocol/server-fetch` |
-| 런타임 | Node.js (bunx) |
+| 패키지 | `mcp-server-fetch` |
+| 런타임 | Python (uvx) |
 | 용도 | 문서 참조, API 문서 읽기, 외부 정보 수집 |
 
 ---
 
-### 6. Puppeteer (브라우저 자동화)
+### 4. Puppeteer (브라우저 자동화)
 
 Chromium 기반 브라우저 제어 및 스크래핑.
 
@@ -89,19 +65,7 @@ Chromium 기반 브라우저 제어 및 스크래핑.
 
 ---
 
-### 7. SQLite (데이터베이스)
-
-SQLite DB 쿼리 및 분석.
-
-| 항목 | 내용 |
-|------|------|
-| 패키지 | `@modelcontextprotocol/server-sqlite` |
-| 런타임 | Node.js (bunx) |
-| 용도 | 로컬 DB 조회, 데이터 분석, 스키마 탐색 |
-
----
-
-### 8. GitHub (API 키 필요)
+### 5. GitHub (API 키 필요)
 
 저장소 관리, 이슈, PR 등. Personal Access Token 필요.
 
@@ -113,7 +77,7 @@ SQLite DB 쿼리 및 분석.
 
 ---
 
-### 9. Context7 (라이브러리 문서, API 키 필요)
+### 6. Context7 (라이브러리 문서, API 키 필요)
 
 최신 라이브러리 문서를 LLM에 직접 주입. 오래된 정보로 인한 hallucination 방지.
 
@@ -121,12 +85,12 @@ SQLite DB 쿼리 및 분석.
 |------|------|
 | 패키지 | `@upstash/context7-mcp` |
 | 런타임 | Node.js (bunx) |
-| API 키 | Context7 계정에서 API 키 발급 → `--api-key` 인자 또는 `CONTEXT7_API_KEY` 환경변수 |
+| API 키 | Context7 계정에서 API 키 발급 → `CONTEXT7_API_KEY` 환경변수 |
 | 용도 | 프롬프트에 "use context7" 추가 시 최신 문서 참조 |
 
 ---
 
-### 10. Chrome DevTools (브라우저 디버깅)
+### 7. Chrome DevTools (브라우저 디버깅)
 
 Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강력한 성능 분석.
 
@@ -138,7 +102,7 @@ Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강
 
 ---
 
-### 11. Playwright (크로스 브라우저)
+### 8. Playwright (크로스 브라우저)
 
 멀티 브라우저 자동화 (Chrome, Firefox, Safari). E2E 테스트에 적합.
 
@@ -150,16 +114,53 @@ Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강
 
 ---
 
-### 12. Shell (터미널 명령어)
+### 9. Shell (터미널 명령어)
 
 안전한 셸 명령어 실행 및 터미널 관리.
 
 | 항목 | 내용 |
 |------|------|
-| 패키지 | `@modelcontextprotocol/server-shell` |
+| 패키지 | `shell-mcp-server` |
 | 런타임 | Node.js (bunx) |
 | 용도 | 터미널 명령 실행, 프로세스 관리, 빌드 자동화 |
 | ⚠️ 주의 | 보안상 허용할 명령어/디렉토리를 제한하는 것을 권장 |
+
+---
+
+### 10. Time (시간/타임존)
+
+현재 시간, 타임존 변환, 날짜 계산 등.
+
+| 항목 | 내용 |
+|------|------|
+| 패키지 | `mcp-server-time` |
+| 런타임 | Python (uvx) |
+| 용도 | 현재 시간 조회, 타임존 변환, 날짜 계산 |
+
+---
+
+### 11. Calculator (계산기)
+
+수학 연산 및 계산 지원.
+
+| 항목 | 내용 |
+|------|------|
+| 패키지 | `mcp-server-calculator` |
+| 런타임 | Python (uvx) |
+| 용도 | 수학 연산, 단위 변환, 공식 계산 |
+
+---
+
+### 12. Filesystem (파일시스템)
+
+로컬 파일/디렉토리 읽기, 쓰기, 검색.
+
+| 항목 | 내용 |
+|------|------|
+| 패키지 | `@modelcontextprotocol/server-filesystem` |
+| 런타임 | Node.js (bunx) |
+| 용도 | 파일 탐색, 코드 읽기/수정, 프로젝트 구조 파악 |
+| ⚠️ 주의 | 접근 가능한 디렉토리를 인자로 지정해야 함 |
 
 ---
 
@@ -179,8 +180,8 @@ Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강
       "args": ["@modelcontextprotocol/server-sequential-thinking"]
     },
     "fetch": {
-      "command": "bunx",
-      "args": ["@modelcontextprotocol/server-fetch"]
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
     },
     "puppeteer": {
       "command": "bunx",
@@ -195,7 +196,10 @@ Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강
     },
     "context7": {
       "command": "bunx",
-      "args": ["@upstash/context7-mcp", "--api-key", "YOUR_CONTEXT7_API_KEY"]
+      "args": ["@upstash/context7-mcp"],
+      "env": {
+        "CONTEXT7_API_KEY": "YOUR_CONTEXT7_API_KEY"
+      }
     },
     "chrome-devtools": {
       "command": "bunx",
@@ -207,7 +211,19 @@ Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강
     },
     "shell": {
       "command": "bunx",
-      "args": ["@modelcontextprotocol/server-shell"]
+      "args": ["shell-mcp-server"]
+    },
+    "time": {
+      "command": "uvx",
+      "args": ["mcp-server-time"]
+    },
+    "calculator": {
+      "command": "uvx",
+      "args": ["mcp-server-calculator"]
+    },
+    "filesystem": {
+      "command": "bunx",
+      "args": ["@modelcontextprotocol/server-filesystem", "."]
     }
   }
 }
