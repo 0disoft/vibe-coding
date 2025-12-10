@@ -2,6 +2,60 @@ import { browser } from '$app/environment';
 
 // Note: 이 파일은 Svelte runes($state)을 사용하므로 .svelte.ts 확장자를 유지하세요.
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 상수
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** 쿠키 기본 만료일 (일) */
+const DEFAULT_COOKIE_DAYS = 365;
+
+/** 하루를 밀리초로 변환 */
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 유틸리티 함수
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 쿠키 값 조회
+ * @param name 쿠키 이름
+ * @returns 쿠키 값 또는 null
+ */
+function getCookie(name: string): string | null {
+	if (!browser) return null;
+	const match = document.cookie.match(new RegExp(`(?:^|; )${escapeRegex(name)}=([^;]*)`));
+	return match ? decodeURIComponent(match[1]) : null;
+}
+
+/**
+ * 정규식 특수문자 이스케이프
+ */
+function escapeRegex(str: string): string {
+	return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * 쿠키 설정
+ * @param name 쿠키 이름
+ * @param value 쿠키 값
+ * @param days 만료일 (기본: 365일)
+ */
+function setCookie(name: string, value: string | number, days = DEFAULT_COOKIE_DAYS): void {
+	if (!browser) return;
+
+	const date = new Date(); // eslint-disable-line svelte/prefer-svelte-reactivity -- 단순 쿠키 만료 계산용
+	date.setTime(date.getTime() + days * DAY_IN_MS);
+	const expires = `; expires=${date.toUTCString()}`;
+	const secure = location.protocol === 'https:' ? '; Secure' : '';
+
+	// biome-ignore lint/suspicious/noDocumentCookie: 쿠키 기반 상태 영속화에 필수
+	document.cookie = `${name}=${encodeURIComponent(value)}${expires}; path=/; SameSite=Lax${secure}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 메인 함수
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
  * 쿠키와 DOM data-* 속성에 동기화되는 영속 스토어를 생성합니다.
  *
@@ -18,35 +72,27 @@ export function createPersistedState<T extends string | number>(
 ) {
 	let current = $state<T>(initial);
 
+	/** 값 유효성 검증 */
 	const isValid = (val: unknown): val is T =>
 		val != null && (allowedValues ? (allowedValues as readonly unknown[]).includes(val) : true);
 
+	/** camelCase → kebab-case 변환된 data 속성 키 */
 	const attrKey = `data-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
 
-	function setCookie(value: T, days = 365) {
+	/** DOM 및 쿠키 동기화 */
+	function updateDom(value: T): void {
 		if (!browser) return;
-		let expires = '';
-		if (days) {
-			const date = new Date(); // eslint-disable-line svelte/prefer-svelte-reactivity -- 단순 쿠키 만료 계산용
-			date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-			expires = `; expires=${date.toUTCString()}`;
-		}
-		const secure = location.protocol === 'https:' ? '; Secure' : '';
-		// biome-ignore lint/suspicious/noDocumentCookie: 쿠키 기반 상태 영속화에 필수
-		document.cookie = `${key}=${value}${expires}; path=/; SameSite=Lax${secure}`;
-	}
 
-	function updateDom(value: T) {
-		if (!browser) return;
 		if (domUpdater) {
 			domUpdater(value);
 		} else {
 			document.documentElement.setAttribute(attrKey, String(value));
 		}
-		setCookie(value);
+		setCookie(key, value);
 	}
 
-	function init() {
+	/** 초기값 로드 (SSR data-* → 쿠키 → 기본값 순) */
+	function init(): void {
 		if (!browser) return;
 
 		// 1) SSR이 심어둔 data-* 우선
@@ -58,14 +104,9 @@ export function createPersistedState<T extends string | number>(
 		}
 
 		// 2) 쿠키 fallback
-		const found = document.cookie
-			.split(';')
-			.map((item) => item.trim())
-			.find((item) => item.startsWith(`${key}=`));
-
-		if (found) {
-			const raw = found.split('=')[1];
-			const parsed = typeof initial === 'number' ? Number(raw) : (raw as unknown);
+		const cookieValue = getCookie(key);
+		if (cookieValue !== null) {
+			const parsed = typeof initial === 'number' ? Number(cookieValue) : cookieValue;
 			if (isValid(parsed)) {
 				current = parsed as T;
 				updateDom(current); // DOM에 값이 없었으면 동기화
@@ -78,7 +119,8 @@ export function createPersistedState<T extends string | number>(
 		updateDom(initial);
 	}
 
-	function set(value: T) {
+	/** 값 설정 */
+	function set(value: T): void {
 		if (!isValid(value)) return;
 		current = value;
 		updateDom(value);
@@ -92,3 +134,4 @@ export function createPersistedState<T extends string | number>(
 		set
 	};
 }
+

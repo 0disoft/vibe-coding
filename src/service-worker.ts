@@ -1,7 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 /// <reference lib="webworker" />
 
-import { build, files, prerendered, version } from '$service-worker';
+import { base, build, files, prerendered, version } from '$service-worker';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 상수 정의
@@ -10,18 +10,21 @@ import { build, files, prerendered, version } from '$service-worker';
 /** 캐시 이름 (빌드 버전 포함) */
 const CACHE = `cache-${version}`;
 
-/** 오프라인 폴백 경로 */
-const OFFLINE_PATH = '/offline';
+/** Range 요청이 필요한 미디어 파일 확장자 */
+const MEDIA_EXTENSIONS = /\.(mp4|webm|ogg|mov|mp3|wav|m4a)$/i;
 
-/** 캐싱 대상 자산 목록 (배열) */
+/** 오프라인 폴백 경로 (base path 지원) */
+const OFFLINE_PATH = `${base}/offline`;
+
+/** 캐싱 대상 자산 목록 (미디어 파일 제외) */
 const ASSETS = [
 	...build, // SvelteKit 빌드 결과물 (JS, CSS)
-	...files, // static 폴더 내 정적 파일
+	...files.filter((path) => !MEDIA_EXTENSIONS.test(path)), // 미디어 제외
 	...prerendered // 프리렌더링된 HTML 페이지 (offline 포함)
 ];
 
 /** 빌드 자산 Set (빠른 조회용) */
-const ASSET_SET = new Set([...build, ...files]);
+const ASSET_SET = new Set([...build, ...files.filter((path) => !MEDIA_EXTENSIONS.test(path))]);
 
 /** ServiceWorkerGlobalScope 타입 캐스팅 */
 const sw = self as unknown as ServiceWorkerGlobalScope;
@@ -29,9 +32,6 @@ const sw = self as unknown as ServiceWorkerGlobalScope;
 // ─────────────────────────────────────────────────────────────────────────────
 // 헬퍼 함수
 // ─────────────────────────────────────────────────────────────────────────────
-
-/** Range 요청이 필요한 미디어 파일 확장자 */
-const MEDIA_EXTENSIONS = /\.(mp4|webm|ogg|mov|mp3|wav|m4a)$/i;
 
 /**
  * 서비스 워커가 처리해야 할 요청인지 판별
@@ -90,19 +90,50 @@ async function networkFirst(request: Request): Promise<Response> {
 
 		// 네비게이션 요청이면 오프라인 폴백 페이지 반환
 		if (isNavigation) {
-			const offlineFallback = await getOfflineFallback();
-			if (offlineFallback) return offlineFallback;
+			return getOfflineFallback();
 		}
 
-		throw new Error('Offline and no cache available');
+		// 네비게이션이 아닌 요청은 503 응답
+		return new Response('Offline', { status: 503 });
 	}
 }
 
 /**
  * 오프라인 폴백 페이지 반환
+ * - 캐시된 오프라인 페이지가 있으면 반환
+ * - 없으면 최소한의 HTML 응답 (완전한 무응답 방지)
  */
-async function getOfflineFallback(): Promise<Response | undefined> {
-	return caches.match(OFFLINE_PATH);
+async function getOfflineFallback(): Promise<Response> {
+	const cached = await caches.match(OFFLINE_PATH);
+	if (cached) return cached;
+
+	// 최후의 안전망: 캐시된 오프라인 페이지가 없을 경우
+	return new Response(
+		`<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>오프라인</title>
+	<style>
+		body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #1a1a2e; color: #eee; }
+		.container { text-align: center; padding: 2rem; }
+		h1 { font-size: 1.5rem; margin-bottom: 1rem; }
+		p { color: #aaa; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>오프라인 상태입니다</h1>
+		<p>인터넷 연결을 확인한 뒤 다시 시도해 주세요.</p>
+	</div>
+</body>
+</html>`,
+		{
+			status: 503,
+			headers: { 'Content-Type': 'text/html; charset=utf-8' }
+		}
+	);
 }
 
 /**
@@ -163,4 +194,4 @@ sw.addEventListener('fetch', (event) => {
 	event.respondWith(networkFirst(event.request));
 });
 
-// FORCE SW UPDATE: 2025-12-10 23:17
+// FORCE SW UPDATE: 2025-12-10 23:31
