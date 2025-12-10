@@ -11,6 +11,7 @@
 | [tech-stack-reference.md](./tech-stack-reference.md) | 인디해커를 위한 기술 스택 카탈로그 |
 | [mcp-servers-reference.md](./mcp-servers-reference.md) | API 키 불필요 MCP 서버 추천 및 설정 가이드 |
 | [modern-cryptography-guide.md](./modern-cryptography-guide.md) | 현대 암호화 기법 가이드 (Argon2id, XChaCha20, BLAKE3 등) |
+| [elegant-typescript-patterns.md](./elegant-typescript-patterns.md) | 우아한 타입스크립트 설계 패턴 모음 |
 
 ## 작성 가이드
 

@@ -89,7 +89,9 @@ export const load: PageServerLoad = ({ url }) => {
 					? messages[retentionKey]({}, { locale: actualLang })
 					: '-';
 
-			return `| ${processor.name} | ${purpose} | ${country} | ${items} | ${retention} |`;
+			// Unicode LRI (U+2066) + PDI (U+2069)로 영어 회사명을 RTL 컨텍스트와 격리
+			const isolatedName = `\u2066${processor.name}\u2069`;
+			return `| ${isolatedName} | ${purpose} | ${country} | ${items} | ${retention} |`;
 		})
 		.join('\n');
 

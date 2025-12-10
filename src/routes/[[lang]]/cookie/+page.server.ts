@@ -76,7 +76,8 @@ export const load: PageServerLoad = ({ url }) => {
 			const services = serviceIds
 				.map((id) => {
 					const processor = policy.dataProcessors.find((p) => p.id === id);
-					return processor ? processor.name : id;
+					// Unicode LRI (U+2066) + PDI (U+2069)로 RTL에서 영어 회사명 격리
+					return processor ? `\u2066${processor.name}\u2069` : id;
 				})
 				.join(', ');
 
