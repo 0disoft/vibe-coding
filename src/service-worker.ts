@@ -3,94 +3,143 @@
 
 import { build, files, prerendered, version } from '$service-worker';
 
-// 캐시 이름 정의 (빌드 버전 포함)
+// ─────────────────────────────────────────────────────────────────────────────
+// 상수 정의
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** 캐시 이름 (빌드 버전 포함) */
 const CACHE = `cache-${version}`;
 
+/** 오프라인 폴백 경로 */
+const OFFLINE_PATH = '/offline';
+
+/** 캐싱 대상 자산 목록 */
 const ASSETS = [
 	...build, // SvelteKit 빌드 결과물 (JS, CSS)
 	...files, // static 폴더 내 정적 파일
 	...prerendered // 프리렌더링된 HTML 페이지 (offline 포함)
 ];
 
-// self를 ServiceWorkerGlobalScope로 캐스팅
+/** ServiceWorkerGlobalScope 타입 캐스팅 */
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
-// 1. 설치 (Install)
+// ─────────────────────────────────────────────────────────────────────────────
+// 헬퍼 함수
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 서비스 워커가 처리해야 할 요청인지 판별
+ * - GET 요청만 처리
+ * - http/https 스키마만 처리 (chrome-extension 등 제외)
+ * - 동일 origin만 처리 (외부 리소스 제외)
+ */
+function shouldHandleRequest(request: Request): boolean {
+	if (request.method !== 'GET') return false;
+	if (!request.url.startsWith('http')) return false;
+
+	const url = new URL(request.url);
+	if (url.origin !== sw.location.origin) return false;
+
+	return true;
+}
+
+/**
+ * 캐시 우선 전략 (Cache First)
+ * - 캐시에 있으면 캐시 반환
+ * - 없으면 네트워크 요청
+ */
+async function cacheFirst(request: Request): Promise<Response> {
+	const cachedResponse = await caches.match(request);
+	return cachedResponse || fetch(request);
+}
+
+/**
+ * 네트워크 우선 전략 (Network First)
+ * - 네트워크 요청 시도
+ * - 실패 시 캐시 반환
+ * - 네비게이션 요청 성공 시 캐시에 저장
+ */
+async function networkFirst(request: Request): Promise<Response> {
+	const isNavigation = request.mode === 'navigate';
+
+	try {
+		const response = await fetch(request);
+
+		// 페이지 이동(HTML) 요청이고 정상 응답이면 캐시에 저장
+		if (isNavigation && response.status === 200) {
+			const cache = await caches.open(CACHE);
+			cache.put(request, response.clone());
+		}
+
+		return response;
+	} catch {
+		// 오프라인: 캐시된 데이터 반환 시도
+		const cachedResponse = await caches.match(request);
+		if (cachedResponse) return cachedResponse;
+
+		// 네비게이션 요청이면 오프라인 폴백 페이지 반환
+		if (isNavigation) {
+			const offlineFallback = await getOfflineFallback();
+			if (offlineFallback) return offlineFallback;
+		}
+
+		throw new Error('Offline and no cache available');
+	}
+}
+
+/**
+ * 오프라인 폴백 페이지 반환
+ */
+async function getOfflineFallback(): Promise<Response | undefined> {
+	return caches.match(OFFLINE_PATH);
+}
+
+/**
+ * 요청 URL이 빌드 자산인지 확인
+ */
+function isAssetRequest(url: URL): boolean {
+	return ASSETS.includes(url.pathname);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 이벤트 핸들러
+// ─────────────────────────────────────────────────────────────────────────────
+
+// 1. 설치 (Install) - 자산 미리 캐싱
 sw.addEventListener('install', (event) => {
-	// 새로운 서비스 워커 설치 시 자산 미리 캐싱
 	async function addFilesToCache() {
 		const cache = await caches.open(CACHE);
 		await cache.addAll(ASSETS);
 	}
 
-	// 대기 상태 없이 즉시 새 서비스 워커를 활성화 (빠른 업데이트)
-	sw.skipWaiting();
+	sw.skipWaiting(); // 대기 없이 즉시 활성화
 	event.waitUntil(addFilesToCache());
 });
 
-// 2. 활성화 (Activate)
+// 2. 활성화 (Activate) - 이전 캐시 정리
 sw.addEventListener('activate', (event) => {
-	// 활성화 시 이전 버전 캐시 삭제
 	async function deleteOldCaches() {
 		const keys = await caches.keys();
-		for (const key of keys) {
-			if (key !== CACHE) await caches.delete(key);
-		}
+		await Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)));
 	}
 
-	// 현재 열려있는 모든 탭의 제어권을 즉시 가져옴
 	event.waitUntil(Promise.all([deleteOldCaches(), sw.clients.claim()]));
 });
 
 // 3. 요청 가로채기 (Fetch)
 sw.addEventListener('fetch', (event) => {
-	// GET 요청이 아니거나, http/https 스키마가 아니면 무시 (chrome-extension 등 제외)
-	if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
+	if (!shouldHandleRequest(event.request)) return;
 
 	const url = new URL(event.request.url);
 
-	// 동일 origin이 아닌 요청은 건드리지 않는다 (외부 리소스 캐싱 방지)
-	if (url.origin !== sw.location.origin) return;
-
-	// 캐시 우선 전략 (Cache First) - 빌드 자산인 경우
-	if (ASSETS.includes(url.pathname)) {
-		event.respondWith(
-			caches.match(event.request).then((cacheRes) => {
-				return cacheRes || fetch(event.request);
-			})
-		);
+	// 빌드 자산: 캐시 우선 전략
+	if (isAssetRequest(url)) {
+		event.respondWith(cacheFirst(event.request));
 		return;
 	}
 
-	// 네트워크 우선 전략 (Network First) - 그 외 HTML 등
-	event.respondWith(
-		(async () => {
-			const isNavigation = event.request.mode === 'navigate';
-
-			try {
-				const response = await fetch(event.request);
-
-				// 페이지 이동(HTML) 요청이고 정상 응답이면 캐시에 저장
-				if (isNavigation && response.status === 200) {
-					const cache = await caches.open(CACHE);
-					cache.put(event.request, response.clone());
-				}
-				return response;
-			} catch {
-				// 오프라인 상태라면 캐시된 데이터라도 반환
-				const cachedResponse = await caches.match(event.request);
-				if (cachedResponse) return cachedResponse;
-
-				// 오프라인이고 캐시도 없는데 페이지 이동 요청인 경우, 오프라인 전용 페이지 반환
-				if (isNavigation) {
-					// /offline 라우트 (prerendered) 반환
-					const offlineFallback = await caches.match('/offline');
-					if (offlineFallback) return offlineFallback;
-				}
-
-				throw new Error('Offline and no cache available');
-			}
-		})()
-	);
+	// 그 외: 네트워크 우선 전략
+	event.respondWith(networkFirst(event.request));
 });
-// FORCE SW UPDATE: 2025-12-07 06:45
+
+// FORCE SW UPDATE: 2025-12-10 23:17
