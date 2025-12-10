@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Çerezler sohbet oturumlarını ve destek geçmişini korumak için kullanılabilir.",
 	"cookie_cat_desc_ai": "Çerezler veya benzer teknolojiler AI özelliklerinde bağlamı korumak için kullanılabilir.",
 	"font_size_change": "Yazı Boyutunu Değiştir",
-	"font_size_current": "Yazı Boyutu (Mevcut: {value})"
+	"font_size_current": "Yazı Boyutu (Mevcut: {value})",
+	"footer_more_menu": "Daha Fazla",
+	"footer_donate": "Bağış Yap",
+	"footer_security": "Güvenlik Politikası",
+	"footer_gdpr": "GDPR & Gizlilik",
+	"footer_sitemap": "Site Haritası",
+	"footer_accessibility": "Erişilebilirlik",
+	"footer_bug_bounty": "Bug Bounty"
 }

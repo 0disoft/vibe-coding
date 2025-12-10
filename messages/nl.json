@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Cookies kunnen worden gebruikt om chatsessies en supportgeschiedenis te beheren.",
 	"cookie_cat_desc_ai": "Cookies of vergelijkbare technologieën kunnen worden gebruikt om context in AI-functies te behouden.",
 	"font_size_change": "Lettergrootte wijzigen",
-	"font_size_current": "Lettergrootte (Huidig: {value})"
+	"font_size_current": "Lettergrootte (Huidig: {value})",
+	"footer_more_menu": "Meer",
+	"footer_donate": "Doneren",
+	"footer_security": "Beveiligingsbeleid",
+	"footer_gdpr": "AVG & Privacy",
+	"footer_sitemap": "Sitemap",
+	"footer_accessibility": "Toegankelijkheid",
+	"footer_bug_bounty": "Bug Bounty"
 }

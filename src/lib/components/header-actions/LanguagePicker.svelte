@@ -133,7 +133,7 @@
     <div
       id="language-menu"
       bind:this={modalRef}
-      class="absolute right-0 top-full z-50 mt-2 w-40 rounded-lg border border-border bg-popover p-1.5 shadow-lg"
+      class="absolute end-0 top-full z-50 mt-2 w-40 rounded-lg border border-border bg-popover p-1.5 shadow-lg"
       role="menu"
       aria-labelledby="language-menu-button"
       tabindex="-1"

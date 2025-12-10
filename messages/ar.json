@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "قد تستخدم ملفات تعريف الارتباط للحفاظ على جلسات الدردشة وسجل الدعم.",
 	"cookie_cat_desc_ai": "قد تستخدم ملفات تعريف الارتباط أو التقنيات المماثلة للحفاظ على السياق في ميزات الذكاء الاصطناعي.",
 	"font_size_change": "تغيير حجم الخط",
-	"font_size_current": "حجم الخط (الحالي: {value})"
+	"font_size_current": "حجم الخط (الحالي: {value})",
+	"footer_more_menu": "المزيد",
+	"footer_donate": "تبرع",
+	"footer_security": "سياسة الأمان",
+	"footer_gdpr": "GDPR وحقوق الخصوصية",
+	"footer_sitemap": "خريطة الموقع",
+	"footer_accessibility": "إمكانية الوصول",
+	"footer_bug_bounty": "مكافأة الثغرات (Bug Bounty)"
 }

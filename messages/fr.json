@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Des cookies peuvent être utilisés pour maintenir les sessions de chat et l'historique du support.",
 	"cookie_cat_desc_ai": "Des cookies ou technologies similaires peuvent être utilisés pour maintenir le contexte dans les fonctionnalités IA.",
 	"font_size_change": "Changer la taille de la police",
-	"font_size_current": "Taille de la police (Actuel : {value})"
+	"font_size_current": "Taille de la police (Actuel : {value})",
+	"footer_more_menu": "Plus",
+	"footer_donate": "Faire un don",
+	"footer_security": "Politique de sécurité",
+	"footer_gdpr": "RGPD & Confidentialité",
+	"footer_sitemap": "Plan du site",
+	"footer_accessibility": "Accessibilité",
+	"footer_bug_bounty": "Bug Bounty"
 }

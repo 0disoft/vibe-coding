@@ -120,7 +120,7 @@
     <div
       id="user-menu"
       bind:this={menuRef}
-      class="absolute right-0 top-full z-50 mt-2 w-56 max-h-80 overflow-y-auto rounded-lg border border-border bg-popover p-2 shadow-lg thin-scrollbar"
+      class="absolute end-0 top-full z-50 mt-2 w-56 max-h-80 overflow-y-auto rounded-lg border border-border bg-popover p-2 shadow-lg thin-scrollbar"
       role="menu"
       aria-labelledby="user-menu-button"
       tabindex="-1"

@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "可能会使用Cookie来维护聊天会话和客户服务的支持历史记录。",
 	"cookie_cat_desc_ai": "可能会使用Cookie或类似技术来维护AI功能和对话中的上下文。",
 	"font_size_change": "更改字体大小",
-	"font_size_current": "字体大小 (当前: {value})"
+	"font_size_current": "字体大小 (当前: {value})",
+	"footer_more_menu": "更多",
+	"footer_donate": "捐赠",
+	"footer_security": "安全政策",
+	"footer_gdpr": "GDPR 与隐私权",
+	"footer_sitemap": "网站地图",
+	"footer_accessibility": "无障碍访问",
+	"footer_bug_bounty": "漏洞赏金 (Bug Bounty)"
 }

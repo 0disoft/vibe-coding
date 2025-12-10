@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Cookie dapat digunakan untuk memelihara sesi obrolan dan riwayat dukungan.",
 	"cookie_cat_desc_ai": "Cookie atau teknologi serupa dapat digunakan untuk memelihara konteks dalam fitur AI.",
 	"font_size_change": "Ubah Ukuran Font",
-	"font_size_current": "Ukuran Font (Saat ini: {value})"
+	"font_size_current": "Ukuran Font (Saat ini: {value})",
+	"footer_more_menu": "Lainnya",
+	"footer_donate": "Donasi",
+	"footer_security": "Kebijakan Keamanan",
+	"footer_gdpr": "GDPR & Hak Privasi",
+	"footer_sitemap": "Peta Situs",
+	"footer_accessibility": "Aksesibilitas",
+	"footer_bug_bounty": "Bug Bounty"
 }

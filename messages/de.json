@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Cookies können verwendet werden, um Chat-Sitzungen und Support-Verläufe zu verwalten.",
 	"cookie_cat_desc_ai": "Cookies oder ähnliche Technologien können verwendet werden, um den Kontext in KI-Funktionen zu erhalten.",
 	"font_size_change": "Schriftgröße ändern",
-	"font_size_current": "Schriftgröße (Aktuell: {value})"
+	"font_size_current": "Schriftgröße (Aktuell: {value})",
+	"footer_more_menu": "Mehr",
+	"footer_donate": "Spenden",
+	"footer_security": "Sicherheitsrichtlinie",
+	"footer_gdpr": "DSGVO & Datenschutz",
+	"footer_sitemap": "Seitenübersicht",
+	"footer_accessibility": "Barrierefreiheit",
+	"footer_bug_bounty": "Bug Bounty"
 }

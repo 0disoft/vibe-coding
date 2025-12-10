@@ -13,17 +13,21 @@
     { key: 'bug-bounty', icon: 'i-lucide-bug', href: '/bug-bounty' },
   ] as const;
 
-  // 메뉴 키 → i18n 메시지 매핑
-  function getMenuLabel(key: string): string {
-    const labels: Record<string, () => string> = {
-      donate: m.footer_donate,
-      security: m.footer_security,
-      gdpr: m.footer_gdpr,
-      sitemap: m.footer_sitemap,
-      accessibility: m.footer_accessibility,
-      'bug-bounty': m.footer_bug_bounty,
-    };
-    return labels[key]?.() ?? key;
+  // 메뉴 키 타입 (컴파일 타임에 누락 방지)
+  type MenuKey = (typeof menuItems)[number]['key'];
+
+  // 메뉴 키 → i18n 메시지 매핑 (타입 안전)
+  const MENU_LABELS: Record<MenuKey, () => string> = {
+    donate: m.footer_donate,
+    security: m.footer_security,
+    gdpr: m.footer_gdpr,
+    sitemap: m.footer_sitemap,
+    accessibility: m.footer_accessibility,
+    'bug-bounty': m.footer_bug_bounty,
+  };
+
+  function getMenuLabel(key: MenuKey): string {
+    return MENU_LABELS[key]();
   }
 
   let showMenu = $state(false);
@@ -78,20 +82,32 @@
     closeMenu();
   }
 
-  // 메뉴 내부 화살표 키 탐색 (접근성)
+  // 메뉴 내부 키보드 탐색 (접근성)
   function handleMenuKeyDown(event: KeyboardEvent) {
     if (!menuRef) return;
+
     const items = Array.from(menuRef.querySelectorAll('[role="menuitem"]')) as HTMLElement[];
+    if (!items.length) return;
+
     const currentIndex = items.indexOf(document.activeElement as HTMLElement);
 
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      const nextIndex = (currentIndex + 1) % items.length;
-      items[nextIndex]?.focus();
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      const prevIndex = (currentIndex - 1 + items.length) % items.length;
-      items[prevIndex]?.focus();
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        items[(currentIndex + 1) % items.length]?.focus();
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        items[(currentIndex - 1 + items.length) % items.length]?.focus();
+        break;
+      case 'Home':
+        event.preventDefault();
+        items[0]?.focus();
+        break;
+      case 'End':
+        event.preventDefault();
+        items[items.length - 1]?.focus();
+        break;
     }
   }
 </script>
@@ -119,7 +135,7 @@
     <div
       id="footer-menu"
       bind:this={menuRef}
-      class="absolute right-0 bottom-full z-50 mb-2 w-48 rounded-lg border border-border bg-popover p-1.5 shadow-lg"
+      class="absolute end-0 bottom-full z-50 mb-2 w-48 rounded-lg border border-border bg-popover p-1.5 shadow-lg"
       role="menu"
       aria-labelledby="footer-menu-button"
       tabindex="-1"
@@ -134,7 +150,7 @@
             onclick={() => closeMenu()}
             role="menuitem"
           >
-            <span class="{item.icon} h-4 w-4 shrink-0"></span>
+            <span class="{item.icon} h-3 w-3 shrink-0"></span>
             <span>{getMenuLabel(item.key)}</span>
           </a>
         {/each}

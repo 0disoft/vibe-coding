@@ -175,5 +175,12 @@
 	"menu_settings": "Ustawienia",
 	"menu_logout": "Wyloguj się",
 	"font_size_change": "Zmień rozmiar czcionki",
-	"font_size_current": "Rozmiar czcionki (Obecny: {value})"
+	"font_size_current": "Rozmiar czcionki (Obecny: {value})",
+	"footer_more_menu": "Więcej",
+	"footer_donate": "Przekaż datek",
+	"footer_security": "Polityka bezpieczeństwa",
+	"footer_gdpr": "RODO i prywatność",
+	"footer_sitemap": "Mapa strony",
+	"footer_accessibility": "Dostępność",
+	"footer_bug_bounty": "Bug Bounty"
 }

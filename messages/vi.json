@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Cookie có thể được sử dụng để duy trì phiên chat và lịch sử hỗ trợ.",
 	"cookie_cat_desc_ai": "Cookie hoặc các công nghệ tương tự có thể được sử dụng để duy trì ngữ cảnh trong các tính năng AI.",
 	"font_size_change": "Thay đổi kích thước phông chữ",
-	"font_size_current": "Kích thước phông chữ (Hiện tại: {value})"
+	"font_size_current": "Kích thước phông chữ (Hiện tại: {value})",
+	"footer_more_menu": "Thêm",
+	"footer_donate": "Ủng hộ",
+	"footer_security": "Chính sách bảo mật",
+	"footer_gdpr": "GDPR & Quyền riêng tư",
+	"footer_sitemap": "Sơ đồ trang web",
+	"footer_accessibility": "Khả năng truy cập",
+	"footer_bug_bounty": "Bug Bounty"
 }

@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "คุกกี้อาจใช้เพื่อรักษาเซสชันแชทและประวัติการสนับสนุน",
 	"cookie_cat_desc_ai": "คุกกี้หรือเทคโนโลยีที่คล้ายกันอาจใช้เพื่อรักษาบริบทในฟีเจอร์ AI",
 	"font_size_change": "เปลี่ยนขนาดตัวอักษร",
-	"font_size_current": "ขนาดตัวอักษร (ปัจจุบัน: {value})"
+	"font_size_current": "ขนาดตัวอักษร (ปัจจุบัน: {value})",
+	"footer_more_menu": "เพิ่มเติม",
+	"footer_donate": "บริจาค",
+	"footer_security": "นโยบายความปลอดภัย",
+	"footer_gdpr": "GDPR และสิทธิ์ความเป็นส่วนตัว",
+	"footer_sitemap": "แผนผังเว็บไซต์",
+	"footer_accessibility": "การเข้าถึง (Accessibility)",
+	"footer_bug_bounty": "Bug Bounty"
 }

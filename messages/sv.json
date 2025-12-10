@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Cookies kan användas för att upprätthålla chattsessioner och supporthistorik.",
 	"cookie_cat_desc_ai": "Cookies eller liknande teknologier kan användas för att behålla kontext i AI-funktioner.",
 	"font_size_change": "Ändra teckenstorlek",
-	"font_size_current": "Teckenstorlek (Nuvarande: {value})"
+	"font_size_current": "Teckenstorlek (Nuvarande: {value})",
+	"footer_more_menu": "Mer",
+	"footer_donate": "Donera",
+	"footer_security": "Säkerhetspolicy",
+	"footer_gdpr": "GDPR & Integritet",
+	"footer_sitemap": "Webbplatskarta",
+	"footer_accessibility": "Tillgänglighet",
+	"footer_bug_bounty": "Bug Bounty"
 }

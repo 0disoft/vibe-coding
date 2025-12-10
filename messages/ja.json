@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "カスタマーサービスのためにチャットセッションとサポート履歴を維持するためのクッキーが使用される場合があります。",
 	"cookie_cat_desc_ai": "AI機能と会話でコンテキストを維持するためにクッキーまたは類似技術が使用される場合があります。",
 	"font_size_change": "文字サイズ変更",
-	"font_size_current": "文字サイズ (現在: {value})"
+	"font_size_current": "文字サイズ (現在: {value})",
+	"footer_more_menu": "その他",
+	"footer_donate": "寄付",
+	"footer_security": "セキュリティポリシー",
+	"footer_gdpr": "GDPRとプライバシー",
+	"footer_sitemap": "サイトマップ",
+	"footer_accessibility": "アクセシビリティ",
+	"footer_bug_bounty": "バグバウンティ"
 }

@@ -102,7 +102,7 @@
     <div
       id="font-size-menu"
       bind:this={modalRef}
-      class="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-border bg-popover p-2 shadow-lg"
+      class="absolute end-0 top-full z-50 mt-2 w-48 rounded-lg border border-border bg-popover p-2 shadow-lg"
       role="menu"
       aria-labelledby="font-size-menu-button"
       tabindex="-1"

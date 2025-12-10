@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Maaaring gamitin ang mga cookie upang panatilihin ang mga chat session at kasaysayan ng suporta.",
 	"cookie_cat_desc_ai": "Maaaring gamitin ang mga cookie o katulad na teknolohiya upang panatilihin ang konteksto sa mga feature ng AI.",
 	"font_size_change": "Palitan ang Laki ng Font",
-	"font_size_current": "Laki ng Font (Kasalukuyan: {value})"
+	"font_size_current": "Laki ng Font (Kasalukuyan: {value})",
+	"footer_more_menu": "Higit pa",
+	"footer_donate": "Mag-donate",
+	"footer_security": "Patakaran sa Seguridad",
+	"footer_gdpr": "GDPR at Pribadong Karapatan",
+	"footer_sitemap": "Sitemap",
+	"footer_accessibility": "Accessibility",
+	"footer_bug_bounty": "Bug Bounty"
 }

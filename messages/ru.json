@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "Cookie могут использоваться для поддержания чат-сессий и истории поддержки.",
 	"cookie_cat_desc_ai": "Cookie или аналогичные технологии могут использоваться для сохранения контекста в ИИ-функциях.",
 	"font_size_change": "Изменить размер шрифта",
-	"font_size_current": "Размер шрифта (Текущий: {value})"
+	"font_size_current": "Размер шрифта (Текущий: {value})",
+	"footer_more_menu": "Ещё",
+	"footer_donate": "Пожертвовать",
+	"footer_security": "Политика безопасности",
+	"footer_gdpr": "GDPR и конфиденциальность",
+	"footer_sitemap": "Карта сайта",
+	"footer_accessibility": "Доступность",
+	"footer_bug_bounty": "Bug Bounty"
 }

@@ -175,5 +175,12 @@
 	"cookie_cat_desc_support": "कुकीज़ का उपयोग चैट सत्र और सहायता इतिहास बनाए रखने के लिए किया जा सकता है।",
 	"cookie_cat_desc_ai": "AI सुविधाओं में संदर्भ बनाए रखने के लिए कुकीज़ या समान तकनीकों का उपयोग किया जा सकता है।",
 	"font_size_change": "फ़ॉन्ट आकार बदलें",
-	"font_size_current": "फ़ॉन्ट आकार (वर्तमान: {value})"
+	"font_size_current": "फ़ॉन्ट आकार (वर्तमान: {value})",
+	"footer_more_menu": "अधिक",
+	"footer_donate": "दान करें",
+	"footer_security": "सुरक्षा नीति",
+	"footer_gdpr": "GDPR और गोपनीयता अधिकार",
+	"footer_sitemap": "साइटमैप",
+	"footer_accessibility": "पहुँच-योग्यता (Accessibility)",
+	"footer_bug_bounty": "बग बाउंटी"
 }

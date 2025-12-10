@@ -153,7 +153,7 @@
 
 <!-- 모바일 메뉴 패널 (nav 링크만) -->
 <div
-  class="fixed right-0 top-0 z-50 h-full w-64 transform bg-background border-l border-border shadow-xl transition-transform duration-300 ease-in-out md:hidden {mobileMenuOpen
+  class="fixed end-0 top-0 z-50 h-full w-64 transform bg-background border-s border-border shadow-xl transition-transform duration-300 ease-in-out md:hidden {mobileMenuOpen
     ? 'translate-x-0'
     : 'translate-x-full'}"
 >
