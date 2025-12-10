@@ -86,12 +86,17 @@
     showEmail = false; // 상태 변경 시 이메일 숨김으로 리셋
   }
 
-  // 이메일 마스킹 (예: t***@example.com)
+  // 이메일 마스킹 (예: t***@e***.c**)
   function maskEmail(email: string): string {
     const [local, domain] = email.split('@');
     if (!domain) return '***';
     const maskedLocal = local.length > 1 ? `${local[0]}***` : '***';
-    return `${maskedLocal}@${domain}`;
+    // 도메인도 마스킹 (각 부분의 첫 글자 제외)
+    const maskedDomain = domain
+      .split('.')
+      .map((part) => (part.length > 1 ? `${part[0]}${'*'.repeat(part.length - 1)}` : part))
+      .join('.');
+    return `${maskedLocal}@${maskedDomain}`;
   }
 </script>
 

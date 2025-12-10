@@ -145,7 +145,12 @@ export function createPersistedState<T extends string | number>(
 
 	/** 값 설정 */
 	function set(value: T): void {
-		if (!isValid(value)) return;
+		if (!isValid(value)) {
+			if (import.meta.env.DEV) {
+				console.warn(`[persistedState] invalid value for "${key}":`, value);
+			}
+			return;
+		}
 		current = value;
 		updateDom(value);
 	}
