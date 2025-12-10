@@ -1,73 +1,98 @@
 <script lang="ts">
-import * as m from '$lib/paraglide/messages.js';
-import { localizeUrl } from '$lib/paraglide/runtime.js';
+  import * as m from '$lib/paraglide/messages.js';
+  import { localizeUrl } from '$lib/paraglide/runtime.js';
+  import { tick } from 'svelte';
 
-// TODO: Better-Auth 연동 시 실제 인증 상태로 교체
-// 현재는 UI 확인용 mock 상태
-let isLoggedIn = $state(false);
-let user = $state<{ name: string; email: string } | null>(null);
+  // TODO: Better-Auth 연동 시 실제 인증 상태로 교체
+  // 현재는 UI 확인용 mock 상태
+  let isLoggedIn = $state(false);
+  let user = $state<{ name: string; email: string } | null>(null);
 
-let showUserMenu = $state(false);
-let showEmail = $state(false);
-let menuRef = $state<HTMLDivElement | null>(null);
-let buttonRef = $state<HTMLButtonElement | null>(null);
+  let showUserMenu = $state(false);
+  let showEmail = $state(false);
+  let menuRef = $state<HTMLDivElement | null>(null);
+  let buttonRef = $state<HTMLButtonElement | null>(null);
 
-// 닫기 로직 통합 헬퍼
-// focusButton: 키보드로 닫을 때만 버튼에 포커스 복귀 (마우스 클릭 시는 불필요)
-function closeUserMenu(options?: { focusButton?: boolean }) {
-	if (!showUserMenu) return;
-	showUserMenu = false;
-	showEmail = false; // 메뉴 닫힐 때 이메일 마스킹 상태로 리셋 (방송인 프라이버시 보호)
-	if (options?.focusButton) {
-		buttonRef?.focus();
-	}
-}
+  // 닫기 로직 통합 헬퍼
+  // focusButton: 키보드로 닫을 때만 버튼에 포커스 복귀 (마우스 클릭 시는 불필요)
+  function closeUserMenu(options?: { focusButton?: boolean }) {
+    if (!showUserMenu) return;
+    showUserMenu = false;
+    showEmail = false; // 메뉴 닫힐 때 이메일 마스킹 상태로 리셋 (방송인 프라이버시 보호)
+    if (options?.focusButton) {
+      buttonRef?.focus();
+    }
+  }
 
-function toggleUserMenu() {
-	showUserMenu ? closeUserMenu({ focusButton: true }) : (showUserMenu = true);
-}
+  async function toggleUserMenu() {
+    if (showUserMenu) {
+      closeUserMenu({ focusButton: true });
+    } else {
+      showUserMenu = true;
+      await tick();
+      const firstItem = menuRef?.querySelector('[role="menuitem"]') as HTMLElement;
+      firstItem?.focus();
+    }
+  }
 
-function handleOutsideClick(event: MouseEvent) {
-	if (
-		showUserMenu &&
-		menuRef &&
-		!menuRef.contains(event.target as Node) &&
-		buttonRef &&
-		!buttonRef.contains(event.target as Node)
-	) {
-		closeUserMenu(); // 마우스 클릭 닫기: 포커스 이동 없음
-	}
-}
+  function handleOutsideClick(event: MouseEvent) {
+    if (
+      showUserMenu &&
+      menuRef &&
+      !menuRef.contains(event.target as Node) &&
+      buttonRef &&
+      !buttonRef.contains(event.target as Node)
+    ) {
+      closeUserMenu(); // 마우스 클릭 닫기: 포커스 이동 없음
+    }
+  }
 
-// ESC 키로 메뉴 닫기 (접근성 필수)
-function handleKeyDown(event: KeyboardEvent) {
-	if (showUserMenu && event.key === 'Escape') {
-		event.stopPropagation();
-		closeUserMenu({ focusButton: true }); // 키보드 닫기: 버튼에 포커스 복귀
-	}
-}
+  // ESC 키로 메뉴 닫기 (접근성 필수)
+  function handleKeyDown(event: KeyboardEvent) {
+    if (showUserMenu && event.key === 'Escape') {
+      event.stopPropagation();
+      closeUserMenu({ focusButton: true });
+    }
+  }
 
-// 로그아웃 처리 (TODO: Better-Auth 연동)
-function handleLogout() {
-	isLoggedIn = false;
-	user = null;
-	closeUserMenu();
-}
+  // 메뉴 내부 화살표 키 탐색 (접근성)
+  function handleMenuKeyDown(event: KeyboardEvent) {
+    if (!menuRef) return;
+    const items = Array.from(menuRef.querySelectorAll('[role="menuitem"]')) as HTMLElement[];
+    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
 
-// 개발용: 로그인 상태 토글
-function toggleLoginState() {
-	isLoggedIn = !isLoggedIn;
-	user = isLoggedIn ? { name: 'Test User', email: 'test@example.com' } : null;
-	showEmail = false; // 상태 변경 시 이메일 숨김으로 리셋
-}
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      const nextIndex = (currentIndex + 1) % items.length;
+      items[nextIndex]?.focus();
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      const prevIndex = (currentIndex - 1 + items.length) % items.length;
+      items[prevIndex]?.focus();
+    }
+  }
 
-// 이메일 마스킹 (예: t***@example.com)
-function maskEmail(email: string): string {
-	const [local, domain] = email.split('@');
-	if (!domain) return '***';
-	const maskedLocal = local.length > 1 ? `${local[0]}***` : '***';
-	return `${maskedLocal}@${domain}`;
-}
+  // 로그아웃 처리 (TODO: Better-Auth 연동)
+  function handleLogout() {
+    isLoggedIn = false;
+    user = null;
+    closeUserMenu();
+  }
+
+  // 개발용: 로그인 상태 토글
+  function toggleLoginState() {
+    isLoggedIn = !isLoggedIn;
+    user = isLoggedIn ? { name: 'Test User', email: 'test@example.com' } : null;
+    showEmail = false; // 상태 변경 시 이메일 숨김으로 리셋
+  }
+
+  // 이메일 마스킹 (예: t***@example.com)
+  function maskEmail(email: string): string {
+    const [local, domain] = email.split('@');
+    if (!domain) return '***';
+    const maskedLocal = local.length > 1 ? `${local[0]}***` : '***';
+    return `${maskedLocal}@${domain}`;
+  }
 </script>
 
 <svelte:window onclick={handleOutsideClick} onkeydown={handleKeyDown} />
@@ -95,9 +120,11 @@ function maskEmail(email: string): string {
     <div
       id="user-menu"
       bind:this={menuRef}
-      class="absolute right-0 top-full z-50 mt-2 w-56 max-h-80 overflow-y-auto rounded-lg bg-popover p-2 shadow-lg thin-scrollbar"
+      class="absolute right-0 top-full z-50 mt-2 w-56 max-h-80 overflow-y-auto rounded-lg border border-border bg-popover p-2 shadow-lg thin-scrollbar"
       role="menu"
       aria-labelledby="user-menu-button"
+      tabindex="-1"
+      onkeydown={handleMenuKeyDown}
     >
       {#if isLoggedIn && user}
         <!-- 로그인 상태 메뉴 -->
@@ -128,7 +155,7 @@ function maskEmail(email: string): string {
         <div class="grid gap-1">
           <a
             href={localizeUrl('/profile').href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
             role="menuitem"
             onclick={() => closeUserMenu()}
           >
@@ -137,7 +164,7 @@ function maskEmail(email: string): string {
           </a>
           <a
             href={localizeUrl('/settings').href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
             role="menuitem"
             onclick={() => closeUserMenu()}
           >
@@ -150,7 +177,7 @@ function maskEmail(email: string): string {
           <button
             type="button"
             onclick={handleLogout}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm text-destructive transition-colors hover:bg-destructive/10"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm text-destructive outline-none transition-colors hover:bg-destructive/10 focus:bg-destructive/10"
             role="menuitem"
           >
             <span class="i-lucide-log-out h-4 w-4"></span>
@@ -162,7 +189,7 @@ function maskEmail(email: string): string {
         <div class="grid gap-1">
           <a
             href={localizeUrl('/login').href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
             role="menuitem"
             onclick={() => closeUserMenu()}
           >
@@ -171,7 +198,7 @@ function maskEmail(email: string): string {
           </a>
           <a
             href={localizeUrl('/signup').href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm font-medium text-link transition-colors hover:bg-link/10"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm font-medium text-link outline-none transition-colors hover:bg-link/10 focus:bg-link/10"
             role="menuitem"
             onclick={() => closeUserMenu()}
           >

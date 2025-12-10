@@ -1,6 +1,7 @@
 <script lang="ts">
   import * as m from '$lib/paraglide/messages.js';
   import { localizeUrl } from '$lib/paraglide/runtime.js';
+  import FooterMenu from './footer-actions/FooterMenu.svelte';
 
   interface Props {
     siteName?: string;
@@ -16,22 +17,25 @@
       &copy; {currentYear}
       {siteName}. {m.footer_rights()}
     </small>
-    <nav aria-label="Footer navigation" class="flex gap-4 text-xs text-muted-foreground">
-      <a
-        href={localizeUrl('/terms').href}
-        class="transition-colors hover:text-foreground hover:underline underline-offset-2"
-        data-testid="footer-terms-link">{m.footer_terms()}</a
-      >
-      <a
-        href={localizeUrl('/privacy').href}
-        class="transition-colors hover:text-foreground hover:underline underline-offset-2"
-        data-testid="footer-privacy-link">{m.footer_privacy()}</a
-      >
-      <a
-        href={localizeUrl('/cookie').href}
-        class="transition-colors hover:text-foreground hover:underline underline-offset-2"
-        data-testid="footer-cookie-link">{m.footer_cookie_policy()}</a
-      >
-    </nav>
+    <div class="flex items-center gap-4">
+      <nav aria-label="Footer navigation" class="flex gap-4 text-xs text-muted-foreground">
+        <a
+          href={localizeUrl('/terms').href}
+          class="transition-colors hover:text-foreground hover:underline underline-offset-2"
+          data-testid="footer-terms-link">{m.footer_terms()}</a
+        >
+        <a
+          href={localizeUrl('/privacy').href}
+          class="transition-colors hover:text-foreground hover:underline underline-offset-2"
+          data-testid="footer-privacy-link">{m.footer_privacy()}</a
+        >
+        <a
+          href={localizeUrl('/cookie').href}
+          class="transition-colors hover:text-foreground hover:underline underline-offset-2"
+          data-testid="footer-cookie-link">{m.footer_cookie_policy()}</a
+        >
+      </nav>
+      <FooterMenu />
+    </div>
   </div>
 </footer>

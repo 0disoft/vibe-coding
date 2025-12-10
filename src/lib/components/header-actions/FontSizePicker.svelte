@@ -1,6 +1,7 @@
 <script lang="ts">
   import * as m from '$lib/paraglide/messages.js';
   import { type FontSize, fontSize } from '$lib/stores';
+  import { tick } from 'svelte';
 
   let showFontSizeModal = $state(false);
   let modalRef = $state<HTMLDivElement | null>(null);
@@ -15,8 +16,17 @@
     }
   }
 
-  function toggleFontSizeModal() {
-    showFontSizeModal ? closeFontSizeModal({ focusButton: true }) : (showFontSizeModal = true);
+  async function toggleFontSizeModal() {
+    if (showFontSizeModal) {
+      closeFontSizeModal({ focusButton: true });
+    } else {
+      showFontSizeModal = true;
+      await tick();
+      // 현재 선택된 폰트 크기 항목에 포커스, 없으면 첫 번째 항목
+      const selectedItem = modalRef?.querySelector('[aria-checked="true"]') as HTMLElement;
+      const firstItem = modalRef?.querySelector('[role="menuitemradio"]') as HTMLElement;
+      (selectedItem ?? firstItem)?.focus();
+    }
   }
 
   function selectFontSize(level: FontSize) {
@@ -39,9 +49,33 @@
   // ESC 키로 모달 닫기 (접근성 필수)
   function handleKeyDown(event: KeyboardEvent) {
     if (showFontSizeModal && event.key === 'Escape') {
-      event.stopPropagation(); // 다른 ESC 핸들러로 전파 방지
+      event.stopPropagation();
       closeFontSizeModal({ focusButton: true });
     }
+  }
+
+  // 메뉴 내부 화살표 키 탐색 (3x3 그리드용)
+  function handleMenuKeyDown(event: KeyboardEvent) {
+    if (!modalRef) return;
+    const items = Array.from(modalRef.querySelectorAll('[role="menuitemradio"]')) as HTMLElement[];
+    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+    const cols = 3; // 3열 그리드
+
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      nextIndex = (currentIndex + cols) % items.length;
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      nextIndex = (currentIndex - cols + items.length) % items.length;
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      nextIndex = (currentIndex + 1) % items.length;
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      nextIndex = (currentIndex - 1 + items.length) % items.length;
+    }
+    items[nextIndex]?.focus();
   }
 </script>
 
@@ -68,9 +102,11 @@
     <div
       id="font-size-menu"
       bind:this={modalRef}
-      class="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg bg-popover p-2 shadow-lg"
+      class="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-border bg-popover p-2 shadow-lg"
       role="menu"
       aria-labelledby="font-size-menu-button"
+      tabindex="-1"
+      onkeydown={handleMenuKeyDown}
     >
       <div class="mb-2 px-2 text-xs font-medium text-muted-foreground">
         {m.font_size_current({ value: fontSize.current })}
@@ -80,10 +116,10 @@
           <button
             type="button"
             onclick={() => selectFontSize(level)}
-            class="inline-flex h-8 w-full items-center justify-center rounded-md text-sm transition-colors {fontSize.current ===
+            class="inline-flex h-8 w-full items-center justify-center rounded-md text-sm outline-none transition-colors {fontSize.current ===
             level
               ? 'bg-primary text-primary-foreground'
-              : 'hover:bg-accent hover:text-accent-foreground'}"
+              : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'}"
             aria-checked={fontSize.current === level}
             role="menuitemradio"
           >

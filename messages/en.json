@@ -175,5 +175,12 @@
 	"menu_settings": "Settings",
 	"menu_logout": "Log out",
 	"font_size_change": "Change Font Size",
-	"font_size_current": "Font Size (Current: {value})"
+	"font_size_current": "Font Size (Current: {value})",
+	"footer_more_menu": "More",
+	"footer_donate": "Donate",
+	"footer_security": "Security Policy",
+	"footer_gdpr": "GDPR & Privacy Rights",
+	"footer_sitemap": "Sitemap",
+	"footer_accessibility": "Accessibility",
+	"footer_bug_bounty": "Bug Bounty"
 }

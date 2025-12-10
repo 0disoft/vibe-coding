@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { getLocale, locales, localizeUrl } from '$lib/paraglide/runtime';
+  import { tick } from 'svelte';
 
   // 언어 코드 → 사람이 읽기 쉬운 이름 맵
   const languageNames: Record<string, string> = {
@@ -58,8 +59,17 @@
     }
   }
 
-  function toggleLanguageModal() {
-    showLanguageModal ? closeLanguageModal({ focusButton: true }) : (showLanguageModal = true);
+  async function toggleLanguageModal() {
+    if (showLanguageModal) {
+      closeLanguageModal({ focusButton: true });
+    } else {
+      showLanguageModal = true;
+      await tick();
+      // 현재 선택된 언어 항목에 포커스, 없으면 첫 번째 항목
+      const selectedItem = modalRef?.querySelector('[aria-current="page"]') as HTMLElement;
+      const firstItem = modalRef?.querySelector('[role="menuitem"]') as HTMLElement;
+      (selectedItem ?? firstItem)?.focus();
+    }
   }
 
   function handleOutsideClick(event: MouseEvent) {
@@ -77,8 +87,25 @@
   // ESC 키로 모달 닫기 (접근성 필수)
   function handleKeyDown(event: KeyboardEvent) {
     if (showLanguageModal && event.key === 'Escape') {
-      event.stopPropagation(); // 다른 ESC 핸들러로 전파 방지
-      closeLanguageModal();
+      event.stopPropagation();
+      closeLanguageModal({ focusButton: true });
+    }
+  }
+
+  // 메뉴 내부 화살표 키 탐색 (접근성)
+  function handleMenuKeyDown(event: KeyboardEvent) {
+    if (!modalRef) return;
+    const items = Array.from(modalRef.querySelectorAll('[role="menuitem"]')) as HTMLElement[];
+    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      const nextIndex = (currentIndex + 1) % items.length;
+      items[nextIndex]?.focus();
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      const prevIndex = (currentIndex - 1 + items.length) % items.length;
+      items[prevIndex]?.focus();
     }
   }
 </script>
@@ -106,18 +133,20 @@
     <div
       id="language-menu"
       bind:this={modalRef}
-      class="absolute right-0 top-full z-50 mt-2 w-40 rounded-lg bg-popover p-2 shadow-lg"
+      class="absolute right-0 top-full z-50 mt-2 w-40 rounded-lg border border-border bg-popover p-1.5 shadow-lg"
       role="menu"
       aria-labelledby="language-menu-button"
+      tabindex="-1"
+      onkeydown={handleMenuKeyDown}
     >
       <div class="grid gap-1 max-h-[300px] overflow-y-auto thin-scrollbar">
         {#each availableLanguageTags as lang (lang)}
           <a
             href={localizeUrl(page.url.pathname + page.url.search, { locale: lang }).href}
-            class="inline-flex h-8 w-full items-center justify-start px-2 rounded-md text-sm transition-colors {lang ===
+            class="inline-flex h-8 w-full items-center justify-start px-2 rounded-md text-sm outline-none transition-colors {lang ===
             currentLang
               ? 'bg-primary text-primary-foreground'
-              : 'hover:bg-accent hover:text-accent-foreground'}"
+              : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'}"
             data-sveltekit-reload
             onclick={() => closeLanguageModal()}
             aria-current={lang === currentLang ? 'page' : undefined}

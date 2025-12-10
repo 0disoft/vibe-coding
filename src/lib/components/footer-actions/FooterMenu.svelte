@@ -1,0 +1,144 @@
+<script lang="ts">
+  import * as m from '$lib/paraglide/messages.js';
+  import { localizeUrl } from '$lib/paraglide/runtime.js';
+  import { tick } from 'svelte';
+
+  // 메뉴 항목 정의
+  const menuItems = [
+    { key: 'donate', icon: 'i-lucide-heart', href: '/donate' },
+    { key: 'security', icon: 'i-lucide-shield', href: '/security' },
+    { key: 'gdpr', icon: 'i-lucide-globe', href: '/gdpr' },
+    { key: 'sitemap', icon: 'i-lucide-map', href: '/sitemap' },
+    { key: 'accessibility', icon: 'i-lucide-accessibility', href: '/accessibility' },
+    { key: 'bug-bounty', icon: 'i-lucide-bug', href: '/bug-bounty' },
+  ] as const;
+
+  // 메뉴 키 → i18n 메시지 매핑
+  function getMenuLabel(key: string): string {
+    const labels: Record<string, () => string> = {
+      donate: m.footer_donate,
+      security: m.footer_security,
+      gdpr: m.footer_gdpr,
+      sitemap: m.footer_sitemap,
+      accessibility: m.footer_accessibility,
+      'bug-bounty': m.footer_bug_bounty,
+    };
+    return labels[key]?.() ?? key;
+  }
+
+  let showMenu = $state(false);
+  let menuRef = $state<HTMLDivElement | null>(null);
+  let buttonRef = $state<HTMLButtonElement | null>(null);
+
+  function closeMenu(options?: { focusButton?: boolean }) {
+    if (!showMenu) return;
+    showMenu = false;
+    if (options?.focusButton) {
+      buttonRef?.focus();
+    }
+  }
+
+  async function toggleMenu() {
+    if (showMenu) {
+      closeMenu({ focusButton: true });
+    } else {
+      showMenu = true;
+      // DOM 업데이트 후 첫 번째 메뉴 항목에 포커스
+      await tick();
+      const firstItem = menuRef?.querySelector('[role="menuitem"]') as HTMLElement;
+      firstItem?.focus();
+    }
+  }
+
+  function handleOutsideClick(event: MouseEvent) {
+    if (
+      showMenu &&
+      menuRef &&
+      !menuRef.contains(event.target as Node) &&
+      buttonRef &&
+      !buttonRef.contains(event.target as Node)
+    ) {
+      closeMenu();
+    }
+  }
+
+  function handleKeyDown(event: KeyboardEvent) {
+    if (showMenu && event.key === 'Escape') {
+      event.stopPropagation();
+      closeMenu({ focusButton: true });
+    }
+  }
+
+  // 포커스가 메뉴 밖으로 나가면 닫기
+  function handleFocusOut(event: FocusEvent) {
+    const newFocusTarget = event.relatedTarget as Node | null;
+    if (menuRef?.contains(newFocusTarget) || buttonRef?.contains(newFocusTarget)) {
+      return;
+    }
+    closeMenu();
+  }
+
+  // 메뉴 내부 화살표 키 탐색 (접근성)
+  function handleMenuKeyDown(event: KeyboardEvent) {
+    if (!menuRef) return;
+    const items = Array.from(menuRef.querySelectorAll('[role="menuitem"]')) as HTMLElement[];
+    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      const nextIndex = (currentIndex + 1) % items.length;
+      items[nextIndex]?.focus();
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      const prevIndex = (currentIndex - 1 + items.length) % items.length;
+      items[prevIndex]?.focus();
+    }
+  }
+</script>
+
+<svelte:window onclick={handleOutsideClick} onkeydown={handleKeyDown} />
+
+<div class="relative">
+  <button
+    type="button"
+    id="footer-menu-button"
+    bind:this={buttonRef}
+    onclick={toggleMenu}
+    class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+    aria-label={m.footer_more_menu()}
+    aria-haspopup="menu"
+    aria-expanded={showMenu}
+    aria-controls="footer-menu"
+    data-testid="footer-more-menu"
+  >
+    <span class="i-lucide-ellipsis h-4 w-4"></span>
+  </button>
+
+  <!-- 더보기 메뉴 (위쪽으로 열림) -->
+  {#if showMenu}
+    <div
+      id="footer-menu"
+      bind:this={menuRef}
+      class="absolute right-0 bottom-full z-50 mb-2 w-48 rounded-lg border border-border bg-popover p-1.5 shadow-lg"
+      role="menu"
+      aria-labelledby="footer-menu-button"
+      tabindex="-1"
+      onfocusout={handleFocusOut}
+      onkeydown={handleMenuKeyDown}
+    >
+      <div class="grid gap-1">
+        {#each menuItems as item (item.key)}
+          <a
+            href={localizeUrl(item.href).href}
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm text-popover-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+            onclick={() => closeMenu()}
+            role="menuitem"
+          >
+            <span class="{item.icon} h-4 w-4 shrink-0"></span>
+            <span>{getMenuLabel(item.key)}</span>
+          </a>
+        {/each}
+      </div>
+    </div>
+  {/if}
+</div>
