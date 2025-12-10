@@ -10,6 +10,7 @@
 | [central-auth-backend-design.md](./central-auth-backend-design.md) | 중앙 인증 백엔드 기능 축별 평가 및 로드맵 |
 | [tech-stack-reference.md](./tech-stack-reference.md) | 인디해커를 위한 기술 스택 카탈로그 |
 | [mcp-servers-reference.md](./mcp-servers-reference.md) | API 키 불필요 MCP 서버 추천 및 설정 가이드 |
+| [modern-cryptography-guide.md](./modern-cryptography-guide.md) | 현대 암호화 기법 가이드 (Argon2id, XChaCha20, BLAKE3 등) |
 
 ## 작성 가이드
 

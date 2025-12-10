@@ -1,0 +1,159 @@
+제공해주신 문서는 **인디해커의 현실적인 제약**과 **100개 사이트 확장성** 사이에서 균형을 아주 잘 잡은 훌륭한 설계안입니다. 특히 '벤더 단일화'와 'D1 활용'은 유지보수 비용을 획기적으로 낮추는 핵심입니다.
+
+다만, **Better-Auth 라이브러리의 실제 작동 방식**과 **100개 사이트 간의 물리적 쿠키 공유 문제**에서 기술적으로 보완해야 할 치명적인 디테일이 몇 가지 있습니다.
+
+실제 구현 단계에서 막히지 않도록 수정한 보완 사항을 정리해 드립니다.
+
+-----
+
+### 1\. Better-Auth 스키마 강제성 고려 (치명적)
+
+Better-Auth는 작동을 위해 **고정된 코어 테이블 스키마**(`user`, `session`, `account`, `verification`)를 요구합니다. 문서에 작성된 스키마는 비즈니스 로직용이므로, Better-Auth의 필수 테이블과 **병합하거나 연결**해야 합니다.
+
+**수정 제안:**
+`users`와 `sessions` 테이블을 Better-Auth 표준 스키마로 대체하고, 비즈니스 로직은 별도 테이블로 분리하여 `user_id`로 연결하는 것이 구현상 충돌이 없습니다.
+
+```sql
+-- [Better-Auth 필수 코어]
+CREATE TABLE user (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  emailVerified BOOLEAN NOT NULL,
+  image TEXT,
+  createdAt INTEGER NOT NULL,
+  updatedAt INTEGER NOT NULL
+);
+
+CREATE TABLE session (
+  id TEXT PRIMARY KEY,
+  userId TEXT NOT NULL,
+  token TEXT NOT NULL,
+  expiresAt INTEGER NOT NULL,
+  ipAddress TEXT,
+  userAgent TEXT,
+  FOREIGN KEY (userId) REFERENCES user(id)
+);
+
+CREATE TABLE account (
+  id TEXT PRIMARY KEY,
+  userId TEXT NOT NULL,
+  accountId TEXT NOT NULL,
+  providerId TEXT NOT NULL,
+  accessToken TEXT,
+  refreshToken TEXT,
+  expiresAt INTEGER,
+  password TEXT, -- 이메일 로그인 시 필요
+  FOREIGN KEY (userId) REFERENCES user(id)
+);
+
+CREATE TABLE verification (
+  id TEXT PRIMARY KEY,
+  identifier TEXT NOT NULL,
+  value TEXT NOT NULL,
+  expiresAt INTEGER NOT NULL
+);
+
+-- [우리의 커스텀 비즈니스 로직]
+-- 기존 'site_memberships' 유지
+CREATE TABLE site_memberships (
+  site_id TEXT NOT NULL,
+  user_id TEXT NOT NULL, -- user.id 참조
+  role TEXT NOT NULL DEFAULT 'member',
+  plan_id TEXT,
+  -- ... (나머지 동일)
+  PRIMARY KEY (site_id, user_id),
+  FOREIGN KEY (user_id) REFERENCES user(id)
+);
+```
+
+### 2\. 'Stateless JWT' 검증의 구체적 구현
+
+문서의 핵심은 "중앙 DB 부하를 줄이기 위해 각 사이트(SvelteKit)에서 자체적으로 검증한다"입니다. 이를 위해선 **서명 검증 키(Secret)** 공유 방식이 명시되어야 합니다.
+
+**보완할 점:**
+각 SvelteKit 사이트가 매번 중앙 Auth 서버에 "이 토큰 맞아요?"라고 물어보면(Fetch), 중앙 서버가 병목이 됩니다.
+\-\> \*\*"SvelteKit 서버 환경변수에 중앙 서버와 동일한 `BETTER_AUTH_SECRET`을 심어두고, 로컬에서 연산으로 검증한다"\*\*는 내용이 `hooks.server.ts` 설명에 추가되어야 합니다.
+
+### 3\. Audit Log 데이터 폭증 방지 (TTL 전략)
+
+100개 사이트의 모든 로그인/이동 기록을 `audit_logs`에 쌓으면 D1 용량(10GB)은 순식간에 찹니다.
+
+**추가할 점:**
+테이블 생성 시 Cloudflare D1의 기능이나 Worker Cron을 이용한 **데이터 만료(TTL) 전략**을 명시해야 합니다.
+
+```sql
+-- audit_logs 테이블에 expires_at 추가 권장
+CREATE TABLE audit_logs (
+  -- ... 기존 컬럼
+  created_at INTEGER NOT NULL,
+  expires_at INTEGER -- 생성일 + 1년 등으로 설정
+);
+```
+
+> **운영 팁:** 매일 밤 도는 Worker Cron을 하나 만들어 `DELETE FROM audit_logs WHERE expires_at < ?` 쿼리를 실행해 용량을 관리합니다.
+
+### 4\. 크로스 도메인 쿠키 문제 해결 (가장 중요)
+
+문서의 `login` 액션 예시는 `fetch`로 토큰을 받아와서 `cookies.set`을 합니다. 이 로직은 아주 훌륭하지만, **중앙 Auth 서버(https://www.google.com/url?sa=E\&source=gmail\&q=auth.network.com)와 개별 사이트(site-a.com)의 도메인이 다를 때**를 명확히 해야 합니다.
+
+  - **현재 로직:** 유저가 `site-a.com`에서 로그인 폼 입력 -\> `site-a.com` 서버가 `auth.network.com` API 호출 -\> 토큰 수신 -\> `site-a.com` 쿠키에 저장.
+  - **검토 의견:** 이 방식은 \*\*"사이트별 격리된 로그인"\*\*에는 완벽합니다. 하지만 \*\*"SSO(한 번 로그인으로 site-b.com도 로그인)"\*\*를 구현하려면 이 방식만으로는 부족합니다.
+  - **수정 제안:** 문서의 목표가 "사이트 간 이동 경로 추적" 및 "SSO"라면, **중앙 도메인에서 쿠키를 굽는 과정**이나 **토큰을 쿼리 파라미터로 넘겨주는 핸드셰이크 로직**이 필요합니다.
+      - *단순화를 위해:* 1단계에서는 현재 문서대로 "사이트별 개별 로그인(DB만 공유)"로 가고, 2단계 SSO는 복잡하니 나중에 도입한다고 명시하는 것이 현실적입니다.
+
+### 5\. 인프라 비용과 'Turso' 탈출 시나리오 수정
+
+D1은 읽기 비용이 있습니다. 100개 사이트 트래픽이 몰리면 읽기 비용이 의외로 나올 수 있습니다.
+'탈출 시나리오'에 **캐싱 전략**을 좀 더 강조해주세요.
+
+**추가 문구:**
+
+> "D1 읽기 비용 절감을 위해, `site_memberships`나 `sites` 같은 변하지 않는 정보는 **사이트별 인메모리(SvelteKit 서버 변수)나 Cloudflare KV에 60초\~1시간 정도 적극적으로 캐싱**한다."
+
+-----
+
+### 검토 완료된 문서 수정안 (주요 변경 부분)
+
+아래 내용을 기존 문서의 해당 섹션에 덮어쓰거나 주석으로 추가하면 완벽해집니다.
+
+#### 수정 1: [핵심 원칙] 섹션 하단 추가
+
+> 💡 **검증 전략**: 모든 사이트가 중앙 DB를 찌르면 병목이 온다. 각 SvelteKit 사이트는 `BETTER_AUTH_SECRET`을 공유받아, DB 조회 없이 **로컬에서 CPU 연산만으로 JWT 위변조를 검증**하여 인증 부하를 0으로 만든다.
+
+#### 수정 2: [SvelteKit 사이트 연동] 섹션 코드 보완
+
+```ts
+// src/hooks.server.ts
+import { verifyJwt } from '$lib/auth/jwt'; // jose 또는 jsonwebtoken 사용
+import { BETTER_AUTH_SECRET } from '$env/static/private';
+
+export const handle: Handle = async ({ event, resolve }) => {
+  const token = event.cookies.get('auth_token');
+
+  if (token) {
+    try {
+      // 핵심: DB 호출 없이 Secret 키로 로컬 검증 (Stateless)
+      const payload = await verifyJwt(token, BETTER_AUTH_SECRET);
+      
+      event.locals.user = {
+        id: payload.sub, // Better-Auth 표준 user.id
+        siteId: payload.siteId, // 커스텀 클레임
+        roles: payload.roles
+      };
+    } catch (e) {
+      // 토큰 만료 또는 위변조 시 쿠키 삭제
+      event.cookies.delete('auth_token', { path: '/' });
+      event.locals.user = null;
+    }
+  }
+  return resolve(event);
+};
+```
+
+#### 수정 3: [놓치기 쉬운 운영 디테일] -\> 5. 로그 관리 추가
+
+> **5. 로그 데이터 다이어트 (TTL)**
+> `audit_logs`는 1년 뒤 자동 삭제되도록 `expires_at` 컬럼을 두고, 별도의 Cron Worker가 주기적으로 청소하게 한다. 데이터가 10GB를 넘어서면 비즈니스 로직이 멈출 수 있음을 명심하자.
+
+-----
