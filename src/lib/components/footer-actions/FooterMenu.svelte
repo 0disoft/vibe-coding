@@ -130,7 +130,7 @@
         {#each menuItems as item (item.key)}
           <a
             href={localizeUrl(item.href).href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm text-popover-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu-sm text-popover-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
             onclick={() => closeMenu()}
             role="menuitem"
           >

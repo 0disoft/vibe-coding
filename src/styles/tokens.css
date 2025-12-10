@@ -32,6 +32,11 @@
 	/* UnoCSS text-xs 오버라이드 (기본 0.75rem → 0.65rem) */
 	--text-xs-fontSize: 0.65rem;
 
+	/* 메뉴 폰트 크기 (3단계) */
+	--fs-menu-lg: 0.95rem;
+	--fs-menu: 0.85rem;
+	--fs-menu-sm: 0.75rem;
+
 	/* Font stacks */
 	/* 기본(라틴 문자 기반) - 현재 테스트: Manrope */
 	--font-sans:

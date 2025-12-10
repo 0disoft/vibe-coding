@@ -196,6 +196,28 @@ const typographyRules: Rule<object>[] = [
 			'font-size': 'var(--fs-caption)',
 			'line-height': '1.4'
 		}
+	],
+	// 메뉴 폰트 크기 (3단계)
+	[
+		'text-menu-lg',
+		{
+			'font-size': 'var(--fs-menu-lg)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-menu',
+		{
+			'font-size': 'var(--fs-menu)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-menu-sm',
+		{
+			'font-size': 'var(--fs-menu-sm)',
+			'line-height': '1.4'
+		}
 	]
 ];
 
