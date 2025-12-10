@@ -54,16 +54,17 @@
 	--fs-scale: 1;
 
 	/* 뷰포트 높이 기반 동적 스케일링 (1080px 기준 정규화) */
-	/* sqrt() 함수로 극단값 완화, clamp()로 0.65~1.8 범위 제한 */
-	--vh-factor: clamp(0.65, sqrt(100dvh / 1080px), 1.8);
+	/* sqrt() 함수로 극단값 완화, clamp()로 0.55~1.9 범위 제한 */
+	--vh-factor: clamp(0.55, sqrt(100dvh / 1080px), 1.9);
 
-	font-size: calc(22px * var(--fs-scale) * var(--vh-factor));
+	font-size: calc(21px * var(--fs-scale) * var(--vh-factor));
 
 	/* Base font sizes */
 	--fs-body-base: 1.35rem;
 	--fs-body-secondary-base: 1.2rem;
 	--fs-comment-base: 1.25rem;
 	--fs-code-base: 0.75rem;
+	--fs-xs-base: 0.65rem;
 	--fs-h1-base: 2.2rem;
 	--fs-h2-base: 1.8rem;
 	--fs-h3-base: 1.5rem;
@@ -74,6 +75,7 @@
 	--fs-body-secondary: var(--fs-body-secondary-base);
 	--fs-comment: var(--fs-comment-base);
 	--fs-code: var(--fs-code-base);
+	--fs-xs: var(--fs-xs-base);
 	--fs-h1: var(--fs-h1-base);
 	--fs-h2: var(--fs-h2-base);
 	--fs-h3: var(--fs-h3-base);

@@ -23,11 +23,39 @@
   let mobileMenuButtonRef = $state<HTMLButtonElement | null>(null);
 
   // 네비게이션 항목 배열화 (유지보수 용이)
+  // 필요한 항목만 주석 해제하여 사용. 새 프로젝트 시작 시 필요한 것만 활성화.
   const navItems = [
-    { href: '/docs', label: () => m.nav_docs() },
-    { href: '/pricing', label: () => m.nav_pricing() },
-    { href: '/portfolio', label: () => m.nav_portfolio() },
-    { href: '/dashboard', label: () => m.nav_dashboard() },
+    // ─── 소개 (About) ────────────────────────────────────────
+    // { href: '/about', label: () => m.nav_about() },
+    // { href: '/team', label: () => m.nav_team() },
+    // { href: '/careers', label: () => m.nav_careers() },
+    // ─── 제품/서비스 (Products & Services) ───────────────────
+    { href: '/products', label: () => m.nav_products() },
+    // { href: '/services', label: () => m.nav_services() },
+    // { href: '/enterprise', label: () => m.nav_enterprise() },
+    // { href: '/compare', label: () => m.nav_compare() },
+    // { href: '/demo', label: () => m.nav_demo() },
+    // { href: '/download', label: () => m.nav_download() },
+    // ─── 비즈니스 (Business) ─────────────────────────────────
+    // { href: '/pricing', label: () => m.nav_pricing() },
+    // { href: '/booking', label: () => m.nav_booking() },
+    // { href: '/seller', label: () => m.nav_seller() },
+    // { href: '/membership', label: () => m.nav_membership() },
+    // ─── 콘텐츠 (Content) ────────────────────────────────────
+    // { href: '/docs', label: () => m.nav_docs() },
+    // { href: '/blog', label: () => m.nav_blog() },
+    // { href: '/portfolio', label: () => m.nav_portfolio() },
+    { href: '/gallery', label: () => m.nav_gallery() },
+    // { href: '/resources', label: () => m.nav_resources() },
+    // { href: '/research', label: () => m.nav_research() },
+    // ─── 뉴스/이벤트 (News & Events) ─────────────────────────
+    { href: '/news', label: () => m.nav_news() },
+    // { href: '/events', label: () => m.nav_events() },
+    { href: '/changelog', label: () => m.nav_changelog() },
+    // ─── 커뮤니티 (Community) ────────────────────────────────
+    { href: '/community', label: () => m.nav_community() },
+    // ─── 사용자 영역 (User) ──────────────────────────────────
+    // { href: '/dashboard', label: () => m.nav_dashboard() },
   ];
 
   // 현재 경로와 일치하는지 확인

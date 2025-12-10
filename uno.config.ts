@@ -218,6 +218,13 @@ const typographyRules: Rule<object>[] = [
 			'font-size': 'var(--fs-menu-sm)',
 			'line-height': '1.4'
 		}
+	],
+	[
+		'text-xs-resp',
+		{
+			'font-size': 'var(--fs-xs)',
+			'line-height': '1.4'
+		}
 	]
 ];
 

@@ -13,12 +13,12 @@
 
 <footer class="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
   <div class="mx-auto flex h-12 max-w-5xl items-center justify-between gap-2 px-4 sm:gap-4 md:px-6">
-    <small class="text-xs text-muted-foreground">
+    <small class="text-xs-resp text-muted-foreground">
       &copy; {currentYear}
       {siteName}. {m.footer_rights()}
     </small>
     <div class="flex items-center gap-4">
-      <nav aria-label="Footer navigation" class="flex gap-4 text-xs text-muted-foreground">
+      <nav aria-label="Footer navigation" class="flex gap-4 text-xs-resp text-muted-foreground">
         <a
           href={localizeUrl('/terms').href}
           class="transition-colors hover:text-foreground hover:underline underline-offset-2"

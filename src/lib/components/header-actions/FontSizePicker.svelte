@@ -108,7 +108,7 @@
       tabindex="-1"
       onkeydown={handleMenuKeyDown}
     >
-      <div class="mb-2 px-2 text-xs font-medium text-muted-foreground">
+      <div class="mb-2 px-2 text-menu-sm font-medium text-muted-foreground">
         {m.font_size_current({ value: fontSize.current })}
       </div>
       <div class="grid grid-cols-3 gap-1">
@@ -116,7 +116,7 @@
           <button
             type="button"
             onclick={() => selectFontSize(level)}
-            class="inline-flex h-8 w-full items-center justify-center rounded-md text-sm outline-none transition-colors {fontSize.current ===
+            class="inline-flex h-8 w-full items-center justify-center rounded-md text-menu-sm outline-none transition-colors {fontSize.current ===
             level
               ? 'bg-primary text-primary-foreground'
               : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'}"
