@@ -97,20 +97,28 @@ export function createPersistedState<T extends string | number>(
 
 		// 1) SSR이 심어둔 data-* 우선
 		const attr = document.documentElement.getAttribute(attrKey);
-		const parsedAttr = typeof initial === 'number' && attr !== null ? Number(attr) : attr;
-		if (isValid(parsedAttr)) {
-			current = parsedAttr as T;
-			return;
+		if (attr !== null && attr !== '') {
+			const parsedAttr = typeof initial === 'number' ? Number(attr) : attr;
+			// NaN 체크: Number("")=0, Number("abc")=NaN 방지
+			if (typeof initial !== 'number' || !Number.isNaN(parsedAttr)) {
+				if (isValid(parsedAttr)) {
+					current = parsedAttr as T;
+					return;
+				}
+			}
 		}
 
 		// 2) 쿠키 fallback
 		const cookieValue = getCookie(key);
-		if (cookieValue !== null) {
+		if (cookieValue !== null && cookieValue !== '') {
 			const parsed = typeof initial === 'number' ? Number(cookieValue) : cookieValue;
-			if (isValid(parsed)) {
-				current = parsed as T;
-				updateDom(current); // DOM에 값이 없었으면 동기화
-				return;
+			// NaN 체크
+			if (typeof initial !== 'number' || !Number.isNaN(parsed)) {
+				if (isValid(parsed)) {
+					current = parsed as T;
+					updateDom(current); // DOM에 값이 없었으면 동기화
+					return;
+				}
 			}
 		}
 
