@@ -103,7 +103,10 @@ Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강
     },
     "context7": {
       "command": "bunx",
-      "args": ["@upstash/context7-mcp"]
+      "args": ["@upstash/context7-mcp"],
+      "env": {
+        "CONTEXT7_API_KEY": ""
+      }
     },
     "chrome-devtools": {
       "command": "bunx",
