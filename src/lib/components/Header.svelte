@@ -85,23 +85,37 @@
     }
   }
 
-  // 모바일 메뉴 화살표 키 탐색
+  // 모바일 메뉴 키보드 탐색
   function handleMobileMenuKeyDown(event: KeyboardEvent) {
     if (!mobileMenuRef) return;
-    const items = Array.from(mobileMenuRef.querySelectorAll('a')) as HTMLElement[];
-    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
 
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      const nextIndex = (currentIndex + 1) % items.length;
-      items[nextIndex]?.focus();
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      const prevIndex = (currentIndex - 1 + items.length) % items.length;
-      items[prevIndex]?.focus();
-    } else if (event.key === 'Escape') {
-      event.preventDefault();
-      closeMobileMenu({ focusButton: true });
+    const items = Array.from(mobileMenuRef.querySelectorAll<HTMLElement>('a'));
+    if (items.length === 0) return; // 빈 배열 가드
+
+    const active = document.activeElement;
+    const currentIndex = active ? items.indexOf(active as HTMLElement) : -1;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        items[(currentIndex + 1) % items.length]?.focus();
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        items[(currentIndex - 1 + items.length) % items.length]?.focus();
+        break;
+      case 'Home':
+        event.preventDefault();
+        items[0]?.focus();
+        break;
+      case 'End':
+        event.preventDefault();
+        items[items.length - 1]?.focus();
+        break;
+      case 'Escape':
+        event.preventDefault();
+        closeMobileMenu({ focusButton: true });
+        break;
     }
   }
 </script>

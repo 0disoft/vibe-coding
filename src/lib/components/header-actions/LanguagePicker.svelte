@@ -76,13 +76,7 @@
     const target = event.target;
     if (!(target instanceof Node)) return; // 타입 가드
 
-    if (
-      showLanguageModal &&
-      modalRef &&
-      !modalRef.contains(target) &&
-      buttonRef &&
-      !buttonRef.contains(target)
-    ) {
+    if (showLanguageModal && modalRef && !modalRef.contains(target) && buttonRef && !buttonRef.contains(target)) {
       closeLanguageModal();
     }
   }
@@ -99,9 +93,7 @@
   function handleMenuKeyDown(event: KeyboardEvent) {
     if (!modalRef) return;
 
-    const items = Array.from(
-      modalRef.querySelectorAll<HTMLElement>('[role="menuitem"]')
-    );
+    const items = Array.from(modalRef.querySelectorAll<HTMLElement>('[role="menuitem"]'));
     if (items.length === 0) return; // 빈 배열 가드
 
     const active = document.activeElement;
@@ -178,27 +170,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .thin-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: oklch(var(--muted-foreground) / 0.3) transparent;
-  }
-
-  .thin-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .thin-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .thin-scrollbar::-webkit-scrollbar-thumb {
-    background: oklch(var(--muted-foreground) / 0.3);
-    border-radius: 2px;
-  }
-
-  .thin-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: oklch(var(--muted-foreground) / 0.5);
-  }
-</style>

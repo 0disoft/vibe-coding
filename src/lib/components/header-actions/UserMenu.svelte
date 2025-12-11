@@ -239,27 +239,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .thin-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: oklch(var(--muted-foreground) / 0.3) transparent;
-  }
-
-  .thin-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .thin-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .thin-scrollbar::-webkit-scrollbar-thumb {
-    background: oklch(var(--muted-foreground) / 0.3);
-    border-radius: 2px;
-  }
-
-  .thin-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: oklch(var(--muted-foreground) / 0.5);
-  }
-</style>
