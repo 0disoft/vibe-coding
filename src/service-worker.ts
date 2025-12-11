@@ -110,11 +110,11 @@ async function getOfflineFallback(): Promise<Response> {
 	// 최후의 안전망: 캐시된 오프라인 페이지가 없을 경우
 	return new Response(
 		`<!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>오프라인</title>
+	<title>Offline</title>
 	<style>
 		body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #1a1a2e; color: #eee; }
 		.container { text-align: center; padding: 2rem; }
@@ -124,8 +124,8 @@ async function getOfflineFallback(): Promise<Response> {
 </head>
 <body>
 	<div class="container">
-		<h1>오프라인 상태입니다</h1>
-		<p>인터넷 연결을 확인한 뒤 다시 시도해 주세요.</p>
+		<h1>You are offline</h1>
+		<p>Please check your internet connection and try again.</p>
 	</div>
 </body>
 </html>`,
