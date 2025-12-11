@@ -18,7 +18,7 @@
       {siteName}. {m.footer_rights()}
     </small>
     <div class="flex items-center gap-4">
-      <nav aria-label="Footer navigation" class="hidden gap-4 text-xs-resp text-muted-foreground sm:flex">
+      <nav aria-label={m.footer_nav_label()} class="hidden gap-4 text-xs-resp text-muted-foreground sm:flex">
         <a
           href={localizeUrl('/terms').href}
           class="transition-colors hover:text-foreground hover:underline underline-offset-2"

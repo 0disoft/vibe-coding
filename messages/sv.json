@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR & Integritet",
 	"footer_sitemap": "Webbplatskarta",
 	"footer_accessibility": "Tillgänglighet",
-	"footer_bug_bounty": "Bug Bounty"
+	"footer_bug_bounty": "Bug Bounty",
+	"header_home_label": "Gå till {siteName} hemsida",
+	"header_main_nav_label": "Huvudnavigering",
+	"header_mobile_nav_label": "Mobilnavigering",
+	"header_menu_open": "Öppna meny",
+	"header_menu_close": "Stäng meny",
+	"theme_toggle_label": "Ändra tema",
+	"language_picker_label": "Ändra språk",
+	"footer_nav_label": "Sidfotsnavigering"
 }

@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR & Hak Privasi",
 	"footer_sitemap": "Peta Situs",
 	"footer_accessibility": "Aksesibilitas",
-	"footer_bug_bounty": "Bug Bounty"
+	"footer_bug_bounty": "Bug Bounty",
+	"header_home_label": "Buka beranda {siteName}",
+	"header_main_nav_label": "Navigasi utama",
+	"header_mobile_nav_label": "Navigasi seluler",
+	"header_menu_open": "Buka menu",
+	"header_menu_close": "Tutup menu",
+	"theme_toggle_label": "Ubah tema",
+	"language_picker_label": "Ubah bahasa",
+	"footer_nav_label": "Navigasi footer"
 }

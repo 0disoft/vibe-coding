@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR 与隐私权",
 	"footer_sitemap": "网站地图",
 	"footer_accessibility": "无障碍访问",
-	"footer_bug_bounty": "漏洞赏金 (Bug Bounty)"
+	"footer_bug_bounty": "漏洞赏金 (Bug Bounty)",
+	"header_home_label": "前往 {siteName} 主页",
+	"header_main_nav_label": "主导航",
+	"header_mobile_nav_label": "移动导航",
+	"header_menu_open": "打开菜单",
+	"header_menu_close": "关闭菜单",
+	"theme_toggle_label": "切换主题",
+	"language_picker_label": "更改语言",
+	"footer_nav_label": "底部导航"
 }

@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR & Quyền riêng tư",
 	"footer_sitemap": "Sơ đồ trang web",
 	"footer_accessibility": "Khả năng truy cập",
-	"footer_bug_bounty": "Bug Bounty"
+	"footer_bug_bounty": "Bug Bounty",
+	"header_home_label": "Đi đến trang chủ {siteName}",
+	"header_main_nav_label": "Điều hướng chính",
+	"header_mobile_nav_label": "Điều hướng di động",
+	"header_menu_open": "Mở menu",
+	"header_menu_close": "Đóng menu",
+	"theme_toggle_label": "Thay đổi giao diện",
+	"language_picker_label": "Thay đổi ngôn ngữ",
+	"footer_nav_label": "Điều hướng chân trang"
 }

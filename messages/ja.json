@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPRとプライバシー",
 	"footer_sitemap": "サイトマップ",
 	"footer_accessibility": "アクセシビリティ",
-	"footer_bug_bounty": "バグバウンティ"
+	"footer_bug_bounty": "バグバウンティ",
+	"header_home_label": "{siteName} ホームページへ移動",
+	"header_main_nav_label": "メインナビゲーション",
+	"header_mobile_nav_label": "モバイルナビゲーション",
+	"header_menu_open": "メニューを開く",
+	"header_menu_close": "メニューを閉じる",
+	"theme_toggle_label": "テーマ変更",
+	"language_picker_label": "言語変更",
+	"footer_nav_label": "フッターナビゲーション"
 }

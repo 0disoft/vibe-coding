@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR at Pribadong Karapatan",
 	"footer_sitemap": "Sitemap",
 	"footer_accessibility": "Accessibility",
-	"footer_bug_bounty": "Bug Bounty"
+	"footer_bug_bounty": "Bug Bounty",
+	"header_home_label": "Pumunta sa homepage ng {siteName}",
+	"header_main_nav_label": "Pangunahing nabigasyon",
+	"header_mobile_nav_label": "Nabigasyon sa mobile",
+	"header_menu_open": "Buksan ang menu",
+	"header_menu_close": "Isara ang menu",
+	"theme_toggle_label": "Baguhin ang tema",
+	"language_picker_label": "Baguhin ang wika",
+	"footer_nav_label": "Nabigasyon sa footer"
 }

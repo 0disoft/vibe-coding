@@ -203,5 +203,13 @@
 	"footer_gdpr": "RGPD & Confidentialité",
 	"footer_sitemap": "Plan du site",
 	"footer_accessibility": "Accessibilité",
-	"footer_bug_bounty": "Bug Bounty"
+	"footer_bug_bounty": "Bug Bounty",
+	"header_home_label": "Aller à la page d'accueil de {siteName}",
+	"header_main_nav_label": "Navigation principale",
+	"header_mobile_nav_label": "Navigation mobile",
+	"header_menu_open": "Ouvrir le menu",
+	"header_menu_close": "Fermer le menu",
+	"theme_toggle_label": "Changer de thème",
+	"language_picker_label": "Changer de langue",
+	"footer_nav_label": "Navigation de pied de page"
 }

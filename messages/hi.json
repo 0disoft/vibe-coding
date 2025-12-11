@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR और गोपनीयता अधिकार",
 	"footer_sitemap": "साइटमैप",
 	"footer_accessibility": "पहुँच-योग्यता (Accessibility)",
-	"footer_bug_bounty": "बग बाउंटी"
+	"footer_bug_bounty": "बग बाउंटी",
+	"header_home_label": "{siteName} होमपेज पर जाएं",
+	"header_main_nav_label": "मुख्य नेविगेशन",
+	"header_mobile_nav_label": "मोबाइल नेविगेशन",
+	"header_menu_open": "मेनू खोलें",
+	"header_menu_close": "मेनू बंद करें",
+	"theme_toggle_label": "थीम बदलें",
+	"language_picker_label": "भाषा बदलें",
+	"footer_nav_label": "फुटर नेविगेशन"
 }

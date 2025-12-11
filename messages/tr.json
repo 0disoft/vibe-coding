@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR & Gizlilik",
 	"footer_sitemap": "Site Haritası",
 	"footer_accessibility": "Erişilebilirlik",
-	"footer_bug_bounty": "Bug Bounty"
+	"footer_bug_bounty": "Bug Bounty",
+	"header_home_label": "{siteName} ana sayfasına git",
+	"header_main_nav_label": "Ana gezinti",
+	"header_mobile_nav_label": "Mobil gezinti",
+	"header_menu_open": "Menüyü aç",
+	"header_menu_close": "Menüyü kapat",
+	"theme_toggle_label": "Temayı değiştir",
+	"language_picker_label": "Dili değiştir",
+	"footer_nav_label": "Alt bilgi gezintisi"
 }

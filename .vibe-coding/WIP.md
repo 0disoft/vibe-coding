@@ -1,16 +1,16 @@
-# Work In Progress (WIP)
+# Work In Progress
 
-이 파일은 현재 진행 중인 작업의 **세부 실행 계획(Sub-task Breakdown)**을 임시로 저장하는 공간입니다.
-복잡한 작업을 수행하기 전, 에이전트는 이곳에 단계별 계획을 작성하고 사용자의 승인을 받아야 합니다.
+## Aria Label Internationalization
 
-## [작업 ID] 작업명
+### 1. Define Messages
+- [x] Add keys to `messages/en.json`
+- [x] Add keys to `messages/ko.json`
 
-(작성 예시)
+### 2. Update Components
+- [x] `src/lib/components/Header.svelte`
+- [x] `src/lib/components/header-actions/ThemeToggle.svelte`
+- [x] `src/lib/components/header-actions/LanguagePicker.svelte`
+- [x] `src/lib/components/Footer.svelte`
 
-- [ ] 세부 단계 1
-- [ ] 세부 단계 2
-- [ ] ...
-
----
-
-> **참고:** 작업이 완료되면 이 파일의 내용은 초기화 하거나 다음 작업을 위해 덮어씌워질 수 있습니다.
+### 3. Remaining Languages
+- [/] Update 18 other language JSON files (can be done later/batch-processed)

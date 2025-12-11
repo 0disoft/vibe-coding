@@ -127,14 +127,14 @@
     <!-- 로고/사이트명 -->
     <a
       href={localizeUrl('/').href}
-      aria-label="Go to {siteName} homepage"
+      aria-label={m.header_home_label({ siteName })}
       class="flex items-center gap-2 text-logo font-semibold text-foreground"
     >
       {siteName}
     </a>
 
     <!-- 데스크톱 네비게이션 -->
-    <nav aria-label="Main navigation" class="hidden items-center gap-8 text-menu-lg md:flex">
+    <nav aria-label={m.header_main_nav_label()} class="hidden items-center gap-8 text-menu-lg md:flex">
       {#if nav}
         {@render nav()}
       {:else}
@@ -162,7 +162,7 @@
         type="button"
         bind:this={mobileMenuButtonRef}
         onclick={toggleMobileMenu}
-        aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+        aria-label={mobileMenuOpen ? m.header_menu_close() : m.header_menu_open()}
         aria-expanded={mobileMenuOpen}
         class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground md:hidden"
       >
@@ -204,7 +204,7 @@
     <button
       type="button"
       onclick={() => closeMobileMenu({ focusButton: true })}
-      aria-label="Close menu"
+      aria-label={m.header_menu_close()}
       class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
     >
       <span class="i-lucide-x h-4 w-4"></span>
@@ -212,7 +212,7 @@
   </div>
 
   <!-- 모바일 네비게이션 링크 -->
-  <nav aria-label="Mobile navigation" class="flex flex-col p-4">
+  <nav aria-label={m.header_mobile_nav_label()} class="flex flex-col p-4">
     <div
       role="menu"
       tabindex="-1"

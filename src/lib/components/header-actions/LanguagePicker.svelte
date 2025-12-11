@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import * as m from '$lib/paraglide/messages.js';
   import { getLocale, locales, localizeUrl } from '$lib/paraglide/runtime';
   import { tick } from 'svelte';
 
@@ -129,7 +130,7 @@
     bind:this={buttonRef}
     onclick={toggleLanguageModal}
     class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-    aria-label="언어 변경"
+    aria-label={m.language_picker_label()}
     aria-haspopup="dialog"
     aria-expanded={showLanguageModal}
     aria-controls="language-menu"
@@ -158,7 +159,10 @@
               ? 'bg-primary/70 text-primary-foreground'
               : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'}"
             data-sveltekit-reload
-            onclick={() => closeLanguageModal()}
+            onclick={() => {
+              document.cookie = `PARAGLIDE_LOCALE=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+              closeLanguageModal();
+            }}
             aria-current={lang === currentLang ? 'page' : undefined}
             hreflang={lang}
             role="menuitem"

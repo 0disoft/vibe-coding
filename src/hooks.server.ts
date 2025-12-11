@@ -13,10 +13,10 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
-import type { Handle } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 import { FONT_SIZE_COOKIE, THEME_COOKIE } from '$lib/constants';
 import { paraglideMiddleware } from '$lib/paraglide/server';
+import type { Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 
 // 1. 테마/폰트 크기 처리 핸들러
 // 쿠키를 확인하여 HTML에 data-theme, data-font-size 속성을 주입하는 역할을 합니다.
@@ -54,33 +54,46 @@ const handleParaglide: Handle = ({ event, resolve }) =>
 		});
 	});
 
-// 3. Accept-Language 기반 lang 보정
-// 기본 로케일이 en이라도 한국어 브라우저이면 lang="ko"로 교체하여 Pretendard 적용 범위가 작동하게 함
-const handleLangFallback: Handle = ({ event, resolve }) => {
-	const accept = event.request.headers.get('accept-language') ?? '';
+// 3. 루트 경로 자동 리다이렉트 (언어 감지)
+// Paraglide의 URL 전략이 루트('/')를 기본 언어(en)로 인식하여 preferredLanguage가 무시되는 문제를 해결
+// 쿠키가 없는 첫 방문자에게만 적용됨
+import { baseLocale, extractLocaleFromHeader, isLocale } from '$lib/paraglide/runtime.js';
 
-	// 매우 단순한 파서: q값 고려, ko 우선 매칭
-	const pickKo = (() => {
-		return accept
-			.split(',')
-			.map((part) => part.trim())
-			.some((part) => part.toLowerCase().startsWith('ko'));
-	})();
+const handleRootRedirect: Handle = async ({ event, resolve }) => {
+	// 루트 경로이고, 쿼리 파라미터가 없는 경우에만 수행 (보수적 접근)
+	if (event.url.pathname === '/' && event.url.search === '') {
+		const cookie = event.cookies.get('PARAGLIDE_LOCALE');
 
-	return resolve(event, {
-		transformPageChunk: ({ html }) => {
-			if (pickKo) {
-				// [의도] 한국어 사용자에게는 영어 페이지도 Pretendard(Inter 베이스)로 보여주어
-				// 한글/영어가 섞여도 이질감 없는 디자인 일관성을 유지합니다.
-				// 단, 일본어(ja) 등 확실한 다른 언어 페이지에서는 폰트 충돌을 막기 위해
-				// 오직 기본 언어(en)일 때만 한국어(ko)로 설정을 덮어씁니다.
-				html = html.replace(/lang="en"/, 'lang="ko"');
+		// 1. 쿠키가 있는 경우: 쿠키 값에 따라 리다이렉트 결정
+		if (cookie && isLocale(cookie)) {
+			// 쿠키가 기본 언어(en)가 아니라면 해당 언어 경로로 리다이렉트
+			// 예: 쿠키가 'ko'이면 /ko 로 이동. 쿠키가 'en'이면 그냥 둬서 / (영어)로 진입.
+			if (cookie !== baseLocale) {
+				return new Response(null, {
+					status: 302,
+					headers: { Location: `/${cookie}` }
+				});
 			}
-			return html;
+			// 쿠키가 'en'인 경우 바로 통과시켜서 Paraglide가 / = en 으로 처리하게 함
+			return resolve(event);
 		}
-	});
+
+		// 2. 쿠키가 없는 경우: 브라우저 언어 설정(Accept-Language) 확인
+		const preferredLocale = extractLocaleFromHeader(event.request);
+
+		// 감지된 언어가 있고, 기본 언어와 다르며, 유효한 로케일인 경우 리다이렉트
+		if (preferredLocale && preferredLocale !== baseLocale && isLocale(preferredLocale)) {
+			console.log(`[Root Redirect] Redirecting to /${preferredLocale} based on Accept-Language`);
+			return new Response(null, {
+				status: 302, // 307(임시) 또는 302(Found) 사용. 
+				// 검색엔진은 보통 루트의 302/307을 보고 로컬라이즈된 페이지를 인덱싱함.
+				headers: { Location: `/${preferredLocale}` }
+			});
+		}
+	}
+	return resolve(event);
 };
 
 // 4. 핸들러 병합 및 내보내기
-// 순서: 테마/폰트 → Paraglide(lang 치환) → Accept-Language 기반 lang 보정
-export const handle: Handle = sequence(handleThemeAndFont, handleParaglide, handleLangFallback);
+// 순서: 테마/폰트 → 루트 리다이렉트 → Paraglide
+export const handle: Handle = sequence(handleThemeAndFont, handleRootRedirect, handleParaglide);

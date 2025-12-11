@@ -17,7 +17,7 @@ export default defineConfig({
 			// @ts-expect-error: Paraglide 2.x 옵션 인식 오류 무시
 			experimentalUseVirtualModules: true,
 			// URL 경로에서 locale 감지 활성화 (예: /ko, /en)
-			strategy: ['url', 'cookie', 'baseLocale']
+			strategy: ['url', 'cookie', 'preferredLanguage', 'baseLocale']
 		}),
 		sveltekit()
 	] as any,

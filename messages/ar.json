@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR وحقوق الخصوصية",
 	"footer_sitemap": "خريطة الموقع",
 	"footer_accessibility": "إمكانية الوصول",
-	"footer_bug_bounty": "مكافأة الثغرات (Bug Bounty)"
+	"footer_bug_bounty": "مكافأة الثغرات (Bug Bounty)",
+	"header_home_label": "الذهاب إلى الصفحة الرئيسية لـ {siteName}",
+	"header_main_nav_label": "التنقل الرئيسي",
+	"header_mobile_nav_label": "التنقل عبر الهاتف المحمول",
+	"header_menu_open": "فتح القائمة",
+	"header_menu_close": "إغلاق القائمة",
+	"theme_toggle_label": "تغيير السمة",
+	"language_picker_label": "تغيير اللغة",
+	"footer_nav_label": "تنقل التذييل"
 }

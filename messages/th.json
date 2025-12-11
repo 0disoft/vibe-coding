@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR และสิทธิ์ความเป็นส่วนตัว",
 	"footer_sitemap": "แผนผังเว็บไซต์",
 	"footer_accessibility": "การเข้าถึง (Accessibility)",
-	"footer_bug_bounty": "Bug Bounty"
+	"footer_bug_bounty": "Bug Bounty",
+	"header_home_label": "ไปที่หน้าแรกของ {siteName}",
+	"header_main_nav_label": "การนำทางหลัก",
+	"header_mobile_nav_label": "การนำทางบนมือถือ",
+	"header_menu_open": "เปิดเมนู",
+	"header_menu_close": "ปิดเมนู",
+	"theme_toggle_label": "เปลี่ยนธีม",
+	"language_picker_label": "เปลี่ยนภาษา",
+	"footer_nav_label": "การนำทางส่วนท้าย"
 }

@@ -203,5 +203,13 @@
 	"footer_gdpr": "GDPR и конфиденциальность",
 	"footer_sitemap": "Карта сайта",
 	"footer_accessibility": "Доступность",
-	"footer_bug_bounty": "Bug Bounty"
+	"footer_bug_bounty": "Bug Bounty",
+	"header_home_label": "Перейти на главную страницу {siteName}",
+	"header_main_nav_label": "Главная навигация",
+	"header_mobile_nav_label": "Мобильная навигация",
+	"header_menu_open": "Открыть меню",
+	"header_menu_close": "Закрыть меню",
+	"theme_toggle_label": "Сменить тему",
+	"language_picker_label": "Сменить язык",
+	"footer_nav_label": "Навигация в футере"
 }
