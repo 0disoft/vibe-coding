@@ -479,16 +479,14 @@ body:lang(ru) {
 	:lang(zh-Hans),
 	:lang(zh-TW),
 	:lang(zh-Hant) {
-		font-size: 1.05em;
-		/* CJK 언어 폰트 크기 약간 확대 */
+		/* CJK 언어 줄간격 최적화 */
 		line-height: 1.7;
 	}
 
 	:lang(ar),
 	:lang(hi),
 	:lang(th) {
-		font-size: 1.1em;
-		/* 복잡한 스크립트는 더 크게 */
+		/* 복잡한 스크립트는 줄간격 여유 */
 		line-height: 1.8;
 	}
 }

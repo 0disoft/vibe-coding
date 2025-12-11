@@ -12,6 +12,9 @@ body {
 	/* 폰트 렌더링 최적화 */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	/* 모바일 폰트 부스팅(강제 확대) 방지 */
+	-webkit-text-size-adjust: none;
+	text-size-adjust: none;
 	/* 렌더링 성능 및 가독성 최적화 */
 	text-rendering: optimizeLegibility;
 	/* 가짜 굵기 방지 및 Variable Font 최적화 */
