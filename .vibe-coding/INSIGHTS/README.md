@@ -4,6 +4,8 @@
 
 ## 문서 목록
 
+### 아키텍처 / 인프라
+
 | 파일 | 설명 |
 |------|------|
 | [multi-site-auth-strategy.md](./multi-site-auth-strategy.md) | 100개+ 사이트 운영 시 회원 정보 관리 전략 |
@@ -11,7 +13,14 @@
 | [tech-stack-reference.md](./tech-stack-reference.md) | 인디해커를 위한 기술 스택 카탈로그 |
 | [mcp-servers-reference.md](./mcp-servers-reference.md) | API 키 불필요 MCP 서버 추천 및 설정 가이드 |
 | [modern-cryptography-guide.md](./modern-cryptography-guide.md) | 현대 암호화 기법 가이드 (Argon2id, XChaCha20, BLAKE3 등) |
+
+### 코딩 패턴 / UX
+
+| 파일 | 설명 |
+|------|------|
 | [elegant-typescript-patterns.md](./elegant-typescript-patterns.md) | 우아한 타입스크립트 설계 패턴 모음 |
+| [accessibility-ux-patterns.md](./accessibility-ux-patterns.md) | 접근성(a11y) 및 UX 패턴 가이드 |
+| [mobile-ux-patterns.md](./mobile-ux-patterns.md) | PWA 네이티브 경험 패턴 (제스처, 햅틱, Progressive Enhancement) |
 
 ## 작성 가이드
 
