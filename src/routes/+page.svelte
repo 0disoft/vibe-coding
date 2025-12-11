@@ -12,7 +12,7 @@
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
           <code class="text-xs text-muted-foreground">text-body</code>
-          <span class="text-xs text-primary">1.35rem</span>
+          <span class="text-xs text-primary">1.1rem</span>
           <span class="text-xs text-muted-foreground">· 일반 본문, 기사 내용, 설명 문단</span>
         </div>
         <p class="text-body">다람쥐 헌 쳇바퀴에 타고파 The quick brown fox</p>
@@ -20,7 +20,7 @@
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
           <code class="text-xs text-muted-foreground">text-body-secondary</code>
-          <span class="text-xs text-primary">1.2rem</span>
+          <span class="text-xs text-primary">0.95rem</span>
           <span class="text-xs text-muted-foreground">· 부가 설명, 인용문, 사이드바 텍스트</span>
         </div>
         <p class="text-body-secondary">다람쥐 헌 쳇바퀴에 타고파 The quick brown fox</p>
@@ -28,7 +28,7 @@
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
           <code class="text-xs text-muted-foreground">text-comment</code>
-          <span class="text-xs text-primary">1.25rem</span>
+          <span class="text-xs text-primary">0.95rem</span>
           <span class="text-xs text-muted-foreground">· 댓글, 리뷰, 사용자 피드백</span>
         </div>
         <p class="text-comment">다람쥐 헌 쳇바퀴에 타고파 The quick brown fox</p>
@@ -36,7 +36,7 @@
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
           <code class="text-xs text-muted-foreground">text-code</code>
-          <span class="text-xs text-primary">0.75rem</span>
+          <span class="text-xs text-primary">0.8rem</span>
           <span class="text-xs text-muted-foreground">· 코드 블록, 인라인 코드, 터미널 출력</span>
         </div>
         <p class="text-code font-mono">const hello = "world"; // 코드 전용</p>
@@ -51,7 +51,7 @@
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
           <code class="text-xs text-muted-foreground">text-h1</code>
-          <span class="text-xs text-primary">2.2rem</span>
+          <span class="text-xs text-primary">2.0rem</span>
           <span class="text-xs text-muted-foreground">· 페이지 타이틀, 히어로 섹션 제목</span>
         </div>
         <p class="text-h1 font-bold">대제목 H1 Heading</p>
@@ -59,7 +59,7 @@
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
           <code class="text-xs text-muted-foreground">text-h2</code>
-          <span class="text-xs text-primary">1.8rem</span>
+          <span class="text-xs text-primary">1.7rem</span>
           <span class="text-xs text-muted-foreground">· 섹션 제목, 카드 헤더</span>
         </div>
         <p class="text-h2 font-semibold">중제목 H2 Heading</p>
@@ -67,7 +67,7 @@
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
           <code class="text-xs text-muted-foreground">text-h3</code>
-          <span class="text-xs text-primary">1.5rem</span>
+          <span class="text-xs text-primary">1.4rem</span>
           <span class="text-xs text-muted-foreground">· 서브섹션 제목, 모달 타이틀</span>
         </div>
         <p class="text-h3 font-semibold">소제목 H3 Heading</p>
@@ -75,7 +75,7 @@
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
           <code class="text-xs text-muted-foreground">text-caption</code>
-          <span class="text-xs text-primary">1rem</span>
+          <span class="text-xs text-primary">0.85rem</span>
           <span class="text-xs text-muted-foreground">· 이미지 캡션, 표 주석, 출처 표기</span>
         </div>
         <p class="text-caption text-muted-foreground">캡션 텍스트 Caption Text</p>

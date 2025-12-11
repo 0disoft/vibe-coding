@@ -68,15 +68,15 @@
 	font-size: calc(19.6842px * var(--fs-scale) * var(--vh-factor));
 
 	/* Base font sizes */
-	--fs-body-base: 1.35rem;
-	--fs-body-secondary-base: 1.2rem;
-	--fs-comment-base: 1.25rem;
-	--fs-code-base: 0.75rem;
+	--fs-body-base: 1.1rem;
+	--fs-body-secondary-base: 0.95rem;
+	--fs-comment-base: 0.95rem;
+	--fs-code-base: 0.8rem;
 	--fs-xs-base: 0.65rem;
-	--fs-h1-base: 2.2rem;
-	--fs-h2-base: 1.8rem;
-	--fs-h3-base: 1.5rem;
-	--fs-caption-base: 1rem;
+	--fs-h1-base: 2.0rem;
+	--fs-h2-base: 1.7rem;
+	--fs-h3-base: 1.4rem;
+	--fs-caption-base: 0.85rem;
 
 	/* Computed font tokens */
 	--fs-body: var(--fs-body-base);
@@ -98,7 +98,7 @@
 	--foreground: 35% 0.04 331;
 
 	/* 카드, 팝오버, 포커스 영역 등 */
-	--card: 96% 0.02 102;
+	--card: 97.5% 0.015 102;
 	--code-card: 95% 0.02 102;
 	--code-card-foreground: 35% 0.04 331;
 	--card-foreground: 35% 0.04 331;
@@ -107,7 +107,7 @@
 	--popover-foreground: 35% 0.04 331;
 
 	/* 주요 액션 */
-	--primary: 88% 0.1265 332;
+	--primary: 78% 0.14 332;
 	--primary-foreground: 19% 0.015 332;
 
 	/* 보조 액션 / 서브 버튼 */

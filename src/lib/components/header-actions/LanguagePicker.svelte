@@ -155,7 +155,7 @@
             href={localizeUrl(page.url.pathname + page.url.search, { locale: lang }).href}
             class="inline-flex h-8 w-full items-center justify-start px-2 rounded-md text-menu-sm outline-none transition-colors {lang ===
             currentLang
-              ? 'bg-primary text-primary-foreground'
+              ? 'bg-primary/70 text-primary-foreground'
               : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'}"
             data-sveltekit-reload
             onclick={() => closeLanguageModal()}
