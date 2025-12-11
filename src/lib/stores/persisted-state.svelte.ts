@@ -53,6 +53,20 @@ function setCookie(name: string, value: string | number, days = DEFAULT_COOKIE_D
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 타입 정의
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** 영속 상태 스토어 인터페이스 */
+export interface PersistedState<T> {
+	/** 현재 값 (getter로 반응성 유지) */
+	get current(): T;
+	/** 초기화: SSR data-* → 쿠키 → 기본값 순으로 로드 */
+	init(): void;
+	/** 값 설정 (유효성 검증 후 DOM 및 쿠키 동기화) */
+	set(value: T): void;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 메인 함수
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -63,13 +77,14 @@ function setCookie(name: string, value: string | number, days = DEFAULT_COOKIE_D
  * @param initial 기본값
  * @param allowedValues 허용되는 값 목록. 지정하면 유효성 검증에 사용됨.
  * @param domUpdater DOM 업데이트 커스터마이저 (기본: html data-{key} 속성 설정)
+ * @returns PersistedState<T> 인터페이스를 구현한 스토어 객체
  */
 export function createPersistedState<T extends string | number>(
 	key: string,
 	initial: T,
 	allowedValues?: readonly T[],
 	domUpdater?: (value: T) => void
-) {
+): PersistedState<T> {
 	let current = $state<T>(initial);
 
 	/** 값 유효성 검증 */

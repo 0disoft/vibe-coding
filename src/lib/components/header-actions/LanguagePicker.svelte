@@ -73,12 +73,15 @@
   }
 
   function handleOutsideClick(event: MouseEvent) {
+    const target = event.target;
+    if (!(target instanceof Node)) return; // 타입 가드
+
     if (
       showLanguageModal &&
       modalRef &&
-      !modalRef.contains(event.target as Node) &&
+      !modalRef.contains(target) &&
       buttonRef &&
-      !buttonRef.contains(event.target as Node)
+      !buttonRef.contains(target)
     ) {
       closeLanguageModal();
     }
@@ -92,20 +95,35 @@
     }
   }
 
-  // 메뉴 내부 화살표 키 탐색 (접근성)
+  // 메뉴 내부 키보드 탐색 (접근성)
   function handleMenuKeyDown(event: KeyboardEvent) {
     if (!modalRef) return;
-    const items = Array.from(modalRef.querySelectorAll('[role="menuitem"]')) as HTMLElement[];
-    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
 
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      const nextIndex = (currentIndex + 1) % items.length;
-      items[nextIndex]?.focus();
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      const prevIndex = (currentIndex - 1 + items.length) % items.length;
-      items[prevIndex]?.focus();
+    const items = Array.from(
+      modalRef.querySelectorAll<HTMLElement>('[role="menuitem"]')
+    );
+    if (items.length === 0) return; // 빈 배열 가드
+
+    const active = document.activeElement;
+    const currentIndex = active ? items.indexOf(active as HTMLElement) : -1;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        items[(currentIndex + 1) % items.length]?.focus();
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        items[(currentIndex - 1 + items.length) % items.length]?.focus();
+        break;
+      case 'Home':
+        event.preventDefault();
+        items[0]?.focus();
+        break;
+      case 'End':
+        event.preventDefault();
+        items[items.length - 1]?.focus();
+        break;
     }
   }
 </script>

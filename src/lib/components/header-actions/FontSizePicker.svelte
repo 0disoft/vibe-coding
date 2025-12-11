@@ -35,13 +35,10 @@
   }
 
   function handleOutsideClick(event: MouseEvent) {
-    if (
-      showFontSizeModal &&
-      modalRef &&
-      !modalRef.contains(event.target as Node) &&
-      buttonRef &&
-      !buttonRef.contains(event.target as Node)
-    ) {
+    const target = event.target;
+    if (!(target instanceof Node)) return; // 타입 가드
+
+    if (showFontSizeModal && modalRef && !modalRef.contains(target) && buttonRef && !buttonRef.contains(target)) {
       closeFontSizeModal(); // 마우스 클릭 닫기: 포커스 이동 없음
     }
   }
@@ -54,26 +51,43 @@
     }
   }
 
-  // 메뉴 내부 화살표 키 탐색 (3x3 그리드용)
+  // 메뉴 내부 키보드 탐색 (3x3 그리드용)
   function handleMenuKeyDown(event: KeyboardEvent) {
     if (!modalRef) return;
-    const items = Array.from(modalRef.querySelectorAll('[role="menuitemradio"]')) as HTMLElement[];
-    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+
+    const items = Array.from(modalRef.querySelectorAll<HTMLElement>('[role="menuitemradio"]'));
+    if (items.length === 0) return; // 빈 배열 가드
+
+    const active = document.activeElement;
+    const currentIndex = active ? items.indexOf(active as HTMLElement) : -1;
     const cols = 3; // 3열 그리드
 
     let nextIndex = currentIndex;
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      nextIndex = (currentIndex + cols) % items.length;
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      nextIndex = (currentIndex - cols + items.length) % items.length;
-    } else if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      nextIndex = (currentIndex + 1) % items.length;
-    } else if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      nextIndex = (currentIndex - 1 + items.length) % items.length;
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        nextIndex = (currentIndex + cols) % items.length;
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        nextIndex = (currentIndex - cols + items.length) % items.length;
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        nextIndex = (currentIndex + 1) % items.length;
+        break;
+      case 'ArrowLeft':
+        event.preventDefault();
+        nextIndex = (currentIndex - 1 + items.length) % items.length;
+        break;
+      case 'Home':
+        event.preventDefault();
+        nextIndex = 0;
+        break;
+      case 'End':
+        event.preventDefault();
+        nextIndex = items.length - 1;
+        break;
     }
     items[nextIndex]?.focus();
   }
