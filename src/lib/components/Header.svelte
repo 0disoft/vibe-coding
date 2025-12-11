@@ -134,7 +134,7 @@
     </a>
 
     <!-- 데스크톱 네비게이션 -->
-    <nav aria-label="Main navigation" class="hidden items-center gap-8 text-menu-lg lg:flex">
+    <nav aria-label="Main navigation" class="hidden items-center gap-8 text-menu-lg md:flex">
       {#if nav}
         {@render nav()}
       {:else}
@@ -164,7 +164,7 @@
         onclick={toggleMobileMenu}
         aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={mobileMenuOpen}
-        class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground lg:hidden"
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground md:hidden"
       >
         {#if mobileMenuOpen}
           <span class="i-lucide-x h-4 w-4"></span>
@@ -187,7 +187,7 @@
   <div
     role="button"
     tabindex="-1"
-    class="fixed inset-0 z-40 bg-overlay/50 backdrop-blur-sm lg:hidden"
+    class="fixed inset-0 z-40 bg-overlay/50 backdrop-blur-sm md:hidden"
     onclick={() => closeMobileMenu()}
     onkeydown={(e) => e.key === 'Escape' && closeMobileMenu({ focusButton: true })}
   ></div>
@@ -195,7 +195,7 @@
 
 <!-- 모바일 메뉴 패널 (nav 링크만) -->
 <div
-  class="fixed end-0 top-0 z-50 h-full w-64 transform bg-background border-s border-border shadow-xl transition-transform duration-300 ease-in-out lg:hidden {mobileMenuOpen
+  class="fixed end-0 top-0 z-50 h-full w-64 transform bg-background border-s border-border shadow-xl transition-transform duration-300 ease-in-out md:hidden {mobileMenuOpen
     ? 'translate-x-0'
     : 'translate-x-full'}"
 >
