@@ -31,7 +31,7 @@ export const policy = {
 		{ id: 'directus', name: 'Directus (Self-hosted)' },
 		// === 결제 ===
 		{ id: 'lemonsqueezy', name: 'Lemon Squeezy LLC' },
-		{ id: 'portone', name: 'Portone Co., Ltd.' },
+		{ id: 'portone', name: 'PortOne Co., Ltd.' },
 		{ id: 'btcpay', name: 'BTCPay Server (Self-hosted)' },
 		{ id: 'revenuecat', name: 'RevenueCat Inc.' },
 		{ id: 'wise', name: 'Wise Payments Ltd.' },

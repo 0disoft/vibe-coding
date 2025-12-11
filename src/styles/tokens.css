@@ -40,9 +40,15 @@
 	/* Font stacks */
 	/* 기본(라틴 문자 기반) - 현재 테스트: Manrope */
 	--font-sans:
-		"Manrope Variable", "Manrope", "Inter Variable", Inter, -apple-system, BlinkMacSystemFont,
-		system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Apple Color Emoji", "Segoe UI Emoji",
-		"Noto Color Emoji", sans-serif;
+		"Manrope Variable", "Manrope", "Inter Variable", Inter,
+		"Pretendard Variable", Pretendard,
+		"Noto Sans JP Variable", "Noto Sans JP",
+		"Noto Sans SC Variable", "Noto Sans SC",
+		"Noto Sans Arabic Variable", "Noto Sans Arabic",
+		"Noto Sans Thai Variable", "Noto Sans Thai",
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari",
+		-apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, "Helvetica Neue",
+		"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 	--font-mono:
 		"Maple Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
 		"Courier New", monospace;
@@ -185,7 +191,13 @@ html:lang(ko-KR),
 body:lang(ko),
 body:lang(ko-KR) {
 	--font-sans:
-		"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI",
+		"Pretendard Variable", Pretendard,
+		"Noto Sans JP Variable", "Noto Sans JP",
+		"Noto Sans SC Variable", "Noto Sans SC",
+		"Noto Sans Arabic Variable", "Noto Sans Arabic",
+		"Noto Sans Thai Variable", "Noto Sans Thai",
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari",
+		-apple-system, BlinkMacSystemFont, system-ui, "Segoe UI",
 		Roboto, "Helvetica Neue", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 	/* 한글 자간 미세 조정 (-0.02em: Pretendard 권장 범위) */
@@ -213,7 +225,13 @@ body:lang(ko-KR) {
 html:lang(ja),
 body:lang(ja) {
 	--font-sans:
-		"Noto Sans JP Variable", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo,
+		"Noto Sans JP Variable", "Noto Sans JP",
+		"Pretendard Variable", Pretendard,
+		"Noto Sans SC Variable", "Noto Sans SC",
+		"Noto Sans Arabic Variable", "Noto Sans Arabic",
+		"Noto Sans Thai Variable", "Noto Sans Thai",
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari",
+		"Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo,
 		system-ui, sans-serif;
 	/* Variable Font 무게 일관성을 위해 명시적 지정 */
 	font-weight: 400;
@@ -253,7 +271,13 @@ body:lang(ja) {
 html:lang(zh),
 body:lang(zh) {
 	--font-sans:
-		"Noto Sans SC Variable", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+		"Noto Sans SC Variable", "Noto Sans SC",
+		"Pretendard Variable", Pretendard,
+		"Noto Sans JP Variable", "Noto Sans JP",
+		"Noto Sans Arabic Variable", "Noto Sans Arabic",
+		"Noto Sans Thai Variable", "Noto Sans Thai",
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari",
+		"PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
 	/* 중국어 자간 및 줄바꿈 최적화 + 지역형/커닝/문맥반각 */
 	letter-spacing: 0.02em;
 	/* anywhere는 단어 중간 끊김 위험 -> strict 권장 */
@@ -274,7 +298,13 @@ body:lang(zh) {
 :lang(zh-TW),
 :lang(zh-Hant) {
 	--font-sans:
-		"Noto Sans SC Variable", "Noto Sans SC", "PingFang TC", "Microsoft JhengHei", system-ui,
+		"Noto Sans SC Variable", "Noto Sans SC",
+		"Pretendard Variable", Pretendard,
+		"Noto Sans JP Variable", "Noto Sans JP",
+		"Noto Sans Arabic Variable", "Noto Sans Arabic",
+		"Noto Sans Thai Variable", "Noto Sans Thai",
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari",
+		"PingFang TC", "Microsoft JhengHei", system-ui,
 		sans-serif;
 	/* 중국어 자간 및 줄바꿈 최적화 + 지역형/커닝/문맥반각 */
 	letter-spacing: 0.02em;
@@ -294,7 +324,13 @@ body:lang(ar) {
 	/* 혼합 텍스트에서 방향성 격리 (isolate-override는 너무 강력함) */
 	unicode-bidi: isolate;
 	--font-sans:
-		"Noto Sans Arabic Variable", "Noto Sans Arabic", "Geeza Pro", "Segoe UI", Tahoma, system-ui,
+		"Noto Sans Arabic Variable", "Noto Sans Arabic",
+		"Pretendard Variable", Pretendard,
+		"Noto Sans JP Variable", "Noto Sans JP",
+		"Noto Sans SC Variable", "Noto Sans SC",
+		"Noto Sans Thai Variable", "Noto Sans Thai",
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari",
+		"Geeza Pro", "Segoe UI", Tahoma, system-ui,
 		sans-serif;
 	/* 단순화: 엔진이 필수 처리하는 기능 제외 (calt, liga, rlig 유지) */
 	font-feature-settings: "calt", "liga", "rlig";
@@ -327,7 +363,13 @@ html:lang(ar) samp:where(samp) {
 html:lang(hi),
 body:lang(hi) {
 	--font-sans:
-		"Noto Sans Devanagari Variable", "Noto Sans Devanagari", "Kohinoor Devanagari", "Mangal",
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari",
+		"Pretendard Variable", Pretendard,
+		"Noto Sans JP Variable", "Noto Sans JP",
+		"Noto Sans SC Variable", "Noto Sans SC",
+		"Noto Sans Arabic Variable", "Noto Sans Arabic",
+		"Noto Sans Thai Variable", "Noto Sans Thai",
+		"Kohinoor Devanagari", "Mangal",
 		system-ui, sans-serif;
 	/* 단순화: 복잡한 처리는 셰이퍼에게 위임 (liga, calt 유지) */
 	font-feature-settings: "liga", "calt";
@@ -343,7 +385,13 @@ body:lang(hi) {
 html:lang(th),
 body:lang(th) {
 	--font-sans:
-		"Noto Sans Thai Variable", "Noto Sans Thai", "Leelawadee UI", "Tahoma", system-ui, sans-serif;
+		"Noto Sans Thai Variable", "Noto Sans Thai",
+		"Pretendard Variable", Pretendard,
+		"Noto Sans JP Variable", "Noto Sans JP",
+		"Noto Sans SC Variable", "Noto Sans SC",
+		"Noto Sans Arabic Variable", "Noto Sans Arabic",
+		"Noto Sans Devanagari Variable", "Noto Sans Devanagari",
+		"Leelawadee UI", "Tahoma", system-ui, sans-serif;
 	/* 성조/모음 마크 위치 최적화 (단순화: liga, calt 유지) */
 	font-feature-settings: "liga", "calt";
 	letter-spacing: 0;
@@ -361,9 +409,7 @@ body:lang(th) {
 :lang(ru),
 html:lang(ru),
 body:lang(ru) {
-	--font-sans:
-		-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui,
-		sans-serif;
+
 	/* 대문자/숫자용 기호 위치 보정 (case) */
 	font-feature-settings: "kern", "liga", "calt", "case";
 	hyphens: auto;
