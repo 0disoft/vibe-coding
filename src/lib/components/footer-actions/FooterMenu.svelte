@@ -3,20 +3,20 @@
   import { localizeUrl } from '$lib/paraglide/runtime.js';
   import { tick } from 'svelte';
 
-  // 메뉴 항목 정의 (모바일에서 숨겨진 푸터 링크 포함)
+  // 메뉴 항목 정의 (mobileOnly: 모바일에서만 표시)
   const menuItems = [
-    // 후원하기 (맨 위)
-    { key: 'donate', icon: 'i-lucide-heart', href: '/donate' },
-    // 모바일에서만 표시되는 기본 링크들
-    { key: 'terms', icon: 'i-lucide-file-text', href: '/terms' },
-    { key: 'privacy', icon: 'i-lucide-lock', href: '/privacy' },
-    { key: 'cookie', icon: 'i-lucide-cookie', href: '/cookie' },
-    // 추가 메뉴
-    { key: 'security', icon: 'i-lucide-shield', href: '/security' },
-    { key: 'gdpr', icon: 'i-lucide-globe', href: '/gdpr' },
-    { key: 'sitemap', icon: 'i-lucide-map', href: '/sitemap' },
-    { key: 'accessibility', icon: 'i-lucide-accessibility', href: '/accessibility' },
-    { key: 'bug-bounty', icon: 'i-lucide-bug', href: '/bug-bounty' },
+    // 후원하기 (맨 위) - 항상 표시
+    { key: 'donate', icon: 'i-lucide-heart', href: '/donate', mobileOnly: false },
+    // 모바일에서만 표시 (데스크톱에서는 Footer에 직접 표시됨)
+    { key: 'terms', icon: 'i-lucide-file-text', href: '/terms', mobileOnly: true },
+    { key: 'privacy', icon: 'i-lucide-lock', href: '/privacy', mobileOnly: true },
+    { key: 'cookie', icon: 'i-lucide-cookie', href: '/cookie', mobileOnly: true },
+    // 추가 메뉴 - 항상 표시
+    { key: 'security', icon: 'i-lucide-shield', href: '/security', mobileOnly: false },
+    { key: 'gdpr', icon: 'i-lucide-globe', href: '/gdpr', mobileOnly: false },
+    { key: 'sitemap', icon: 'i-lucide-map', href: '/sitemap', mobileOnly: false },
+    { key: 'accessibility', icon: 'i-lucide-accessibility', href: '/accessibility', mobileOnly: false },
+    { key: 'bug-bounty', icon: 'i-lucide-bug', href: '/bug-bounty', mobileOnly: false },
   ] as const;
 
   // 메뉴 키 타입 (컴파일 타임에 누락 방지)
@@ -155,7 +155,9 @@
         {#each menuItems as item (item.key)}
           <a
             href={localizeUrl(item.href).href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu-sm text-popover-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu-sm text-popover-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground {item.mobileOnly
+              ? 'sm:hidden'
+              : ''}"
             onclick={() => closeMenu()}
             role="menuitem"
           >

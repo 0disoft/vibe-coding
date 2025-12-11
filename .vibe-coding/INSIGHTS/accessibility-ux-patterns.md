@@ -200,7 +200,7 @@ function handleFocusOut(event: FocusEvent) {
 >
 > [!WARNING]
 > 단순히 `end-0`만 쓰면 화면 경계에서 여전히 잘릴 수 있습니다.
-> [Floating UI](https://floating-ui.com/), Popper 등 라이브러리의 자동 flip + shift 기능을 활용하세요.
+> [Floating UI](https://floating-ui.com/) 라이브러리의 자동 flip + shift 기능을 활용하세요.
 
 ```typescript
 import { computePosition, flip, shift, offset, type Placement } from '@floating-ui/dom';
