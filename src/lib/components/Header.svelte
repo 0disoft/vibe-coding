@@ -128,13 +128,13 @@
     <a
       href={localizeUrl('/').href}
       aria-label="Go to {siteName} homepage"
-      class="flex items-center gap-2 font-semibold text-foreground"
+      class="flex items-center gap-2 text-logo font-semibold text-foreground"
     >
       {siteName}
     </a>
 
     <!-- 데스크톱 네비게이션 -->
-    <nav aria-label="Main navigation" class="hidden items-center gap-8 text-sm lg:flex">
+    <nav aria-label="Main navigation" class="hidden items-center gap-8 text-menu-lg lg:flex">
       {#if nav}
         {@render nav()}
       {:else}
@@ -227,7 +227,7 @@
           onclick={() => closeMobileMenu()}
           aria-current={active ? 'page' : undefined}
           role="menuitem"
-          class="rounded-md px-3 py-2 text-sm outline-none transition-colors hover:bg-accent focus:bg-accent {active
+          class="rounded-md px-3 py-2 text-menu outline-none transition-colors hover:bg-accent focus:bg-accent {active
             ? 'bg-accent text-foreground font-medium'
             : 'text-muted-foreground'}"
         >

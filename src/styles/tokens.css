@@ -37,6 +37,10 @@
 	--fs-menu: 0.85rem;
 	--fs-menu-sm: 0.75rem;
 
+	/* 로고/브랜드용 */
+	--fs-logo-base: 1.15rem;
+	--fs-brand-base: 1.05rem;
+
 	/* Font stacks */
 	/* 기본(라틴 문자 기반) - 현재 테스트: Manrope */
 	--font-sans:
@@ -77,6 +81,31 @@
 	--fs-h2-base: 1.7rem;
 	--fs-h3-base: 1.4rem;
 	--fs-caption-base: 0.85rem;
+
+	/* 버튼용 */
+	--fs-btn-base: 0.9rem;
+	--fs-btn-sm-base: 0.8rem;
+	--fs-btn-lg-base: 1.0rem;
+
+	/* 라벨/폼 요소용 */
+	--fs-label-base: 0.85rem;
+	--fs-helper-base: 0.75rem;
+	--fs-placeholder-base: 0.9rem;
+
+	/* 배지/태그용 */
+	--fs-badge-base: 0.7rem;
+	--fs-tag-base: 0.75rem;
+
+	/* 기타 UI */
+	--fs-tooltip-base: 0.75rem;
+	--fs-toast-base: 0.85rem;
+	--fs-breadcrumb-base: 0.8rem;
+
+	/* 인라인 코드/숫자/타임스탬프 */
+	--fs-inline-code-base: 0.85rem;
+	--fs-stat-base: 1.4rem;
+	--fs-price-base: 1.15rem;
+	--fs-timestamp-base: 0.7rem;
 
 	/* Computed font tokens */
 	--fs-body: var(--fs-body-base);

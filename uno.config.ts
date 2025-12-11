@@ -219,10 +219,135 @@ const typographyRules: Rule<object>[] = [
 			'line-height': '1.4'
 		}
 	],
+	// 로고/브랜드용
+	[
+		'text-logo',
+		{
+			'font-size': 'var(--fs-logo-base)',
+			'line-height': '1.2'
+		}
+	],
+	[
+		'text-brand',
+		{
+			'font-size': 'var(--fs-brand-base)',
+			'line-height': '1.3'
+		}
+	],
 	[
 		'text-xs-resp',
 		{
 			'font-size': 'var(--fs-xs)',
+			'line-height': '1.4'
+		}
+	],
+	// 버튼용
+	[
+		'text-btn',
+		{
+			'font-size': 'var(--fs-btn-base)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-btn-sm',
+		{
+			'font-size': 'var(--fs-btn-sm-base)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-btn-lg',
+		{
+			'font-size': 'var(--fs-btn-lg-base)',
+			'line-height': '1.4'
+		}
+	],
+	// 라벨/폼 요소용
+	[
+		'text-label',
+		{
+			'font-size': 'var(--fs-label-base)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-helper',
+		{
+			'font-size': 'var(--fs-helper-base)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-placeholder',
+		{
+			'font-size': 'var(--fs-placeholder-base)',
+			'line-height': '1.4'
+		}
+	],
+	// 배지/태그용
+	[
+		'text-badge',
+		{
+			'font-size': 'var(--fs-badge-base)',
+			'line-height': '1.2'
+		}
+	],
+	[
+		'text-tag',
+		{
+			'font-size': 'var(--fs-tag-base)',
+			'line-height': '1.3'
+		}
+	],
+	// 기타 UI
+	[
+		'text-tooltip',
+		{
+			'font-size': 'var(--fs-tooltip-base)',
+			'line-height': '1.2'
+		}
+	],
+	[
+		'text-toast',
+		{
+			'font-size': 'var(--fs-toast-base)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-breadcrumb',
+		{
+			'font-size': 'var(--fs-breadcrumb-base)',
+			'line-height': '1.4'
+		}
+	],
+	// 인라인 코드/숫자/타임스탬프
+	[
+		'text-inline-code',
+		{
+			'font-size': 'var(--fs-inline-code-base)',
+			'line-height': '1.5'
+		}
+	],
+	[
+		'text-stat',
+		{
+			'font-size': 'var(--fs-stat-base)',
+			'line-height': '1.2'
+		}
+	],
+	[
+		'text-price',
+		{
+			'font-size': 'var(--fs-price-base)',
+			'line-height': '1.3'
+		}
+	],
+	[
+		'text-timestamp',
+		{
+			'font-size': 'var(--fs-timestamp-base)',
 			'line-height': '1.4'
 		}
 	]

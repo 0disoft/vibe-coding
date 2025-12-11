@@ -144,9 +144,9 @@
       {#if isLoggedIn && user}
         <!-- 로그인 상태 메뉴 -->
         <div class="mb-2 px-2 py-1.5 border-b border-border">
-          <p class="text-sm font-medium text-foreground">{user.name}</p>
+          <p class="text-menu font-medium text-foreground">{user.name}</p>
           <div class="flex items-center gap-1">
-            <p class="text-xs text-muted-foreground flex-1 truncate">
+            <p class="text-helper text-muted-foreground flex-1 truncate">
               {showEmail ? user.email : maskEmail(user.email)}
             </p>
             <button
@@ -170,7 +170,7 @@
         <div class="grid gap-1">
           <a
             href={localizeUrl('/profile').href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
             role="menuitem"
             onclick={() => closeUserMenu()}
           >
@@ -179,7 +179,7 @@
           </a>
           <a
             href={localizeUrl('/settings').href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
             role="menuitem"
             onclick={() => closeUserMenu()}
           >
@@ -192,7 +192,7 @@
           <button
             type="button"
             onclick={handleLogout}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm text-destructive outline-none transition-colors hover:bg-destructive/10 focus:bg-destructive/10"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu text-destructive outline-none transition-colors hover:bg-destructive/10 focus:bg-destructive/10"
             role="menuitem"
           >
             <span class="i-lucide-log-out h-4 w-4"></span>
@@ -204,7 +204,7 @@
         <div class="grid gap-1">
           <a
             href={localizeUrl('/login').href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
             role="menuitem"
             onclick={() => closeUserMenu()}
           >
@@ -213,7 +213,7 @@
           </a>
           <a
             href={localizeUrl('/signup').href}
-            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-sm font-medium text-link outline-none transition-colors hover:bg-link/10 focus:bg-link/10"
+            class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu font-medium text-link outline-none transition-colors hover:bg-link/10 focus:bg-link/10"
             role="menuitem"
             onclick={() => closeUserMenu()}
           >
@@ -229,7 +229,7 @@
           <button
             type="button"
             onclick={toggleLoginState}
-            class="inline-flex h-8 w-full items-center justify-center gap-2 px-2 rounded-md text-xs text-muted-foreground transition-colors hover:bg-accent"
+            class="inline-flex h-8 w-full items-center justify-center gap-2 px-2 rounded-md text-helper text-muted-foreground transition-colors hover:bg-accent"
           >
             <span class="i-lucide-bug h-3 w-3"></span>
             DEV: Toggle Login State

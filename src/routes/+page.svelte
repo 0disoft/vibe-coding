@@ -11,33 +11,33 @@
     <div class="grid gap-4">
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-body</code>
-          <span class="text-xs text-primary">1.1rem</span>
-          <span class="text-xs text-muted-foreground">· 일반 본문, 기사 내용, 설명 문단</span>
+          <code class="text-helper text-muted-foreground">text-body</code>
+          <span class="text-helper text-primary">1.1rem</span>
+          <span class="text-helper text-muted-foreground">· 일반 본문, 기사 내용, 설명 문단</span>
         </div>
         <p class="text-body">다람쥐 헌 쳇바퀴에 타고파 The quick brown fox</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-body-secondary</code>
-          <span class="text-xs text-primary">0.95rem</span>
-          <span class="text-xs text-muted-foreground">· 부가 설명, 인용문, 사이드바 텍스트</span>
+          <code class="text-helper text-muted-foreground">text-body-secondary</code>
+          <span class="text-helper text-primary">0.95rem</span>
+          <span class="text-helper text-muted-foreground">· 부가 설명, 인용문, 사이드바 텍스트</span>
         </div>
         <p class="text-body-secondary">다람쥐 헌 쳇바퀴에 타고파 The quick brown fox</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-comment</code>
-          <span class="text-xs text-primary">0.95rem</span>
-          <span class="text-xs text-muted-foreground">· 댓글, 리뷰, 사용자 피드백</span>
+          <code class="text-helper text-muted-foreground">text-comment</code>
+          <span class="text-helper text-primary">0.95rem</span>
+          <span class="text-helper text-muted-foreground">· 댓글, 리뷰, 사용자 피드백</span>
         </div>
         <p class="text-comment">다람쥐 헌 쳇바퀴에 타고파 The quick brown fox</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-code</code>
-          <span class="text-xs text-primary">0.8rem</span>
-          <span class="text-xs text-muted-foreground">· 코드 블록, 인라인 코드, 터미널 출력</span>
+          <code class="text-helper text-muted-foreground">text-code</code>
+          <span class="text-helper text-primary">0.8rem</span>
+          <span class="text-helper text-muted-foreground">· 코드 블록, 인라인 코드, 터미널 출력</span>
         </div>
         <p class="text-code font-mono">const hello = "world"; // 코드 전용</p>
       </div>
@@ -50,33 +50,33 @@
     <div class="grid gap-4">
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-h1</code>
-          <span class="text-xs text-primary">2.0rem</span>
-          <span class="text-xs text-muted-foreground">· 페이지 타이틀, 히어로 섹션 제목</span>
+          <code class="text-helper text-muted-foreground">text-h1</code>
+          <span class="text-helper text-primary">2.0rem</span>
+          <span class="text-helper text-muted-foreground">· 페이지 타이틀, 히어로 섹션 제목</span>
         </div>
         <p class="text-h1 font-bold">대제목 H1 Heading</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-h2</code>
-          <span class="text-xs text-primary">1.7rem</span>
-          <span class="text-xs text-muted-foreground">· 섹션 제목, 카드 헤더</span>
+          <code class="text-helper text-muted-foreground">text-h2</code>
+          <span class="text-helper text-primary">1.7rem</span>
+          <span class="text-helper text-muted-foreground">· 섹션 제목, 카드 헤더</span>
         </div>
         <p class="text-h2 font-semibold">중제목 H2 Heading</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-h3</code>
-          <span class="text-xs text-primary">1.4rem</span>
-          <span class="text-xs text-muted-foreground">· 서브섹션 제목, 모달 타이틀</span>
+          <code class="text-helper text-muted-foreground">text-h3</code>
+          <span class="text-helper text-primary">1.4rem</span>
+          <span class="text-helper text-muted-foreground">· 서브섹션 제목, 모달 타이틀</span>
         </div>
         <p class="text-h3 font-semibold">소제목 H3 Heading</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-caption</code>
-          <span class="text-xs text-primary">0.85rem</span>
-          <span class="text-xs text-muted-foreground">· 이미지 캡션, 표 주석, 출처 표기</span>
+          <code class="text-helper text-muted-foreground">text-caption</code>
+          <span class="text-helper text-primary">0.85rem</span>
+          <span class="text-helper text-muted-foreground">· 이미지 캡션, 표 주석, 출처 표기</span>
         </div>
         <p class="text-caption text-muted-foreground">캡션 텍스트 Caption Text</p>
       </div>
@@ -89,35 +89,253 @@
     <div class="grid gap-4">
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-menu-lg</code>
-          <span class="text-xs text-primary">0.95rem</span>
-          <span class="text-xs text-muted-foreground">· 주요 네비게이션, 사이드바 메뉴</span>
+          <code class="text-helper text-muted-foreground">text-menu-lg</code>
+          <span class="text-helper text-primary">0.95rem</span>
+          <span class="text-helper text-muted-foreground">· 주요 네비게이션, 사이드바 메뉴</span>
         </div>
         <p class="text-menu-lg">메뉴 항목 (큰) Menu Item Large</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-menu</code>
-          <span class="text-xs text-primary">0.85rem</span>
-          <span class="text-xs text-muted-foreground">· 드롭다운 메뉴, 컨텍스트 메뉴 항목</span>
+          <code class="text-helper text-muted-foreground">text-menu</code>
+          <span class="text-helper text-primary">0.85rem</span>
+          <span class="text-helper text-muted-foreground">· 드롭다운 메뉴, 컨텍스트 메뉴 항목</span>
         </div>
         <p class="text-menu">메뉴 항목 (일반) Menu Item Normal</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-menu-sm</code>
-          <span class="text-xs text-primary">0.75rem</span>
-          <span class="text-xs text-muted-foreground">· 서브메뉴, 필터/정렬 옵션</span>
+          <code class="text-helper text-muted-foreground">text-menu-sm</code>
+          <span class="text-helper text-primary">0.75rem</span>
+          <span class="text-helper text-muted-foreground">· 서브메뉴, 필터/정렬 옵션</span>
         </div>
         <p class="text-menu-sm">메뉴 항목 (작은) Menu Item Small</p>
       </div>
       <div class="p-4 rounded-lg bg-card">
         <div class="flex items-center gap-2 mb-2">
-          <code class="text-xs text-muted-foreground">text-xs-resp</code>
-          <span class="text-xs text-primary">0.65rem</span>
-          <span class="text-xs text-muted-foreground">· 푸터 링크, 뱃지, 타임스탬프</span>
+          <code class="text-helper text-muted-foreground">text-xs-resp</code>
+          <span class="text-helper text-primary">0.65rem</span>
+          <span class="text-helper text-muted-foreground">· 푸터 링크, 뱃지, 타임스탬프</span>
         </div>
         <p class="text-xs-resp">초소형 텍스트 Extra Small Text</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 로고/브랜드용 (2개) -->
+  <section class="mb-12">
+    <h2 class="mb-6 text-2xl font-semibold border-b border-border pb-2">로고/브랜드용</h2>
+    <div class="grid gap-4">
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-logo</code>
+          <span class="text-helper text-primary">1.15rem</span>
+          <span class="text-helper text-muted-foreground">· 사이트 로고, 브랜드명</span>
+        </div>
+        <span class="text-logo font-bold">Vibe Coding</span>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-brand</code>
+          <span class="text-helper text-primary">1.05rem</span>
+          <span class="text-helper text-muted-foreground">· 서브 브랜드, 앱 이름</span>
+        </div>
+        <span class="text-brand font-semibold">Vibe Studio</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 버튼용 (3개) -->
+  <section class="mb-12">
+    <h2 class="mb-6 text-2xl font-semibold border-b border-border pb-2">버튼용</h2>
+    <div class="grid gap-4">
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-btn</code>
+          <span class="text-helper text-primary">0.9rem</span>
+          <span class="text-helper text-muted-foreground">· 일반 버튼 텍스트</span>
+        </div>
+        <button type="button" class="text-btn px-4 py-2 rounded-md bg-primary text-primary-foreground"
+          >버튼 Button</button
+        >
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-btn-sm</code>
+          <span class="text-helper text-primary">0.8rem</span>
+          <span class="text-helper text-muted-foreground">· 작은 버튼, 칩</span>
+        </div>
+        <button type="button" class="text-btn-sm px-3 py-1.5 rounded-md bg-secondary text-secondary-foreground"
+          >버튼 Small</button
+        >
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-btn-lg</code>
+          <span class="text-helper text-primary">1.0rem</span>
+          <span class="text-helper text-muted-foreground">· 큰 CTA 버튼</span>
+        </div>
+        <button type="button" class="text-btn-lg px-6 py-3 rounded-md bg-primary text-primary-foreground"
+          >버튼 Large</button
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- 라벨/폼 요소용 (3개) -->
+  <section class="mb-12">
+    <h2 class="mb-6 text-2xl font-semibold border-b border-border pb-2">라벨/폼 요소용</h2>
+    <div class="grid gap-4">
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-label</code>
+          <span class="text-helper text-primary">0.85rem</span>
+          <span class="text-helper text-muted-foreground">· 폼 라벨, 필드명</span>
+        </div>
+        <span class="text-label font-medium">이메일 주소 Email Address</span>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-helper</code>
+          <span class="text-helper text-primary">0.75rem</span>
+          <span class="text-helper text-muted-foreground">· 입력 필드 도움말, 에러 메시지</span>
+        </div>
+        <p class="text-helper text-muted-foreground">유효한 이메일 주소를 입력하세요</p>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-placeholder</code>
+          <span class="text-helper text-primary">0.9rem</span>
+          <span class="text-helper text-muted-foreground">· 플레이스홀더 텍스트</span>
+        </div>
+        <p class="text-placeholder text-muted-foreground/60">example@email.com 형식</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 배지/태그용 (2개) -->
+  <section class="mb-12">
+    <h2 class="mb-6 text-2xl font-semibold border-b border-border pb-2">배지/태그용</h2>
+    <div class="grid gap-4">
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-badge</code>
+          <span class="text-helper text-primary">0.7rem</span>
+          <span class="text-helper text-muted-foreground">· 상태 배지, 알림 카운트</span>
+        </div>
+        <div class="flex gap-2">
+          <span class="text-badge px-2 py-0.5 rounded-full bg-success text-success-foreground">성공</span>
+          <span class="text-badge px-2 py-0.5 rounded-full bg-warning text-warning-foreground">대기중</span>
+          <span class="text-badge px-2 py-0.5 rounded-full bg-destructive text-destructive-foreground">실패</span>
+        </div>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-tag</code>
+          <span class="text-helper text-primary">0.75rem</span>
+          <span class="text-helper text-muted-foreground">· 해시태그, 카테고리 태그</span>
+        </div>
+        <div class="flex gap-2">
+          <span class="text-tag px-2 py-1 rounded-md bg-accent text-accent-foreground">#SvelteKit</span>
+          <span class="text-tag px-2 py-1 rounded-md bg-accent text-accent-foreground">#UnoCSS</span>
+          <span class="text-tag px-2 py-1 rounded-md bg-accent text-accent-foreground">#TypeScript</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 기타 UI (3개) -->
+  <section class="mb-12">
+    <h2 class="mb-6 text-2xl font-semibold border-b border-border pb-2">기타 UI</h2>
+    <div class="grid gap-4">
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-tooltip</code>
+          <span class="text-helper text-primary">0.75rem</span>
+          <span class="text-helper text-muted-foreground">· 툴팁 텍스트</span>
+        </div>
+        <div class="inline-block px-2 py-1 rounded bg-foreground text-background">
+          <span class="text-tooltip">이것은 툴팁입니다 Tooltip text</span>
+        </div>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-toast</code>
+          <span class="text-helper text-primary">0.85rem</span>
+          <span class="text-helper text-muted-foreground">· 토스트/스낵바 메시지</span>
+        </div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-foreground text-background">
+          <span class="i-lucide-check h-4 w-4"></span>
+          <span class="text-toast">저장되었습니다 Saved successfully</span>
+        </div>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-breadcrumb</code>
+          <span class="text-helper text-primary">0.8rem</span>
+          <span class="text-helper text-muted-foreground">· 브레드크럼 네비게이션</span>
+        </div>
+        <nav class="text-breadcrumb text-muted-foreground">
+          홈 / 제품 / 카테고리 / <span class="text-foreground">현재 페이지</span>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- 인라인 코드/숫자/타임스탬프 (4개) -->
+  <section class="mb-12">
+    <h2 class="mb-6 text-2xl font-semibold border-b border-border pb-2">인라인 코드/숫자/타임스탬프</h2>
+    <div class="grid gap-4">
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-inline-code</code>
+          <span class="text-helper text-primary">0.85rem</span>
+          <span class="text-helper text-muted-foreground">· 본문 내 인라인 코드</span>
+        </div>
+        <p class="text-body">
+          이 함수는 <code class="text-inline-code font-mono px-1 py-0.5 rounded bg-muted">useState()</code> 훅을 사용합니다.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-stat</code>
+          <span class="text-helper text-primary">1.4rem</span>
+          <span class="text-helper text-muted-foreground">· 대시보드 KPI/통계 숫자</span>
+        </div>
+        <div class="flex gap-8">
+          <div class="text-center">
+            <p class="text-stat font-bold text-primary">12,345</p>
+            <p class="text-helper text-muted-foreground">총 사용자</p>
+          </div>
+          <div class="text-center">
+            <p class="text-stat font-bold text-success">+28%</p>
+            <p class="text-helper text-muted-foreground">성장률</p>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-price</code>
+          <span class="text-helper text-primary">1.15rem</span>
+          <span class="text-helper text-muted-foreground">· 가격, 금액 표시</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-price font-bold">₩49,900</span>
+          <span class="text-helper text-muted-foreground line-through">₩69,900</span>
+          <span class="text-badge px-2 py-0.5 rounded-full bg-destructive text-destructive-foreground">-29%</span>
+        </div>
+      </div>
+      <div class="p-4 rounded-lg bg-card">
+        <div class="flex items-center gap-2 mb-2">
+          <code class="text-helper text-muted-foreground">text-timestamp</code>
+          <span class="text-helper text-primary">0.7rem</span>
+          <span class="text-helper text-muted-foreground">· 게시물 날짜, 시간 표시</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-timestamp text-muted-foreground">3분 전</span>
+          <span class="text-timestamp text-muted-foreground">2024.12.11 18:55</span>
+          <span class="text-timestamp text-muted-foreground">Dec 11, 2024</span>
+        </div>
       </div>
     </div>
   </section>
