@@ -206,7 +206,7 @@
 	overflow-wrap: anywhere;
 	font-variant-numeric: tabular-nums;
 	/* Manrope 무게감 조정 (Pretendard 450과 균형 맞춤) */
-	font-weight: 450;
+	font-weight: 400;
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -234,12 +234,18 @@ body:lang(ko-KR) {
 	/* 단어 단위 줄바꿈 + 긴 URL 깨짐 방지 안전장치 */
 	word-break: keep-all;
 	overflow-wrap: anywhere;
-	font-weight: 450;
+	font-weight: 400;
 	/* ss05: 원화 기호 등 스타일, cv11: 6/9 판독성 강화 */
 	font-feature-settings: "kern", "liga", "locl", "calt", "ss05", "cv11";
 	/* 본문 숫자는 가변폭(proportional)이 자연스러움 */
 	font-variant-numeric: proportional-nums;
 }
+
+/* ───────────────────────────────────────────────────────────
+   Decorative Fonts (Logos, Brands)
+─────────────────────────────────────────────────────────── */
+.font-righteous { font-family: 'Righteous', cursive; }
+.font-pacifico  { font-family: 'Pacifico', cursive; }
 
 /* 한국어 UI 텍스트 미세 조정 (본문보다 살짝 덜 조임) */
 :lang(ko) small,

@@ -128,7 +128,7 @@
     <a
       href={localizeUrl('/').href}
       aria-label={m.header_home_label({ siteName })}
-      class="flex items-center gap-2 text-logo font-semibold text-foreground"
+      class="flex items-center gap-2 text-logo font-pacifico text-foreground"
     >
       {siteName}
     </a>
