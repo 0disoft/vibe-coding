@@ -57,7 +57,9 @@
 	/* sqrt() 함수로 극단값 완화, clamp()로 0.55~1.9 범위 제한 */
 	--vh-factor: clamp(0.55, sqrt(100dvh / 1080px), 1.9);
 
-	font-size: calc(21px * var(--fs-scale) * var(--vh-factor));
+	/* Fallback: 최신 CSS(sqrt) 미지원 브라우저용 (vh-factor 제외, fs-scale 포함) */
+	font-size: calc(15.6px * var(--fs-scale));
+	font-size: calc(20.8px * var(--fs-scale) * var(--vh-factor));
 
 	/* Base font sizes */
 	--fs-body-base: 1.35rem;
