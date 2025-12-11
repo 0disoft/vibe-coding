@@ -3,9 +3,15 @@
   import { localizeUrl } from '$lib/paraglide/runtime.js';
   import { tick } from 'svelte';
 
-  // 메뉴 항목 정의
+  // 메뉴 항목 정의 (모바일에서 숨겨진 푸터 링크 포함)
   const menuItems = [
+    // 후원하기 (맨 위)
     { key: 'donate', icon: 'i-lucide-heart', href: '/donate' },
+    // 모바일에서만 표시되는 기본 링크들
+    { key: 'terms', icon: 'i-lucide-file-text', href: '/terms' },
+    { key: 'privacy', icon: 'i-lucide-lock', href: '/privacy' },
+    { key: 'cookie', icon: 'i-lucide-cookie', href: '/cookie' },
+    // 추가 메뉴
     { key: 'security', icon: 'i-lucide-shield', href: '/security' },
     { key: 'gdpr', icon: 'i-lucide-globe', href: '/gdpr' },
     { key: 'sitemap', icon: 'i-lucide-map', href: '/sitemap' },
@@ -19,6 +25,9 @@
   // 메뉴 키 → i18n 메시지 매핑 (타입 안전)
   const MENU_LABELS: Record<MenuKey, () => string> = {
     donate: m.footer_donate,
+    terms: m.footer_terms,
+    privacy: m.footer_privacy,
+    cookie: m.footer_cookie_policy,
     security: m.footer_security,
     gdpr: m.footer_gdpr,
     sitemap: m.footer_sitemap,
