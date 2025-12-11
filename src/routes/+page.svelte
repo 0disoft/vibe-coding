@@ -11,7 +11,6 @@
     <div>
       <h2 class="mb-4 text-xl font-semibold">TOML</h2>
       <div class="relative [&>pre]:!my-0 [&>pre]:!rounded-lg [&>pre]:!p-4">
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -- SSR에서 생성한 신뢰할 수 있는 HTML -->
         {@html data.codeBlocks.toml.html}
       </div>
     </div>
@@ -20,7 +19,6 @@
     <div>
       <h2 class="mb-4 text-xl font-semibold">TypeScript</h2>
       <div class="relative [&>pre]:!my-0 [&>pre]:!rounded-lg [&>pre]:!p-4">
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -- SSR에서 생성한 신뢰할 수 있는 HTML -->
         {@html data.codeBlocks.typescript.html}
       </div>
     </div>

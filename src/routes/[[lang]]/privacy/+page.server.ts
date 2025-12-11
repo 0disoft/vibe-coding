@@ -58,7 +58,6 @@ export const load: PageServerLoad = ({ url }) => {
 	const tableHeaders = `| ${m.privacy_table_processor({}, { locale: actualLang })} | ${m.privacy_table_purpose({}, { locale: actualLang })} | ${m.privacy_table_country({}, { locale: actualLang })} | ${m.privacy_table_items({}, { locale: actualLang })} | ${m.privacy_table_retention({}, { locale: actualLang })} |`;
 	const tableSeparator = '|---|---|---|---|---|';
 
-	/* eslint-disable @typescript-eslint/no-explicit-any */
 	const tableRows = policy.dataProcessors
 		.map((processor) => {
 			// ID를 기반으로 메시지 키 생성

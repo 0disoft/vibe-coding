@@ -43,7 +43,7 @@ function escapeRegex(str: string): string {
 function setCookie(name: string, value: string | number, days = DEFAULT_COOKIE_DAYS): void {
 	if (!browser) return;
 
-	const date = new Date(); // eslint-disable-line svelte/prefer-svelte-reactivity -- 단순 쿠키 만료 계산용
+	const date = new Date();
 	date.setTime(date.getTime() + days * DAY_IN_MS);
 	const expires = `; expires=${date.toUTCString()}`;
 	const secure = location.protocol === 'https:' ? '; Secure' : '';
