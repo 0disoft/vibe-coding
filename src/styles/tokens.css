@@ -58,8 +58,8 @@
 	--vh-factor: clamp(0.55, sqrt(100dvh / 1080px), 1.9);
 
 	/* Fallback: 최신 CSS(sqrt) 미지원 브라우저용 (vh-factor 제외, fs-scale 포함) */
-	font-size: calc(15.6px * var(--fs-scale));
-	font-size: calc(20.8px * var(--fs-scale) * var(--vh-factor));
+	font-size: calc(14.7692px * var(--fs-scale));
+	font-size: calc(19.6842px * var(--fs-scale) * var(--vh-factor));
 
 	/* Base font sizes */
 	--fs-body-base: 1.35rem;
