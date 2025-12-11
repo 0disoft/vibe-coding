@@ -22,6 +22,12 @@
 | [accessibility-ux-patterns.md](./accessibility-ux-patterns.md) | 접근성(a11y) 및 UX 패턴 가이드 |
 | [mobile-ux-patterns.md](./mobile-ux-patterns.md) | PWA 네이티브 경험 패턴 (제스처, 햅틱, Progressive Enhancement) |
 
+### 개발 컨벤션
+
+| 파일 | 설명 |
+|------|------|
+| [markdownlint-rules.md](./markdownlint-rules.md) | Markdownlint 규칙 한국어 가이드 |
+
 ## 작성 가이드
 
 - 다른 AI나 사람에게서 얻은 유용한 인사이트
