@@ -2,7 +2,6 @@
 
 > Huling na-update: {{LAST_UPDATED}}
 
-
 ## Artikulo 1 (Layunin)
 
 Ang mga Tuntuning ito ay namamahala sa mga karapatan, obligasyon, at responsibilidad sa pagitan ng {{SITE_NAME}} (mula rito ay tinatawag na "ang Kumpanya") at mga Gumagamit tungkol sa paggamit ng mga serbisyong ibinibigay ng Kumpanya.

@@ -2,7 +2,6 @@
 
 > Zuletzt aktualisiert: {{LAST_UPDATED}}
 
-
 {{SITE_NAME}} (nachfolgend "das Unternehmen") schätzt die persönlichen Daten der Nutzer und hält sich an das Datenschutzgesetz und das Gesetz zur Förderung der Nutzung von Informations- und Kommunikationsnetzen und zum Schutz von Informationen.
 
 ## Artikel 1 (Erhobene personenbezogene Daten)

@@ -2,7 +2,6 @@
 
 > Ostatnia aktualizacja: {{LAST_UPDATED}}
 
-
 ## Wstęp
 
 W {{SITE_NAME}} współpracujemy z badaczami bezpieczeństwa, aby tworzyć bezpieczniejsze środowisko internetowe. Jeśli znalazłeś lukę w zabezpieczeniach w naszej usłudze, skontaktuj się z nami natychmiast.
@@ -128,6 +127,7 @@ Jeśli badasz i zgłaszasz luki w dobrej wierze i zgodnie z niniejszą polityką
 3. Jeśli osoba trzecia podejmie kroki prawne w związku z Twoimi działaniami badawczymi, zapewnimy wsparcie w rozsądnym zakresie, takie jak dostarczenie dokumentacji potwierdzającej, że jesteś badaczem przestrzegającym zasad.
 
 Jednak Safe Harbor nie ma zastosowania w następujących przypadkach:
+
 - Wyraźne naruszenie działań zabronionych w tym dokumencie.
 - Nieautoryzowane testowanie systemów lub infrastruktury stron trzecich poza naszą kontrolą.
 

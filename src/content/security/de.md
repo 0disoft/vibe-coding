@@ -7,25 +7,33 @@
 Benutzerdaten werden sicher verarbeitet und mit Schutzmaßnahmen auf mehreren Ebenen versehen, einschließlich Verschlüsselung im Ruhezustand und TLS bei der Übertragung.
 
 ### Passwortschutz
+
 **Benutzerpasswörter werden niemals im Klartext gespeichert und unter Verwendung neuester Hashing-Technologien geschützt.**
+
 - **Algorithmus**: {{ENC_ALGO_PASSWORD}}
 - **Grund**: {{ENC_REASON_PASSWORD}}
 - Für jedes Passwort wird ein eindeutiges Salt verwendet, um Rainbow-Table-Angriffe zu verhindern.
 
 ### Datenverschlüsselung
+
 **Sensible Informationen werden unmittelbar vor der Speicherung verschlüsselt, wobei das Schlüsselmanagement streng getrennt ist.**
+
 - **Algorithmus**: {{ENC_ALGO_DATA}}
 - **Grund**: {{ENC_REASON_DATA}}
 - **Schlüsselableitung**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Wir verwenden Envelope Encryption, um Datenverschlüsselungsschlüssel (DEK) mit separaten Schlüsselverschlüsselungsschlüsseln (KEK) zu schützen.
 
 ### Datenintegrität
+
 **Hochleistungs-Hash-Funktionen werden verwendet, um sicherzustellen, dass kritische Systemdaten nicht manipuliert wurden.**
+
 - **Algorithmus**: {{ENC_ALGO_INTEGRITY}}
 - **Grund**: {{ENC_REASON_INTEGRITY}}
 
 ### Transportsicherheit
+
 **Die gesamte Kommunikation zwischen Benutzern und Servern ist durch einen verschlüsselten Tunnel unter Verwendung der neuesten Sicherheitsprotokolle geschützt.**
+
 - **Protokoll**: {{ENC_ALGO_TRANSPORT}}
 - **Grund**: {{ENC_REASON_TRANSPORT}}
 - HTTPS wird für die gesamte Kommunikation erzwungen, und HSTS wird angewendet, um Downgrade-Angriffe strikt zu verhindern.

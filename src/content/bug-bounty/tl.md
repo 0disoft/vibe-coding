@@ -2,7 +2,6 @@
 
 > Huling Na-update: {{LAST_UPDATED}}
 
-
 ## Panimula
 
 Sa {{SITE_NAME}}, nakikipagtulungan kami sa mga security researcher upang lumikha ng isang mas ligtas na kapaligiran sa internet. Kung nakakita ka ng kahinaan sa seguridad (security vulnerability) sa aming serbisyo, mangyaring makipag-ugnayan kaagad sa amin.
@@ -128,6 +127,7 @@ Kung sasaliksikin at iulat mo ang mga kahinaan nang may mabuting hangarin at bil
 3. Kung ang isang ikatlong partido ay nagpasimula ng legal na aksyon tungkol sa iyong mga aktibidad sa pananaliksik, magbibigay kami ng suporta sa loob ng isang makatwirang saklaw, tulad ng pagbibigay ng dokumentasyon na nagpapatunay na ikaw ay isang sumusunod na mananaliksik.
 
 Gayunpaman, hindi nalalapat ang Safe Harbor sa mga sumusunod na kaso:
+
 - Malinaw na paglabag sa mga ipinagbabawal na aktibidad sa dokumentong ito.
 - Hindi awtorisadong pagsubok ng mga system o imprastraktura ng third-party na labas sa aming kontrol.
 

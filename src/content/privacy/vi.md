@@ -2,7 +2,6 @@
 
 > Cập nhật lần cuối: {{LAST_UPDATED}}
 
-
 {{SITE_NAME}} (sau đây gọi là "Công ty") coi trọng thông tin cá nhân của Người dùng và tuân thủ Luật Bảo vệ Thông tin Cá nhân và Luật Thúc đẩy Sử dụng Mạng Thông tin và Truyền thông và Bảo vệ Thông tin.
 
 ## Điều 1 (Thông tin Cá nhân được Thu thập)

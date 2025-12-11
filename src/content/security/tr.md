@@ -7,25 +7,33 @@
 Kullanıcı verileri, dinlenme halindeki şifreleme ve iletim sırasındaki TLS dahil olmak üzere birden fazla katmanda uygulanan koruma önlemleriyle güvenli bir şekilde işlenir.
 
 ### Parola Koruması
+
 **Kullanıcı parolaları asla düz metin olarak saklanmaz ve en son karma teknolojileri kullanılarak korunur.**
+
 - **Algoritma**: {{ENC_ALGO_PASSWORD}}
 - **Neden**: {{ENC_REASON_PASSWORD}}
 - Gökkuşağı tablosu saldırılarını önlemek için her parolaya benzersiz bir Tuz (Salt) uygulanır.
 
 ### Veri Şifreleme
+
 **Hassas bilgiler, kesinlikle ayrılmış anahtar yönetimi ile depolamadan hemen önce şifrelenir.**
+
 - **Algoritma**: {{ENC_ALGO_DATA}}
 - **Neden**: {{ENC_REASON_DATA}}
 - **Anahtar Türetme**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Veri Şifreleme Anahtarlarını (DEK) ayrı Anahtar Şifreleme Anahtarları (KEK) ile korumak için Zarf Şifreleme (Envelope Encryption) kullanıyoruz.
 
 ### Veri Bütünlüğü
+
 **Kritik sistem verilerinin tahrif edilmediğini doğrulamak için yüksek performanslı karma işlevleri kullanılır.**
+
 - **Algoritma**: {{ENC_ALGO_INTEGRITY}}
 - **Neden**: {{ENC_REASON_INTEGRITY}}
 
 ### Taşıma Güvenliği
+
 **Kullanıcılar ve sunucular arasındaki tüm iletişim, en son güvenlik protokollerini kullanan şifreli bir tünel ile korunur.**
+
 - **Protokol**: {{ENC_ALGO_TRANSPORT}}
 - **Neden**: {{ENC_REASON_TRANSPORT}}
 - Tüm iletişimler için HTTPS zorunludur ve sürüm düşürme saldırılarını kesinlikle önlemek için HSTS uygulanır.

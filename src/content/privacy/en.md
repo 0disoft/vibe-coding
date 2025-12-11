@@ -2,7 +2,6 @@
 
 > Last Updated: {{LAST_UPDATED}}
 
-
 {{SITE_NAME}} (hereinafter "the Company") values the personal information of Users and complies with the Personal Information Protection Act and the Act on Promotion of Information and Communications Network Utilization and Information Protection.
 
 ## Article 1 (Personal Information Collected)

@@ -2,7 +2,6 @@
 
 > Última atualização: {{LAST_UPDATED}}
 
-
 ## Introdução
 
 Na {{SITE_NAME}}, colaboramos com pesquisadores de segurança para criar um ambiente de Internet mais seguro. Se você encontrou uma vulnerabilidade de segurança em nosso serviço, entre em contato conosco imediatamente.
@@ -128,6 +127,7 @@ Se você pesquisar e relatar vulnerabilidades de boa fé e em conformidade com e
 3. Se um terceiro iniciar uma ação legal em relação às suas atividades de pesquisa, forneceremos suporte dentro de um limite razoável, como fornecer documentação comprovando que você é um pesquisador em conformidade.
 
 No entanto, o Safe Harbor não se aplica nos seguintes casos:
+
 - Violação clara das atividades proibidas neste documento.
 - Testes não autorizados de sistemas ou infraestrutura de terceiros fora do nosso controle.
 

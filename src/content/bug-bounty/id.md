@@ -2,7 +2,6 @@
 
 > Terakhir Diperbarui: {{LAST_UPDATED}}
 
-
 ## Pengantar
 
 Di {{SITE_NAME}}, kami bekerja sama dengan peneliti keamanan untuk menciptakan lingkungan internet yang lebih aman. Jika Anda menemukan kerentanan keamanan di layanan kami, harap segera hubungi kami.
@@ -128,6 +127,7 @@ Jika Anda meneliti dan melaporkan kerentanan dengan itikad baik dan sesuai denga
 3. Jika pihak ketiga memulai tindakan hukum terkait aktivitas penelitian Anda, kami akan memberikan dukungan dalam rentang yang wajar, seperti memberikan dokumentasi yang membuktikan bahwa Anda adalah peneliti yang patuh.
 
 Namun, Safe Harbor tidak berlaku dalam kasus berikut:
+
 - Pelanggaran yang jelas terhadap aktivitas yang dilarang dalam dokumen ini.
 - Pengujian tidak sah terhadap sistem atau infrastruktur pihak ketiga di luar kendali kami.
 

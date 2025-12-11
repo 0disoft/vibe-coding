@@ -2,7 +2,6 @@
 
 > Cập nhật lần cuối: {{LAST_UPDATED}}
 
-
 ## Giới thiệu
 
 Tại {{SITE_NAME}}, chúng tôi hợp tác với các nhà nghiên cứu bảo mật để tạo ra một môi trường internet an toàn hơn. Nếu bạn tìm thấy lỗ hổng bảo mật trong dịch vụ của chúng tôi, vui lòng liên hệ với chúng tôi ngay lập tức.
@@ -128,6 +127,7 @@ Nếu bạn nghiên cứu và báo cáo các lỗ hổng một cách thiện ch�
 3. Nếu bên thứ ba bắt đầu hành động pháp lý liên quan đến các hoạt động nghiên cứu của bạn, chúng tôi sẽ hỗ trợ trong phạm vi hợp lý, chẳng hạn như cung cấp tài liệu chứng minh bạn là nhà nghiên cứu tuân thủ.
 
 Tuy nhiên, Safe Harbor không áp dụng trong các trường hợp sau:
+
 - Vi phạm rõ ràng các hoạt động bị cấm trong tài liệu này.
 - Kiểm tra trái phép các hệ thống hoặc cơ sở hạ tầng của bên thứ ba nằm ngoài tầm kiểm soát của chúng tôi.
 

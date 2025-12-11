@@ -2,7 +2,6 @@
 
 > Last Updated: {{LAST_UPDATED}}
 
-
 ## Article 1 (Purpose)
 
 These Terms govern the rights, obligations, and responsibilities between {{SITE_NAME}} (hereinafter "the Company") and Users regarding the use of services provided by the Company.

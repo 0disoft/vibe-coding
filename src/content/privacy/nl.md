@@ -2,7 +2,6 @@
 
 > Laatst bijgewerkt: {{LAST_UPDATED}}
 
-
 {{SITE_NAME}} (hierna "het Bedrijf") waardeert de persoonlijke informatie van Gebruikers en voldoet aan de Wet op de Bescherming van Persoonsgegevens en de Wet op de Bevordering van het Gebruik van Informatie- en Communicatienetwerken en de Bescherming van Informatie.
 
 ## Artikel 1 (Verzamelde Persoonlijke Informatie)

@@ -2,7 +2,6 @@
 
 > Cập nhật lần cuối: {{LAST_UPDATED}}
 
-
 ## Điều 1 (Mục đích)
 
 Các Điều Khoản này điều chỉnh các quyền, nghĩa vụ và trách nhiệm giữa {{SITE_NAME}} (sau đây gọi là "Công ty") và Người dùng liên quan đến việc sử dụng các dịch vụ do Công ty cung cấp.

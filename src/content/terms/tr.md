@@ -2,7 +2,6 @@
 
 > Son güncelleme: {{LAST_UPDATED}}
 
-
 ## Madde 1 (Amaç)
 
 Bu Şartlar, {{SITE_NAME}} (bundan sonra "Şirket" olarak anılacaktır) ile Kullanıcılar arasında Şirket tarafından sağlanan hizmetlerin kullanımına ilişkin hakları, yükümlülükleri ve sorumlulukları düzenler.

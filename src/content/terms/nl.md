@@ -2,7 +2,6 @@
 
 > Laatst bijgewerkt: {{LAST_UPDATED}}
 
-
 ## Artikel 1 (Doel)
 
 Deze Voorwaarden regelen de rechten, verplichtingen en verantwoordelijkheden tussen {{SITE_NAME}} (hierna "het Bedrijf") en Gebruikers met betrekking tot het gebruik van de diensten die door het Bedrijf worden geleverd.

@@ -2,7 +2,6 @@
 
 > Senast uppdaterad: {{LAST_UPDATED}}
 
-
 ## Introduktion
 
 På {{SITE_NAME}} samarbetar vi med säkerhetsforskare för att skapa en säkrare internetmiljö. Om du har hittat en säkerhetssäkerhet i vår tjänst, vänligen kontakta oss omedelbart.
@@ -128,6 +127,7 @@ Om du undersöker och rapporterar sårbarheter i god tro och i enlighet med denn
 3. Om en tredje part inleder rättsliga åtgärder gällande dina forskningsaktiviteter kommer vi att tillhandahålla stöd inom ett rimligt intervall, till exempel att tillhandahålla dokumentation som bevisar att du är en forskare som följer reglerna.
 
 Safe Harbor gäller dock inte i följande fall:
+
 - Uppenbar överträdelse av de förbjudna aktiviteterna i detta dokument.
 - Otillåten testning av system eller infrastruktur från tredje part utanför vår kontroll.
 

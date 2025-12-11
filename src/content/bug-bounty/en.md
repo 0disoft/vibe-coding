@@ -2,7 +2,6 @@
 
 > Last Updated: {{LAST_UPDATED}}
 
-
 ## Introduction
 
 At {{SITE_NAME}}, we collaborate with security researchers to create a safer internet environment. If you have found a security vulnerability in our service, please contact us immediately.
@@ -128,6 +127,7 @@ If you research and report vulnerabilities in good faith and in compliance with 
 3. If a third party initiates legal action regarding your research activities, we will provide support within a reasonable range, such as providing documentation proving you are a compliant researcher.
 
 However, Safe Harbor does not apply in the following cases:
+
 - Clearly violating the prohibited activities in this document.
 - Unauthorized testing of third-party systems or infrastructure outside our control.
 

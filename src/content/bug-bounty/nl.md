@@ -2,7 +2,6 @@
 
 > Laatst bijgewerkt: {{LAST_UPDATED}}
 
-
 ## Inleiding
 
 Bij {{SITE_NAME}} werken we samen met beveiligingsonderzoekers om een veiligere internetomgeving te creëren. Als u een beveiligingskwetsbaarheid in onze service heeft gevonden, neem dan onmiddellijk contact met ons op.
@@ -128,6 +127,7 @@ Als u te goeder trouw en in overeenstemming met dit beleid onderzoek doet naar k
 3. Als een derde partij juridische stappen onderneemt met betrekking tot uw onderzoeksactiviteiten, zullen wij binnen een redelijk bereik ondersteuning bieden, zoals het verstrekken van documentatie waaruit blijkt dat u een conforme onderzoeker bent.
 
 Safe Harbor is echter niet van toepassing in de volgende gevallen:
+
 - Duidelijke schending van de verboden activiteiten in dit document.
 - Ongeautoriseerd testen van systemen of infrastructuur van derden buiten onze controle.
 

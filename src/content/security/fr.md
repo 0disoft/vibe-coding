@@ -7,25 +7,33 @@
 Les données des utilisateurs sont traitées en toute sécurité avec des mesures de protection appliquées à plusieurs niveaux, y compris le chiffrement au repos et le TLS en transit.
 
 ### Protection des Mots de Passe
+
 **Les mots de passe des utilisateurs ne sont jamais stockés en texte clair et sont protégés à l'aide des dernières technologies de hachage.**
+
 - **Algorithme** : {{ENC_ALGO_PASSWORD}}
 - **Raison** : {{ENC_REASON_PASSWORD}}
 - Un sel (Salt) unique est appliqué à chaque mot de passe pour empêcher les attaques par table arc-en-ciel.
 
 ### Chiffrement des Données
+
 **Les informations sensibles sont chiffrées immédiatement avant le stockage, avec une gestion des clés strictement séparée.**
+
 - **Algorithme** : {{ENC_ALGO_DATA}}
 - **Raison** : {{ENC_REASON_DATA}}
 - **Dérivation de Clé** : {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Nous utilisons le chiffrement par enveloppe (Envelope Encryption) pour protéger les clés de chiffrement de données (DEK) avec des clés de chiffrement de clé (KEK) distinctes.
 
 ### Intégrité des Données
+
 **Des fonctions de hachage haute performance sont utilisées pour vérifier que les données critiques du système n'ont pas été falsifiées.**
+
 - **Algorithme** : {{ENC_ALGO_INTEGRITY}}
 - **Raison** : {{ENC_REASON_INTEGRITY}}
 
 ### Sécurité du Transport
+
 **Toutes les communications entre les utilisateurs et les serveurs sont protégées par un tunnel chiffré utilisant les derniers protocoles de sécurité.**
+
 - **Protocole** : {{ENC_ALGO_TRANSPORT}}
 - **Raison** : {{ENC_REASON_TRANSPORT}}
 - HTTPS est imposé pour toutes les communications, et HSTS est appliqué pour empêcher strictement les attaques de déclassement.

@@ -7,25 +7,33 @@
 Data pengguna diproses dengan aman dengan langkah-langkah perlindungan yang diterapkan pada beberapa lapisan, termasuk enkripsi saat istirahat dan TLS saat transit.
 
 ### Perlindungan Kata Sandi
+
 **Kata sandi pengguna tidak pernah disimpan dalam teks biasa dan dilindungi menggunakan teknologi hashing terbaru.**
+
 - **Algoritma**: {{ENC_ALGO_PASSWORD}}
 - **Alasan**: {{ENC_REASON_PASSWORD}}
 - Garam (Salt) unik diterapkan pada setiap kata sandi untuk mencegah serangan rainbow table.
 
 ### Enkripsi Data
+
 **Informasi sensitif dienkripsi segera sebelum penyimpanan, dengan manajemen kunci yang dipisahkan secara ketat.**
+
 - **Algoritma**: {{ENC_ALGO_DATA}}
 - **Alasan**: {{ENC_REASON_DATA}}
 - **Derivasi Kunci**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Kami menggunakan Enkripsi Amplop (Envelope Encryption) untuk melindungi Kunci Enkripsi Data (DEK) dengan Kunci Enkripsi Kunci (KEK) terpisah.
 
 ### Integritas Data
+
 **Fungsi hash berkinerja tinggi digunakan untuk memverifikasi bahwa data sistem kritis belum dirusak.**
+
 - **Algoritma**: {{ENC_ALGO_INTEGRITY}}
 - **Alasan**: {{ENC_REASON_INTEGRITY}}
 
 ### Keamanan Transportasi
+
 **Semua komunikasi antara pengguna dan server dilindungi oleh terowongan terenkripsi menggunakan protokol keamanan terbaru.**
+
 - **Protokol**: {{ENC_ALGO_TRANSPORT}}
 - **Alasan**: {{ENC_REASON_TRANSPORT}}
 - HTTPS diberlakukan untuk semua komunikasi, dan HSTS diterapkan untuk mencegah serangan penurunan versi secara ketat.

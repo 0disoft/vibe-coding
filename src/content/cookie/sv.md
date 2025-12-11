@@ -2,7 +2,6 @@
 
 > Senast uppdaterad: {{LAST_UPDATED}}
 
-
 Denna policy är **en del av Integritetspolicyn** för {{SITE_NAME}} (hädanefter kallat "Företaget"). För att tillhandahålla en snabbare och bekvämare webbplatsupplevelse och för att förbättra våra tjänster, använder Företaget kakor (cookies) och liknande tekniker.
 
 ## 1. Vad är kakor och webblagring?

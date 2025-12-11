@@ -7,25 +7,33 @@
 Gebruikersgegevens worden veilig verwerkt met beschermingsmaatregelen die op meerdere lagen worden toegepast, inclusief encryptie in rust en TLS tijdens transport.
 
 ### Wachtwoordbeveiliging
+
 **Gebruikerswachtwoorden worden nooit in platte tekst opgeslagen en worden beschermd met behulp van de nieuwste hashing-technologieën.**
+
 - **Algoritme**: {{ENC_ALGO_PASSWORD}}
 - **Reden**: {{ENC_REASON_PASSWORD}}
 - Een unieke Salt wordt toegepast op elk wachtwoord om regenboogtabelaanvallen te voorkomen.
 
 ### Gegevensencryptie
+
 **Gevoelige informatie wordt onmiddellijk vóór opslag versleuteld, met strikt gescheiden sleutelbeheer.**
+
 - **Algoritme**: {{ENC_ALGO_DATA}}
 - **Reden**: {{ENC_REASON_DATA}}
 - **Sleutelafleiding**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - We gebruiken Envelope Encryption om Data Encryption Keys (DEK) te beschermen met afzonderlijke Key Encryption Keys (KEK).
 
 ### Gegevensingriteit
+
 **Hoogwaardige hashfuncties worden gebruikt om te verifiëren dat er niet met kritieke systeemgegevens is geknoeid.**
+
 - **Algoritme**: {{ENC_ALGO_INTEGRITY}}
 - **Reden**: {{ENC_REASON_INTEGRITY}}
 
 ### Transportbeveiliging
+
 **Alle communicatie tussen gebruikers en servers wordt beschermd door een versleutelde tunnel met behulp van de nieuwste beveiligingsprotocollen.**
+
 - **Protocol**: {{ENC_ALGO_TRANSPORT}}
 - **Reden**: {{ENC_REASON_TRANSPORT}}
 - HTTPS wordt afgedwongen voor alle communicatie en HSTS wordt toegepast om downgrade-aanvallen strikt te voorkomen.

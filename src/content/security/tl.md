@@ -7,25 +7,33 @@
 Ang data ng user ay ligtas na pinoproseso gamit ang mga hakbang sa proteksyon na inilalapat sa maraming layer, kabilang ang pag-encrypt habang nakatabi (at rest) at TLS habang ipinapadala (in transit).
 
 ### Proteksyon ng Password
+
 **Ang mga password ng user ay hindi kailanman iniimbak sa plain text at pinoprotektahan gamit ang pinakabagong teknolohiya sa hashing.**
+
 - **Algorithm**: {{ENC_ALGO_PASSWORD}}
 - **Dahilan**: {{ENC_REASON_PASSWORD}}
 - Isang natatanging Salt ang inilalapat sa bawat password upang maiwasan ang mga rainbow table attack.
 
 ### Pag-encrypt ng Data
+
 **Ang sensitibong impormasyon ay ine-encrypt kaagad bago itago, na may mahigpit na nakahiwalay na pamamahala ng key.**
+
 - **Algorithm**: {{ENC_ALGO_DATA}}
 - **Dahilan**: {{ENC_REASON_DATA}}
 - **Pag-derive ng Key**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Gumagamit kami ng Envelope Encryption upang protektahan ang Data Encryption Keys (DEK) gamit ang magkahiwalay na Key Encryption Keys (KEK).
 
 ### Integridad ng Data
+
 **Ang mga high-performance hash function ay ginagamit upang i-verify na ang kritikal na data ng system ay hindi binago.**
+
 - **Algorithm**: {{ENC_ALGO_INTEGRITY}}
 - **Dahilan**: {{ENC_REASON_INTEGRITY}}
 
 ### Seguridad sa Transportasyon
+
 **Ang lahat ng komunikasyon sa pagitan ng mga user at server ay pinoprotektahan ng isang naka-encrypt na tunnel gamit ang pinakabagong mga protocol ng seguridad.**
+
 - **Protocol**: {{ENC_ALGO_TRANSPORT}}
 - **Dahilan**: {{ENC_REASON_TRANSPORT}}
 - Ipinatutupad ang HTTPS para sa lahat ng komunikasyon, at inilalapat ang HSTS upang mahigpit na maiwasan ang mga downgrade attack.

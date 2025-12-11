@@ -2,7 +2,6 @@
 
 > Letzte Aktualisierung: {{LAST_UPDATED}}
 
-
 ## Einführung
 
 Bei {{SITE_NAME}} arbeiten wir mit Sicherheitsforschern zusammen, um eine sicherere Internetumgebung zu schaffen. Wenn Sie eine Sicherheitslücke in unserem Dienst gefunden haben, kontaktieren Sie uns bitte umgehend.
@@ -128,6 +127,7 @@ Wenn Sie Schwachstellen in gutem Glauben und in Übereinstimmung mit dieser Rich
 3. Wenn ein Dritter rechtliche Schritte bezüglich Ihrer Forschungsaktivitäten einleitet, werden wir im angemessenen Rahmen Unterstützung leisten, z. B. durch Bereitstellung von Dokumenten, die beweisen, dass Sie ein konformer Forscher sind.
 
 Safe Harbor gilt jedoch nicht in folgenden Fällen:
+
 - Eindeutiger Verstoß gegen die in diesem Dokument verbotenen Aktivitäten.
 - Unbefugtes Testen von Systemen oder Infrastrukturen von Drittanbietern außerhalb unserer Kontrolle.
 

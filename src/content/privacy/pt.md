@@ -2,7 +2,6 @@
 
 > Última atualização: {{LAST_UPDATED}}
 
-
 {{SITE_NAME}} (doravante "a Empresa") valoriza as informações pessoais dos Usuários e cumpre a Lei de Proteção de Informações Pessoais e a Lei de Promoção da Utilização de Redes de Informação e Comunicação e Proteção de Informações.
 
 ## Artigo 1 (Informações Pessoais Coletadas)

@@ -7,25 +7,33 @@
 Dữ liệu người dùng được xử lý an toàn với các biện pháp bảo vệ được áp dụng ở nhiều lớp, bao gồm mã hóa khi nghỉ và TLS khi truyền.
 
 ### Bảo vệ mật khẩu
+
 **Mật khẩu người dùng không bao giờ được lưu trữ dưới dạng văn bản thuần túy và được bảo vệ bằng các công nghệ băm mới nhất.**
+
 - **Thuật toán**: {{ENC_ALGO_PASSWORD}}
 - **Lý do**: {{ENC_REASON_PASSWORD}}
 - Một Salt duy nhất được áp dụng cho mỗi mật khẩu để ngăn chặn các cuộc tấn công bảng cầu vồng.
 
 ### Mã hóa dữ liệu
+
 **Thông tin nhạy cảm được mã hóa ngay trước khi lưu trữ, với việc quản lý khóa được tách biệt nghiêm ngặt.**
+
 - **Thuật toán**: {{ENC_ALGO_DATA}}
 - **Lý do**: {{ENC_REASON_DATA}}
 - **Dẫn xuất khóa**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Chúng tôi sử dụng Mã hóa phong bì (Envelope Encryption) để bảo vệ Khóa mã hóa dữ liệu (DEK) bằng các Khóa mã hóa khóa (KEK) riêng biệt.
 
 ### Toàn vẹn dữ liệu
+
 **Các hàm băm hiệu suất cao được sử dụng để xác minh rằng dữ liệu hệ thống quan trọng chưa bị giả mạo.**
+
 - **Thuật toán**: {{ENC_ALGO_INTEGRITY}}
 - **Lý do**: {{ENC_REASON_INTEGRITY}}
 
 ### Bảo mật vận chuyển
+
 **Mọi giao tiếp giữa người dùng và máy chủ được bảo vệ bởi một đường hầm được mã hóa sử dụng các giao thức bảo mật mới nhất.**
+
 - **Giao thức**: {{ENC_ALGO_TRANSPORT}}
 - **Lý do**: {{ENC_REASON_TRANSPORT}}
 - HTTPS được thực thi cho mọi giao tiếp và HSTS được áp dụng để ngăn chặn nghiêm ngặt các cuộc tấn công hạ cấp.

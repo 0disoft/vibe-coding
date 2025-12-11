@@ -8,25 +8,33 @@
 User data is securely processed with protection measures applied at multiple layers, including encryption at rest and TLS in transit.
 
 ### Password Protection
+
 **User passwords are never stored in plain text and are protected using the latest hashing technologies.**
+
 - **Algorithm**: {{ENC_ALGO_PASSWORD}}
 - **Reason**: {{ENC_REASON_PASSWORD}}
 - A unique Salt is applied to each password to prevent rainbow table attacks.
 
 ### Data Encryption
+
 **Sensitive information is encrypted immediately before storage, with strictly separated key management.**
+
 - **Algorithm**: {{ENC_ALGO_DATA}}
 - **Reason**: {{ENC_REASON_DATA}}
 - **Key Derivation**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - We use Envelope Encryption to protect Data Encryption Keys (DEK) with separate Key Encryption Keys (KEK).
 
 ### Data Integrity
+
 **High-performance hash functions are used to verify that critical system data has not been tampered with.**
+
 - **Algorithm**: {{ENC_ALGO_INTEGRITY}}
 - **Reason**: {{ENC_REASON_INTEGRITY}}
 
 ### Transport Security
+
 **All communication between users and servers is protected by an encrypted tunnel using the latest security protocols.**
+
 - **Protocol**: {{ENC_ALGO_TRANSPORT}}
 - **Reason**: {{ENC_REASON_TRANSPORT}}
 - HTTPS is enforced for all communications, and HSTS is applied to strictly prevent downgrade attacks.

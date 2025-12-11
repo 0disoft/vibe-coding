@@ -2,7 +2,6 @@
 
 > Ultimo aggiornamento: {{LAST_UPDATED}}
 
-
 {{SITE_NAME}} (di seguito "la Società") valorizza le informazioni personali degli Utenti e rispetta la Legge sulla Protezione delle Informazioni Personali e la Legge sulla Promozione dell'Utilizzo delle Reti di Informazione e Comunicazione e sulla Protezione delle Informazioni.
 
 ## Articolo 1 (Informazioni Personali Raccolte)

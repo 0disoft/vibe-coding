@@ -7,25 +7,33 @@
 Dane użytkowników są bezpiecznie przetwarzane za pomocą środków ochrony stosowanych na wielu warstwach, w tym szyfrowania w spoczynku i TLS podczas przesyłania.
 
 ### Ochrona Hasła
+
 **Hasła użytkowników nigdy nie są przechowywane w postaci zwykłego tekstu i są chronione przy użyciu najnowszych technologii haszowania.**
+
 - **Algorytm**: {{ENC_ALGO_PASSWORD}}
 - **Powód**: {{ENC_REASON_PASSWORD}}
 - Unikalna sól (Salt) jest stosowana do każdego hasła, aby zapobiec atakom typu rainbow table.
 
 ### Szyfrowanie Danych
+
 **Informacje wrażliwe są szyfrowane bezpośrednio przed zapisaniem, ze ściśle oddzielonym zarządzaniem kluczami.**
+
 - **Algorytm**: {{ENC_ALGO_DATA}}
 - **Powód**: {{ENC_REASON_DATA}}
 - **Wyprowadzanie Klucza**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Używamy Szyfrowania Kopertowego (Envelope Encryption) do ochrony Kluczy Szyfrowania Danych (DEK) za pomocą oddzielnych Kluczy Szyfrowania Klucza (KEK).
 
 ### Integralność Danych
+
 **Wysokowydajne funkcje skrótu są używane do weryfikacji, czy krytyczne dane systemowe nie zostały naruszone.**
+
 - **Algorytm**: {{ENC_ALGO_INTEGRITY}}
 - **Powód**: {{ENC_REASON_INTEGRITY}}
 
 ### Bezpieczeństwo Transportu
+
 **Cała komunikacja między użytkownikami a serwerami jest chroniona przez szyfrowany tunel przy użyciu najnowszych protokołów bezpieczeństwa.**
+
 - **Protokoł**: {{ENC_ALGO_TRANSPORT}}
 - **Powód**: {{ENC_REASON_TRANSPORT}}
 - HTTPS jest wymuszany dla całej komunikacji, a HSTS jest stosowany, aby rygorystycznie zapobiegać atakom typu downgrade.

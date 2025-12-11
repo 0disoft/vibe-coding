@@ -7,25 +7,33 @@
 Los datos de los usuarios se procesan de forma segura con medidas de protección aplicadas en múltiples capas, incluido el cifrado en reposo y TLS en tránsito.
 
 ### Protección de Contraseñas
+
 **Las contraseñas de los usuarios nunca se almacenan en texto plano y están protegidas utilizando las últimas tecnologías de hash.**
+
 - **Algoritmo**: {{ENC_ALGO_PASSWORD}}
 - **Razón**: {{ENC_REASON_PASSWORD}}
 - Se aplica una Sal (Salt) única a cada contraseña para evitar ataques de tabla arcoíris.
 
 ### Cifrado de Datos
+
 **La información confidencial se cifra inmediatamente antes del almacenamiento, con una gestión de claves estrictamente separada.**
+
 - **Algoritmo**: {{ENC_ALGO_DATA}}
 - **Razón**: {{ENC_REASON_DATA}}
 - **Derivación de Claves**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Utilizamos el Cifrado de Sobre (Envelope Encryption) para proteger las Claves de Cifrado de Datos (DEK) con Claves de Cifrado de Claves (KEK) separadas.
 
 ### Integridad de los Datos
+
 **Se utilizan funciones hash de alto rendimiento para verificar que los datos críticos del sistema no hayan sido manipulados.**
+
 - **Algoritmo**: {{ENC_ALGO_INTEGRITY}}
 - **Razón**: {{ENC_REASON_INTEGRITY}}
 
 ### Seguridad del Transporte
+
 **Toda la comunicación entre los usuarios y los servidores está protegida por un túnel cifrado utilizando los últimos protocolos de seguridad.**
+
 - **Protocolo**: {{ENC_ALGO_TRANSPORT}}
 - **Razón**: {{ENC_REASON_TRANSPORT}}
 - Se impone HTTPS para todas las comunicaciones y se aplica HSTS para prevenir estrictamente ataques de degradación.

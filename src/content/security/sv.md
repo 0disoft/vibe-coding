@@ -7,25 +7,33 @@
 Användardata behandlas säkert med skyddsåtgärder som tillämpas i flera lager, inklusive kryptering vid vila och TLS vid överföring.
 
 ### Lösenordsskydd
+
 **Användarlösenord lagras aldrig i klartext och skyddas med den senaste hashningstekniken.**
+
 - **Algoritm**: {{ENC_ALGO_PASSWORD}}
 - **Anledning**: {{ENC_REASON_PASSWORD}}
 - Ett unikt Salt tillämpas på varje lösenord för att förhindra regnbågstabellattacker.
 
 ### Datakryptering
+
 **Känslig information krypteras omedelbart före lagring, med strikt separerad nyckelhantering.**
+
 - **Algoritm**: {{ENC_ALGO_DATA}}
 - **Anledning**: {{ENC_REASON_DATA}}
 - **Nyckelderivering**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Vi använder kuvertkryptering (Envelope Encryption) för att skydda datakrypteringsnycklar (DEK) med separata nyckelkrypteringsnycklar (KEK).
 
 ### Dataintegritet
+
 **Högpresterande hashfunktioner används för att verifiera att kritisk systemdata inte har manipulerats.**
+
 - **Algoritm**: {{ENC_ALGO_INTEGRITY}}
 - **Anledning**: {{ENC_REASON_INTEGRITY}}
 
 ### transportsäkerhet
+
 **All kommunikation mellan användare och servrar skyddas av en krypterad tunnel med de senaste säkerhetsprotokollen.**
+
 - **Protokoll**: {{ENC_ALGO_TRANSPORT}}
 - **Anledning**: {{ENC_REASON_TRANSPORT}}
 - HTTPS upprätthålls för all kommunikation, och HSTS tillämpas för att strikt förhindra nedgraderingsattacker.

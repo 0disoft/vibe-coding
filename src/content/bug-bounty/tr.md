@@ -2,7 +2,6 @@
 
 > Son Güncelleme: {{LAST_UPDATED}}
 
-
 ## Giriş
 
 {{SITE_NAME}} olarak, daha güvenli bir internet ortamı yaratmak için güvenlik araştırmacılarıyla işbirliği yapıyoruz. Hizmetimizde bir güvenlik açığı bulduysanız, lütfen hemen bizimle iletişime geçin.
@@ -128,6 +127,7 @@ Güvenlik açıklarını iyi niyetle ve bu politikaya uygun olarak araştırır 
 3. Üçüncü bir taraf araştırma faaliyetlerinizle ilgili yasal işlem başlatırsa, uyumlu bir araştırmacı olduğunuzu kanıtlayan belgeler sağlamak gibi makul bir aralıkta destek sağlayacağız.
 
 Ancak, Safe Harbor aşağıdaki durumlarda geçerli değildir:
+
 - Bu belgedeki yasaklanmış faaliyetlerin açık ihlali.
 - Kontrolümüz dışındaki üçüncü taraf sistemlerin veya altyapının izinsiz testi.
 

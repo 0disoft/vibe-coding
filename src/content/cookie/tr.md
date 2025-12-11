@@ -2,7 +2,6 @@
 
 > Son Güncelleme: {{LAST_UPDATED}}
 
-
 Bu politika, {{SITE_NAME}} (bundan böyle "Şirket" olarak anılacaktır) **Gizlilik Politikasının bir parçasıdır**. Şirket, daha hızlı ve daha uygun bir web sitesi deneyimi sağlamak ve hizmetlerimizi geliştirmek için çerezler ve benzer teknolojiler kullanmaktadır.
 
 ## 1. Çerezler ve Web Depolama Nedir?

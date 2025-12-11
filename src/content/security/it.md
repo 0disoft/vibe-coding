@@ -7,25 +7,33 @@
 I dati degli utenti sono elaborati in modo sicuro con misure di protezione applicate su più livelli, inclusa la crittografia a riposo e TLS in transito.
 
 ### Protezione della Password
+
 **Le password degli utenti non vengono mai memorizzate in testo in chiaro e sono protette utilizzando le più recenti tecnologie di hashing.**
+
 - **Algoritmo**: {{ENC_ALGO_PASSWORD}}
 - **Motivo**: {{ENC_REASON_PASSWORD}}
 - Un Salt univoco viene applicato a ciascuna password per prevenire attacchi rainbow table.
 
 ### Crittografia dei Dati
+
 **Le informazioni sensibili vengono crittografate immediatamente prima dell'archiviazione, con una gestione delle chiavi rigorosamente separata.**
+
 - **Algoritmo**: {{ENC_ALGO_DATA}}
 - **Motivo**: {{ENC_REASON_DATA}}
 - **Derivazione della Chiave**: {{ENC_ALGO_KDF}} - {{ENC_REASON_KDF}}
 - Utilizziamo la Envelope Encryption per proteggere le Data Encryption Keys (DEK) con Key Encryption Keys (KEK) separate.
 
 ### Integrità dei Dati
+
 **Vengono utilizzate funzioni hash ad alte prestazioni per verificare che i dati critici del sistema non siano stati manomessi.**
+
 - **Algoritmo**: {{ENC_ALGO_INTEGRITY}}
 - **Motivo**: {{ENC_REASON_INTEGRITY}}
 
 ### Sicurezza del Trasporto
+
 **Tutte le comunicazioni tra utenti e server sono protette da un tunnel crittografato utilizzando i più recenti protocolli di sicurezza.**
+
 - **Protocollo**: {{ENC_ALGO_TRANSPORT}}
 - **Motivo**: {{ENC_REASON_TRANSPORT}}
 - HTTPS è imposto per tutte le comunicazioni e HSTS è applicato per prevenire rigorosamente attacchi di downgrade.

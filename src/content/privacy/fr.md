@@ -2,7 +2,6 @@
 
 > Dernière mise à jour : {{LAST_UPDATED}}
 
-
 {{SITE_NAME}} (ci-après "la Société") valorise les informations personnelles des Utilisateurs et respecte la Loi sur la Protection des Informations Personnelles et la Loi sur la Promotion de l'Utilisation des Réseaux d'Information et de Communication et la Protection de l'Information.
 
 ## Article 1 (Informations Personnelles Collectées)
