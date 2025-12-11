@@ -6,26 +6,26 @@
 
   // 언어 코드 → 사람이 읽기 쉬운 이름 맵
   const languageNames: Record<string, string> = {
-    en: 'English',
-    ko: '한국어',
-    ja: '日本語',
-    zh: '中文',
-    es: 'Español',
-    fr: 'Français',
-    de: 'Deutsch',
-    pt: 'Português',
-    it: 'Italiano',
-    nl: 'Nederlands',
-    sv: 'Svenska',
-    pl: 'Polski',
-    ru: 'Русский',
-    ar: 'العربية',
-    hi: 'हिन्दी',
-    id: 'Bahasa',
-    vi: 'Tiếng Việt',
-    th: 'ไทย',
-    tl: 'Tagalog',
-    tr: 'Türkçe',
+    en: 'English', // 영어
+    ko: '한국어', // 한국어
+    ja: '日本語', // 일본어
+    zh: '中文', // 중국어
+    es: 'Español', // 스페인어
+    fr: 'Français', // 프랑스어
+    de: 'Deutsch', // 독일어
+    pt: 'Português', // 포르투갈어
+    it: 'Italiano', // 이탈리아어
+    nl: 'Nederlands', // 네덜란드어
+    sv: 'Svenska', // 스웨덴어
+    pl: 'Polski', // 폴란드어
+    ru: 'Русский', // 러시아어
+    ar: 'العربية', // 아랍어
+    hi: 'हिन्दी', // 힌디어
+    id: 'Bahasa', // 인도네시아어
+    vi: 'Tiếng Việt', // 베트남어
+    th: 'ไทย', // 태국어
+    tl: 'Tagalog', // 타갈로그어
+    tr: 'Türkçe', // 튀르키예어
   };
 
   // Paraglide 2.x에서는 locales 배열 직접 사용

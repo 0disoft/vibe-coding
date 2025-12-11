@@ -2,6 +2,7 @@
 
 > Dernière mise à jour : {{LAST_UPDATED}}
 
+
 Cette politique fait partie de la Politique de Confidentialité de {{SITE_NAME}} (ci-après la "Société"). La Société utilise des cookies et des technologies similaires pour offrir aux utilisateurs un environnement d'utilisation du site web plus rapide et plus pratique et pour améliorer les services.
 
 ## 1. Qu'est-ce que les Cookies et le Stockage Web ?

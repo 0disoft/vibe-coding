@@ -2,6 +2,7 @@
 
 > Ostatnia aktualizacja: {{LAST_UPDATED}}
 
+
 {{SITE_NAME}} (dalej "Firma") ceni sobie dane osobowe Użytkowników i przestrzega Ustawy o Ochronie Danych Osobowych oraz Ustawy o Promowaniu Wykorzystania Sieci Informacyjnych i Komunikacyjnych oraz Ochronie Informacji.
 
 ## Artykuł 1 (Gromadzone Dane Osobowe)

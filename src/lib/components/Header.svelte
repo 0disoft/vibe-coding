@@ -194,46 +194,46 @@
 {/if}
 
 <!-- 모바일 메뉴 패널 (nav 링크만) -->
-<div
-  class="fixed end-0 top-0 z-50 h-full w-64 transform bg-background border-s border-border shadow-xl transition-transform duration-300 ease-in-out md:hidden {mobileMenuOpen
-    ? 'translate-x-0'
-    : 'translate-x-full'}"
->
-  <div class="flex h-12 items-center justify-between border-b border-border px-4">
-    <span class="font-semibold">Menu</span>
-    <button
-      type="button"
-      onclick={() => closeMobileMenu({ focusButton: true })}
-      aria-label={m.header_menu_close()}
-      class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-    >
-      <span class="i-lucide-x h-4 w-4"></span>
-    </button>
-  </div>
-
-  <!-- 모바일 네비게이션 링크 -->
-  <nav aria-label={m.header_mobile_nav_label()} class="flex flex-col p-4">
-    <div
-      role="menu"
-      tabindex="-1"
-      bind:this={mobileMenuRef}
-      onkeydown={handleMobileMenuKeyDown}
-      class="flex flex-col gap-1"
-    >
-      {#each navItems as item (item.href)}
-        {@const active = isActive(item.href)}
-        <a
-          href={localizeUrl(item.href).href}
-          onclick={() => closeMobileMenu()}
-          aria-current={active ? 'page' : undefined}
-          role="menuitem"
-          class="rounded-md px-3 py-2 text-menu outline-none transition-colors hover:bg-accent focus:bg-accent {active
-            ? 'bg-accent text-foreground font-medium'
-            : 'text-muted-foreground'}"
-        >
-          {item.label()}
-        </a>
-      {/each}
+{#if mobileMenuOpen}
+  <div
+    class="fixed end-0 top-0 z-50 h-full w-64 transform bg-background border-s border-border shadow-xl transition-transform duration-300 ease-in-out md:hidden translate-x-0"
+  >
+    <div class="flex h-12 items-center justify-between border-b border-border px-4">
+      <span class="font-semibold">Menu</span>
+      <button
+        type="button"
+        onclick={() => closeMobileMenu({ focusButton: true })}
+        aria-label={m.header_menu_close()}
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+      >
+        <span class="i-lucide-x h-4 w-4"></span>
+      </button>
     </div>
-  </nav>
-</div>
+
+    <!-- 모바일 네비게이션 링크 -->
+    <nav aria-label={m.header_mobile_nav_label()} class="flex flex-col p-4">
+      <div
+        role="menu"
+        tabindex="-1"
+        bind:this={mobileMenuRef}
+        onkeydown={handleMobileMenuKeyDown}
+        class="flex flex-col gap-1"
+      >
+        {#each navItems as item (item.href)}
+          {@const active = isActive(item.href)}
+          <a
+            href={localizeUrl(item.href).href}
+            onclick={() => closeMobileMenu()}
+            aria-current={active ? 'page' : undefined}
+            role="menuitem"
+            class="rounded-md px-3 py-2 text-menu outline-none transition-colors hover:bg-accent focus:bg-accent {active
+              ? 'bg-accent text-foreground font-medium'
+              : 'text-muted-foreground'}"
+          >
+            {item.label()}
+          </a>
+        {/each}
+      </div>
+    </nav>
+  </div>
+{/if}

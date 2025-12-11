@@ -2,6 +2,7 @@
 
 > Senast uppdaterad: {{LAST_UPDATED}}
 
+
 {{SITE_NAME}} (nedan kallat "Företaget") värdesätter Användarnas personuppgifter och följer lagen om skydd av personuppgifter och lagen om främjande av användning av informations- och kommunikationsnätverk och skydd av information.
 
 ## Artikel 1 (Insamlade Personuppgifter)

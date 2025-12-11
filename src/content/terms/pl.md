@@ -2,6 +2,7 @@
 
 > Ostatnia aktualizacja: {{LAST_UPDATED}}
 
+
 ## Artykuł 1 (Cel)
 
 Niniejsze Warunki regulują prawa, obowiązki i odpowiedzialność między {{SITE_NAME}} (dalej "Firma") a Użytkownikami w zakresie korzystania z usług świadczonych przez Firmę.

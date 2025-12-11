@@ -2,6 +2,7 @@
 
 > Laatst bijgewerkt: {{LAST_UPDATED}}
 
+
 Dit beleid maakt **deel uit van het Privacybeleid** van {{SITE_NAME}} (hierna te noemen het "Bedrijf"). Om een snellere en gemakkelijkere website-ervaring te bieden en onze diensten te verbeteren, gebruikt het Bedrijf cookies en vergelijkbare technologieën.
 
 ## 1. Wat zijn cookies en webopslag?

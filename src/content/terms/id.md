@@ -2,6 +2,7 @@
 
 > Terakhir diperbarui: {{LAST_UPDATED}}
 
+
 ## Pasal 1 (Tujuan)
 
 Syarat dan Ketentuan ini mengatur hak, kewajiban, dan tanggung jawab antara {{SITE_NAME}} (selanjutnya disebut "Perusahaan") dan Pengguna terkait penggunaan layanan yang disediakan oleh Perusahaan.

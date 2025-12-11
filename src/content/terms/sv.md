@@ -2,6 +2,7 @@
 
 > Senast uppdaterad: {{LAST_UPDATED}}
 
+
 ## Artikel 1 (Syfte)
 
 Dessa villkor reglerar rättigheter, skyldigheter och ansvar mellan {{SITE_NAME}} (nedan kallat "Företaget") och Användare gällande användningen av tjänster som tillhandahålls av Företaget.

@@ -2,6 +2,7 @@
 
 > Última actualización: {{LAST_UPDATED}}
 
+
 {{SITE_NAME}} (en adelante "la Compañía") valora la información personal de los Usuarios y cumple con la Ley de Protección de Información Personal y la Ley de Promoción de Utilización de Redes de Información y Comunicaciones y Protección de la Información.
 
 ## Artículo 1 (Información Personal Recopilada)

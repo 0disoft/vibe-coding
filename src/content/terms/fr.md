@@ -2,6 +2,7 @@
 
 > Dernière mise à jour : {{LAST_UPDATED}}
 
+
 ## Article 1 (Objet)
 
 Les présentes Conditions régissent les droits, obligations et responsabilités entre {{SITE_NAME}} (ci-après "la Société") et les Utilisateurs concernant l'utilisation des services fournis par la Société.

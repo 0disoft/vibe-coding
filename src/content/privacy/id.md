@@ -2,6 +2,7 @@
 
 > Terakhir diperbarui: {{LAST_UPDATED}}
 
+
 {{SITE_NAME}} (selanjutnya disebut "Perusahaan") menghargai informasi pribadi Pengguna dan mematuhi Undang-Undang Perlindungan Informasi Pribadi serta Undang-Undang Promosi Penggunaan Jaringan Informasi dan Komunikasi serta Perlindungan Informasi.
 
 ## Pasal 1 (Informasi Pribadi yang Dikumpulkan)

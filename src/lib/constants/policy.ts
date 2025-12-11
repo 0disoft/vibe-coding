@@ -8,9 +8,36 @@ export const policy = {
 	effectiveDate: {
 		terms: '2025-12-07',
 		privacy: '2025-12-07',
-		cookie: '2025-12-08'
+		cookie: '2025-12-08',
+		security: '2025-12-11',
+		bugBounty: '2025-12-11'
 	},
 	cpoName: 'Sewon Lim (Founder & Engineer)',
+	// 보안 표준 (암호화 알고리즘 등) - 마크다운 치환용
+	securityStandards: {
+		password: 'Argon2id',
+		data: 'XChaCha20-Poly1305',
+		kdf: 'HKDF (BLAKE3)',
+		integrity: 'BLAKE3',
+		transport: 'TLS 1.3+ / HSTS'
+	},
+	securityReasons: {
+		ko: {
+			password: 'GPU 병렬화 공격에 강하고 메모리 하드(Memory-hard) 함수여서 무차별 대입 공격 방어에 탁월합니다.',
+			data: '모바일 환경에서 AES보다 빠르며, 192비트 논스를 사용해 대규모 데이터 암호화 시에도 키/논스 충돌 위험이 없습니다.',
+			kdf: '단일 런타임 내에서도 키를 논리적으로 분리하고, 키 파생 과정의 암호학적 강도를 보장합니다.',
+			integrity: 'MD5, SHA-1 등 구형 해시 함수보다 훨씬 빠르고 안전하며, 데이터 무결성을 확실하게 보장합니다.',
+			transport: '중간자 공격을 차단하고, 다운그레이드 공격을 방지하여 데이터 전송 구간을 안전하게 보호합니다.'
+		},
+		en: {
+			password: 'Resistant to GPU parallel attacks and memory-hard, making it highly effective against brute-force attacks.',
+			data: 'Faster than AES on mobile devices and uses a 192-bit nonce to eliminate key/nonce collision risks in large-scale encryption.',
+			kdf: 'Logically separates keys within a single runtime and ensures cryptographic strength in key derivation.',
+			integrity: 'Significantly faster and more secure than legacy hashes like MD5/SHA-1, ensuring data integrity.',
+			transport: 'Prevents Man-in-the-Middle (MitM) and downgrade attacks, securing data in transit.'
+		}
+	},
+	thirdPartyProviders: ['Supabase', 'Cloudflare', 'Vercel'],
 	// 개인정보 수탁업체 (국외 이전 포함)
 	// stack.manifest.toml의 모든 잠재적 서비스를 미리 등록
 	dataProcessors: [

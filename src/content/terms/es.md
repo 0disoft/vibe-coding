@@ -2,6 +2,7 @@
 
 > Última actualización: {{LAST_UPDATED}}
 
+
 ## Artículo 1 (Propósito)
 
 Estos Términos regulan los derechos, obligaciones y responsabilidades entre {{SITE_NAME}} (en adelante "la Compañía") y los Usuarios respecto al uso de los servicios proporcionados por la Compañía.

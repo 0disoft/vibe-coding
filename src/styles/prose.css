@@ -25,6 +25,15 @@
 	text-decoration: none;
 }
 
+.prose :where(code) {
+	color: oklch(var(--accent-foreground));
+	background-color: oklch(var(--accent) / 0.3);
+	padding: 0.1em 0.3em;
+	border-radius: 0.25em;
+	font-weight: 500;
+}
+
+
 .prose :where(blockquote) {
 	color: oklch(var(--muted-foreground));
 	border-left-color: oklch(var(--border));

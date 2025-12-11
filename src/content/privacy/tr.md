@@ -2,6 +2,7 @@
 
 > Son güncelleme: {{LAST_UPDATED}}
 
+
 {{SITE_NAME}} (bundan sonra "Şirket" olarak anılacaktır) Kullanıcıların kişisel bilgilerine değer verir ve Kişisel Bilgilerin Korunması Kanunu ile Bilgi ve İletişim Ağlarının Kullanımının Teşviki ve Bilginin Korunması Kanunu'na uyar.
 
 ## Madde 1 (Toplanan Kişisel Bilgiler)

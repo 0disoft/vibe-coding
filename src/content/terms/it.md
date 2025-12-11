@@ -2,6 +2,7 @@
 
 > Ultimo aggiornamento: {{LAST_UPDATED}}
 
+
 ## Articolo 1 (Scopo)
 
 I presenti Termini regolano i diritti, gli obblighi e le responsabilità tra {{SITE_NAME}} (di seguito "la Società") e gli Utenti riguardo all'utilizzo dei servizi forniti dalla Società.

@@ -196,3 +196,34 @@ pnpm dlx sv create ./
   - 같은 그룹 내에서는 알파벳 순서로 정렬
   - `bunx biome check --write <파일경로>`로 자동 수정 가능
 - **적용 시점:** Biome을 린터로 사용하고 `organizeImports` 규칙이 활성화된 프로젝트에서.
+
+---
+
+## [UI / UX / RTL]
+
+### 1. 모바일 메뉴 RTL(아랍어) 호환성 및 유령 레이어 버그
+
+- **증상:**
+  1. 아랍어(RTL) 모드에서 창 너비를 조절하면 모바일 메뉴가 자동으로 튀어나옴 (Pop-in).
+  2. RTL에서 메뉴가 닫힌 상태에서도 X 버튼이 눌리지 않거나, 열렸을 때 애니메이션 방향이 반대임.
+  3. 메뉴가 닫혀 있어도 화면 오른쪽에 보이지 않는 공간(Scrollbar)이 생김.
+- **원인:**
+  - `translate-x-full`은 LTR/RTL에 관계없이 무조건 요소를 오른쪽으로 이동시킴.
+  - 메뉴를 `display: none`하거나 DOM에서 제거하지 않고, 단순히 화면 밖으로 밀어두기만(`transform`) 했기 때문에 레이아웃 엔진이 "보이지 않는 요소"의 위치를 계속 계산함.
+  - RTL 환경에서는 메뉴가 왼쪽에서 시작해야 하는데, `translate-x-full`(오른쪽 이동)이 적용되어 화면 안으로 들어오거나 엉뚱한 위치에 배치됨.
+- **해결 패턴:**
+  - **조건부 렌더링 사용:** `{#if open}` 블록으로 감싸서, 닫혔을 때는 DOM에서 아예 제거함. (가장 확실한 방법)
+  - **논리적 속성 사용:** `left/right` 대신 `start/end`, `translate-x` 대신 `translate-inline` (브라우저 지원 확인 필요) 등을 고려하되, Svelte에서는 `{#if}`가 가장 깔끔함.
+- **적용된 코드:**
+
+  ```svelte
+  <!-- Before (버그 발생): 항상 렌더링하고 CSS로만 숨김 -->
+  <div class="fixed ... {open ? 'translate-x-0' : 'translate-x-full'}">...</div>
+
+  <!-- After (해결): 열릴 때만 렌더링 (RTL 이슈 원천 차단) -->
+  {#if open}
+    <div class="fixed ... translate-x-0">...</div>
+  {/if}
+  ```
+
+- **적용 시점:** 다국어(RTL)를 지원하는 웹사이트의 모바일 메뉴, 사이드바, 슬라이드 패널 구현 시.

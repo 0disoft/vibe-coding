@@ -2,6 +2,7 @@
 
 > Última actualización: {{LAST_UPDATED}}
 
+
 Esta política forma parte de la Política de Privacidad de {{SITE_NAME}} (en adelante, la "Compañía"). La Compañía utiliza cookies y tecnologías similares para proporcionar a los usuarios un entorno de uso del sitio web más rápido y conveniente y para mejorar los servicios.
 
 ## 1. ¿Qué son las Cookies y el Almacenamiento Web?

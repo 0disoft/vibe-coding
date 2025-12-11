@@ -2,6 +2,7 @@
 
 > Zuletzt aktualisiert: {{LAST_UPDATED}}
 
+
 ## Artikel 1 (Zweck)
 
 Diese Bedingungen regeln die Rechte, Pflichten und Verantwortlichkeiten zwischen {{SITE_NAME}} (nachfolgend "das Unternehmen") und den Nutzern bezüglich der Nutzung der vom Unternehmen bereitgestellten Dienste.

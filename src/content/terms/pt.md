@@ -2,6 +2,7 @@
 
 > Última atualização: {{LAST_UPDATED}}
 
+
 ## Artigo 1 (Finalidade)
 
 Estes Termos regulam os direitos, obrigações e responsabilidades entre {{SITE_NAME}} (doravante "a Empresa") e os Usuários em relação ao uso dos serviços fornecidos pela Empresa.

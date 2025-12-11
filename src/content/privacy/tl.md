@@ -2,6 +2,7 @@
 
 > Huling na-update: {{LAST_UPDATED}}
 
+
 {{SITE_NAME}} (mula rito ay tinatawag na "ang Kumpanya") ay nagpapahalaga sa personal na impormasyon ng mga Gumagamit at sumusunod sa Batas sa Proteksyon ng Personal na Impormasyon at Batas sa Pagsulong ng Paggamit ng Mga Network ng Impormasyon at Komunikasyon at Proteksyon ng Impormasyon.
 
 ## Artikulo 1 (Personal na Impormasyong Kinokolekta)

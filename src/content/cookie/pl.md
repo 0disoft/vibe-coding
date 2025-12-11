@@ -2,6 +2,7 @@
 
 > Ostatnia aktualizacja: {{LAST_UPDATED}}
 
+
 Niniejsza polityka stanowi **część Polityki Prywatności** serwisu {{SITE_NAME}} (zwanego dalej "Firmą"). Aby zapewnić szybsze i wygodniejsze korzystanie ze strony internetowej oraz ulepszać nasze usługi, Firma wykorzystuje pliki cookie i podobne technologie.
 
 ## 1. Czym są pliki cookie i pamięć internetowa (Web Storage)?
