@@ -1,5 +1,6 @@
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
+import process from 'node:process';
 
 const messagesDir = path.join(process.cwd(), 'messages');
 console.log('Resolved messages directory:', messagesDir);

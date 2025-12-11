@@ -14,6 +14,11 @@
 		"format": "biome format --write .",
 		"lint": "biome check .",
 		"lint:fix": "biome check --fix .",
+		"update:cookie": "node src/scripts/update_cookie_messages.js",
+		"update:msgs": "node src/scripts/update_messages_18_langs.js",
+		"update:missing": "node src/scripts/update_missing_privacy_messages.js",
+		"gen:cookie": "node src/scripts/generate_translated_cookie_policies_full.js",
+		"fix:newlines": "node src/scripts/fix_json_newlines.js",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
 		"test:e2e": "playwright test"

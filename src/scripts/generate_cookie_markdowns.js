@@ -1,6 +1,9 @@
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
 
+// ESM environment agnostic __dirname equivalent isn't strictly needed if we use path.resolve relative to CWD,
+// but let's stick to the original logic if it used path.resolve w/o __dirname.
+// Original: path.resolve('src/content/cookie') -> relative to CWD.
 const contentDir = path.resolve('src/content/cookie');
 const sourceFile = path.join(contentDir, 'en.md');
 const destLangs = [

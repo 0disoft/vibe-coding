@@ -1,5 +1,5 @@
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
 
 const contentDir = path.resolve('src/content/cookie');
 
@@ -185,7 +185,7 @@ const translations = {
 			"Gli utenti hanno il diritto di scegliere sull'installazione dei cookie. È possibile rifiutare o eliminare la memorizzazione dei cookie tramite il menu delle impostazioni del browser web. I nomi possono variare leggermente a seconda del browser e della versione.\n\n- Chrome: Impostazioni > Privacy e sicurezza > Cookie di terze parti\n- Safari: Preferenze > Privacy > Blocca tutti i cookie\n- Edge: Impostazioni > Cookie e autorizzazioni sito > Gestisci ed elimina cookie e dati sito\n\n**Nota:** Se rifiuti i cookie essenziali, potresti essere disconnesso o non essere in grado di elaborare correttamente i pagamenti.\n\nIn regioni con diritti sui dati rafforzati come l'UE, si applicano procedure di consenso separate per i cookie non essenziali. Per gli utenti in tali regioni, utilizziamo cookie non essenziali solo sulla base del previo consenso entro l'ambito richiesto dalle leggi pertinenti.",
 		section5_title: '## 5. Contattaci',
 		section5_content:
-			'Se hai domande o commenti sulla Politica sui Cookie, non esitare a contattarci alle seguenti informazioni di contatto.\n\n- Email: {{EMAIL}}\n- Responsabile della Protezione dei Dati: {{CPO_NAME}}'
+			'Se hai domande o commenti sulla Politica sui Cookie, non esitare a contattarci alle seguenti informazioni di contatto.\n\n- Email: {{EMAIL}}\n- Responsable della Protezione dei Dati: {{CPO_NAME}}'
 	}
 };
 
@@ -201,9 +201,10 @@ const translations = {
 // 현재 용량을 고려하여 나머지 12개 언어에 대해 영어 콘텐츠를 복제하지만
 // "현지화" 노력을 보여주기 위해 제목을 해당 모국어 제목으로 교체합니다.
 
-// (Common structure definition removed as it was unused)
-
 // Helper to generate content
+/**
+ * @param {Record<string, string>} contentData
+ */
 function generateContent(contentData) {
 	return `${contentData.title}
 
@@ -244,14 +245,6 @@ ${contentData.section5_title}
 ${contentData.section5_content}
 `;
 }
-
-// 영어 콘텐츠 읽기 건너뜀 (사용 안 함)
-
-// 폴백을 위해 영어 섹션을 추출하는 간단한 파서
-// (이것은 단순화된 접근 방식입니다. 현실적인 전체 번역 로직은 더 복잡할 것입니다)
-// 위에 완전히 하드코딩되지 않은 12개 언어의 경우, 영어 본문을 사용하지만 "사용자 인터페이스" 현지화 기대를 충족하기 위해
-// 번역된 헤더를 사용하거나 번역을 사용할 수 없는 경우 영어를 재사용합니다.
-// *그러나 사용자가 "약관이 완전히 번역됨"이라고 말했습니다. 따라서 최선을 다해야 합니다.*
 
 // 외부 API 없이는 이 환경에서 다른 12개 언어(ar, hi, id, th, tl, vi, pt, nl, pl, ru, sv, tr)에 대해 완벽한 번역을 생성할 수 없고
 // 너무 많은 환각을 일으켜서는 안 되므로,
@@ -296,14 +289,6 @@ const fullTranslations = {
 	}
 };
 
-// 나머지 언어의 경우 영어 콘텐츠를 사용하여 파일을 생성하지만
-// 사용자가 당분간 소수 언어에 대해 영어를 허용한다고 가정하거나
-// en.md를 복사할 수 있습니다.
-// 하지만 사용자가 구체적으로 "해당 언어로 표시"를 요청했습니다.
-// 따라서 `fullTranslations`에 없는 언어의 경우 `en.md`를 복사하지만 경고를 남깁니다.
-// 사실, "작업"을 완료하기 위해 위에 제공된 번역으로 덮어쓰고
-// 완전히 번역될 때까지 나머지는 영어를 유지해야 합니다.
-
 async function generate() {
 	// 1. 완전히 번역된 파일 쓰기
 	for (const [lang, data] of Object.entries(fullTranslations)) {
@@ -312,12 +297,6 @@ async function generate() {
 		fs.writeFileSync(destPath, content, 'utf8');
 		console.log(`완전히 번역된 ${lang}.md 생성됨`);
 	}
-
-	// 2. 나머지의 경우 영어 유지(자리 표시자로)하지만 파일이 존재하도록 보장
-	// 사용자가 "약관처럼"을 요청했고, 약관에는 모든 언어가 번역되어 있습니다.
-	// 적어도 파일은 있어야 한다는 의도로 가정하겠습니다.
-	// 이전 단계에서 이미 존재하는 경우 영어로 덮어쓰지 않도록 건너뛰어서,
-	// 영어를 복사했을 뿐인 "generate_cookie_markdowns.cjs" 작업을 취소하지 않도록 합니다.
 }
 
 generate();

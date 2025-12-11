@@ -1,11 +1,18 @@
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-// src/scripts/replace_privacy_table.cjs -> src/content/privacy
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// src/scripts/replace_privacy_table.js -> src/content/privacy
 const targetDir = path.resolve(__dirname, '../content/privacy');
 
 console.log(`Target directory: ${targetDir}`);
 
+/**
+ * @param {string} directory
+ */
 function processDirectory(directory) {
 	if (!fs.existsSync(directory)) {
 		console.log(`Directory not found: ${directory}`);
