@@ -13,10 +13,10 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
-import { FONT_SIZE_COOKIE, THEME_COOKIE, policy } from '$lib/constants';
-import { paraglideMiddleware } from '$lib/paraglide/server';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
+import { FONT_SIZE_COOKIE, policy, THEME_COOKIE } from '$lib/constants';
+import { paraglideMiddleware } from '$lib/paraglide/server';
 
 // ============================================================================
 // 0. Rate Limiting 핸들러
@@ -24,14 +24,17 @@ import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위�
 // ============================================================================
 
 // 인메모리 Rate Limit 저장소 (서버리스에서는 인스턴스별로 초기화되지만 기본 방어 가능)
-const rateLimitMap = new Map<string, { count: number; resetTime: number; blocked: boolean; blockedUntil: number; }>();
+const rateLimitMap = new Map<
+	string,
+	{ count: number; resetTime: number; blocked: boolean; blockedUntil: number }
+>();
 let sweepTick = 0;
 
 /**
  * 다양한 프록시/CDN 환경에서 실제 클라이언트 IP 추출
  * 플랫폼이 보증하는 헤더를 우선 사용 (Cloudflare 뒤에서 getClientAddress가 프록시 IP 줄 수 있음)
  */
-function getClientIP(event: { request: Request; getClientAddress: () => string; }): string {
+function getClientIP(event: { request: Request; getClientAddress: () => string }): string {
 	const h = event.request.headers;
 
 	// 플랫폼 보증 헤더 우선 (CDN/프록시가 설정)
@@ -174,22 +177,24 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 	// 차단 상태 확인
 	if (record?.blocked && now < record.blockedUntil) {
 		const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
-		return new Response(
-			render429Html(retryAfter),
-			{
-				status: 429,
-				headers: {
-					'Content-Type': 'text/html; charset=utf-8',
-					'Retry-After': String(retryAfter),
-					'Cache-Control': 'private, no-store'
-				}
+		return new Response(render429Html(retryAfter), {
+			status: 429,
+			headers: {
+				'Content-Type': 'text/html; charset=utf-8',
+				'Retry-After': String(retryAfter),
+				'Cache-Control': 'private, no-store'
 			}
-		);
+		});
 	}
 
 	// 차단 해제 또는 새 윈도우 시작
 	if (!record || now >= record.resetTime) {
-		rateLimitMap.set(clientIP, { count: 1, resetTime: now + windowMs, blocked: false, blockedUntil: 0 });
+		rateLimitMap.set(clientIP, {
+			count: 1,
+			resetTime: now + windowMs,
+			blocked: false,
+			blockedUntil: 0
+		});
 	} else {
 		// 기존 윈도우에서 카운트 증가
 		record.count++;
@@ -203,17 +208,14 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 			// 카운트 리셋으로 차단 해제 후 새 윈도우 시작 보장
 			record.count = 0;
 			const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
-			return new Response(
-				render429Html(retryAfter),
-				{
-					status: 429,
-					headers: {
-						'Content-Type': 'text/html; charset=utf-8',
-						'Retry-After': String(retryAfter),
-						'Cache-Control': 'private, no-store'
-					}
+			return new Response(render429Html(retryAfter), {
+				status: 429,
+				headers: {
+					'Content-Type': 'text/html; charset=utf-8',
+					'Retry-After': String(retryAfter),
+					'Cache-Control': 'private, no-store'
 				}
-			);
+			});
 		}
 	}
 
@@ -289,7 +291,7 @@ const handleRootRedirect: Handle = async ({ event, resolve }) => {
 				console.log(`[Root Redirect] Redirecting to /${preferredLocale} based on Accept-Language`);
 			}
 			return new Response(null, {
-				status: 302, // 307(임시) 또는 302(Found) 사용. 
+				status: 302, // 307(임시) 또는 302(Found) 사용.
 				// 검색엔진은 보통 루트의 302/307을 보고 로컬라이즈된 페이지를 인덱싱함.
 				headers: { Location: `/${preferredLocale}` }
 			});
@@ -344,4 +346,10 @@ const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 // 5. 핸들러 병합 및 내보내기
 // 순서: 보안 헤더 → Rate Limit → 테마/폰트 → 루트 리다이렉트 → Paraglide
 // 보안 헤더가 맨 앞이어야 모든 응답(429 포함)에 헤더가 붙음
-export const handle: Handle = sequence(handleSecurityHeaders, handleRateLimit, handleThemeAndFont, handleRootRedirect, handleParaglide);
+export const handle: Handle = sequence(
+	handleSecurityHeaders,
+	handleRateLimit,
+	handleThemeAndFont,
+	handleRootRedirect,
+	handleParaglide
+);

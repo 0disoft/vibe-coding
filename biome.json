@@ -7,20 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"includes": [
-			"**/*.ts",
-			"**/*.js",
-			"**/*.json",
-			"**/*.mjs",
-			"**/*.cjs",
-			"**/*.mts",
-			"**/*.cts"
-		],
-		"ignore": [
-			".svelte-kit/**",
-			"build/**",
-			".vibe-coding/TOOLS/**"
-		]
+		"includes": ["**/*.ts", "**/*.js", "**/*.json", "**/*.mjs", "**/*.cjs", "**/*.mts", "**/*.cts"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -56,16 +43,9 @@
 	},
 	"overrides": [
 		{
-			"includes": [
-				"**/*.svelte"
-			],
+			"includes": ["**/*.svelte"],
 			"javascript": {
-				"globals": [
-					"$$Generic",
-					"$$Slots",
-					"$$Props",
-					"$$Events"
-				]
+				"globals": ["$$Generic", "$$Slots", "$$Props", "$$Events"]
 			},
 			"linter": {
 				"enabled": false
@@ -75,9 +55,7 @@
 			}
 		},
 		{
-			"includes": [
-				"src/lib/paraglide/**"
-			],
+			"includes": ["src/lib/paraglide/**"],
 			"linter": {
 				"enabled": false
 			},
@@ -86,9 +64,7 @@
 			}
 		},
 		{
-			"includes": [
-				"vite.config.ts"
-			],
+			"includes": ["vite.config.ts"],
 			"linter": {
 				"rules": {
 					"suspicious": {

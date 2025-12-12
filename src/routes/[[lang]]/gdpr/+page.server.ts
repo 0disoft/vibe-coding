@@ -8,9 +8,9 @@ import type { PageServerLoad } from './$types';
 
 // 빌드 타임에 모든 마크다운 파일을 문자열로 포함 (서버리스 환경 호환)
 const gdprFiles = import.meta.glob('/src/content/gdpr/*.md', {
-  query: '?raw',
-  import: 'default',
-  eager: true
+	query: '?raw',
+	import: 'default',
+	eager: true
 }) as Record<string, string>;
 
 // 정적 문서이므로 빌드 타임에 프리렌더
@@ -21,44 +21,44 @@ export const prerender = true;
  * 해당 언어 파일이 없으면 영어(en)로 fallback
  */
 export const load: PageServerLoad = ({ url }) => {
-  // Paraglide를 사용하여 URL에서 locale 추출
-  const lang = extractLocaleFromUrl(url.href) || 'en';
+	// Paraglide를 사용하여 URL에서 locale 추출
+	const lang = extractLocaleFromUrl(url.href) || 'en';
 
-  // 파일 경로 매칭 (import.meta.glob 키 형식)
-  const getFilePath = (locale: string) => `/src/content/gdpr/${locale}.md`;
+	// 파일 경로 매칭 (import.meta.glob 키 형식)
+	const getFilePath = (locale: string) => `/src/content/gdpr/${locale}.md`;
 
-  let markdown = gdprFiles[getFilePath(lang)];
-  let actualLang = lang;
+	let markdown = gdprFiles[getFilePath(lang)];
+	let actualLang = lang;
 
-  // 해당 언어 파일이 없으면 영어로 fallback
-  if (!markdown) {
-    markdown = gdprFiles[getFilePath('en')];
-    actualLang = 'en';
+	// 해당 언어 파일이 없으면 영어로 fallback
+	if (!markdown) {
+		markdown = gdprFiles[getFilePath('en')];
+		actualLang = 'en';
 
-    // 영어 파일조차 없으면 500 에러
-    if (!markdown) {
-      throw error(500, 'GDPR content not found');
-    }
-  }
+		// 영어 파일조차 없으면 500 에러
+		if (!markdown) {
+			throw error(500, 'GDPR content not found');
+		}
+	}
 
-  // 템플릿 변수 치환
-  markdown = markdown
-    .replace(/\{\{SITE_NAME\}\}/g, site.name)
-    .replace(/\{\{EMAIL\}\}/g, site.email)
-    .replace(/\{\{CPO_NAME\}\}/g, policy.cpoName)
-    .replace(
-      /\{\{LAST_UPDATED\}\}/g,
-      new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(
-        new Date(policy.effectiveDate.privacy) // GDPR 유효일은 개인정보처리방침과 동일하게 맞춤 (또는 별도 상수로 분리 가능)
-      )
-    );
+	// 템플릿 변수 치환
+	markdown = markdown
+		.replace(/\{\{SITE_NAME\}\}/g, site.name)
+		.replace(/\{\{EMAIL\}\}/g, site.email)
+		.replace(/\{\{CPO_NAME\}\}/g, policy.cpoName)
+		.replace(
+			/\{\{LAST_UPDATED\}\}/g,
+			new Intl.DateTimeFormat(actualLang, { dateStyle: 'long' }).format(
+				new Date(policy.effectiveDate.privacy) // GDPR 유효일은 개인정보처리방침과 동일하게 맞춤 (또는 별도 상수로 분리 가능)
+			)
+		);
 
-  // 마크다운을 HTML로 변환 (marked는 동기 함수)
-  const content = marked.parse(markdown) as string;
+	// 마크다운을 HTML로 변환 (marked는 동기 함수)
+	const content = marked.parse(markdown) as string;
 
-  return {
-    content,
-    lang: actualLang,
-    isFallback: actualLang !== lang
-  };
+	return {
+		content,
+		lang: actualLang,
+		isFallback: actualLang !== lang
+	};
 };

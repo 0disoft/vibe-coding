@@ -26,4 +26,3 @@ export const site = {
 		github: 'https://github.com/0disoft/vibe-coding'
 	}
 } as const satisfies SiteConfig;
-
