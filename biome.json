@@ -15,6 +15,11 @@
 			"**/*.cjs",
 			"**/*.mts",
 			"**/*.cts"
+		],
+		"ignore": [
+			".svelte-kit/**",
+			"build/**",
+			".vibe-coding/TOOLS/**"
 		]
 	},
 	"formatter": {
