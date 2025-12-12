@@ -177,6 +177,9 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 	// 차단 상태 확인
 	if (record?.blocked && now < record.blockedUntil) {
 		const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
+		console.warn(
+			`[RateLimit] Blocked request from ${clientIP} (ID: ${event.locals.requestId}) to ${pathname}. Retry after ${retryAfter}s.`
+		);
 		return new Response(render429Html(retryAfter), {
 			status: 429,
 			headers: {
@@ -208,6 +211,9 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 			// 카운트 리셋으로 차단 해제 후 새 윈도우 시작 보장
 			record.count = 0;
 			const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
+			console.warn(
+				`[RateLimit] Triggered block for ${clientIP} (ID: ${event.locals.requestId}) on ${pathname}. Retry after ${retryAfter}s.`
+			);
 			return new Response(render429Html(retryAfter), {
 				status: 429,
 				headers: {
