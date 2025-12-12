@@ -1,5 +1,6 @@
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
-import { extname, join } from "node:path";
+import { dirname, extname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const DRY_RUN = process.argv.includes("--dry-run");
 
@@ -111,7 +112,12 @@ function fixMarkdownKeepingCodeFences(content: string): { content: string; count
   return { content: lines.join(lineEnding), count };
 }
 
-async function fixFile(path: string): Promise<number> {
+interface FixResult {
+  file: string;
+  count: number;
+}
+
+async function fixFile(path: string): Promise<FixResult | null> {
   const original = await readFile(path, "utf-8");
   const fixed = fixMarkdownKeepingCodeFences(original);
 
@@ -120,8 +126,35 @@ async function fixFile(path: string): Promise<number> {
     if (!DRY_RUN) {
       await writeFile(path, fixed.content, "utf-8");
     }
+    return { file: path, count: fixed.count };
   }
-  return fixed.count;
+  return null;
+}
+
+function formatReport(results: FixResult[], target: string, totalFiles: number, dryRun: boolean): string {
+  const lines: string[] = [];
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+
+  lines.push(`Fix Bold Issues Report - ${timestamp}`);
+  lines.push(`Target: ${target}`);
+  lines.push(`Mode: ${dryRun ? "DRY RUN (파일 미수정)" : "APPLIED (파일 수정됨)"}`);
+  lines.push("=".repeat(50));
+
+  if (results.length === 0) {
+    lines.push("\n✅ 수정이 필요한 파일이 없습니다.");
+  } else {
+    lines.push(`\n📝 수정된 파일: ${results.length}개 / 전체 ${totalFiles}개\n`);
+
+    for (const r of results) {
+      lines.push(`  📄 ${r.file} (${r.count}건)`);
+    }
+
+    const totalFixes = results.reduce((sum, r) => sum + r.count, 0);
+    lines.push("\n" + "─".repeat(50));
+    lines.push(`총 ${totalFixes}건 수정${dryRun ? " 예정" : " 완료"}`);
+  }
+
+  return lines.join("\n");
 }
 
 async function main() {
@@ -149,12 +182,21 @@ async function main() {
 
     console.log(`Found ${files.length} markdown file(s).`);
 
-    let totalFixed = 0;
+    const results: FixResult[] = [];
     for (const file of files) {
-      totalFixed += await fixFile(file);
+      const result = await fixFile(file);
+      if (result) results.push(result);
     }
 
-    console.log(`Done. Total fixes: ${totalFixed}`);
+    const totalFixes = results.reduce((sum, r) => sum + r.count, 0);
+    console.log(`Done. Total fixes: ${totalFixes}`);
+
+    // 결과 파일 저장
+    const report = formatReport(results, TARGET, files.length, DRY_RUN);
+    const scriptDir = dirname(fileURLToPath(import.meta.url));
+    const reportPath = join(scriptDir, "fix-bold-report.txt");
+    await writeFile(reportPath, report, "utf-8");
+    console.log(`\n📝 리포트 저장됨: ${reportPath}`);
   } catch (error) {
     console.error("Error:", error);
   }
