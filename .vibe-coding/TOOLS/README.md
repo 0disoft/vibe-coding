@@ -6,9 +6,58 @@
 
 | 도구 | 용도 | 빠른 실행 |
 |------|------|-----------|
+| [a11y-ux-patterns.ts](#a11y-ux-patternsts) | 접근성 및 UX 패턴 검사 | `bun .vibe-coding/TOOLS/a11y-ux-patterns.ts` |
 | [fix-bold-issues.ts](#fix-bold-issuests) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
 | [lint-patterns.ts](#lint-patternsts) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
 | [security-patterns.ts](#security-patternsts) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
+
+---
+
+## a11y-ux-patterns.ts
+
+Svelte/HTML/CSS 파일에서 접근성 및 UX 패턴을 검사합니다.
+
+### a11y-ux-patterns 실행 방법
+
+```bash
+# 기본: src 전체 스캔
+bun .vibe-coding/TOOLS/a11y-ux-patterns.ts
+
+# 특정 디렉토리
+bun .vibe-coding/TOOLS/a11y-ux-patterns.ts src/lib/components
+
+# 오류만 표시
+bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --errors-only
+```
+
+### a11y-ux-patterns 감지 규칙
+
+#### 접근성 (a11y)
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `a11y-img-alt-missing` | ❌ 오류 | `<img>` alt 속성 누락 |
+| `a11y-empty-link` | ❌ 오류 | 빈 `<a>` 태그 |
+| `a11y-button-type` | ⚠️ 경고 | `<button>` type 속성 누락 |
+| `a11y-tabindex-positive` | ⚠️ 경고 | 양수 tabindex 사용 |
+| `a11y-popup-no-expanded` | ⚠️ 경고 | aria-haspopup에 aria-expanded 누락 |
+| `a11y-multiple-main` | ❌ 오류 | `<main>` 요소 중복 |
+
+#### RTL 대응
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `rtl-position-class` | ⚠️ 경고 | `left-0`, `right-0` → `start-0`, `end-0` |
+| `rtl-margin-class` | 💡 정보 | `ml-*`, `mr-*` → `ms-*`, `me-*` |
+| `rtl-padding-class` | 💡 정보 | `pl-*`, `pr-*` → `ps-*`, `pe-*` |
+| `rtl-text-align-class` | 💡 정보 | `text-left`, `text-right` → `text-start`, `text-end` |
+
+#### 모바일/PWA
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `mobile-no-zoom` | ❌ 오류 | `user-scalable=no`, `maximum-scale=1` 금지 |
+| `mobile-tap-highlight-global` | ⚠️ 경고 | 전역 tap-highlight 제거 비권장 |
 
 ---
 
@@ -75,7 +124,7 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog --dry-run
 
 타입스크립트 코드에서 안티패턴을 감지합니다. `elegant-typescript-patterns.md` 문서 기반.
 
-### 실행 방법
+### lint-patterns 실행 방법
 
 ```bash
 # 기본: src 디렉토리 전체 스캔
@@ -91,7 +140,7 @@ bun .vibe-coding/TOOLS/lint-patterns.ts src/lib/utils.ts
 bun .vibe-coding/TOOLS/lint-patterns.ts --errors-only
 ```
 
-### 감지 규칙
+### lint-patterns 감지 규칙
 
 #### TypeScript (script scope)
 
