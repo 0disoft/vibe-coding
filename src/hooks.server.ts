@@ -13,11 +13,11 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
-import type { Handle, HandleServerError } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 import { FONT_SIZE_COOKIE, policy, THEME_COOKIE } from '$lib/constants';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { checkRateLimit, getClientIP, type RateLimitRule } from '$lib/server/rate-limiter';
+import { type Handle, type HandleServerError, isHttpError } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 
 // ============================================================================
 // 0. Rate Limiting 핸들러
@@ -304,15 +304,36 @@ export const handle: Handle = sequence(
 );
 
 // [Handler] 서버 에러 핸들링
+// isHttpError를 사용해 의도된 에러(4xx)와 예기치 못한 에러(5xx)를 구분합니다.
 export const handleError: HandleServerError = ({ error, event }) => {
 	const requestId = event.locals.requestId || 'unknown';
-	const message = 'Internal Server Error';
 
-	// 서버 측 로그 (실제 운영 환경에서는 Sentry 등으로 전송 권장)
+	// 에러 객체에서 status 추출 (Safe Duck Typing)
+	const status = error && typeof error === 'object' && 'status' in error
+		? (error as { status: number; }).status
+		: 500;
+
+	// 1. 의도된 HTTP 에러 (404 Not Found, 401 Unauthorized 등)
+	if (isHttpError(error) || status < 500) {
+		// 404는 로그를 남기지 않거나, 필요하다면 access log 수준으로 처리
+		if (status !== 404) {
+			const msg = (error as { body?: { message: string; }; })?.body?.message || (error as Error).message;
+			console.warn(`[${requestId}] HTTP Error ${status}:`, msg);
+		}
+
+		// 클라이언트에게 원래 메시지 전달 ("Not Found" 등)
+		return {
+			message: (error as { body?: { message: string; }; })?.body?.message || 'Error',
+			requestId
+		};
+	}
+
+	// 2. 예기치 못한 서버 시스템 에러 (500)
 	console.error(`[${requestId}] Server Error:`, error);
 
+	// 보안상 상세 에러 내용은 숨기고 일반적인 메시지 반환
 	return {
-		message,
+		message: 'Internal Server Error',
 		requestId
 	};
 };
