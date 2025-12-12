@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 // 규칙 스코프 정의
 type RuleScope = 'script' | 'markup' | 'all' | 'server-only';
+type CommentMode = 'js' | 'css' | 'markup';
 
 // 감지할 코드 패턴 정의
 interface LintRule {
@@ -154,7 +155,7 @@ const RULES: LintRule[] = [
 ];
 
 // 파일 확장자 필터
-const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte'];
+const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte', '.css', '.html'];
 
 // 무시할 경로 패턴 (경로 세그먼트 시작/끝 모두 매칭)
 const IGNORE_PATTERNS = [
@@ -244,37 +245,124 @@ async function walk(dir: string): Promise<string[]> {
 }
 
 /**
- * 문자열 리터럴 밖의 // 주석만 제거 (https:// 같은 URL 보호)
+ * 모드별 주석 제거 및 라인 정제
+ * - js: 문자열 고려하여 // 및 /* 내부 주석 제거 (블록 시작 감지 지원)
+ * - css: /* 제거
+ * - markup: <!-- --> 제거 (//, /* 는 무시)
  */
-function stripLineComment(line: string): string {
+function stripComments(
+	line: string,
+	mode: CommentMode,
+	inBlock: boolean
+): { line: string; inBlock: boolean; } {
+	let result = '';
+	let i = 0;
+	const len = line.length;
+	let currentInBlock = inBlock;
+
+	// JS String state
 	let inSingle = false;
 	let inDouble = false;
 	let inTemplate = false;
 	let escaped = false;
 
-	for (let i = 0; i < line.length - 1; i++) {
-		const ch = line[i];
+	while (i < len) {
+		if (currentInBlock) {
+			// 블록 주석 닫힘 찾기 */
+			// CSS/JS: */, Markup: -->
+			const closeMarker = mode === 'markup' ? '-->' : '*/';
+			const closeIdx = line.indexOf(closeMarker, i);
+
+			if (closeIdx === -1) {
+				// 닫는 마커가 없으면 이번 줄은 통째로 주석 처리됨 (빈 문자열 반환 아님, 스킵해야 함)
+				// 다만 여기서는 result에 아무것도 추가 안 함
+				return { line: result, inBlock: true };
+			}
+
+			// 주석 닫힘
+			i = closeIdx + closeMarker.length;
+			currentInBlock = false;
+			continue;
+		}
+
+		const char = line[i];
 		const next = line[i + 1];
 
-		if (escaped) {
+
+		// JS 모드에서만 문자열 트래킹
+		if (mode === 'js') {
+			if (!escaped && char === '\\') {
+				// 문자열/템플릿 내부일 때만 이스케이프 처리
+				if (inSingle || inDouble || inTemplate) {
+					escaped = true;
+				}
+				result += char;
+				i++;
+				continue;
+			}
+			if (!escaped) {
+				if (char === "'" && !inDouble && !inTemplate) inSingle = !inSingle;
+				else if (char === '"' && !inSingle && !inTemplate) inDouble = !inDouble;
+				else if (char === '`' && !inSingle && !inDouble) inTemplate = !inTemplate;
+			}
 			escaped = false;
-			continue;
-		}
-		if (ch === '\\') {
-			escaped = true;
-			continue;
+
+			// 문자열 밖에서만 주석 체크
+			if (!inSingle && !inDouble && !inTemplate) {
+				// 1. 한 줄 주석 (//)
+				if (char === '/' && next === '/') {
+					break;
+				}
+				// 2. 블록 주석 (/*)
+				if (char === '/' && next === '*') {
+					currentInBlock = true;
+					i += 2;
+					continue;
+				}
+			}
+		} else if (mode === 'css') {
+			// CSS 모드: 문자열 트래킹 (', ")
+			if (!escaped && char === '\\') {
+				// CSS에서 백슬래시는 보통 이스케이프
+				escaped = true;
+				result += char;
+				i++;
+				continue;
+			}
+			if (!escaped) {
+				if (char === "'" && !inDouble) inSingle = !inSingle;
+				else if (char === '"' && !inSingle) inDouble = !inDouble;
+			}
+			escaped = false;
+
+			// 문자열 밖에서만 블록 주석 시작 체크
+			if (!inSingle && !inDouble) {
+				if (char === '/' && next === '*') {
+					currentInBlock = true;
+					i += 2;
+					continue;
+				}
+			}
+		} else {
+			// Markup 모드 등 (기존 로직: 1. // 무시, 2. 블록 주석 시작)
+			// 문자열 밖인지 체크할 필요 없음 (HTML 주석은 문자열 안에서도 유효할 수 있지만, 보통은 태그 밖)
+			// 여기서는 단순히 <!-- 만 체크 (기존 로직 유지)
+
+			const isBlockStart =
+				(mode === 'markup' && char === '<' && next === '!' && line.slice(i, i + 4) === '<!--');
+
+			if (isBlockStart) {
+				currentInBlock = true;
+				i += 4;
+				continue;
+			}
 		}
 
-		if (!inDouble && !inTemplate && ch === "'") inSingle = !inSingle;
-		else if (!inSingle && !inTemplate && ch === '"') inDouble = !inDouble;
-		else if (!inSingle && !inDouble && ch === '`') inTemplate = !inTemplate;
-
-		if (!inSingle && !inDouble && !inTemplate && ch === '/' && next === '/') {
-			return line.slice(0, i);
-		}
+		result += char;
+		i++;
 	}
 
-	return line;
+	return { line: result, inBlock: currentInBlock };
 }
 
 function lintLines(
@@ -283,7 +371,7 @@ function lintLines(
 	rules: LintRule[],
 	lineOffset: number = 0,
 	skipLineRanges: Array<{ start: number; end: number; }> = [],
-	isMarkup: boolean = false
+	commentMode: CommentMode = 'js'
 ): LintResult[] {
 	const results: LintResult[] = [];
 	let inBlockComment = false;
@@ -293,70 +381,54 @@ function lintLines(
 	for (let lineNum = 0; lineNum < lines.length; lineNum++) {
 		const actualLine = lineNum + lineOffset;
 
-		// 제외 범위 체크 (script/style 블록 등) - half-open으로 경계 오차 방지
+		// 제외 범위 체크
 		if (skipLineRanges.some((r) => actualLine >= r.start && actualLine < r.end)) {
 			continue;
 		}
 
 		let line = lines[lineNum];
 
-
-		// 블록 주석 상태 처리
-		if (inBlockComment) {
-			const closeIdx = line.indexOf('*/');
-			if (closeIdx !== -1) {
-				inBlockComment = false;
-				// 주석 닫힘 이후 코드가 있으면 검사 대상
-				line = line.slice(closeIdx + 2);
-			} else {
-				continue;
-			}
-		}
-
-		// 블록 주석 시작 처리 (한 줄에서 열고 닫는 경우 vs 여러 줄)
-		const openIdx = line.indexOf('/*');
-		if (openIdx !== -1) {
-			const closeIdx = line.indexOf('*/', openIdx + 2);
-			if (closeIdx !== -1) {
-				// 같은 줄에서 닫힘: 주석 부분만 제거
-				line = line.slice(0, openIdx) + line.slice(closeIdx + 2);
-			} else {
-				// 다음 줄로 이어짐
-				line = line.slice(0, openIdx);
-				inBlockComment = true;
-			}
-		}
-
-		// 한 줄 주석 건너뜀 (줄 전체가 주석인 경우)
-		if (line.trim().startsWith('//')) continue;
-
-		// 줄 끝 주석 제거 (문자열 리터럴 내 // 보호, Markup에서는 //가 텍스트일 수 있으므로 스킵)
-		if (!isMarkup) {
-			line = stripLineComment(line);
-		}
+		// 1. 통합 주석 처리 (모드별 / 문자열 안전)
+		const stripped = stripComments(line, commentMode, inBlockComment);
+		inBlockComment = stripped.inBlock;
+		line = stripped.line;
 
 		// 빈 줄이면 건너뜀
 		if (line.trim() === '') continue;
 
+		// ... 나머지 로직 (DEV 블록 등) 유지 ...
+
 		// DEV 블록 추적 (if, {, } 단위로 깊이 계산)
 		const hasDevGuard = /import\.meta\.env\.DEV/.test(line);
+		const openBraces = (line.match(/{/g) || []).length;
+		const closeBraces = (line.match(/}/g) || []).length;
 
-		// DEV 가드가 있는 줄에서 블록 시작
+		const pending = devGuardPending;
+
 		if (hasDevGuard && devBlockDepth === 0) {
-			// DEV 가드 줄의 중괄호 차이로 깊이 계산 (임의로 1 설정 X)
-			const openBraces = (line.match(/{/g) || []).length;
-			const closeBraces = (line.match(/}/g) || []).length;
-			devBlockDepth = openBraces - closeBraces;
+			const diff = openBraces - closeBraces;
+			if (diff > 0) devBlockDepth = diff;
+			else devGuardPending = true;
+		} else if (pending) {
+			const diff = openBraces - closeBraces;
+			// 다음 줄이 { 로 블록을 여는 스타일
+			if (openBraces > 0) {
+				devBlockDepth = Math.max(0, diff);
+			}
+			// 블록을 열든 말든, pending은 이 줄에서 소비
+			devGuardPending = false;
 		} else if (devBlockDepth > 0) {
-			// DEV 블록 내부에서 깊이 갱신
-			devBlockDepth += (line.match(/{/g) || []).length;
-			devBlockDepth -= (line.match(/}/g) || []).length;
+			devBlockDepth += openBraces - closeBraces;
 			if (devBlockDepth < 0) devBlockDepth = 0;
 		}
 
 		for (const rule of rules) {
 			// DEV 블록 내부이거나, 같은 줄에 DEV 가드가 있으면 console 규칙 건너뜀
-			if (rule.id === 'no-console-outside-dev' && (devBlockDepth > 0 || hasDevGuard)) continue;
+			if (
+				rule.id === 'no-console-outside-dev' &&
+				(devBlockDepth > 0 || hasDevGuard || pending)
+			)
+				continue;
 
 			// private env 규칙: 서버 파일이면 건너뜀
 			if (rule.id === 'no-private-env-client' && isServerFile(filePath)) continue;
@@ -418,7 +490,7 @@ function lintContent(content: string, filePath: string): LintResult[] {
 		// Script 블록 검사 (라인 오프셋 적용)
 		for (const block of scriptBlocks) {
 			const lines = block.content.split('\n');
-			results.push(...lintLines(lines, filePath, scriptRules, block.startLine, [], false)); // script는 markup 아님
+			results.push(...lintLines(lines, filePath, scriptRules, block.startLine, [], 'js')); // script
 		}
 
 		// 마크업 검사 (script/style 블록 제외)
@@ -427,15 +499,15 @@ function lintContent(content: string, filePath: string): LintResult[] {
 			...styleBlocks.map((b) => ({ start: b.startLine, end: b.endLine }))
 		];
 		const fullLines = content.split('\n');
-		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges, true)); // isMarkup = true
+		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges, 'markup')); // markup mode
 	} else {
 		// 일반 TS/JS 파일
 		const lines = content.split('\n');
-		results.push(...lintLines(lines, filePath, scriptRules));
+		results.push(...lintLines(lines, filePath, scriptRules, 0, [], 'js'));
 
 		// 서버 파일이면 브라우저 전역 객체 검사
 		if (isServer) {
-			results.push(...lintLines(lines, filePath, serverRules, 0, [], false));
+			results.push(...lintLines(lines, filePath, serverRules, 0, [], 'js'));
 		}
 	}
 
@@ -539,8 +611,10 @@ async function main() {
 		const scriptDir = dirname(fileURLToPath(import.meta.url));
 		const reportsDir = join(scriptDir, 'reports');
 		await mkdir(reportsDir, { recursive: true });
-		const reportPath = join(reportsDir, 'lint-report.txt');
+
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+		const reportPath = join(reportsDir, `lint-report-${timestamp}.txt`);
+
 		const header = `Lint Report - ${timestamp}\nTarget: ${TARGET}\n${'='.repeat(40)}\n`;
 		await writeFile(reportPath, header + report, 'utf-8');
 		console.log(`\n📝 리포트 저장됨: ${reportPath}`);

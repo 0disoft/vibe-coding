@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url';
 
 // 규칙 스코프 정의
 type RuleScope = 'script' | 'markup' | 'all' | 'server-only' | 'config';
+type CommentMode = 'js' | 'css' | 'markup';
 
 // 보안 규칙 정의
 interface SecurityRule {
@@ -460,37 +461,123 @@ async function walk(dir: string): Promise<string[]> {
 }
 
 /**
- * 문자열 리터럴 밖의 // 주석만 제거 (https:// 같은 URL 보호)
+ * 모드별 주석 제거 및 라인 정제
+ * - js: 문자열 고려하여 // 및 /* 내부 주석 제거 (블록 시작 감지 지원)
+ * - css: /* 제거
+ * - markup: <!-- --> 제거 (//, /* 는 무시)
  */
-function stripLineComment(line: string): string {
+function stripComments(
+	line: string,
+	mode: CommentMode,
+	inBlock: boolean
+): { line: string; inBlock: boolean; } {
+	let result = '';
+	let i = 0;
+	const len = line.length;
+	let currentInBlock = inBlock;
+
+	// JS String state
 	let inSingle = false;
 	let inDouble = false;
 	let inTemplate = false;
 	let escaped = false;
 
-	for (let i = 0; i < line.length - 1; i++) {
-		const ch = line[i];
+	while (i < len) {
+		if (currentInBlock) {
+			// 블록 주석 닫힘 찾기: CSS/JS: */, Markup: -->
+			const closeMarker = mode === 'markup' ? '-->' : '*/';
+			const closeIdx = line.indexOf(closeMarker, i);
+
+			if (closeIdx === -1) {
+				// 닫는 마커가 없으면 이번 줄은 통째로 주석 처리
+				return { line: result, inBlock: true };
+			}
+
+			// 주석 닫힘
+			i = closeIdx + closeMarker.length;
+			currentInBlock = false;
+			continue;
+		}
+
+		const char = line[i];
 		const next = line[i + 1];
 
-		if (escaped) {
+		// JS 모드에서만 문자열 트래킹
+		if (mode === 'js') {
+			if (!escaped && char === '\\') {
+				// 문자열/템플릿 내부일 때만 이스케이프 처리
+				if (inSingle || inDouble || inTemplate) {
+					escaped = true;
+				}
+				result += char;
+				i++;
+				continue;
+			}
+			if (!escaped) {
+				if (char === "'" && !inDouble && !inTemplate) inSingle = !inSingle;
+				else if (char === '"' && !inSingle && !inTemplate) inDouble = !inDouble;
+				else if (char === '`' && !inSingle && !inDouble) inTemplate = !inTemplate;
+			}
 			escaped = false;
-			continue;
-		}
-		if (ch === '\\') {
-			escaped = true;
-			continue;
+
+			// 문자열 밖에서만 주석 체크
+			if (!inSingle && !inDouble && !inTemplate) {
+				// 1. 한 줄 주석 (//)
+				if (char === '/' && next === '/') {
+					break;
+				}
+				// 2. 블록 주석 (/*)
+				if (char === '/' && next === '*') {
+					currentInBlock = true;
+					i += 2;
+					continue;
+				}
+			}
 		}
 
-		if (!inDouble && !inTemplate && ch === "'") inSingle = !inSingle;
-		else if (!inSingle && !inTemplate && ch === '"') inDouble = !inDouble;
-		else if (!inSingle && !inDouble && ch === '`') inTemplate = !inTemplate;
+		else if (mode === 'css') {
+			// CSS 모드: 문자열 트래킹 (', ")
+			if (!escaped && char === '\\') {
+				// CSS에서 백슬래시는 보통 이스케이프
+				escaped = true;
+				result += char;
+				i++;
+				continue;
+			}
+			if (!escaped) {
+				if (char === "'" && !inDouble) inSingle = !inSingle;
+				else if (char === '"' && !inSingle) inDouble = !inDouble;
+			}
+			escaped = false;
 
-		if (!inSingle && !inDouble && !inTemplate && ch === '/' && next === '/') {
-			return line.slice(0, i);
+			// 문자열 밖에서만 블록 주석 시작 체크
+			if (!inSingle && !inDouble) {
+				if (char === '/' && next === '*') {
+					currentInBlock = true;
+					i += 2;
+					continue;
+				}
+			}
+		} else {
+			// Markup 모드 등 (기존 로직: 1. // 무시, 2. 블록 주석 시작)
+			// 문자열 밖인지 체크할 필요 없음 (HTML 주석은 문자열 안에서도 유효할 수 있지만, 보통은 태그 밖)
+			// 여기서는 단순히 <!-- 만 체크 (기존 로직 유지)
+
+			const isBlockStart =
+				(mode === 'markup' && char === '<' && next === '!' && line.slice(i, i + 4) === '<!--');
+
+			if (isBlockStart) {
+				currentInBlock = true;
+				i += 4;
+				continue;
+			}
 		}
+
+		result += char;
+		i++;
 	}
 
-	return line;
+	return { line: result, inBlock: currentInBlock };
 }
 
 /**
@@ -509,7 +596,7 @@ function lintLines(
 	rules: SecurityRule[],
 	lineOffset: number = 0,
 	skipLineRanges: Array<{ start: number; end: number; }> = [],
-	isMarkup: boolean = false
+	commentMode: CommentMode = 'js'
 ): SecurityResult[] {
 	const results: SecurityResult[] = [];
 	let inBlockComment = false;
@@ -527,37 +614,10 @@ function lintLines(
 		// suppression을 먼저 추출 (주석 제거 전에)
 		const suppressed = extractSuppressedRuleIds(rawLine);
 
-
-		// 블록 주석 상태 처리
-		if (inBlockComment) {
-			const closeIdx = line.indexOf('*/');
-			if (closeIdx !== -1) {
-				inBlockComment = false;
-				// 주석 닫힘 이후 코드가 있으면 검사 대상
-				line = line.slice(closeIdx + 2);
-			} else {
-				continue;
-			}
-		}
-
-		// 블록 주석 시작 처리 (한 줄에서 열고 닫는 경우 vs 여러 줄)
-		const openIdx = line.indexOf('/*');
-		if (openIdx !== -1) {
-			const closeIdx = line.indexOf('*/', openIdx + 2);
-			if (closeIdx !== -1) {
-				// 같은 줄에서 닫힘: 주석 부분만 제거
-				line = line.slice(0, openIdx) + line.slice(closeIdx + 2);
-			} else {
-				// 다음 줄로 이어짐
-				line = line.slice(0, openIdx);
-				inBlockComment = true;
-			}
-		}
-
-		// 한 줄 주석 제거 (문자열 리터럴 내 // 보호)
-		if (!isMarkup) {
-			line = stripLineComment(line);
-		}
+		// 통합 주석 처리
+		const stripped = stripComments(line, commentMode, inBlockComment);
+		inBlockComment = stripped.inBlock;
+		line = stripped.line;
 
 		// 빈 줄이면 건너뜀
 		if (line.trim() === '') continue;
@@ -680,6 +740,7 @@ function lintCookieSetOptions(content: string, filePath: string): SecurityResult
 function lintContent(content: string, filePath: string): SecurityResult[] {
 	const results: SecurityResult[] = [];
 	const isSvelte = filePath.endsWith('.svelte');
+	const isHtml = filePath.endsWith('.html');
 	const isCss = filePath.endsWith('.css');
 	const isServer = isServerFile(filePath);
 
@@ -688,13 +749,13 @@ function lintContent(content: string, filePath: string): SecurityResult[] {
 	const serverRules = RULES.filter((r) => r.scope === 'server-only');
 	const configRules = RULES.filter((r) => r.scope === 'config');
 
-	if (isSvelte) {
+	if (isSvelte || isHtml) {
 		const scriptBlocks = extractScriptBlocks(content);
 		const styleBlocks = extractStyleBlocks(content);
 
 		for (const block of scriptBlocks) {
 			const lines = block.content.split('\n');
-			results.push(...lintLines(lines, filePath, scriptRules, block.startLine, [], false));
+			results.push(...lintLines(lines, filePath, scriptRules, block.startLine, [], 'js'));
 		}
 
 		const skipRanges = [
@@ -702,33 +763,33 @@ function lintContent(content: string, filePath: string): SecurityResult[] {
 			...styleBlocks.map((b) => ({ start: b.startLine, end: b.endLine }))
 		];
 		const fullLines = content.split('\n');
-		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges, true));
+		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges, 'markup'));
 	} else if (isCss) {
 		const lines = content.split('\n');
 		const cssRules = RULES.filter((r) => r.category === 'CSS');
-		results.push(...lintLines(lines, filePath, cssRules, 0, [], true));
+		results.push(...lintLines(lines, filePath, cssRules, 0, [], 'css'));
 	} else {
 		const lines = content.split('\n');
-		results.push(...lintLines(lines, filePath, scriptRules, 0, [], false));
+		results.push(...lintLines(lines, filePath, scriptRules, 0, [], 'js'));
 
 		if (isServer) {
-			results.push(...lintLines(lines, filePath, serverRules, 0, [], false));
+			results.push(...lintLines(lines, filePath, serverRules, 0, [], 'js'));
 			results.push(...lintCookieSetOptions(content, filePath));
 		}
 
 		// config 파일 검사
 		if (filePath.includes('uno.config') || filePath.includes('unocss.config')) {
-			results.push(...lintLines(lines, filePath, configRules, 0, [], false));
+			results.push(...lintLines(lines, filePath, configRules, 0, [], 'js'));
 		}
 	}
 
-	// Svelte style 블록 CSS 규칙 검사 (isSvelte일 때)
-	if (isSvelte) {
+	// Svelte/HTML style 블록 CSS 규칙 검사
+	if (isSvelte || isHtml) {
 		const styleBlocks = extractStyleBlocks(content);
 		const cssRules = RULES.filter((r) => r.category === 'CSS');
 		for (const block of styleBlocks) {
 			const lines = block.content.split('\n');
-			results.push(...lintLines(lines, filePath, cssRules, block.startLine, [], true));
+			results.push(...lintLines(lines, filePath, cssRules, block.startLine, [], 'css'));
 		}
 	}
 
@@ -833,8 +894,8 @@ async function main() {
 		const scriptDir = dirname(fileURLToPath(import.meta.url));
 		const reportsDir = join(scriptDir, 'reports');
 		await mkdir(reportsDir, { recursive: true });
-		const reportPath = join(reportsDir, 'security-report.txt');
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+		const reportPath = join(reportsDir, `security-report-${timestamp}.txt`);
 		const header = `Security Report - ${timestamp}\nTarget: ${TARGET}\n${'='.repeat(50)}\n`;
 		await writeFile(reportPath, header + report, 'utf-8');
 		console.log(`\n📝 리포트 저장됨: ${reportPath}`);

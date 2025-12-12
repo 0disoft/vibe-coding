@@ -138,7 +138,7 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts --self-test
 
 ## lint-patterns.ts
 
-타입스크립트 코드에서 안티패턴을 감지합니다. `elegant-typescript-patterns.md` 문서 기반.
+타입스크립트, Svelte, HTML, CSS 코드에서 안티패턴을 감지합니다. `elegant-typescript-patterns.md` 문서 기반.
 
 ### lint-patterns 실행 방법
 
@@ -238,6 +238,16 @@ bun .vibe-coding/TOOLS/security-patterns.ts --errors-only
 | `sveltekit-private-env` | ❌ 오류 | 클라이언트에서 `$env/*/private` import |
 | `sveltekit-browser-globals-server` | ❌ 오류 | 서버에서 브라우저 전역 객체 |
 | `sveltekit-searchparams-iterate` | ⚠️ 경고 | `searchParams` 키 전체 순회 (CVE-2025-29920) |
+| `sveltekit-open-redirect` | ❌ 오류 | Open Redirect 취약점 (사용자 입력 리다이렉트) |
+| `sveltekit-cors-wildcard-credentials` | ⚠️ 경고 | CORS `*` + credentials 조합 |
+
+#### 입력 검증
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `input-request-json` | 💡 정보 | `request.json()` 사용 (스키마 검증 필요) |
+| `input-request-formdata` | 💡 정보 | `request.formData()` 사용 (길이 제한 필요) |
+| `input-request-text-arraybuffer` | ⚠️ 경고 | `request.text/arrayBuffer` (대용량 공격 위험) |
 
 #### 기타
 
@@ -247,3 +257,15 @@ bun .vibe-coding/TOOLS/security-patterns.ts --errors-only
 | `ssrf-fetch-user-url` | ⚠️ 경고 | 사용자 URL로 fetch 호출 |
 | `unocss-runtime-mode` | ⚠️ 경고 | UnoCSS 런타임 모드 사용 |
 | `crypto-hardcoded-secret` | ❌ 오류 | 하드코딩된 비밀 의심 |
+
+#### CSS 보안
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `css-import-external` | 💡 정보 | 외부 CSS `@import` (공급망 위험) |
+
+#### TypeScript 타입 안전성
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `ts-any-cast` | ⚠️ 경고 | `as any` 캐스팅 사용 |
