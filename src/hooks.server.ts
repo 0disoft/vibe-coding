@@ -17,46 +17,28 @@ import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 import { FONT_SIZE_COOKIE, policy, THEME_COOKIE } from '$lib/constants';
 import { paraglideMiddleware } from '$lib/paraglide/server';
+import { checkRateLimit, getClientIP, type RateLimitRule } from '$lib/server/rate-limiter';
 
 // ============================================================================
 // 0. Rate Limiting 핸들러
 // IP별 요청 횟수를 추적하여 초당 최대 요청 수를 초과하면 429 응답 반환
 // ============================================================================
 
-// 인메모리 Rate Limit 저장소 (서버리스에서는 인스턴스별로 초기화되지만 기본 방어 가능)
-const rateLimitMap = new Map<
-	string,
-	{ count: number; resetTime: number; blocked: boolean; blockedUntil: number }
->();
-let sweepTick = 0;
-
-/**
- * 다양한 프록시/CDN 환경에서 실제 클라이언트 IP 추출
- * 플랫폼이 보증하는 헤더를 우선 사용 (Cloudflare 뒤에서 getClientAddress가 프록시 IP 줄 수 있음)
- */
-function getClientIP(event: { request: Request; getClientAddress: () => string }): string {
-	const h = event.request.headers;
-
-	// 플랫폼 보증 헤더 우선 (CDN/프록시가 설정)
-	const cf = h.get('cf-connecting-ip');
-	if (cf) return cf;
-
-	const real = h.get('x-real-ip');
-	if (real) return real;
-
-	const xff = h.get('x-forwarded-for')?.split(',')[0]?.trim();
-	if (xff) return xff;
-
-	// 헤더 없으면 SvelteKit 어댑터 사용
-	try {
-		const addr = event.getClientAddress();
-		if (addr) return addr;
-	} catch {
-		// 어댑터에 따라 실패할 수 있음
+// Rate Limit 규칙 정의
+const RATE_LIMIT_RULES: RateLimitRule[] = [
+	{
+		name: 'high-risk',
+		pattern: /^\/(auth|login|signup|reset)/, // 로그인, 가입, 리셋 등 고위험 경로
+		windowMs: 60 * 1000,
+		max: 10 // 1분당 10회로 엄격하게 제한
+	},
+	{
+		name: 'default',
+		pattern: /.*/, // 그 외 모든 경로
+		windowMs: policy.rateLimit.windowMs,
+		max: policy.rateLimit.maxRequests
 	}
-
-	return 'unknown';
-}
+];
 
 /**
  * 정적 파일 요청인지 확인 (Rate Limit 제외 대상)
@@ -86,37 +68,6 @@ function isDocumentNavigation(request: Request): boolean {
 	const mode = request.headers.get('sec-fetch-mode');
 	const accept = request.headers.get('accept') || '';
 	return mode === 'navigate' || accept.includes('text/html');
-}
-
-// Map 사이즈 제한 (메모리 보호 최후 안전장치)
-const MAX_RATE_LIMIT_ENTRIES = 20000;
-
-/**
- * 오래된 Rate Limit 기록 정리 (메모리 누수 방지)
- */
-function maybeSweep(now: number): void {
-	sweepTick++;
-
-	// 사이즈가 너무 커지면 즉시 정리
-	if (rateLimitMap.size > MAX_RATE_LIMIT_ENTRIES) {
-		for (const [key, rec] of rateLimitMap) {
-			if (now >= rec.resetTime && (!rec.blocked || now >= rec.blockedUntil)) {
-				rateLimitMap.delete(key);
-			}
-		}
-		// 그래도 너무 크면 최후의 안전장치
-		if (rateLimitMap.size > MAX_RATE_LIMIT_ENTRIES) rateLimitMap.clear();
-		return;
-	}
-
-	if (sweepTick % 512 !== 0) return; // 512 요청마다 한 번
-
-	for (const [key, rec] of rateLimitMap) {
-		// 차단 해제됐고 윈도우도 만료된 기록 삭제
-		if (now >= rec.resetTime && (!rec.blocked || now >= rec.blockedUntil)) {
-			rateLimitMap.delete(key);
-		}
-	}
 }
 
 /**
@@ -165,21 +116,14 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 		return resolve(event);
 	}
 
-	const now = Date.now();
-	const { maxRequests, windowMs, penaltyMs } = policy.rateLimit;
+	// 모듈을 통한 Rate Limit 검사
+	const { blocked, retryAfter, ruleName } = checkRateLimit(event, RATE_LIMIT_RULES);
 
-	// 주기적으로 오래된 기록 정리
-	maybeSweep(now);
-
-	// 현재 IP의 요청 기록 조회
-	let record = rateLimitMap.get(clientIP);
-
-	// 차단 상태 확인
-	if (record?.blocked && now < record.blockedUntil) {
-		const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
+	if (blocked) {
 		console.warn(
-			`[RateLimit] Blocked request from ${clientIP} (ID: ${event.locals.requestId}) to ${pathname}. Retry after ${retryAfter}s.`
+			`[RateLimit] Triggered block for ${clientIP} (ID: ${event.locals.requestId}) on ${pathname} [Rule: ${ruleName}]. Retry after ${retryAfter}s.`
 		);
+
 		return new Response(render429Html(retryAfter), {
 			status: 429,
 			headers: {
@@ -188,41 +132,6 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 				'Cache-Control': 'private, no-store'
 			}
 		});
-	}
-
-	// 차단 해제 또는 새 윈도우 시작
-	if (!record || now >= record.resetTime) {
-		rateLimitMap.set(clientIP, {
-			count: 1,
-			resetTime: now + windowMs,
-			blocked: false,
-			blockedUntil: 0
-		});
-	} else {
-		// 기존 윈도우에서 카운트 증가
-		record.count++;
-
-		if (record.count > maxRequests) {
-			// Rate Limit 초과 - 페널티 적용
-			record.blocked = true;
-			record.blockedUntil = now + penaltyMs;
-			// 차단이 끝나는 시점에 윈도우도 끝나게 고정 (설정값 변경 시에도 안전)
-			record.resetTime = record.blockedUntil;
-			// 카운트 리셋으로 차단 해제 후 새 윈도우 시작 보장
-			record.count = 0;
-			const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
-			console.warn(
-				`[RateLimit] Triggered block for ${clientIP} (ID: ${event.locals.requestId}) on ${pathname}. Retry after ${retryAfter}s.`
-			);
-			return new Response(render429Html(retryAfter), {
-				status: 429,
-				headers: {
-					'Content-Type': 'text/html; charset=utf-8',
-					'Retry-After': String(retryAfter),
-					'Cache-Control': 'private, no-store'
-				}
-			});
-		}
 	}
 
 	return resolve(event);
