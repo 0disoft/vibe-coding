@@ -8,6 +8,7 @@
 |------|------|-----------|
 | [fix-bold-issues.ts](#fix-bold-issuests) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
 | [lint-patterns.ts](#lint-patternsts) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
+| [security-patterns.ts](#security-patternsts) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
 
 ---
 
@@ -119,3 +120,65 @@ bun .vibe-coding/TOOLS/lint-patterns.ts --errors-only
 |----|--------|------|
 | `no-private-env-client` | ❌ 오류 | 클라이언트에서 `$env/*/private` import |
 | `no-browser-globals-server` | ❌ 오류 | 서버 파일에서 `window`, `document` 등 사용 |
+
+---
+
+## security-patterns.ts
+
+SvelteKit 2, Svelte 5, TypeScript, UnoCSS, Bun, HTML, CSS 스택에서 보안 취약점 패턴을 탐지합니다.
+
+### 빠른 시작
+
+```bash
+# 기본: src 전체 스캔
+bun .vibe-coding/TOOLS/security-patterns.ts
+
+# 특정 경로 스캔
+bun .vibe-coding/TOOLS/security-patterns.ts src/routes
+
+# 오류만 표시
+bun .vibe-coding/TOOLS/security-patterns.ts --errors-only
+```
+
+### 탐지 카테고리
+
+#### XSS (Cross-Site Scripting)
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `xss-innerhtml` | ❌ 오류 | `innerHTML`, `outerHTML` 사용 |
+| `xss-document-write` | ❌ 오류 | `document.write` 사용 |
+| `xss-target-blank` | ⚠️ 경고 | `target="_blank"` without `noopener` |
+| `xss-svelte-html` | ⚠️ 경고 | `{@html}` 태그 사용 |
+
+#### 코드 인젝션
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `injection-eval` | ❌ 오류 | `eval()` 사용 |
+| `injection-new-function` | ❌ 오류 | `new Function()` 사용 |
+| `injection-setinterval-string` | ❌ 오류 | 타이머에 문자열 코드 전달 |
+
+#### 프로토타입 오염
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `prototype-pollution-proto` | ❌ 오류 | `__proto__` 동적 접근 |
+| `prototype-pollution-constructor` | ⚠️ 경고 | `constructor` 동적 접근 |
+
+#### SvelteKit
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `sveltekit-private-env` | ❌ 오류 | 클라이언트에서 `$env/*/private` import |
+| `sveltekit-browser-globals-server` | ❌ 오류 | 서버에서 브라우저 전역 객체 |
+| `sveltekit-searchparams-iterate` | ⚠️ 경고 | `searchParams` 키 전체 순회 (CVE-2025-29920) |
+
+#### 기타
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `session-localstorage-token` | ⚠️ 경고 | localStorage에 토큰 저장 |
+| `ssrf-fetch-user-url` | ⚠️ 경고 | 사용자 URL로 fetch 호출 |
+| `unocss-runtime-mode` | ⚠️ 경고 | UnoCSS 런타임 모드 사용 |
+| `crypto-hardcoded-secret` | ❌ 오류 | 하드코딩된 비밀 의심 |
