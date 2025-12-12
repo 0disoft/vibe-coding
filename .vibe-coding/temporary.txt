@@ -1,4 +1,40 @@
-요청 크기 제한
-가장 저렴한 방어다. 서버 비용과 장애 확률을 같이 낮춘다
-1차는 Content-Length가 큰 요청을 초입에서 컷
-2차는 chunked 같은 경우를 대비해 읽기 자체에 상한을 거는 방식 고려
+# Service Worker Cache Isolation (캐시 분리) 구현
+
+말씀하신 **로그인 전후 페이지 캐시 분리** 문제를 해결하기 위해 Service Worker 로직을 보강했습니다.
+
+## 핵심 변경 사항
+
+### 1. Server (`hooks.server.ts`)
+`Set-Cookie`가 포함된 응답(로그인/세션)에 자동으로 `Cache-Control: no-store`를 설정하여 보안 기반을 마련합니다.
+
+```typescript
+// src/hooks.server.ts
+
+// [Smart Cache Control]
+// Set-Cookie가 있는 응답은 민감한 세션 정보를 포함할 가능성이 높으므로 캐시를 금지합니다.
+if (response.headers.has('set-cookie')) {
+    response.headers.set('Cache-Control', 'no-store, private');
+}
+```
+
+### 2. Client (`service-worker.ts`)
+Service Worker가 HTML을 캐싱하기 전에 `no-store` 헤더를 확인합니다. `no-store`가 있으면 캐시 저장소(`cache.put`)에 저장하지 않습니다.
+
+```typescript
+// src/service-worker.ts
+
+// 보안 강화: Cache-Control: no-store가 설정된 응답은 캐시하지 않음
+const isHtml = response.headers.get('content-type')?.includes('text/html');
+const cacheControl = response.headers.get('cache-control') || '';
+const isNoStore = cacheControl.includes('no-store');
+
+// !isNoStore 조건 추가: 민감 정보가 포함된 페이지는 캐시 제외
+if (isNavigation && response.ok && isHtml && !isNoStore) {
+    const cache = await caches.open(CACHE);
+    await cache.put(request, response.clone());
+}
+```
+
+## 효과
+- **캐시 오염 방지**: 로그인 상태의 페이지가 공용/오프라인 캐시에 남지 않습니다.
+- **안전한 탐색**: 로그아웃 후나 타인이 동일 기기를 사용할 때, 이전 사용자의 "캐시된 로그인 화면"이 노출되는 사고를 방지합니다.

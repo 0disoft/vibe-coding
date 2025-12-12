@@ -275,6 +275,13 @@ const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 	// - Vercel/Cloudflare: 대시보드 또는 설정 파일
 	// - Netlify: netlify.toml의 [[headers]] 섹션
 
+	// [Smart Cache Control]
+	// Set-Cookie가 있는 응답은 민감한 세션 정보를 포함할 가능성이 높으므로 캐시를 금지합니다.
+	// 스타터 템플릿의 안전한 기본값(Safe Defaults)입니다.
+	if (response.headers.has('set-cookie')) {
+		response.headers.set('Cache-Control', 'no-store, private');
+	}
+
 	return response;
 };
 
