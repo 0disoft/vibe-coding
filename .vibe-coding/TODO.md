@@ -181,3 +181,9 @@ SPEC 내용이 확정된 후 진행합니다.
     - 프로덕션 환경 변수가 올바르게 설정되었는지
     - 개발용 키/토큰이 프로덕션 값으로 교체되었는지
     - `.env` 파일이 `.gitignore`에 포함되어 있는지
+
+- [ ] **[DEPLOY-008] 보안 정책 (CSP/HSTS) 점검**
+  - 파일: `svelte.config.js`, `src/hooks.server.ts`
+  - 확인 사항:
+    - `svelte.config.js`의 `kit.csp`가 외부 리소스(폰트/이미지)에 맞게 설정되었는지
+    - `hooks.server.ts`의 HSTS (`Strict-Transport-Security`) 설정이 유효한지
