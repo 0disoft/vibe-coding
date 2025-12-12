@@ -1,4 +1,4 @@
-import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,7 +34,8 @@ const RULES: LintRule[] = [
 		id: 'a11y-img-alt-missing',
 		name: '이미지 alt 속성 누락',
 		description: '<img> 태그에 alt 속성 필수',
-		pattern: /<img\s+(?![^>]*\balt\s*=)[^>]*>/gi,
+		// \salt로 data-alt 미탐 방지, 커스텀 요소 오탐 방지
+		pattern: /<img(?=\s|>|\/>)(?![^>]*\salt\s*=)[^>]*>/gi,
 		suggestion: 'alt="설명" 추가 (장식용 이미지는 alt="")',
 		severity: 'error',
 		scope: 'markup'
@@ -45,7 +46,8 @@ const RULES: LintRule[] = [
 		id: 'a11y-empty-link',
 		name: '빈 링크 텍스트',
 		description: '<a> 태그 내부 텍스트 없음',
-		pattern: /<a\s+[^>]*>\s*<\/a>/gi,
+		// a 뒤에 공백 또는 >만 허용하여 커스텀 요소 <a-foo> 오탐 방지
+		pattern: /<a(?=\s|>)[^>]*>\s*<\/a>/gi,
 		suggestion: '링크 텍스트 또는 aria-label 추가',
 		severity: 'error',
 		scope: 'markup'
@@ -54,7 +56,8 @@ const RULES: LintRule[] = [
 		id: 'a11y-button-type',
 		name: 'button type 속성 누락',
 		description: '<button>에 type 속성 권장',
-		pattern: /<button\s+(?![^>]*\btype\s*=)[^>]*>/gi,
+		// \stype으로 data-type 미탐 방지, 커스텀 요소 오탐 방지
+		pattern: /<button(?=\s|>)(?![^>]*\stype\s*=)[^>]*>/gi,
 		suggestion: 'type="button" 추가 (폼 제출 방지)',
 		severity: 'warning',
 		scope: 'markup'
@@ -96,8 +99,9 @@ const RULES: LintRule[] = [
 		id: 'a11y-input-missing-label',
 		name: 'Input 레이블 누락 의심',
 		description: 'input 태그에 aria-label 또는 aria-labelledby 권장',
+		// \stype, \saria-*로 data-* 미탐 방지, 커스텀 요소 오탐 방지
 		pattern:
-			/<input\s+(?![^>]*\btype=["']?(?:hidden|submit|button|image|reset)["']?)(?![^>]*\baria-label)(?![^>]*\baria-labelledby)[^>]*>/gi,
+			/<input(?=\s|>|\/>)(?![^>]*\stype=["']?(?:hidden|submit|button|image|reset)["']?)(?![^>]*\saria-label)(?![^>]*\saria-labelledby)[^>]*>/gi,
 		suggestion: 'aria-label 추가 또는 <label for=...> 사용 확인 (label로 감싼 경우 무시 가능)',
 		severity: 'info', // 오탐 가능성이 높아 info로 설정
 		scope: 'markup'
@@ -109,15 +113,8 @@ const RULES: LintRule[] = [
 	// ============================================================
 	// Phase 1 규칙: 모바일 접근성 (메타태그)
 	// ============================================================
-	{
-		id: 'mobile-no-zoom',
-		name: '줌 차단 (접근성 위반)',
-		description: 'user-scalable=no 또는 maximum-scale=1 감지',
-		pattern: /(?:user-scalable\s*=\s*["']?no["']?|maximum-scale\s*=\s*["']?1["']?)/gi,
-		suggestion: '저시력 사용자에게 줌은 필수. 해당 속성 제거',
-		severity: 'error',
-		scope: 'all' // svelte:head에서도 감지 필요
-	},
+	// mobile-no-zoom은 viewport 메타 태그에서만 검사하도록 커스텀 로직으로 이동
+	// CUSTOM_RULES 섹션의 checkViewportZoom() 참고
 
 	// ============================================================
 	// Phase 2 규칙: RTL 대응
@@ -184,11 +181,67 @@ const MULTIPLE_MAIN_RULE: LintRule = {
 	scope: 'markup'
 };
 
+// mobile-no-zoom 커스텀 규칙 (viewport 메타 태그에서만 검사)
+const MOBILE_NO_ZOOM_RULE: LintRule = {
+	id: 'mobile-no-zoom',
+	name: '줌 차단 (접근성 위반)',
+	description: 'viewport 메타 태그에서 user-scalable=no 또는 maximum-scale=1 감지',
+	pattern: /(?:user-scalable\s*=\s*["']?no["']?|maximum-scale\s*=\s*["']?1["']?)/gi,
+	suggestion: '저시력 사용자에게 줌은 필수. 해당 속성 제거',
+	severity: 'error',
+	scope: 'all'
+};
+
+// viewport 메타 태그의 줌 차단 속성 패턴 (상수화)
+const ZOOM_BLOCK_PATTERN = /(?:user-scalable\s*=\s*["']?no["']?|maximum-scale\s*=\s*["']?1["']?)/gi;
+
+// viewport 메타 태그에서만 줌 차단 속성 검사
+function checkViewportZoom(content: string, filePath: string): LintResult[] {
+	const results: LintResult[] = [];
+	// viewport 메타 태그만 추출 (따옴표 없는 값도 지원: name=viewport, name=viewport/>)
+	const viewportRegex = /<meta\s+[^>]*name\s*=\s*(?:["']viewport["']|viewport(?=[\s/>]))[^>]*>/gi;
+	let viewportMatch: RegExpExecArray | null;
+
+	// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
+	while ((viewportMatch = viewportRegex.exec(content)) !== null) {
+		const metaTag = viewportMatch[0];
+		const metaIndex = viewportMatch.index;
+
+		// 해당 메타 태그 내에서 줌 차단 속성 검사
+		const zoomPattern = new RegExp(ZOOM_BLOCK_PATTERN.source, 'gi');
+		let zoomMatch: RegExpExecArray | null;
+
+		// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
+		while ((zoomMatch = zoomPattern.exec(metaTag)) !== null) {
+			const before = content.slice(0, metaIndex + zoomMatch.index);
+			const line = (before.match(/\n/g) || []).length + 1;
+			const lastNl = before.lastIndexOf('\n');
+			const column = metaIndex + zoomMatch.index - (lastNl === -1 ? 0 : lastNl + 1) + 1;
+
+			results.push({
+				file: filePath,
+				line,
+				column,
+				rule: MOBILE_NO_ZOOM_RULE,
+				match: zoomMatch[0]
+			});
+		}
+	}
+
+	return results;
+}
+
 // 파일 확장자 필터
 const VALID_EXTENSIONS = ['.svelte', '.html', '.css'];
 
-// 무시할 경로 패턴
-const IGNORE_PATTERNS = [/node_modules/, /\.svelte-kit/, /dist/, /build/, /\.git/];
+// 무시할 경로 패턴 (경로 세그먼트 기준, 시작/끝 케이스 포함)
+const IGNORE_PATTERNS = [
+	/(^|[\/\\])node_modules([\/\\]|$)/,
+	/(^|[\/\\])\.svelte-kit([\/\\]|$)/,
+	/(^|[\/\\])dist([\/\\]|$)/,
+	/(^|[\/\\])build([\/\\]|$)/,
+	/(^|[\/\\])\.git([\/\\]|$)/
+];
 
 // Svelte 파일에서 블록 추출
 interface CodeBlock {
@@ -219,6 +272,18 @@ function extractMarkupBlocks(content: string): CodeBlock[] {
 				});
 				currentBlock = [];
 			}
+			// 한 줄짜리 script 처리 - 공백 패딩으로 컨럼 위치 보존
+			const closePos = line.indexOf('</script>');
+			if (closePos !== -1) {
+				inScript = false;
+				const after = line.slice(closePos + 9);
+				if (after.trim()) {
+					blockStartLine = i;
+					currentBlock.push(' '.repeat(closePos + 9) + after);
+				} else {
+					blockStartLine = i + 1;
+				}
+			}
 			continue;
 		}
 		if (trimmed.startsWith('</script>')) {
@@ -235,6 +300,18 @@ function extractMarkupBlocks(content: string): CodeBlock[] {
 					endLine: i - 1
 				});
 				currentBlock = [];
+			}
+			// 한 줄짜리 style 처리 - 공백 패딩으로 컨럼 위치 보존
+			const styleClosePos = line.indexOf('</style>');
+			if (styleClosePos !== -1) {
+				inStyle = false;
+				const afterStyle = line.slice(styleClosePos + 8);
+				if (afterStyle.trim()) {
+					blockStartLine = i;
+					currentBlock.push(' '.repeat(styleClosePos + 8) + afterStyle);
+				} else {
+					blockStartLine = i + 1;
+				}
 			}
 			continue;
 		}
@@ -332,18 +409,31 @@ function stripHtmlComments(content: string): string {
 	});
 }
 
+// HTML 파일에서 script, style 블록을 공백으로 치환 (라인 넘버 보존)
+function stripScriptStyleBlocks(content: string): string {
+	return content
+		.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, (match) => match.replace(/[^\n]/g, ' '))
+		.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, (match) => match.replace(/[^\n]/g, ' '));
+}
+
 // 블록 전체에서 패턴 검사 (여러 줄에 걸친 태그도 검출)
 function lintBlockWhole(
 	content: string,
 	filePath: string,
 	rules: LintRule[],
-	lineOffset: number = 0
+	lineOffset: number = 0,
+	skipScriptStyle: boolean = false
 ): LintResult[] {
-	const cleanContent = stripHtmlComments(content); // 주석 제거
+	let cleanContent = stripHtmlComments(content); // 주석 제거
+	if (skipScriptStyle) {
+		cleanContent = stripScriptStyleBlocks(cleanContent); // script, style 블록 제거
+	}
 	const results: LintResult[] = [];
 
 	for (const rule of rules) {
-		const regex = new RegExp(rule.pattern.source, rule.pattern.flags);
+		// g 플래그 방어막: g 없으면 강제 추가
+		const flags = rule.pattern.flags.includes('g') ? rule.pattern.flags : rule.pattern.flags + 'g';
+		const regex = new RegExp(rule.pattern.source, flags);
 		let match: RegExpExecArray | null;
 
 		// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
@@ -368,39 +458,6 @@ function lintBlockWhole(
 	return results;
 }
 
-// 줄 단위 검사 (CSS 등 간단한 패턴용)
-function _lintBlock(
-	content: string,
-	filePath: string,
-	rules: LintRule[],
-	lineOffset: number = 0
-): LintResult[] {
-	const results: LintResult[] = [];
-	const lines = content.split(/\r?\n/);
-
-	for (let lineNum = 0; lineNum < lines.length; lineNum++) {
-		const line = lines[lineNum];
-
-		for (const rule of rules) {
-			const regex = new RegExp(rule.pattern.source, rule.pattern.flags);
-			let match: RegExpExecArray | null;
-
-			// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-			while ((match = regex.exec(line)) !== null) {
-				results.push({
-					file: filePath,
-					line: lineNum + 1 + lineOffset,
-					column: match.index + 1,
-					rule,
-					match: match[0].slice(0, 40) + (match[0].length > 40 ? '...' : '')
-				});
-			}
-		}
-	}
-
-	return results;
-}
-
 function lintContent(content: string, filePath: string): LintResult[] {
 	const results: LintResult[] = [];
 	const isSvelte = filePath.endsWith('.svelte');
@@ -409,7 +466,6 @@ function lintContent(content: string, filePath: string): LintResult[] {
 
 	const markupRules = RULES.filter((r) => r.scope === 'markup' || r.scope === 'all');
 	const styleRules = RULES.filter((r) => r.scope === 'style' || r.scope === 'all');
-	const _htmlRules = RULES.filter((r) => r.scope === 'html' || r.scope === 'all');
 
 	if (isSvelte) {
 		// 마크업 검사 (블록 전체 검사로 여러 줄 태그도 검출)
@@ -441,12 +497,21 @@ function lintContent(content: string, filePath: string): LintResult[] {
 				match: `<main> x ${mainMatches.length}`
 			});
 		}
+
+		// viewport 메타 태그 줌 차단 검사 (script/style 제거하여 오탐 방지)
+		const cleanedContent = stripScriptStyleBlocks(stripHtmlComments(content));
+		results.push(...checkViewportZoom(cleanedContent, filePath));
 	} else if (isHtml) {
 		// HTML 파일은 markup + html + all 규칙을 한 번에 적용 (중복 방지)
+		// script, style 블록은 제외하여 오탐 방지
 		const htmlFileRules = RULES.filter(
 			(r) => r.scope === 'markup' || r.scope === 'html' || r.scope === 'all'
 		);
-		results.push(...lintBlockWhole(content, filePath, htmlFileRules));
+		results.push(...lintBlockWhole(content, filePath, htmlFileRules, 0, true));
+
+		// viewport 메타 태그 줌 차단 검사 (script/style 제거하여 오탐 방지)
+		const cleanedHtml = stripScriptStyleBlocks(stripHtmlComments(content));
+		results.push(...checkViewportZoom(cleanedHtml, filePath));
 	} else if (isCss) {
 		// CSS 파일도 블록 전체 검사 (여러 줄 CSS 규칙 검출)
 		results.push(...lintBlockWhole(content, filePath, styleRules));
@@ -548,9 +613,11 @@ async function main() {
 		const report = formatResults(allResults, basePath);
 		console.log(report);
 
-		// 리포트 파일로 저장
+		// 리포트 파일로 저장 (reports 디렉토리 자동 생성)
 		const scriptDir = dirname(fileURLToPath(import.meta.url));
-		const reportPath = join(scriptDir, 'reports', 'a11y-ux-report.txt');
+		const reportsDir = join(scriptDir, 'reports');
+		await mkdir(reportsDir, { recursive: true });
+		const reportPath = join(reportsDir, 'a11y-ux-report.txt');
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 		const header = `A11y/UX Report - ${timestamp}\nTarget: ${TARGET}\n${'='.repeat(40)}\n`;
 		await writeFile(reportPath, header + report, 'utf-8');
