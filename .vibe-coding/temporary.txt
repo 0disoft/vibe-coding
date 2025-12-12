@@ -1,0 +1,69 @@
+지금 버전은 꽤 단단해졌어. “한 번씩만 잘 동작하는” 훅에서 “운영에서 버티는” 훅으로 넘어왔다고 봐도 된다. 특히 아래 4개가 핵심 진전이야.
+
+* HIGH_RISK_PATTERN 상수화로 규칙 어긋남 위험 제거
+* transformPageChunk 단일화 유지
+* html 태그만 패치하는 방식으로 부작용 제거
+* handleError에서 문자열 body까지 안전하게 메시지 추출
+
+이제 남은 건 기능 버그라기보다, 운영에서 피곤해질 수 있는 지점들이다.
+
+1. patchHtmlRoot의 toLowerCase 비용과 4KB 가드
+   html 전체를 toLowerCase로 복사하는 건 chunk가 커질수록 비용이 커진다. 그리고 4KB 가드는 방어적으로 좋지만, 극단적으로는 html 태그가 4KB 이후에 있는 비정상 템플릿에서 테마 주입이 조용히 실패한다.
+
+* 추천
+
+  * lower를 전체가 아니라 앞부분만 만들기
+  * 가드는 4096 유지해도 되는데, “실패하면 조용히 기본 테마로 간다”를 의도한 거라면 괜찮다. 아니라면 16384 정도로 올려도 부담은 거의 없다
+
+예시
+
+```ts
+const head = html.slice(0, 8192);
+const lowerHead = head.toLowerCase();
+const start = lowerHead.indexOf('<html');
+if (start < 0) return html;
+// start는 head 기준 인덱스라 그대로 써도 됨
+```
+
+2. unknown IP 로그가 폭주할 수 있음
+   지금은 운영에서 unknown이 많아지면 경고 로그가 도배될 수 있다. 특히 크롤러나 프록시 뒤에서 헤더 세팅이 어긋나면 “요청 수만큼 경고”가 난다.
+
+* 추천
+
+  * unknown일 때는 high-risk 경로에서만 경고
+  * 또는 샘플링(예: 1퍼센트만)이나 시간 기반 스로틀을 넣기
+
+3. isStaticRequest 예외 목록
+   /_app, favicon, robots, sitemap만 빼고 있는데, 운영에서는 아래가 추가로 많이 튄다.
+
+* /service-worker.js, /sw.js
+* /manifest.webmanifest
+* /apple-touch-icon, /icon 계열
+* /sitemap.xml.gz 같은 압축 버전
+
+이걸 안 빼면 “정적 리소스 요청이 문서 네비게이션으로 오인”되지는 않더라도, 쓸데없는 레이트 리밋 검사 루트로 들어오며 비용이 조금씩 쌓인다.
+
+4. replaceAll 호환성
+   Node, Bun, Workers 기준으로 replaceAll은 보통 안전하다. 다만 네가 만약 아주 오래된 런타임을 섞을 일이 있으면 split join이 더 무난하다. 지금 스택이면 그대로 둬도 된다.
+
+5. handleError의 status 추출
+   현재 status 추출은 충분히 안전하다. 다만 status가 0이나 NaN 같은 이상치로 들어오면 분기 로직이 애매해질 수 있으니, 한 줄만 더 단단하게 만들면 좋다.
+
+* 추천
+
+```ts
+const rawStatus =
+  error && typeof error === 'object' && 'status' in error ? (error as { status: unknown }).status : 500;
+
+const status = typeof rawStatus === 'number' && Number.isFinite(rawStatus) ? rawStatus : 500;
+```
+
+6. 순서에 대한 취향 포인트
+   지금은 Rate Limit 다음에 Root Redirect가 온다. 의미적으로는 문제 없다. 다만 “첫 방문 루트 리다이렉트”는 빠르게 끝내는 편이 서버 비용이 줄어든다.
+
+* 선택지
+
+  * Root Redirect를 Rate Limit보다 앞으로 땡기기
+  * 또는 Root Redirect는 레이트 리밋을 건너뛰게 하기
+
+정리하면, 지금 코드에서 큰 구조적 문제는 안 보인다. 남은 건 운영 로그, 미세 비용, 정적 경로 예외 같은 “살다 보면 귀찮아지는 것들”뿐이야.

@@ -54,8 +54,15 @@ function isStaticRequest(pathname: string): boolean {
 	return (
 		p.startsWith('/_app/') || // SvelteKit 빌드 출력
 		p.startsWith('/favicon') ||
+		p.startsWith('/apple-touch-icon') ||
+		p.startsWith('/icon') ||
 		p === '/robots.txt' ||
-		p === '/sitemap.xml'
+		p === '/sitemap.xml' ||
+		p === '/sitemap.xml.gz' ||
+		p === '/manifest.webmanifest' ||
+		p === '/manifest.json' ||
+		p === '/service-worker.js' ||
+		p === '/sw.js'
 	);
 }
 
@@ -122,9 +129,9 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 	const clientIP = getClientIP(event);
 
 	// unknown IP는 Rate Limit 건너뛰기 (모두가 같은 바구니 문제 방지)
-	// 단, 운영 환경에서 unknown이 빈번하면 방어막 무력화이므로 경고 로그 기록
+	// high-risk 경로에서만 경고 로그 기록 (로그 폭주 방지)
 	if (clientIP === 'unknown') {
-		if (!import.meta.env.DEV) {
+		if (!import.meta.env.DEV && isHighRiskPath) {
 			console.warn(
 				`[RateLimit] Unknown IP detected (ID: ${event.locals.requestId}) on ${pathname}. Rate limiting skipped.`
 			);
@@ -206,12 +213,15 @@ function setAttrOnTag(tag: string, name: string, value: string): string {
 /**
  * HTML 문서의 <html> 태그에만 테마/폰트 속성을 주입
  * - 정규식 대신 문자열 파싱으로 예측 가능성 향상
- * - 대소문자 안전 처리 (lowercase 비교 후 원본 인덱스 사용)
+ * - 대소문자 안전 처리 (앞부분만 lowercase 비교로 성능 최적화)
  * - 다른 엘리먼트의 동일 속성에 영향 주지 않음
  */
 function patchHtmlRoot(html: string, theme: string | null, fontSize: string | null | undefined): string {
-	const lower = html.toLowerCase();
-	const start = lower.indexOf('<html');
+	// 성능 최적화: 전체 HTML 대신 앞 8KB만 lowercase 처리
+	const HEAD_LIMIT = 8192;
+	const head = html.slice(0, HEAD_LIMIT);
+	const lowerHead = head.toLowerCase();
+	const start = lowerHead.indexOf('<html');
 	if (start < 0) return html;
 
 	// <html>이 문서 앞부분(4KB 이내)에 없으면 비정상 → 패치 건너뜀
@@ -432,11 +442,14 @@ function pickHttpMessage(error: unknown): string | undefined {
 export const handleError: HandleServerError = ({ error, event }) => {
 	const requestId = event.locals.requestId || 'unknown';
 
-	// 에러 객체에서 status 추출 (Safe Duck Typing)
-	const status =
+	// 에러 객체에서 status 추출 (Safe Duck Typing + NaN/0 방어)
+	const rawStatus =
 		error && typeof error === 'object' && 'status' in error
-			? (error as { status: number; }).status
+			? (error as { status: unknown; }).status
 			: 500;
+	const status = typeof rawStatus === 'number' && Number.isFinite(rawStatus) && rawStatus > 0
+		? rawStatus
+		: 500;
 
 	const clientMsg = pickHttpMessage(error);
 
