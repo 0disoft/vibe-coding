@@ -66,9 +66,10 @@ const RULES: LintRule[] = [
 		id: 'a11y-icon-only-interactive',
 		name: '아이콘만 있는 버튼/링크',
 		description: '아이콘만 있으면 aria-label 필요',
+		// \bi-로 부분 매칭 오탐 방지, self-closing svg도 지원
 		pattern:
-			/<(?:button|a)\s+(?![^>]*aria-label)[^>]*>\s*<(?:span|i|svg)\s+[^>]*(?:class="[^"]*i-|i-lucide)[^>]*>\s*<\/(?:span|i|svg)>\s*<\/(?:button|a)>/gi,
-		suggestion: 'aria-label="설명" 추가',
+			/<(?:button|a)(?=\s|>)(?![^>]*\saria-label\s*=\s*)(?![^>]*\saria-labelledby\s*=\s*)[^>]*>\s*<(?:span|i|svg)(?=\s|>)[^>]*\sclass\s*=\s*["'][^"']*\bi-[^"']*["'][^>]*(?:\/>|>[\s\S]*?<\/(?:span|i|svg)>)\s*<\/(?:button|a)>/gi,
+		suggestion: 'aria-label="설명" 또는 aria-labelledby 추가',
 		severity: 'info',
 		scope: 'markup'
 	},
@@ -101,7 +102,7 @@ const RULES: LintRule[] = [
 		description: 'input 태그에 aria-label 또는 aria-labelledby 권장',
 		// \stype, \saria-*로 data-* 미탐 방지, 커스텀 요소 오탐 방지
 		pattern:
-			/<input(?=\s|>|\/>)(?![^>]*\stype=["']?(?:hidden|submit|button|image|reset)["']?)(?![^>]*\saria-label)(?![^>]*\saria-labelledby)[^>]*>/gi,
+			/<input(?=\s|>|\/>)(?![^>]*\stype\s*=\s*["']?(?:hidden|submit|button|image|reset)["']?)(?![^>]*\saria-label\s*=)(?![^>]*\saria-labelledby\s*=)[^>]*>/gi,
 		suggestion: 'aria-label 추가 또는 <label for=...> 사용 확인 (label로 감싼 경우 무시 가능)',
 		severity: 'info', // 오탐 가능성이 높아 info로 설정
 		scope: 'markup'
@@ -236,11 +237,11 @@ const VALID_EXTENSIONS = ['.svelte', '.html', '.css'];
 
 // 무시할 경로 패턴 (경로 세그먼트 기준, 시작/끝 케이스 포함)
 const IGNORE_PATTERNS = [
-	/(^|[\/\\])node_modules([\/\\]|$)/,
-	/(^|[\/\\])\.svelte-kit([\/\\]|$)/,
-	/(^|[\/\\])dist([\/\\]|$)/,
-	/(^|[\/\\])build([\/\\]|$)/,
-	/(^|[\/\\])\.git([\/\\]|$)/
+	/(^|[/\\])node_modules([/\\]|$)/,
+	/(^|[/\\])\.svelte-kit([/\\]|$)/,
+	/(^|[/\\])dist([/\\]|$)/,
+	/(^|[/\\])build([/\\]|$)/,
+	/(^|[/\\])\.git([/\\]|$)/
 ];
 
 // Svelte 파일에서 블록 추출
@@ -432,7 +433,7 @@ function lintBlockWhole(
 
 	for (const rule of rules) {
 		// g 플래그 방어막: g 없으면 강제 추가
-		const flags = rule.pattern.flags.includes('g') ? rule.pattern.flags : rule.pattern.flags + 'g';
+		const flags = rule.pattern.flags.includes('g') ? rule.pattern.flags : `${rule.pattern.flags}g`;
 		const regex = new RegExp(rule.pattern.source, flags);
 		let match: RegExpExecArray | null;
 
