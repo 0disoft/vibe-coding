@@ -13,11 +13,11 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
+import { type Handle, type HandleServerError, isHttpError } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 import { FONT_SIZE_COOKIE, policy, THEME_COOKIE } from '$lib/constants';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { checkRateLimit, getClientIP, type RateLimitRule } from '$lib/server/rate-limiter';
-import { type Handle, type HandleServerError, isHttpError } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 
 // ============================================================================
 // 0. Rate Limiting 핸들러
@@ -291,12 +291,29 @@ const handleRequestId: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
-// 6. 핸들러 병합 및 내보내기
-// 순서: Request ID → 보안 헤더 → Rate Limit → 테마/폰트 → 루트 리다이렉트 → Paraglide
+// 6. Request Size Limit 핸들러 (Content-Length 검사)
+// 대용량 본문 공격(DoS)을 방지하기 위해 헤더를 미리 검사하여 차단합니다.
+const handleBodySizeLimit: Handle = async ({ event, resolve }) => {
+	const { method, headers } = event.request;
+	if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+		const len = Number(headers.get('content-length'));
+		if (len && len > policy.maxBodySize) {
+			console.warn(
+				`[SizeLimit] Blocked ${method} request (ID: ${event.locals.requestId}) - Size: ${len} > ${policy.maxBodySize}`
+			);
+			return new Response('Payload Too Large', { status: 413 });
+		}
+	}
+	return resolve(event);
+};
+
+// 7. 핸들러 병합 및 내보내기
+// 순서: Request ID → 보안 헤더 → Size Limit → Rate Limit → 테마/폰트 → 루트 리다이렉트 → Paraglide
 // Request ID가 맨 앞이어야 모든 로그와 에러 처리에 ID를 연결할 수 있음
 export const handle: Handle = sequence(
 	handleRequestId,
 	handleSecurityHeaders,
+	handleBodySizeLimit,
 	handleRateLimit,
 	handleThemeAndFont,
 	handleRootRedirect,
@@ -309,21 +326,23 @@ export const handleError: HandleServerError = ({ error, event }) => {
 	const requestId = event.locals.requestId || 'unknown';
 
 	// 에러 객체에서 status 추출 (Safe Duck Typing)
-	const status = error && typeof error === 'object' && 'status' in error
-		? (error as { status: number; }).status
-		: 500;
+	const status =
+		error && typeof error === 'object' && 'status' in error
+			? (error as { status: number }).status
+			: 500;
 
 	// 1. 의도된 HTTP 에러 (404 Not Found, 401 Unauthorized 등)
 	if (isHttpError(error) || status < 500) {
 		// 404는 로그를 남기지 않거나, 필요하다면 access log 수준으로 처리
 		if (status !== 404) {
-			const msg = (error as { body?: { message: string; }; })?.body?.message || (error as Error).message;
+			const msg =
+				(error as { body?: { message: string } })?.body?.message || (error as Error).message;
 			console.warn(`[${requestId}] HTTP Error ${status}:`, msg);
 		}
 
 		// 클라이언트에게 원래 메시지 전달 ("Not Found" 등)
 		return {
-			message: (error as { body?: { message: string; }; })?.body?.message || 'Error',
+			message: (error as { body?: { message: string } })?.body?.message || 'Error',
 			requestId
 		};
 	}

@@ -108,5 +108,7 @@ export const policy = {
 		maxRequests: 7, // 윈도우 내 최대 요청 수
 		windowMs: 2000, // 탐지 윈도우 (밀리초) - 2초
 		penaltyMs: 5000 // 차단 시 페널티 기간 (밀리초) - 5초
-	}
+	},
+	// 요청 본문 크기 제한 (Content-Length 검사)
+	maxBodySize: 10 * 1024 * 1024 // 10MB
 } as const;
