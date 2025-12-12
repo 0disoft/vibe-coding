@@ -64,7 +64,7 @@ export const load: PageServerLoad = ({ url }) => {
 			const id = processor.id;
 			// 동적 키 접근을 위해 any로 캐스팅 (m은 모듈 네임스페이스)
 			// biome-ignore lint/suspicious/noExplicitAny: Paraglide 동적 메시지 키 접근에 필요
-			const messages = m as any;
+			const messages = m as Record<string, any>;
 
 			const purposeKey = `privacy_processor_${id}_purpose`;
 			const countryKey = `privacy_processor_${id}_country`;

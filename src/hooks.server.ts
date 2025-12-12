@@ -77,7 +77,7 @@ function isDocumentNavigation(request: Request): boolean {
 
 	// sec-fetch-dest: document가 가장 정확 (문서 요청 전용)
 	const dest = request.headers.get('sec-fetch-dest');
-	if (dest === 'document') return true;
+	if (dest === 'document') return true; // security-ignore: sveltekit-browser-globals-server
 
 	// 폴백: navigate 모드 또는 HTML Accept 헤더
 	const mode = request.headers.get('sec-fetch-mode');

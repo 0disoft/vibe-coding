@@ -217,6 +217,41 @@ const RULES: SecurityRule[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // 입력 검증, 요청 바디 처리
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "input-request-json",
+    name: "request.json 사용 지점 (스키마 검증, 크기 제한 점검 필요)",
+    category: "Input",
+    description: "서버에서 JSON 바디를 읽는 지점",
+    pattern: /\b(?:event\.)?request\.json\s*\(|\brequest\.json\s*\(/g,
+    suggestion: "스키마로 검증하고, 가능한 경우 본문 크기 제한도 함께 적용",
+    severity: "info",
+    scope: "server-only",
+    references: ["https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"],
+  },
+  {
+    id: "input-request-formdata",
+    name: "request.formData 사용 지점 (스키마 검증, 길이 제한 점검 필요)",
+    category: "Input",
+    description: "서버에서 FormData를 읽는 지점",
+    pattern: /\b(?:event\.)?request\.formData\s*\(|\brequest\.formData\s*\(/g,
+    suggestion: "허용 필드 목록 기반으로 파싱하고, 각 필드 길이 제한을 적용",
+    severity: "info",
+    scope: "server-only",
+  },
+  {
+    id: "input-request-text-arraybuffer",
+    name: "request.text 또는 arrayBuffer 사용 지점 (요청 크기 제한 점검 필요)",
+    category: "Input",
+    description: "서버에서 원문 바디를 읽는 지점",
+    pattern: /\b(?:event\.)?request\.(?:text|arrayBuffer)\s*\(|\brequest\.(?:text|arrayBuffer)\s*\(/g,
+    suggestion: "대용량 요청 방어를 위해 크기 제한과 허용 타입 검증을 적용",
+    severity: "warning",
+    scope: "server-only",
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // CSRF / 세션
   // ═══════════════════════════════════════════════════════════════════════════
   {
@@ -448,6 +483,9 @@ function lintLines(
       // private env는 서버 파일이면 건너뜀
       if (rule.id === "sveltekit-private-env" && isServerFile(filePath)) continue;
 
+      // suppression comment 확인
+      if (line.includes(`security-ignore: ${rule.id}`)) continue;
+
       const regex = rule.pattern;
       regex.lastIndex = 0;
       let match: RegExpExecArray | null;
@@ -461,6 +499,77 @@ function lintLines(
           match: match[0],
         });
       }
+    }
+  }
+
+  return results;
+}
+
+const COOKIE_FLAGS_RULE: SecurityRule = {
+  id: "session-cookie-flags-missing",
+  name: "cookies.set 옵션 누락 가능성",
+  category: "Session",
+  description: "cookies.set 호출에서 httpOnly, secure, sameSite 누락 점검",
+  pattern: /cookies\.set\s*\(/g,
+  suggestion: "cookies.set 옵션에 httpOnly, secure, sameSite를 명시하고 목적에 맞게 설정",
+  severity: "warning",
+  scope: "server-only",
+  references: ["https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"],
+};
+
+function indexToLineCol(text: string, index: number): { line: number; column: number; } {
+  const before = text.slice(0, index);
+  const line = (before.match(/\n/g) || []).length + 1;
+  const lastNl = before.lastIndexOf("\n");
+  const column = index - (lastNl === -1 ? -1 : lastNl);
+  return { line, column };
+}
+
+function lintCookieSetOptions(content: string, filePath: string): SecurityResult[] {
+  const results: SecurityResult[] = [];
+  const re = /\b(?:event\.)?cookies\.set\s*\(/g;
+  let m: RegExpExecArray | null;
+
+  while ((m = re.exec(content)) !== null) {
+    const start = m.index;
+
+    // 대충 이 호출 구간만 스캔, 너무 멀리 가면 오탐이 늘어서 적당히 끊기
+    const slice = content.slice(start, Math.min(content.length, start + 1500));
+
+    const missing: string[] = [];
+    if (!/\bhttpOnly\s*:/i.test(slice)) missing.push("httpOnly");
+    if (!/\bsecure\s*:/i.test(slice)) missing.push("secure");
+    if (!/\bsameSite\s*:/i.test(slice)) missing.push("sameSite");
+
+    // 같은 파일에서 cookies.set을 여러 줄로 쓰는 경우가 많아서
+    // 누락 체크는 가벼운 경고로만 둠
+    if (missing.length > 0) {
+      const pos = indexToLineCol(content, start);
+      results.push({
+        file: filePath,
+        line: pos.line,
+        column: pos.column,
+        rule: COOKIE_FLAGS_RULE,
+        match: "cookies.set(",
+      });
+    }
+
+    // sameSite none인데 secure true가 아닐 때는 더 강하게 경고
+    if (/\bsameSite\s*:\s*['"]none['"]/i.test(slice) && !/\bsecure\s*:\s*true\b/i.test(slice)) {
+      const pos = indexToLineCol(content, start);
+      results.push({
+        file: filePath,
+        line: pos.line,
+        column: pos.column,
+        rule: {
+          ...COOKIE_FLAGS_RULE,
+          id: "session-cookie-samesite-none-without-secure",
+          name: "sameSite none 사용 시 secure true 필요",
+          suggestion: "sameSite none을 쓰면 secure true가 사실상 필수",
+          severity: "error",
+        },
+        match: "sameSite: 'none'",
+      });
     }
   }
 
@@ -503,6 +612,7 @@ function lintContent(content: string, filePath: string): SecurityResult[] {
 
     if (isServer) {
       results.push(...lintLines(lines, filePath, serverRules));
+      results.push(...lintCookieSetOptions(content, filePath));
     }
 
     // config 파일 검사
