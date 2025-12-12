@@ -75,10 +75,12 @@ async function networkFirst(request: Request): Promise<Response> {
 	try {
 		const response = await fetch(request);
 
+
 		// HTML 페이지 응답만 캐시에 저장 (API 응답, 에러 페이지 제외)
 		// 보안 강화: Cache-Control: no-store가 설정된 응답은 캐시하지 않음
-		const isHtml = response.headers.get('content-type')?.includes('text/html');
-		const cacheControl = response.headers.get('cache-control') || '';
+		const contentType = response.headers.get('content-type')?.toLowerCase() || '';
+		const isHtml = contentType.includes('text/html');
+		const cacheControl = response.headers.get('cache-control')?.toLowerCase() || '';
 		const isNoStore = cacheControl.includes('no-store');
 
 		if (isNavigation && response.ok && isHtml && !isNoStore) {

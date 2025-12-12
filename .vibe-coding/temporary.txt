@@ -1,6 +1,6 @@
 # Service Worker Cache Isolation (캐시 분리) 구현
 
-말씀하신 **로그인 전후 페이지 캐시 분리** 문제를 해결하기 위해 Service Worker 로직을 보강했습니다.
+피드백주신 **대소문자 처리(Case Insensitivity)**를 포함하여 Service Worker 로직을 보강했습니다.
 
 ## 핵심 변경 사항
 
@@ -18,14 +18,16 @@ if (response.headers.has('set-cookie')) {
 ```
 
 ### 2. Client (`service-worker.ts`)
-Service Worker가 HTML을 캐싱하기 전에 `no-store` 헤더를 확인합니다. `no-store`가 있으면 캐시 저장소(`cache.put`)에 저장하지 않습니다.
+Service Worker가 HTML을 캐싱하기 전에 `no-store` 헤더를 확인합니다. **대소문자를 무시**(`toLowerCase`)하여 견고하게 처리합니다.
 
 ```typescript
 // src/service-worker.ts
 
 // 보안 강화: Cache-Control: no-store가 설정된 응답은 캐시하지 않음
-const isHtml = response.headers.get('content-type')?.includes('text/html');
-const cacheControl = response.headers.get('cache-control') || '';
+// 대소문자 무관하게 처리 (.toLowerCase())
+const contentType = response.headers.get('content-type')?.toLowerCase() || '';
+const isHtml = contentType.includes('text/html');
+const cacheControl = response.headers.get('cache-control')?.toLowerCase() || '';
 const isNoStore = cacheControl.includes('no-store');
 
 // !isNoStore 조건 추가: 민감 정보가 포함된 페이지는 캐시 제외
