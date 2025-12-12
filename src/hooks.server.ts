@@ -46,6 +46,11 @@ const RATE_LIMIT_RULES: RateLimitRule[] = [
 	}
 ];
 
+// unknown IP용 high-risk 경로 규칙 (공유 버킷 방어)
+const UNKNOWN_HIGH_RISK_RULES: RateLimitRule[] = [
+	{ name: 'unknown-high-risk', pattern: HIGH_RISK_PATTERN, windowMs: 60_000, max: 3 }
+];
+
 /**
  * 정적 파일 요청인지 확인 (Rate Limit 제외 대상)
  */
@@ -55,7 +60,9 @@ function isStaticRequest(pathname: string): boolean {
 		p.startsWith('/_app/') || // SvelteKit 빌드 출력
 		p.startsWith('/favicon') ||
 		p.startsWith('/apple-touch-icon') ||
-		p.startsWith('/icon') ||
+		p.startsWith('/icons/') || // /icons/ 디렉토리
+		p.startsWith('/icon-') || // icon-192.png 등
+		p.startsWith('/icon.') || // icon.png 등
 		p === '/robots.txt' ||
 		p === '/sitemap.xml' ||
 		p === '/sitemap.xml.gz' ||
@@ -75,7 +82,7 @@ function isDocumentNavigation(request: Request): boolean {
 
 	// sec-fetch-dest: document가 가장 정확 (문서 요청 전용)
 	const dest = request.headers.get('sec-fetch-dest');
-	if (dest === 'document') return true; // security-ignore: sveltekit-browser-globals-server
+	if (dest === 'document') return true; // security-ignore: sveltekit-browser-globals-server - 서버에서 헤더 접근은 정상 동작이며 오탐 방지용
 
 	// 폴백: navigate 모드 또는 HTML Accept 헤더
 	const mode = request.headers.get('sec-fetch-mode');
@@ -109,6 +116,46 @@ function render429Html(retryAfter: number): string {
 </html>`;
 }
 
+/**
+ * Rate Limit 결과 타입 (타입 드리프트 방지)
+ * - rate-limiter의 반환 타입에서 필요한 필드만 추출
+ */
+type RateLimitResult = ReturnType<typeof checkRateLimit>;
+type RateLimitHeaderFields = Pick<RateLimitResult, 'retryAfter' | 'limit' | 'remaining' | 'reset'>;
+
+/**
+ * Rate Limit 차단 시 429 응답 생성
+ * - Retry-After, Cache-Control, X-RateLimit-* 헤더 포함
+ * - Accept 헤더에 따라 HTML 또는 JSON 응답 분기
+ */
+function create429Response(request: Request, result: RateLimitHeaderFields): Response {
+	const accept = request.headers.get('accept') || '';
+	const wantsHtml = accept.includes('text/html');
+
+	const headers = new Headers();
+	headers.set('Retry-After', String(result.retryAfter));
+	headers.set('Cache-Control', 'private, no-store');
+	headers.set('Vary', 'Accept'); // HTML/JSON 분기에 따른 프록시 혼란 방지
+
+	// X-RateLimit 헤더 추가 (일관성)
+	if (result.limit > 0) {
+		headers.set('X-RateLimit-Limit', String(result.limit));
+		headers.set('X-RateLimit-Remaining', String(result.remaining));
+		headers.set('X-RateLimit-Reset', String(result.reset));
+	}
+
+	if (wantsHtml) {
+		headers.set('Content-Type', 'text/html; charset=utf-8');
+		return new Response(render429Html(result.retryAfter), { status: 429, headers });
+	}
+
+	headers.set('Content-Type', 'application/json; charset=utf-8');
+	return new Response(
+		JSON.stringify({ error: 'rate_limited', retryAfter: result.retryAfter }),
+		{ status: 429, headers }
+	);
+}
+
 const handleRateLimit: Handle = async ({ event, resolve }) => {
 	const { pathname } = event.url;
 
@@ -128,56 +175,54 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 
 	const clientIP = getClientIP(event);
 
-	// unknown IP는 Rate Limit 건너뛰기 (모두가 같은 바구니 문제 방지)
-	// high-risk 경로에서만 경고 로그 기록 (로그 폭주 방지)
+	// unknown IP 처리:
+	// - 일반 경로: Rate Limit 건너뛰기 (모두가 같은 바구니 문제 방지)
+	// - high-risk 경로: 공유 버킷으로 최소 방어 (공격 우회 방지)
 	if (clientIP === 'unknown') {
-		if (!import.meta.env.DEV && isHighRiskPath) {
-			console.warn(
-				`[RateLimit] Unknown IP detected (ID: ${event.locals.requestId}) on ${pathname}. Rate limiting skipped.`
-			);
+		if (isHighRiskPath) {
+			// high-risk 경로는 unknown IP도 공유 버킷으로 최소 방어 (분당 3회)
+			const unknownResult = checkRateLimit(event, UNKNOWN_HIGH_RISK_RULES);
+
+			if (unknownResult.blocked) {
+				if (!import.meta.env.DEV) {
+					const method = event.request.method;
+					console.warn(
+						`[RateLimit] ${method} unknown IP blocked (ID: ${event.locals.requestId}) on ${pathname} [Rule: ${unknownResult.ruleName}]. Retry after ${unknownResult.retryAfter}s.`
+					);
+				}
+				return create429Response(event.request, unknownResult);
+			}
+
+			// 성공 응답에도 X-RateLimit 헤더 추가 (일관성)
+			const response = await resolve(event);
+			if (unknownResult.limit > 0) {
+				response.headers.set('X-RateLimit-Limit', String(unknownResult.limit));
+				response.headers.set('X-RateLimit-Remaining', String(unknownResult.remaining));
+				response.headers.set('X-RateLimit-Reset', String(unknownResult.reset));
+			}
+			return response;
 		}
 		return resolve(event);
 	}
 
 	// 모듈을 통한 Rate Limit 검사
-	const { blocked, retryAfter, ruleName, limit, remaining, reset } = checkRateLimit(
-		event,
-		RATE_LIMIT_RULES
-	);
+	const result = checkRateLimit(event, RATE_LIMIT_RULES);
 
 	// Rate Limit 정보 헤더 준비
 	const setRateLimitHeaders = (headers: Headers) => {
-		if (limit > 0) {
-			headers.set('X-RateLimit-Limit', String(limit));
-			headers.set('X-RateLimit-Remaining', String(remaining));
-			headers.set('X-RateLimit-Reset', String(reset));
+		if (result.limit > 0) {
+			headers.set('X-RateLimit-Limit', String(result.limit));
+			headers.set('X-RateLimit-Remaining', String(result.remaining));
+			headers.set('X-RateLimit-Reset', String(result.reset));
 		}
 	};
 
-	if (blocked) {
+	if (result.blocked) {
+		const method = event.request.method;
 		console.warn(
-			`[RateLimit] Triggered block for ${clientIP} (ID: ${event.locals.requestId}) on ${pathname} [Rule: ${ruleName}]. Retry after ${retryAfter}s.`
+			`[RateLimit] ${method} blocked for ${clientIP} (ID: ${event.locals.requestId}) on ${pathname} [Rule: ${result.ruleName}]. Retry after ${result.retryAfter}s.`
 		);
-
-		// Accept 헤더에 따라 HTML 또는 JSON 응답 분기 (API 클라이언트 대응)
-		const accept = event.request.headers.get('accept') || '';
-		const wantsHtml = accept.includes('text/html');
-
-		const headers = new Headers();
-		headers.set('Retry-After', String(retryAfter));
-		headers.set('Cache-Control', 'private, no-store');
-		setRateLimitHeaders(headers);
-
-		if (wantsHtml) {
-			headers.set('Content-Type', 'text/html; charset=utf-8');
-			return new Response(render429Html(retryAfter), { status: 429, headers });
-		}
-
-		headers.set('Content-Type', 'application/json; charset=utf-8');
-		return new Response(
-			JSON.stringify({ error: 'rate_limited', retryAfter }),
-			{ status: 429, headers }
-		);
+		return create429Response(event.request, result);
 	}
 
 	const response = await resolve(event);
@@ -215,6 +260,9 @@ function setAttrOnTag(tag: string, name: string, value: string): string {
  * - 정규식 대신 문자열 파싱으로 예측 가능성 향상
  * - 대소문자 안전 처리 (앞부분만 lowercase 비교로 성능 최적화)
  * - 다른 엘리먼트의 동일 속성에 영향 주지 않음
+ * 
+ * 참고: setAttrOnTag는 name="만 찾으므로, SSR 출력에서 속성이
+ * 큰따옴표(")를 사용한다는 전제가 있습니다 (SvelteKit 기본 동작).
  */
 function patchHtmlRoot(html: string, theme: string | null, fontSize: string | null | undefined): string {
 	// 성능 최적화: 전체 HTML 대신 앞 8KB만 lowercase 처리
@@ -224,12 +272,20 @@ function patchHtmlRoot(html: string, theme: string | null, fontSize: string | nu
 	const start = lowerHead.indexOf('<html');
 	if (start < 0) return html;
 
-	// <html>이 문서 앞부분(4KB 이내)에 없으면 비정상 → 패치 건너뜀
-	if (start > 4096) return html;
+	// 다음 문자 검사를 위한 범위 확인
+	if (start + 5 >= lowerHead.length) return html;
 
-	const end = html.indexOf('>', start);
-	if (end < 0) return html;
+	// <htmlx> 같은 오탐 방지: 다음 문자가 공백/>/개행인지 확인
+	const nextChar = lowerHead[start + 5];
+	if (nextChar && ![' ', '>', '\n', '\r', '\t'].includes(nextChar)) return html;
 
+	// 스캔 비용 상한: start부터 최대 1024자 범위 안에서만 > 찾기
+	const TAG_MAX_LEN = 1024;
+	const endLimit = Math.min(HEAD_LIMIT, start + TAG_MAX_LEN);
+	const endRel = html.slice(start, endLimit).indexOf('>');
+	if (endRel < 0) return html;
+
+	const end = start + endRel;
 	let tag = html.slice(start, end + 1);
 
 	if (theme) tag = setAttrOnTag(tag, 'data-theme', theme);
@@ -325,6 +381,24 @@ function setIfMissing(headers: Headers, name: string, value: string): void {
 	if (!headers.has(name)) headers.set(name, value);
 }
 
+/**
+ * Vary 헤더에 값을 안전하게 추가 (중복/wildcard 처리)
+ */
+function appendVary(headers: Headers, value: string): void {
+	const existing = headers.get('Vary');
+	if (!existing) {
+		headers.set('Vary', value);
+		return;
+	}
+
+	// Vary: * 는 모든 변형을 의미하므로 그대로 둠
+	if (existing.trim() === '*') return;
+
+	const parts = existing.split(',').map(s => s.trim()).filter(Boolean);
+	const has = parts.some(p => p.toLowerCase() === value.toLowerCase());
+	if (!has) headers.set('Vary', parts.join(', ') + ', ' + value);
+}
+
 const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event);
 	const headers = response.headers;
@@ -360,6 +434,14 @@ const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 		response.headers.set('Cache-Control', 'no-store, private');
 	}
 
+	// [Vary: Cookie for HTML]
+	// 쿠키(테마, 폰트 크기)로 HTML을 커스터마이징하므로, CDN 공유 캐시 오염 방지
+	// 같은 URL이라도 쿠키가 다르면 다른 응답으로 취급하도록 지시
+	const contentType = headers.get('content-type')?.toLowerCase() || '';
+	if (contentType.includes('text/html')) {
+		appendVary(headers, 'Cookie');
+	}
+
 	return response;
 };
 
@@ -390,12 +472,44 @@ const handleRequestId: Handle = async ({ event, resolve }) => {
 const handleBodySizeLimit: Handle = async ({ event, resolve }) => {
 	const { method, headers } = event.request;
 	if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
-		const len = Number(headers.get('content-length'));
-		if (len && len > policy.maxBodySize) {
-			console.warn(
-				`[SizeLimit] Blocked ${method} request (ID: ${event.locals.requestId}) - Size: ${len} > ${policy.maxBodySize}`
-			);
-			return new Response('Payload Too Large', { status: 413 });
+		const raw = headers.get('content-length');
+		if (raw != null) {
+			// 로그 인젝션 방지: 줄바꿈 제거 + 양끝 공백 제거
+			const safeRaw = raw.replaceAll('\r', '').replaceAll('\n', '').trim();
+			// 로그 값 길이 제한: 비정상적으로 긴 값이 로그를 오염시키는 것 방지
+			const rawForLog = safeRaw.length > 80 ? safeRaw.slice(0, 80) + '...' : safeRaw;
+
+			// Content-Length는 순수 10진수 숫자만 허용 (RFC 9110, RFC 9112)
+			// 비정상적으로 긴 값은 정규식 검사 전에 차단 (32자 = 10^32 bytes, 현실 불가)
+			// Number()의 관대한 파싱(빈 문자열→0, 0x10→16 등) 우회 방지
+			if (safeRaw.length > 32 || !/^\d+$/.test(safeRaw)) {
+				if (!import.meta.env.DEV) {
+					console.warn(
+						`[SizeLimit] Invalid Content-Length (ID: ${event.locals.requestId}) - ${method} ${event.url.pathname} - raw=${rawForLog}`
+					);
+				}
+				return new Response('Bad Request', {
+					status: 400,
+					headers: {
+						'Content-Type': 'text/plain; charset=utf-8',
+						'Cache-Control': 'private, no-store'
+					}
+				});
+			}
+
+			const len = Number(safeRaw);
+			if (len > policy.maxBodySize) {
+				console.warn(
+					`[SizeLimit] Blocked ${method} request (ID: ${event.locals.requestId}) - Size: ${len} > ${policy.maxBodySize}`
+				);
+				return new Response('Payload Too Large', {
+					status: 413,
+					headers: {
+						'Content-Type': 'text/plain; charset=utf-8',
+						'Cache-Control': 'private, no-store'
+					}
+				});
+			}
 		}
 	}
 	return resolve(event);

@@ -11,7 +11,12 @@ import { base, build, files, prerendered, version } from '$service-worker';
 // __APP_NAME__은 vite.config.ts의 define에서 site.name으로 주입됨
 declare const __APP_NAME__: string;
 // 특수문자 정제: 공백/슬래시 등이 섞여도 안전한 캐시 키 생성
-const SAFE_APP_NAME = __APP_NAME__.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+// 한글 등 비라틴 문자만 있으면 'app'으로 폴백
+const SAFE_APP_NAME =
+	__APP_NAME__
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '') || 'app';
 const CACHE_PREFIX = `${SAFE_APP_NAME}-sw-`;
 
 /** 캐시 이름 (빌드 버전 포함) */
@@ -20,22 +25,29 @@ const CACHE = `${CACHE_PREFIX}${version}`;
 /** Range 요청이 필요한 미디어 파일 확장자 */
 const MEDIA_EXTENSIONS = /\.(mp4|webm|ogg|mov|mp3|wav|m4a)$/i;
 
-/** 오프라인 폴백 경로 (base path 지원) */
-const OFFLINE_PATH = `${base}/offline`;
+/** 오프라인 폴백 경로 (base path 지원, base === '/' 방어) */
+const SAFE_BASE = base && base !== '/' ? base : '';
+const OFFLINE_PATH = `${SAFE_BASE}/offline`;
 
-/** 캐싱 대상 자산 목록 (미디어 파일 제외) */
-const ASSETS = [
+/** 정적 파일 목록 (미디어 파일 제외) - 중복 필터링 방지 */
+const STATIC_FILES = files.filter((path) => !MEDIA_EXTENSIONS.test(path));
+
+/** 캐싱 대상 자산 목록 (미디어 파일 제외, 중복 제거) */
+const ASSETS = Array.from(new Set([
 	...build, // SvelteKit 빌드 결과물 (JS, CSS)
-	...files.filter((path) => !MEDIA_EXTENSIONS.test(path)), // 미디어 제외
+	...STATIC_FILES, // 미디어 제외된 정적 파일
 	...prerendered // 프리렌더링된 HTML 페이지 (offline 포함)
-];
+]));
+
+/** ServiceWorkerGlobalScope 타입 캐스팅 */
+const sw = self as unknown as ServiceWorkerGlobalScope;
 
 /**
  * 빌드 자산 Set (빠른 조회용)
  * pathname으로 정규화하여 환경별 형태 차이를 무력화
  */
 const ASSET_SET = new Set(
-	[...build, ...files.filter((path) => !MEDIA_EXTENSIONS.test(path))].map((path) => {
+	[...build, ...STATIC_FILES].map((path) => {
 		// 이미 pathname 형태면 그대로, URL 형태면 pathname만 추출
 		if (path.startsWith('/')) return path;
 		try {
@@ -45,9 +57,6 @@ const ASSET_SET = new Set(
 		}
 	})
 );
-
-/** ServiceWorkerGlobalScope 타입 캐스팅 */
-const sw = self as unknown as ServiceWorkerGlobalScope;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 헬퍼 함수
@@ -80,24 +89,103 @@ function shouldHandleRequest(request: Request): boolean {
 }
 
 /**
+ * base path를 제거한 경로 반환
+ * - 프리캐시와 실제 요청 경로의 base 차이 방어
+ */
+function stripBase(pathname: string): string {
+	if (!base || base === '/') return pathname;
+	const prefix = `${base}/`;
+	if (pathname.startsWith(prefix)) return pathname.slice(base.length);
+	if (pathname === base) return '/';
+	return pathname;
+}
+
+/**
+ * base path를 추가한 경로 반환
+ * - 캐시에 base 포함 경로로 저장됐는데 요청이 base 없이 들어오는 경우 방어
+ */
+function addBase(pathname: string): string {
+	if (!base || base === '/') return pathname;
+	if (pathname === '/') return base;
+	if (pathname === base) return pathname;
+	if (pathname.startsWith(`${base}/`)) return pathname;
+	if (!pathname.startsWith('/')) pathname = `/${pathname}`;
+	return `${base}${pathname}`;
+}
+
+/** 캐시 매칭 요청 종류 */
+type CacheMatchKind = 'navigation' | 'asset' | 'other';
+
+/**
  * 현재 앱의 캐시에서만 매칭 (전역 캐시 오염 방지)
  * - caches.match()는 오리진의 모든 캐시를 뒤지므로
  * - 다른 앱/런타임 캐시와 충돌할 수 있음
+ * - base 포함/제거 경로 모두 매칭 시도
+ *
+ * @param request 요청 객체 또는 URL 문자열
+ * @param kind 요청 종류 (navigation: Vary 존중, asset: 쿼리스트링 무시, other: Vary만 무시)
  */
-async function matchFromMyCache(request: Request | string): Promise<Response | undefined> {
+async function matchFromMyCache(
+	request: Request | string,
+	kind: CacheMatchKind
+): Promise<Response | undefined> {
 	const cache = await caches.open(CACHE);
-	const response = await cache.match(request);
-	return response || undefined;
+
+	// 요청 종류별 캐시 매칭 옵션
+	// - navigation: Vary 규칙 존중 (인증 페이지 등 캐시 분리)
+	// - asset: ignoreVary + ignoreSearch (쿼리스트링 붙은 자산 구제)
+	// - other: ignoreVary만 (API 캐싱 도입 시 쿼리 섞임 방지)
+	const matchOptions =
+		kind === 'navigation'
+			? undefined
+			: kind === 'asset'
+				? { ignoreVary: true, ignoreSearch: true }
+				: { ignoreVary: true };
+
+	// 1. 원본 요청으로 매칭 시도
+	const first = await cache.match(request, matchOptions);
+	if (first) return first;
+
+	// 2. pathname 변환으로 추가 매칭 시도 (base 미스매치 방어)
+	const url = typeof request === 'string'
+		? new URL(request, sw.location.origin)
+		: new URL(request.url);
+
+	const pathname = url.pathname;
+	const noBase = stripBase(pathname);
+	const withBase = addBase(pathname);
+
+	// pathname만 바꾼 URL로 매칭 시도
+	async function matchPath(p: string): Promise<Response | undefined> {
+		if (p === pathname) return undefined;
+		const u = new URL(url.toString());
+		u.pathname = p;
+		const matched = await cache.match(u.toString(), matchOptions);
+		return matched || undefined;
+	}
+
+	return (await matchPath(noBase)) ?? (await matchPath(withBase));
 }
 
 /**
  * 캐시 우선 전략 (Cache First)
  * - 캐시에 있으면 캐시 반환
  * - 없으면 네트워크 요청
+ * - 오프라인 + 캐시 미스 시 503 반환 (에러 방지)
  */
 async function cacheFirst(request: Request): Promise<Response> {
-	const cachedResponse = await matchFromMyCache(request);
-	return cachedResponse || fetch(request);
+	const cachedResponse = await matchFromMyCache(request, 'asset');
+	if (cachedResponse) return cachedResponse;
+
+	try {
+		return await fetch(request);
+	} catch {
+		// 오프라인 + 캐시 미스: 안전한 503 응답
+		return new Response('Offline', {
+			status: 503,
+			headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+		});
+	}
 }
 
 /**
@@ -114,13 +202,20 @@ async function networkFirst(request: Request): Promise<Response> {
 
 
 		// HTML 페이지 응답만 캐시에 저장 (API 응답, 에러 페이지 제외)
-		// 보안 강화: Cache-Control: no-store가 설정된 응답은 캐시하지 않음
+		// 캐시 금지 조건:
+		// - no-store: 저장 자체 금지
+		// - private: 인증된 사용자 전용 콘텐츠
+		// - no-cache/must-revalidate: 재검증 필수 (SW가 저장하면 오래된 콘텐츠 위험)
 		const contentType = response.headers.get('content-type')?.toLowerCase() || '';
 		const isHtml = contentType.includes('text/html');
 		const cacheControl = response.headers.get('cache-control')?.toLowerCase() || '';
-		const isNoStore = cacheControl.includes('no-store');
+		const shouldSkipCache =
+			cacheControl.includes('no-store') ||
+			cacheControl.includes('private') ||
+			cacheControl.includes('no-cache') ||
+			cacheControl.includes('must-revalidate');
 
-		if (isNavigation && response.ok && isHtml && !isNoStore) {
+		if (isNavigation && response.ok && isHtml && !shouldSkipCache) {
 			const cache = await caches.open(CACHE);
 			await cache.put(request, response.clone());
 		}
@@ -128,7 +223,7 @@ async function networkFirst(request: Request): Promise<Response> {
 		return response;
 	} catch {
 		// 오프라인: 현재 앱 캐시에서 데이터 반환 시도
-		const cachedResponse = await matchFromMyCache(request);
+		const cachedResponse = await matchFromMyCache(request, isNavigation ? 'navigation' : 'other');
 		if (cachedResponse) return cachedResponse;
 
 		// 네비게이션 요청이면 오프라인 폴백 페이지 반환
@@ -137,7 +232,10 @@ async function networkFirst(request: Request): Promise<Response> {
 		}
 
 		// 네비게이션이 아닌 요청은 503 응답
-		return new Response('Offline', { status: 503 });
+		return new Response('Offline', {
+			status: 503,
+			headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+		});
 	}
 }
 
@@ -147,7 +245,8 @@ async function networkFirst(request: Request): Promise<Response> {
  * - 없으면 최소한의 HTML 응답 (완전한 무응답 방지)
  */
 async function getOfflineFallback(): Promise<Response> {
-	const cached = await matchFromMyCache(OFFLINE_PATH);
+	// matchFromMyCache가 base 포함/제거 경로 모두 시도함
+	const cached = await matchFromMyCache(OFFLINE_PATH, 'navigation');
 	if (cached) return cached;
 
 	// 최후의 안전망: 캐시된 오프라인 페이지가 없을 경우
@@ -186,14 +285,18 @@ async function getOfflineFallback(): Promise<Response> {
  */
 function isAssetRequest(url: URL): boolean {
 	const pathname = url.pathname;
+	const noBase = stripBase(pathname);
 
-	// Set에서 정확히 일치하는지 확인
+	// Set에서 정확히 일치하는지 확인 (base 포함/제거 모두)
 	if (ASSET_SET.has(pathname)) return true;
+	if (ASSET_SET.has(noBase)) return true;
 
 	// /_app/ 하위는 모두 빌드 자산으로 취급 (immutable assets)
-	// base 경로 지원: base가 /foo인 경우 /foo/_app/로 판정
-	const appPrefix = `${base}/_app/`;
+	// base 경로 지원: base가 /foo인 경우 /foo/_app/로 판정 (base === '/' 방어)
+	const appPrefix = SAFE_BASE ? `${SAFE_BASE}/_app/` : '/_app/';
 	if (pathname.startsWith(appPrefix)) return true;
+	// base 없이 /_app/로 들어오는 경우도 방어
+	if (noBase.startsWith('/_app/')) return true;
 
 	return false;
 }
