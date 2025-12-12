@@ -117,7 +117,8 @@ async function fixFile(path: string): Promise<number> {
 }
 
 async function main() {
-  const TARGET = process.argv[2] || "src/content";
+  // --로 시작하지 않는 첫 번째 인자를 경로로 사용
+  const TARGET = process.argv.slice(2).find((arg) => !arg.startsWith("--")) || "src/content";
   console.log(`Scanning: ${TARGET}`);
   if (DRY_RUN) console.log("DRY RUN MODE: No files will be modified.");
 
