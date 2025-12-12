@@ -1,0 +1,97 @@
+지금 버전은 충분히 “CI에 올려도 믿을 만한” 수준이에요. beforeAll로 옮긴 순간부터 테스트가 “파일 시스템 예외”가 아니라 “테스트 실패”로 말하게 됐고, 그게 제일 큽니다. 에러 원인도 훨씬 또렷해졌고요.
+
+남은 개선은 거의 취향 영역인데, 실전에서 은근히 도움이 되는 것만 딱 집어볼게요.
+
+* beforeAll에서 폴더가 없을 때 흐름을 확실히 끊기
+  지금도 expect 실패로 훅이 실패하면서 스위트가 깨지긴 합니다. 다만 로그가 더 깔끔해지게 하려면, 폴더가 없을 때 바로 return 해서 이후 동작을 명시적으로 막는 방식이 더 “의도 드러남”이 좋아요.
+
+* baseCount 타입 검사에 메시지 달기
+  지금은 toBeTypeOf만 있어서, en.json이 없거나 파싱 실패 같은 경우 로그가 약간 밋밋할 수 있어요. 아래처럼 메시지를 붙이면 실패가 더 즉시 이해됩니다.
+
+  * expect(baseCount, 'en.json의 키 개수를 읽지 못함').toBeTypeOf('number')
+
+* 같은 파일을 테스트마다 다시 읽는 비용 줄이기
+  파일 수가 20개라 사실 의미 있는 성능 차이는 없어요. 대신 “테스트가 같은 입력을 보장한다”는 심리적 안정감이 생깁니다. beforeAll에서 한 번만 파싱해서 캐시에 넣고, 아래 테스트들이 그걸 재사용하는 식이요.
+
+* JSON이 객체인지 한 번만 확인하기
+  타입상 Record로 받고 있지만 JSON.parse 결과가 배열이나 문자열이면 Object.keys가 이상하게 동작할 수 있습니다. 현실적으로는 없겠지만, 파일이 망가졌을 때 디버깅이 더 빨라져요.
+
+아래는 “캐시 + 객체 검증 + 메시지 강화”까지 포함한 가벼운 변형 예시입니다. 지금 구조를 크게 흔들지 않습니다.
+
+```ts
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { beforeAll, describe, expect, it } from 'vitest';
+
+function parseJsonFile(filePath: string, fileName: string): Record<string, unknown> {
+  let parsed: unknown;
+
+  try {
+    parsed = JSON.parse(readFileSync(filePath, 'utf-8'));
+  } catch (e) {
+    throw new Error(`JSON 파싱 실패: ${fileName}`, { cause: e });
+  }
+
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error(`JSON 형식 오류: 객체가 아님: ${fileName}`);
+  }
+
+  return parsed as Record<string, unknown>;
+}
+
+function getTranslationKeys(content: Record<string, unknown>): string[] {
+  return Object.keys(content).filter((key) => key !== '$schema');
+}
+
+describe('messages/', () => {
+  const messagesDir = join(process.cwd(), 'messages');
+  let messageFiles: string[] = [];
+  const keysByFile: Record<string, string[]> = {};
+
+  beforeAll(() => {
+    const ok = existsSync(messagesDir);
+    expect(ok, `messages 폴더를 찾을 수 없음: ${messagesDir}`).toBe(true);
+    if (!ok) return;
+
+    messageFiles = readdirSync(messagesDir).filter((f) => f.endsWith('.json')).sort();
+    expect(messageFiles.includes('en.json'), 'en.json이 존재해야 함').toBe(true);
+
+    for (const file of messageFiles) {
+      const content = parseJsonFile(join(messagesDir, file), file);
+      keysByFile[file] = getTranslationKeys(content);
+    }
+  });
+
+  it('20개의 언어 파일이 있어야 한다', () => {
+    expect(messageFiles.length).toBe(20);
+  });
+
+  it('모든 언어 파일의 키 개수가 같아야 한다', () => {
+    const baseCount = keysByFile['en.json']?.length;
+    expect(baseCount, 'en.json의 키 개수를 읽지 못함').toBeTypeOf('number');
+
+    for (const file of messageFiles) {
+      const count = keysByFile[file].length;
+      expect(count, `${file} has ${count} keys, expected ${baseCount}`).toBe(baseCount);
+    }
+  });
+
+  it('모든 언어 파일의 키가 일치해야 한다', () => {
+    const baseKeys = new Set(keysByFile['en.json']);
+
+    for (const file of messageFiles) {
+      if (file === 'en.json') continue;
+
+      const keys = new Set(keysByFile[file]);
+
+      const missingKeys = [...baseKeys].filter((k) => !keys.has(k)).sort();
+      const extraKeys = [...keys].filter((k) => !baseKeys.has(k)).sort();
+
+      expect(missingKeys, `${file} is missing keys`).toEqual([]);
+      expect(extraKeys, `${file} has extra keys not in en.json`).toEqual([]);
+    }
+  });
+});
+```
+
+결론은 간단해요. 지금 네 코드도 “정답”이고, 위 변형은 “더 고장나기 어렵게 만드는 보험”이에요. 프로젝트 성격상 과잉 검사 싫어하는 것도 이해되니, 캐시는 선택 사항으로 두고 메시지 강화만 가져가도 충분히 값어치 합니다.
