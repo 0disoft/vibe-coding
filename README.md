@@ -75,6 +75,15 @@ bun check         # svelte-check 타입 검사
 bun lint          # Biome 린트 + 포맷팅
 ```
 
+## 유틸리티 도구
+
+프로젝트 유지보수를 위한 자동화 도구가 `.vibe-coding/TOOLS/`에 있습니다.
+
+- **마크다운 볼드체 수정 도구** (`fix-bold-issues.ts`):
+  - 마크다운 파싱 오류(예: 구두점 뒤에 붙는 볼드체 `**Text:**내용`)를 자동으로 감지하여 `&#8203;`을 삽입해 수정합니다.
+  - 실행: `bun .vibe-coding/TOOLS/fix-bold-issues.ts [폴더명]`
+  - 예시: `bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content`
+
 ## 문서
 
 - `.vibe-coding/TREE.md` - 프로젝트 구조 상세

@@ -177,7 +177,7 @@ Tauri 2.x는 한 번 구조를 크게 바꾼 이후,
 
 1. 새 코드 기준
    - 지금 시작하는 프로젝트라면
-     - **Tauri 2.9.x + 최신 문서(configuration-files, prerequisites, updater)**를 기준으로 설계하고
+     - **Tauri 2.9.x + 최신 문서(configuration-files, prerequisites, updater)**&#8203;를 기준으로 설계하고
      - 예제·템플릿도 전부 2.9 기준으로 맞춘다.
 
 2. 레거시 코드 기준

@@ -44,7 +44,7 @@ Da wir weltweit tätig sind, können Ihre personenbezogenen Daten in Länder au�
 
 - Übermittlungen in Länder mit einem **Angemessenheitsbeschluss** der Europäischen Kommission.
 - Den Abschluss der von der Europäischen Kommission genehmigten **Standardvertragsklauseln (SCCs, Version 2021)**.
-- Durchführung von **Transfer Impact Assessments (TIA)**, wo erforderlich.
+- Durchführung von **Transfer Impact Assessments (TIA)**&#8203;, wo erforderlich.
 
 ## 4. Einreichung einer Beschwerde
 
