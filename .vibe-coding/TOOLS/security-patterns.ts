@@ -1,4 +1,4 @@
-import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -41,6 +41,7 @@ interface SecurityResult {
 const SERVER_FILE_PATTERNS = [
 	/\+page\.server\.(ts|js)$/,
 	/\+layout\.server\.(ts|js)$/,
+	/\+server\.(ts|js)$/,
 	/hooks\.server\.(ts|js)$/,
 	/\/server\//,
 	/\.server\.(ts|js)$/
@@ -198,7 +199,7 @@ const RULES: SecurityRule[] = [
 		suggestion:
 			'GHSA-6q87-84jw-cjhp (CVE-2025-32388): 허용된 키 목록만 읽기. SvelteKit 2.20.6+ 필수',
 		severity: 'warning',
-		scope: 'script',
+		scope: 'server-only',
 		references: ['https://github.com/sveltejs/kit/security/advisories/GHSA-6q87-84jw-cjhp']
 	},
 	{
@@ -219,7 +220,8 @@ const RULES: SecurityRule[] = [
 		name: 'CORS 와일드카드 + credentials 위험',
 		category: 'SvelteKit',
 		description: 'Access-Control-Allow-Origin: * 와 credentials 조합',
-		pattern: /Access-Control-Allow-Origin['"]\s*:\s*['"]\*/g,
+		// 객체 리터럴, headers.set, headers.append 모두 탐지 (닫는 따옴표 포함, 대소문자 무시)
+		pattern: /(?:Access-Control-Allow-Origin['"]\s*:\s*['"]\*['"]|\.(?:set|append)\s*\(\s*['"]Access-Control-Allow-Origin['"]\s*,\s*['"]\*['"])/gi,
 		suggestion: 'credentials: true와 함께 사용 시 인증 정보 유출 위험',
 		severity: 'warning',
 		scope: 'server-only'
@@ -359,7 +361,8 @@ const RULES: SecurityRule[] = [
 		description: '코드 내 API 키, 시크릿 패턴 감지',
 		pattern: /(?:api[_-]?key|secret|password|token)\s*[=:]\s*["'`][A-Za-z0-9+/=_-]{16,}/gi,
 		suggestion: '비밀은 환경변수로 관리. 레포에 커밋 금지',
-		severity: 'error',
+		// 오탐이 많을 수 있어 warning으로 유지, 확정 패턴은 별도 error 룰 추가 권장
+		severity: 'warning',
 		scope: 'script',
 		references: [
 			'https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html'
@@ -384,8 +387,15 @@ const RULES: SecurityRule[] = [
 // 파일 확장자 필터
 const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte', '.css', '.html'];
 
-// 무시할 경로 패턴
-const IGNORE_PATTERNS = [/node_modules/, /\.svelte-kit/, /dist/, /build/, /\.git/, /\/scripts\//];
+// 무시할 경로 패턴 (경로 세그먼트 시작/끝 모두 매칭)
+const IGNORE_PATTERNS = [
+	/(?:^|[\/\\])node_modules(?:[\/\\]|$)/,
+	/(?:^|[\/\\])\.svelte-kit(?:[\/\\]|$)/,
+	/(?:^|[\/\\])dist(?:[\/\\]|$)/,
+	/(?:^|[\/\\])build(?:[\/\\]|$)/,
+	/(?:^|[\/\\])\.git(?:[\/\\]|$)/,
+	/(?:^|[\/\\])scripts(?:[\/\\]|$)/
+];
 
 // Svelte script/style 블록 추출
 interface CodeBlock {
@@ -449,12 +459,57 @@ async function walk(dir: string): Promise<string[]> {
 	return files;
 }
 
+/**
+ * 문자열 리터럴 밖의 // 주석만 제거 (https:// 같은 URL 보호)
+ */
+function stripLineComment(line: string): string {
+	let inSingle = false;
+	let inDouble = false;
+	let inTemplate = false;
+	let escaped = false;
+
+	for (let i = 0; i < line.length - 1; i++) {
+		const ch = line[i];
+		const next = line[i + 1];
+
+		if (escaped) {
+			escaped = false;
+			continue;
+		}
+		if (ch === '\\') {
+			escaped = true;
+			continue;
+		}
+
+		if (!inDouble && !inTemplate && ch === "'") inSingle = !inSingle;
+		else if (!inSingle && !inTemplate && ch === '"') inDouble = !inDouble;
+		else if (!inSingle && !inDouble && ch === '`') inTemplate = !inTemplate;
+
+		if (!inSingle && !inDouble && !inTemplate && ch === '/' && next === '/') {
+			return line.slice(0, i);
+		}
+	}
+
+	return line;
+}
+
+/**
+ * 원본 라인에서 security-ignore 억제 룰 ID 추출
+ */
+function extractSuppressedRuleIds(rawLine: string): Set<string> {
+	const suppressed = new Set<string>();
+	const re = /security-ignore:\s*([a-z0-9-]+)/gi;
+	for (const m of rawLine.matchAll(re)) suppressed.add(m[1]);
+	return suppressed;
+}
+
 function lintLines(
 	lines: string[],
 	filePath: string,
 	rules: SecurityRule[],
 	lineOffset: number = 0,
-	skipLineRanges: Array<{ start: number; end: number }> = []
+	skipLineRanges: Array<{ start: number; end: number; }> = [],
+	isMarkup: boolean = false
 ): SecurityResult[] {
 	const results: SecurityResult[] = [];
 	let inBlockComment = false;
@@ -467,48 +522,82 @@ function lintLines(
 		}
 
 		let line = lines[lineNum];
-		const trimmed = line.trim();
+		const rawLine = line; // suppression 추출용 원본 보존
 
-		// 블록 주석 처리
+		// suppression을 먼저 추출 (주석 제거 전에)
+		const suppressed = extractSuppressedRuleIds(rawLine);
+
+
+		// 블록 주석 상태 처리
 		if (inBlockComment) {
-			if (trimmed.includes('*/')) inBlockComment = false;
-			continue;
-		}
-		if (trimmed.startsWith('/*')) {
-			inBlockComment = !trimmed.includes('*/');
-			continue;
-		}
-
-		// 인라인 블록 주석 제거
-		line = line.replace(/\/\*.*?\*\//g, '');
-		const inlineCommentStart = line.indexOf('/*');
-		if (inlineCommentStart !== -1) {
-			line = line.slice(0, inlineCommentStart);
-			inBlockComment = true;
+			const closeIdx = line.indexOf('*/');
+			if (closeIdx !== -1) {
+				inBlockComment = false;
+				// 주석 닫힘 이후 코드가 있으면 검사 대상
+				line = line.slice(closeIdx + 2);
+			} else {
+				continue;
+			}
 		}
 
-		if (trimmed.startsWith('//')) continue;
+		// 블록 주석 시작 처리 (한 줄에서 열고 닫는 경우 vs 여러 줄)
+		const openIdx = line.indexOf('/*');
+		if (openIdx !== -1) {
+			const closeIdx = line.indexOf('*/', openIdx + 2);
+			if (closeIdx !== -1) {
+				// 같은 줄에서 닫힘: 주석 부분만 제거
+				line = line.slice(0, openIdx) + line.slice(closeIdx + 2);
+			} else {
+				// 다음 줄로 이어짐
+				line = line.slice(0, openIdx);
+				inBlockComment = true;
+			}
+		}
+
+		// 한 줄 주석 제거 (문자열 리터럴 내 // 보호)
+		if (!isMarkup) {
+			line = stripLineComment(line);
+		}
+
+		// 빈 줄이면 건너뜀
+		if (line.trim() === '') continue;
 
 		for (const rule of rules) {
 			// private env는 서버 파일이면 건너뜀
 			if (rule.id === 'sveltekit-private-env' && isServerFile(filePath)) continue;
 
-			// suppression comment 확인
-			if (line.includes(`security-ignore: ${rule.id}`)) continue;
+			// suppression comment 확인 (원본 라인에서 추출한 것 사용)
+			if (suppressed.has(rule.id)) continue;
 
 			const regex = rule.pattern;
 			regex.lastIndex = 0;
-			let match: RegExpExecArray | null;
 
-			// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-			while ((match = regex.exec(line)) !== null) {
-				results.push({
-					file: filePath,
-					line: lineNum + 1 + lineOffset,
-					column: match.index + 1,
-					rule,
-					match: match[0]
-				});
+			// g 플래그가 없으면 1회만 매칭 (무한 루프 방지)
+			if (!regex.global) {
+				const match = regex.exec(line);
+				if (match) {
+					results.push({
+						file: filePath,
+						line: lineNum + 1 + lineOffset,
+						column: match.index + 1,
+						rule,
+						match: match[0]
+					});
+				}
+			} else {
+				let match: RegExpExecArray | null;
+				// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
+				while ((match = regex.exec(line)) !== null) {
+					results.push({
+						file: filePath,
+						line: lineNum + 1 + lineOffset,
+						column: match.index + 1,
+						rule,
+						match: match[0]
+					});
+					// 빈 문자열 매치 방어 (무한 루프 방지)
+					if (match[0] === '') regex.lastIndex++;
+				}
 			}
 		}
 	}
@@ -528,7 +617,7 @@ const COOKIE_FLAGS_RULE: SecurityRule = {
 	references: ['https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html']
 };
 
-function indexToLineCol(text: string, index: number): { line: number; column: number } {
+function indexToLineCol(text: string, index: number): { line: number; column: number; } {
 	const before = text.slice(0, index);
 	const line = (before.match(/\n/g) || []).length + 1;
 	const lastNl = before.lastIndexOf('\n');
@@ -605,7 +694,7 @@ function lintContent(content: string, filePath: string): SecurityResult[] {
 
 		for (const block of scriptBlocks) {
 			const lines = block.content.split('\n');
-			results.push(...lintLines(lines, filePath, scriptRules, block.startLine));
+			results.push(...lintLines(lines, filePath, scriptRules, block.startLine, [], false));
 		}
 
 		const skipRanges = [
@@ -613,23 +702,23 @@ function lintContent(content: string, filePath: string): SecurityResult[] {
 			...styleBlocks.map((b) => ({ start: b.startLine, end: b.endLine }))
 		];
 		const fullLines = content.split('\n');
-		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges));
+		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges, true));
 	} else if (isCss) {
 		const lines = content.split('\n');
 		const cssRules = RULES.filter((r) => r.category === 'CSS');
-		results.push(...lintLines(lines, filePath, cssRules));
+		results.push(...lintLines(lines, filePath, cssRules, 0, [], true));
 	} else {
 		const lines = content.split('\n');
-		results.push(...lintLines(lines, filePath, scriptRules));
+		results.push(...lintLines(lines, filePath, scriptRules, 0, [], false));
 
 		if (isServer) {
-			results.push(...lintLines(lines, filePath, serverRules));
+			results.push(...lintLines(lines, filePath, serverRules, 0, [], false));
 			results.push(...lintCookieSetOptions(content, filePath));
 		}
 
 		// config 파일 검사
 		if (filePath.includes('uno.config') || filePath.includes('unocss.config')) {
-			results.push(...lintLines(lines, filePath, configRules));
+			results.push(...lintLines(lines, filePath, configRules, 0, [], false));
 		}
 	}
 
@@ -639,7 +728,7 @@ function lintContent(content: string, filePath: string): SecurityResult[] {
 		const cssRules = RULES.filter((r) => r.category === 'CSS');
 		for (const block of styleBlocks) {
 			const lines = block.content.split('\n');
-			results.push(...lintLines(lines, filePath, cssRules, block.startLine));
+			results.push(...lintLines(lines, filePath, cssRules, block.startLine, [], true));
 		}
 	}
 
@@ -716,7 +805,7 @@ async function main() {
 			const ext = extname(TARGET);
 			if (!VALID_EXTENSIONS.includes(ext)) {
 				console.log(`Error: 지원 확장자는 ${VALID_EXTENSIONS.join(', ')} 입니다.`);
-				return;
+				process.exit(1);
 			}
 			files = [TARGET];
 		} else {
@@ -735,12 +824,16 @@ async function main() {
 			allResults = allResults.filter((r) => r.rule.severity === FILTER_SEVERITY);
 		}
 
-		const report = formatResults(allResults, TARGET);
+		// basePath는 디렉터리 기준으로 (파일 타겟일 때 relative 경로 정상화)
+		const basePath = targetStat.isFile() ? dirname(TARGET) : TARGET;
+		const report = formatResults(allResults, basePath);
 		console.log(report);
 
-		// 리포트 저장
+		// 리포트 저장 (폴더 자동 생성)
 		const scriptDir = dirname(fileURLToPath(import.meta.url));
-		const reportPath = join(scriptDir, 'reports', 'security-report.txt');
+		const reportsDir = join(scriptDir, 'reports');
+		await mkdir(reportsDir, { recursive: true });
+		const reportPath = join(reportsDir, 'security-report.txt');
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 		const header = `Security Report - ${timestamp}\nTarget: ${TARGET}\n${'='.repeat(50)}\n`;
 		await writeFile(reportPath, header + report, 'utf-8');

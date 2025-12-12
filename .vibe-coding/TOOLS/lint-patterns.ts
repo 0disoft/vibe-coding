@@ -1,4 +1,4 @@
-import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -28,6 +28,7 @@ interface LintResult {
 const SERVER_FILE_PATTERNS = [
 	/\+page\.server\.(ts|js)$/,
 	/\+layout\.server\.(ts|js)$/,
+	/\+server\.(ts|js)$/,
 	/hooks\.server\.(ts|js)$/,
 	/\/server\//,
 	/\.server\.(ts|js)$/ // src/lib/whatever.server.ts 형태
@@ -155,14 +156,14 @@ const RULES: LintRule[] = [
 // 파일 확장자 필터
 const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte'];
 
-// 무시할 경로 패턴
+// 무시할 경로 패턴 (경로 세그먼트 시작/끝 모두 매칭)
 const IGNORE_PATTERNS = [
-	/node_modules/,
-	/\.svelte-kit/,
-	/dist/,
-	/build/,
-	/\.git/,
-	/\/scripts\// // 빌드 스크립트 폴더 (console 허용)
+	/(?:^|[\/\\])node_modules(?:[\/\\]|$)/,
+	/(?:^|[\/\\])\.svelte-kit(?:[\/\\]|$)/,
+	/(?:^|[\/\\])dist(?:[\/\\]|$)/,
+	/(?:^|[\/\\])build(?:[\/\\]|$)/,
+	/(?:^|[\/\\])\.git(?:[\/\\]|$)/,
+	/(?:^|[\/\\])scripts(?:[\/\\]|$)/
 ];
 
 // Svelte 파일에서 script/style 블록 추출 (시작 라인 오프셋 포함)
@@ -191,7 +192,7 @@ function extractScriptBlocks(content: string): CodeBlock[] {
 		blocks.push({
 			content: match[1],
 			startLine,
-			endLine
+			endLine: endLine + 1 // 닫는 태그 줄까지 완전 제외
 		});
 	}
 
@@ -214,7 +215,7 @@ function extractStyleBlocks(content: string): CodeBlock[] {
 		blocks.push({
 			content: match[1],
 			startLine,
-			endLine
+			endLine: endLine + 1 // 닫는 태그 줄까지 완전 제외
 		});
 	}
 
@@ -242,16 +243,52 @@ async function walk(dir: string): Promise<string[]> {
 	return files;
 }
 
+/**
+ * 문자열 리터럴 밖의 // 주석만 제거 (https:// 같은 URL 보호)
+ */
+function stripLineComment(line: string): string {
+	let inSingle = false;
+	let inDouble = false;
+	let inTemplate = false;
+	let escaped = false;
+
+	for (let i = 0; i < line.length - 1; i++) {
+		const ch = line[i];
+		const next = line[i + 1];
+
+		if (escaped) {
+			escaped = false;
+			continue;
+		}
+		if (ch === '\\') {
+			escaped = true;
+			continue;
+		}
+
+		if (!inDouble && !inTemplate && ch === "'") inSingle = !inSingle;
+		else if (!inSingle && !inTemplate && ch === '"') inDouble = !inDouble;
+		else if (!inSingle && !inDouble && ch === '`') inTemplate = !inTemplate;
+
+		if (!inSingle && !inDouble && !inTemplate && ch === '/' && next === '/') {
+			return line.slice(0, i);
+		}
+	}
+
+	return line;
+}
+
 function lintLines(
 	lines: string[],
 	filePath: string,
 	rules: LintRule[],
 	lineOffset: number = 0,
-	skipLineRanges: Array<{ start: number; end: number }> = []
+	skipLineRanges: Array<{ start: number; end: number; }> = [],
+	isMarkup: boolean = false
 ): LintResult[] {
 	const results: LintResult[] = [];
 	let inBlockComment = false;
 	let devBlockDepth = 0;
+	let devGuardPending = false;
 
 	for (let lineNum = 0; lineNum < lines.length; lineNum++) {
 		const actualLine = lineNum + lineOffset;
@@ -262,41 +299,56 @@ function lintLines(
 		}
 
 		let line = lines[lineNum];
-		const trimmed = line.trim();
 
-		// 블록 주석 상태 추적
+
+		// 블록 주석 상태 처리
 		if (inBlockComment) {
-			if (trimmed.includes('*/')) {
+			const closeIdx = line.indexOf('*/');
+			if (closeIdx !== -1) {
 				inBlockComment = false;
+				// 주석 닫힘 이후 코드가 있으면 검사 대상
+				line = line.slice(closeIdx + 2);
+			} else {
+				continue;
 			}
-			continue;
 		}
 
-		if (trimmed.startsWith('/*')) {
-			inBlockComment = !trimmed.includes('*/');
-			continue;
+		// 블록 주석 시작 처리 (한 줄에서 열고 닫는 경우 vs 여러 줄)
+		const openIdx = line.indexOf('/*');
+		if (openIdx !== -1) {
+			const closeIdx = line.indexOf('*/', openIdx + 2);
+			if (closeIdx !== -1) {
+				// 같은 줄에서 닫힘: 주석 부분만 제거
+				line = line.slice(0, openIdx) + line.slice(closeIdx + 2);
+			} else {
+				// 다음 줄로 이어짐
+				line = line.slice(0, openIdx);
+				inBlockComment = true;
+			}
 		}
 
-		// 인라인 블록 주석 제거 (/* ... */ 형태)
-		line = line.replace(/\/\*.*?\*\//g, '');
-		// 줄 끝에서 시작하는 블록 주석 처리
-		const inlineCommentStart = line.indexOf('/*');
-		if (inlineCommentStart !== -1) {
-			line = line.slice(0, inlineCommentStart);
-			inBlockComment = true;
+		// 한 줄 주석 건너뜀 (줄 전체가 주석인 경우)
+		if (line.trim().startsWith('//')) continue;
+
+		// 줄 끝 주석 제거 (문자열 리터럴 내 // 보호, Markup에서는 //가 텍스트일 수 있으므로 스킵)
+		if (!isMarkup) {
+			line = stripLineComment(line);
 		}
 
-		// 한 줄 주석 건너뜀
-		if (trimmed.startsWith('//')) continue;
+		// 빈 줄이면 건너뜀
+		if (line.trim() === '') continue;
 
-		// DEV 블록 추적 (개선: 중괄호 카운팅 대칭화)
+		// DEV 블록 추적 (if, {, } 단위로 깊이 계산)
 		const hasDevGuard = /import\.meta\.env\.DEV/.test(line);
-		const hasBrace = /{/.test(line);
 
-		if (hasDevGuard && hasBrace && devBlockDepth === 0) {
-			devBlockDepth = 1;
-		}
-		if (devBlockDepth > 0) {
+		// DEV 가드가 있는 줄에서 블록 시작
+		if (hasDevGuard && devBlockDepth === 0) {
+			// DEV 가드 줄의 중괄호 차이로 깊이 계산 (임의로 1 설정 X)
+			const openBraces = (line.match(/{/g) || []).length;
+			const closeBraces = (line.match(/}/g) || []).length;
+			devBlockDepth = openBraces - closeBraces;
+		} else if (devBlockDepth > 0) {
+			// DEV 블록 내부에서 깊이 갱신
 			devBlockDepth += (line.match(/{/g) || []).length;
 			devBlockDepth -= (line.match(/}/g) || []).length;
 			if (devBlockDepth < 0) devBlockDepth = 0;
@@ -312,17 +364,33 @@ function lintLines(
 			// regex 재사용 (lastIndex 리셋)
 			const regex = rule.pattern;
 			regex.lastIndex = 0;
-			let match: RegExpExecArray | null;
 
-			// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-			while ((match = regex.exec(line)) !== null) {
-				results.push({
-					file: filePath,
-					line: lineNum + 1 + lineOffset, // 오프셋 적용
-					column: match.index + 1,
-					rule,
-					match: match[0]
-				});
+			// g 플래그가 없으면 1회만 매칭 (무한 루프 방지)
+			if (!regex.global) {
+				const match = regex.exec(line);
+				if (match) {
+					results.push({
+						file: filePath,
+						line: lineNum + 1 + lineOffset,
+						column: match.index + 1,
+						rule,
+						match: match[0]
+					});
+				}
+			} else {
+				let match: RegExpExecArray | null;
+				// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
+				while ((match = regex.exec(line)) !== null) {
+					results.push({
+						file: filePath,
+						line: lineNum + 1 + lineOffset,
+						column: match.index + 1,
+						rule,
+						match: match[0]
+					});
+					// 빈 문자열 매치 방어 (무한 루프 방지)
+					if (match[0] === '') regex.lastIndex++;
+				}
 			}
 		}
 	}
@@ -350,7 +418,7 @@ function lintContent(content: string, filePath: string): LintResult[] {
 		// Script 블록 검사 (라인 오프셋 적용)
 		for (const block of scriptBlocks) {
 			const lines = block.content.split('\n');
-			results.push(...lintLines(lines, filePath, scriptRules, block.startLine));
+			results.push(...lintLines(lines, filePath, scriptRules, block.startLine, [], false)); // script는 markup 아님
 		}
 
 		// 마크업 검사 (script/style 블록 제외)
@@ -359,7 +427,7 @@ function lintContent(content: string, filePath: string): LintResult[] {
 			...styleBlocks.map((b) => ({ start: b.startLine, end: b.endLine }))
 		];
 		const fullLines = content.split('\n');
-		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges));
+		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges, true)); // isMarkup = true
 	} else {
 		// 일반 TS/JS 파일
 		const lines = content.split('\n');
@@ -367,7 +435,7 @@ function lintContent(content: string, filePath: string): LintResult[] {
 
 		// 서버 파일이면 브라우저 전역 객체 검사
 		if (isServer) {
-			results.push(...lintLines(lines, filePath, serverRules));
+			results.push(...lintLines(lines, filePath, serverRules, 0, [], false));
 		}
 	}
 
@@ -435,7 +503,7 @@ async function main() {
 			const ext = extname(TARGET);
 			if (!VALID_EXTENSIONS.includes(ext)) {
 				console.log(`Error: 지원 확장자는 ${VALID_EXTENSIONS.join(', ')} 입니다.`);
-				return;
+				process.exit(1);
 			}
 			files = [TARGET];
 		} else {
@@ -455,18 +523,36 @@ async function main() {
 			allResults = allResults.filter((r) => r.rule.severity === FILTER_SEVERITY);
 		}
 
-		const report = formatResults(allResults, TARGET);
+		// 결과 정렬 (파일 경로, 라인, 컨럼 순)
+		allResults.sort((a, b) => {
+			if (a.file !== b.file) return a.file.localeCompare(b.file);
+			if (a.line !== b.line) return a.line - b.line;
+			return a.column - b.column;
+		});
+
+		// basePath는 디렉터리 기준으로 (파일 타겟일 때 relative 경로 정상화)
+		const basePath = targetStat.isFile() ? dirname(TARGET) : TARGET;
+		const report = formatResults(allResults, basePath);
 		console.log(report);
 
-		// 리포트 파일로 저장
+		// 리포트 파일로 저장 (폴더 자동 생성)
 		const scriptDir = dirname(fileURLToPath(import.meta.url));
-		const reportPath = join(scriptDir, 'reports', 'lint-report.txt');
+		const reportsDir = join(scriptDir, 'reports');
+		await mkdir(reportsDir, { recursive: true });
+		const reportPath = join(reportsDir, 'lint-report.txt');
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 		const header = `Lint Report - ${timestamp}\nTarget: ${TARGET}\n${'='.repeat(40)}\n`;
 		await writeFile(reportPath, header + report, 'utf-8');
 		console.log(`\n📝 리포트 저장됨: ${reportPath}`);
+
+		// CI용 종료 코드: 오류가 있으면 exit(1)
+		const hasErrors = allResults.some((r) => r.rule.severity === 'error');
+		if (hasErrors) {
+			process.exit(1);
+		}
 	} catch (error) {
 		console.error('Error:', error);
+		process.exit(1);
 	}
 }
 
