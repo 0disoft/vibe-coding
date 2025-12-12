@@ -92,23 +92,30 @@ bun .vibe-coding/TOOLS/lint-patterns.ts --errors-only
 
 ### 감지 규칙
 
-#### TypeScript
+#### TypeScript (script scope)
 
 | ID | 심각도 | 설명 |
 |----|--------|------|
 | `no-explicit-any` | ❌ 오류 | `: any` 또는 `as any` 사용 |
 | `no-ts-ignore` | ❌ 오류 | `@ts-ignore`, `@ts-nocheck` 주석 |
-| `no-non-null-assertion` | 💡 정보 | `obj!.prop` 형태의 non-null assertion |
+| `no-non-null-assertion` | 💡 정보 | `obj!.prop`, `arr![0]`, `fn!()` 형태 |
 | `prefer-isdef-filter` | 💡 정보 | `filter` 내 `!= null` → `isDef` 권장 |
 | `no-console-outside-dev` | ⚠️ 경고 | DEV 가드 없는 `console.*` 호출 |
 | `prefer-set-over-includes` | 💡 정보 | 상수 배열 `.includes()` 대신 `Set.has()` 권장 |
 
 #### Svelte 5 / SvelteKit 2
 
+| ID | 심각도 | scope | 설명 |
+|----|--------|-------|------|
+| `no-app-stores` | ⚠️ 경고 | script | `$app/stores` → `$app/state` 마이그레이션 |
+| `no-html-tag` | ⚠️ 경고 | **markup** | `{@html}` 사용 (XSS 위험) |
+| `no-legacy-store` | 💡 정보 | script | `svelte/store` → runes 권장 |
+| `no-on-directive` | 💡 정보 | **markup** | `on:click` → `onclick` 권장 |
+| `no-reactive-statement` | 💡 정보 | script | `$:` → `$derived`, `$effect` 권장 |
+
+#### SvelteKit 보안
+
 | ID | 심각도 | 설명 |
 |----|--------|------|
-| `no-app-stores` | ⚠️ 경고 | `$app/stores` → `$app/state` 마이그레이션 필요 |
-| `no-html-tag` | ⚠️ 경고 | `{@html}` 사용 (XSS 위험, sanitize 필수) |
-| `no-legacy-store` | 💡 정보 | `svelte/store` → runes (`$state`, `$derived`) 권장 |
-| `no-on-directive` | 💡 정보 | `on:click` → `onclick` 권장 (Svelte 5) |
-| `no-reactive-statement` | 💡 정보 | `$:` → `$derived`, `$effect` 권장 (Svelte 5) |
+| `no-private-env-client` | ❌ 오류 | 클라이언트에서 `$env/*/private` import |
+| `no-browser-globals-server` | ❌ 오류 | 서버 파일에서 `window`, `document` 등 사용 |

@@ -2,6 +2,9 @@ import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, extname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
+// 규칙 스코프 정의
+type RuleScope = "script" | "markup" | "all" | "server-only";
+
 // 감지할 코드 패턴 정의
 interface LintRule {
   id: string;
@@ -10,6 +13,7 @@ interface LintRule {
   pattern: RegExp;
   suggestion: string;
   severity: "error" | "warning" | "info";
+  scope: RuleScope; // 규칙이 적용되는 영역
 }
 
 interface LintResult {
@@ -20,8 +24,23 @@ interface LintResult {
   match: string;
 }
 
+// 서버 파일 패턴 (윈도우 경로 대응을 위해 슬래시로 정규화 후 검사)
+const SERVER_FILE_PATTERNS = [
+  /\+page\.server\.(ts|js)$/,
+  /\+layout\.server\.(ts|js)$/,
+  /hooks\.server\.(ts|js)$/,
+  /\/server\//,
+  /\.server\.(ts|js)$/, // src/lib/whatever.server.ts 형태
+];
+
+function isServerFile(filePath: string): boolean {
+  // 윈도우 역슬래시를 슬래시로 정규화
+  const normalized = filePath.replace(/\\/g, "/");
+  return SERVER_FILE_PATTERNS.some((p) => p.test(normalized));
+}
+
 const RULES: LintRule[] = [
-  // 레벨 1: 기본적인 타입 안전성 문제
+  // 레벨 1: 기본적인 타입 안전성 문제 (script scope)
   {
     id: "no-explicit-any",
     name: "명시적 any 사용 금지",
@@ -29,6 +48,7 @@ const RULES: LintRule[] = [
     pattern: /\b(?::\s*any\b|as\s+any\b)/g,
     suggestion: "unknown + 타입 가드 또는 구체적인 타입으로 교체",
     severity: "error",
+    scope: "script",
   },
   {
     id: "no-ts-ignore",
@@ -37,24 +57,27 @@ const RULES: LintRule[] = [
     pattern: /@ts-(?:ignore|nocheck)/g,
     suggestion: "@ts-expect-error + 구체적인 사유 명시, 또는 타입 수정",
     severity: "error",
+    scope: "script",
   },
   {
     id: "no-non-null-assertion",
     name: "Non-null assertion (!) 사용",
     description: "변수 뒤 ! 사용 감지",
-    pattern: /\w+!\./g,
+    pattern: /\w+!(?:\.|[\[(])/g, // foo!. , foo![0], foo!() 모두 감지
     suggestion: "옵셔널 체이닝(?.) 또는 명시적 null 체크로 교체",
-    severity: "info", // warning에서 info로 하향
+    severity: "info",
+    scope: "script",
   },
 
-  // 레벨 2: 패턴 기반 권장사항
+  // 레벨 2: 패턴 기반 권장사항 (script scope)
   {
     id: "prefer-isdef-filter",
     name: "filter에서 isDef 타입 가드 권장",
     description: "filter 내 != null 패턴 감지",
-    pattern: /\.filter\s*\([^)]*!=\s*null/g, // filter 안에서만 감지
+    pattern: /\.filter\s*\([^)]*(?:!=\s*null|!==\s*null)/g,
     suggestion: "isDef 타입 가드 함수로 교체하면 타입 추론 향상",
     severity: "info",
+    scope: "script",
   },
   {
     id: "no-console-outside-dev",
@@ -63,6 +86,7 @@ const RULES: LintRule[] = [
     pattern: /console\.(?:log|warn|error|info|debug)\s*\(/g,
     suggestion: "import.meta.env.DEV 조건문으로 감싸거나 제거",
     severity: "warning",
+    scope: "script",
   },
   {
     id: "prefer-set-over-includes",
@@ -71,9 +95,10 @@ const RULES: LintRule[] = [
     pattern: /(?:ALLOWED|VALUES|LIST|ITEMS|KEYS|IDS)\w*\.includes\s*\(/gi,
     suggestion: "new Set()으로 변환 후 .has()로 O(1) 조회",
     severity: "info",
+    scope: "script",
   },
 
-  // Svelte 5 / SvelteKit 2 안티패턴
+  // Svelte 5 / SvelteKit 2 안티패턴 (script scope)
   {
     id: "no-app-stores",
     name: "$app/stores 사용 금지 (deprecated)",
@@ -81,14 +106,7 @@ const RULES: LintRule[] = [
     pattern: /from\s+['"]?\$app\/stores['"]?/g,
     suggestion: "$app/state로 마이그레이션 필요 (SvelteKit 2.12+)",
     severity: "warning",
-  },
-  {
-    id: "no-html-tag",
-    name: "@html 사용 주의 (XSS 위험)",
-    description: "{@html ...} 사용 감지",
-    pattern: /\{@html\s+/g,
-    suggestion: "신뢰할 수 없는 입력에 사용 시 XSS 위험. DOMPurify 등 sanitize 필수",
-    severity: "warning",
+    scope: "script",
   },
   {
     id: "no-legacy-store",
@@ -97,14 +115,7 @@ const RULES: LintRule[] = [
     pattern: /from\s+['"]?svelte\/store['"]?/g,
     suggestion: "Svelte 5 runes ($state, $derived) 사용 권장",
     severity: "info",
-  },
-  {
-    id: "no-on-directive",
-    name: "on:event 문법 (Svelte 4)",
-    description: "on:click, on:submit 등 레거시 이벤트 문법 감지",
-    pattern: /\bon:[a-z]+\s*=/gi,
-    suggestion: "Svelte 5: onclick, onsubmit 등 네이티브 속성 사용",
-    severity: "info",
+    scope: "script",
   },
   {
     id: "no-reactive-statement",
@@ -113,6 +124,47 @@ const RULES: LintRule[] = [
     pattern: /^\s*\$:\s+/gm,
     suggestion: "Svelte 5: $derived 또는 $effect 사용",
     severity: "info",
+    scope: "script",
+  },
+
+  // Svelte 마크업 전용 규칙 (markup scope)
+  {
+    id: "no-html-tag",
+    name: "@html 사용 주의 (XSS 위험)",
+    description: "{@html ...} 사용 감지",
+    pattern: /\{@html\s+/g,
+    suggestion: "신뢰할 수 없는 입력에 사용 시 XSS 위험. DOMPurify 등 sanitize 필수",
+    severity: "warning",
+    scope: "markup",
+  },
+  {
+    id: "no-on-directive",
+    name: "on:event 문법 (Svelte 4)",
+    description: "on:click, on:submit 등 레거시 이벤트 문법 감지",
+    pattern: /\bon:[a-z]+\s*=/gi,
+    suggestion: "Svelte 5: onclick, onsubmit 등 네이티브 속성 사용",
+    severity: "info",
+    scope: "markup",
+  },
+
+  // SvelteKit 보안 규칙
+  {
+    id: "no-private-env-client",
+    name: "클라이언트에서 private env 사용",
+    description: "$env/static/private 또는 $env/dynamic/private import 감지",
+    pattern: /from\s+['"]?\$env\/(?:static|dynamic)\/private['"]?/g,
+    suggestion: "서버 전용 환경변수입니다. 클라이언트에서 사용 불가. .server 파일로 이동",
+    severity: "error",
+    scope: "script",
+  },
+  {
+    id: "no-browser-globals-server",
+    name: "서버 파일에서 브라우저 전역 객체 사용",
+    description: "window, document, localStorage 등 감지",
+    pattern: /\b(?:window|document|localStorage|sessionStorage|navigator)\b(?!:)/g,
+    suggestion: "서버에서 실행 불가. browser 가드로 감싸거나 클라이언트로 이동",
+    severity: "error",
+    scope: "server-only",
   },
 ];
 
@@ -126,21 +178,61 @@ const IGNORE_PATTERNS = [
   /dist/,
   /build/,
   /\.git/,
+  /\/scripts\//, // 빌드 스크립트 폴더 (console 허용)
 ];
 
-// Svelte 파일에서 script 블록만 추출
-function extractScriptContent(content: string, filePath: string): string {
-  if (!filePath.endsWith(".svelte")) return content;
+// Svelte 파일에서 script/style 블록 추출 (시작 라인 오프셋 포함)
+interface CodeBlock {
+  content: string;
+  startLine: number; // 원본 파일에서의 시작 라인 (0-indexed)
+  endLine: number;   // 끝 라인 (마크업 제외용)
+}
 
-  const scriptMatches = content.match(/<script[^>]*>([\s\S]*?)<\/script>/gi);
-  if (!scriptMatches) return "";
+function extractScriptBlocks(content: string): CodeBlock[] {
+  const blocks: CodeBlock[] = [];
+  const regex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+  let match: RegExpExecArray | null;
 
-  return scriptMatches
-    .map((match) => {
-      const inner = match.replace(/<script[^>]*>/i, "").replace(/<\/script>/i, "");
-      return inner;
-    })
-    .join("\n");
+  while ((match = regex.exec(content)) !== null) {
+    // <script> 태그의 끝 위치(>)를 찾아서 content 시작점 계산
+    const tagEndIndex = match.index + match[0].indexOf(">") + 1;
+    const beforeContent = content.slice(0, tagEndIndex);
+    const startLine = (beforeContent.match(/\n/g) || []).length;
+
+    // 전체 매치의 끝까지 줄바꿈 개수
+    const beforeMatchEnd = content.slice(0, match.index + match[0].length);
+    const endLine = (beforeMatchEnd.match(/\n/g) || []).length;
+
+    blocks.push({
+      content: match[1],
+      startLine,
+      endLine,
+    });
+  }
+
+  return blocks;
+}
+
+function extractStyleBlocks(content: string): CodeBlock[] {
+  const blocks: CodeBlock[] = [];
+  const regex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(content)) !== null) {
+    const tagEndIndex = match.index + match[0].indexOf(">") + 1;
+    const beforeContent = content.slice(0, tagEndIndex);
+    const startLine = (beforeContent.match(/\n/g) || []).length;
+    const beforeMatchEnd = content.slice(0, match.index + match[0].length);
+    const endLine = (beforeMatchEnd.match(/\n/g) || []).length;
+
+    blocks.push({
+      content: match[1],
+      startLine,
+      endLine,
+    });
+  }
+
+  return blocks;
 }
 
 async function walk(dir: string): Promise<string[]> {
@@ -150,8 +242,9 @@ async function walk(dir: string): Promise<string[]> {
   for (const entry of entries) {
     const path = join(dir, entry.name);
 
-    // 무시 패턴 체크
-    if (IGNORE_PATTERNS.some((p) => p.test(path))) continue;
+    // 무시 패턴 체크 (윈도우 역슬래시 정규화)
+    const normalizedPath = path.replace(/\\/g, "/");
+    if (IGNORE_PATTERNS.some((p) => p.test(normalizedPath))) continue;
 
     if (entry.isDirectory()) {
       files.push(...(await walk(path)));
@@ -163,18 +256,26 @@ async function walk(dir: string): Promise<string[]> {
   return files;
 }
 
-function lintContent(content: string, filePath: string): LintResult[] {
+function lintLines(
+  lines: string[],
+  filePath: string,
+  rules: LintRule[],
+  lineOffset: number = 0,
+  skipLineRanges: Array<{ start: number; end: number; }> = []
+): LintResult[] {
   const results: LintResult[] = [];
-
-  // Svelte 파일은 script 블록만 추출
-  const targetContent = extractScriptContent(content, filePath);
-  const lines = targetContent.split("\n");
-
-  // 블록 주석 상태 추적
   let inBlockComment = false;
+  let devBlockDepth = 0;
 
   for (let lineNum = 0; lineNum < lines.length; lineNum++) {
-    const line = lines[lineNum];
+    const actualLine = lineNum + lineOffset;
+
+    // 제외 범위 체크 (script/style 블록 등) - half-open으로 경계 오차 방지
+    if (skipLineRanges.some((r) => actualLine >= r.start && actualLine < r.end)) {
+      continue;
+    }
+
+    let line = lines[lineNum];
     const trimmed = line.trim();
 
     // 블록 주석 상태 추적
@@ -190,28 +291,96 @@ function lintContent(content: string, filePath: string): LintResult[] {
       continue;
     }
 
+    // 인라인 블록 주석 제거 (/* ... */ 형태)
+    line = line.replace(/\/\*.*?\*\//g, "");
+    // 줄 끝에서 시작하는 블록 주석 처리
+    const inlineCommentStart = line.indexOf("/*");
+    if (inlineCommentStart !== -1) {
+      line = line.slice(0, inlineCommentStart);
+      inBlockComment = true;
+    }
+
     // 한 줄 주석 건너뜀
     if (trimmed.startsWith("//")) continue;
 
-    // DEV 블록: 같은 줄에 import.meta.env.DEV가 있으면 console 허용
+    // DEV 블록 추적 (개선: 중괄호 카운팅 대칭화)
     const hasDevGuard = /import\.meta\.env\.DEV/.test(line);
+    const hasBrace = /{/.test(line);
 
-    for (const rule of RULES) {
-      // DEV 가드가 같은 줄에 있으면 console 규칙 건너뜀
-      if (rule.id === "no-console-outside-dev" && hasDevGuard) continue;
+    if (hasDevGuard && hasBrace && devBlockDepth === 0) {
+      devBlockDepth = 1;
+    }
+    if (devBlockDepth > 0) {
+      devBlockDepth += (line.match(/{/g) || []).length;
+      devBlockDepth -= (line.match(/}/g) || []).length;
+      if (devBlockDepth < 0) devBlockDepth = 0;
+    }
 
-      const regex = new RegExp(rule.pattern.source, rule.pattern.flags);
+    for (const rule of rules) {
+      // DEV 블록 내부이거나, 같은 줄에 DEV 가드가 있으면 console 규칙 건너뜀
+      if (rule.id === "no-console-outside-dev" && (devBlockDepth > 0 || hasDevGuard)) continue;
+
+      // private env 규칙: 서버 파일이면 건너뜀
+      if (rule.id === "no-private-env-client" && isServerFile(filePath)) continue;
+
+      // regex 재사용 (lastIndex 리셋)
+      const regex = rule.pattern;
+      regex.lastIndex = 0;
       let match: RegExpExecArray | null;
 
       while ((match = regex.exec(line)) !== null) {
         results.push({
           file: filePath,
-          line: lineNum + 1,
+          line: lineNum + 1 + lineOffset, // 오프셋 적용
           column: match.index + 1,
           rule,
           match: match[0],
         });
       }
+    }
+  }
+
+  return results;
+}
+
+function lintContent(content: string, filePath: string): LintResult[] {
+  const results: LintResult[] = [];
+  const isSvelte = filePath.endsWith(".svelte");
+  const isServer = isServerFile(filePath);
+
+  // script scope 규칙
+  const scriptRules = RULES.filter((r) => r.scope === "script");
+  // markup scope 규칙
+  const markupRules = RULES.filter((r) => r.scope === "markup");
+  // server-only scope 규칙
+  const serverRules = RULES.filter((r) => r.scope === "server-only");
+
+  if (isSvelte) {
+    // Svelte 파일: script 블록과 마크업을 분리하여 검사
+    const scriptBlocks = extractScriptBlocks(content);
+    const styleBlocks = extractStyleBlocks(content);
+
+    // Script 블록 검사 (라인 오프셋 적용)
+    for (const block of scriptBlocks) {
+      const lines = block.content.split("\n");
+      results.push(...lintLines(lines, filePath, scriptRules, block.startLine));
+    }
+
+    // 마크업 검사 (script/style 블록 제외)
+    const skipRanges = [
+      ...scriptBlocks.map((b) => ({ start: b.startLine, end: b.endLine })),
+      ...styleBlocks.map((b) => ({ start: b.startLine, end: b.endLine })),
+    ];
+    const fullLines = content.split("\n");
+    results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges));
+  } else {
+    // 일반 TS/JS 파일
+    const lines = content.split("\n");
+    results.push(...lintLines(lines, filePath, scriptRules));
+
+    // 서버 파일이면 브라우저 전역 객체 검사
+    if (isServer) {
+      results.push(...lintLines(lines, filePath, serverRules));
     }
   }
 
