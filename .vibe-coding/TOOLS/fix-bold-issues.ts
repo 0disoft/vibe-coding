@@ -1,21 +1,41 @@
-
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { extname, join } from "node:path";
 
-const TARGET_DIR = process.argv[2] || "src/content";
 const DRY_RUN = process.argv.includes("--dry-run");
 
-// 조언에 기반한 정규식:
-// 1. 구두점(.,:;!?)으로 끝나는 볼드체 뒤에 공백이 아닌 문자가 바로 붙는 경우.
-//    예시: **Text:**Next -> 깨짐 발생
-//    Regex: /(\*\*(?:(?!\*\*).)+?[.:;!?)]\*\*)(?=[^ \t\r\n\u00A0\u200B\u3000\uFEFF])/g
+// 제로폭 공백을 HTML 엔티티로 삽입
+const ZWS_ENTITY = "&#8203;";
 
-// 2. 고위험 CJK 스티키 볼드 (사용자가 언급한 한자 뒤 히라가나 등).
-//    현재는 가장 명확하게 "깨지는" 규칙인 구두점 규칙에 집중합니다.
-//    필요 시 패턴을 추가할 수 있습니다.
+// CJK 문자 판별 (한글, 한자, 히라가나, 가타카나)
+function isCJK(char: string): boolean {
+  if (!char) return false;
+  const code = char.charCodeAt(0);
+  return (
+    (code >= 0xac00 && code <= 0xd7af) || // 한글 음절
+    (code >= 0x1100 && code <= 0x11ff) || // 한글 자모
+    (code >= 0x4e00 && code <= 0x9fff) || // CJK 통합 한자
+    (code >= 0x3040 && code <= 0x309f) || // 히라가나
+    (code >= 0x30a0 && code <= 0x30ff)    // 가타카나
+  );
+}
 
-// Zero Width Space (폭 없는 공백)
-const ZWS = "&#8203;";
+// 구두점으로 끝나는 볼드 패턴 (lookahead 없이)
+// **...구두점** 형태를 캡처
+const boldEndingWithPunct = /(\*\*(?:(?!\*\*).)+?[.:;!?)]\*\*)/g;
+
+// 볼드 뒤에 CJK가 오는 경우에만 ZWS 삽입
+function fixBoldBeforeCJK(text: string): { text: string; count: number; } {
+  let count = 0;
+  const result = text.replace(boldEndingWithPunct, (match, _bold, offset) => {
+    const nextChar = text[offset + match.length];
+    if (isCJK(nextChar)) {
+      count++;
+      return match + ZWS_ENTITY;
+    }
+    return match;
+  });
+  return { text: result, count };
+}
 
 async function walk(dir: string): Promise<string[]> {
   const files: string[] = [];
@@ -25,54 +45,107 @@ async function walk(dir: string): Promise<string[]> {
     const path = join(dir, entry.name);
     if (entry.isDirectory()) {
       files.push(...(await walk(path)));
-    } else if (entry.isFile() && extname(path) === ".md") {
-      files.push(path);
+    } else if (entry.isFile()) {
+      const ext = extname(path);
+      if (ext === ".md" || ext === ".mdx") files.push(path);
     }
   }
   return files;
 }
 
-async function fixFile(path: string) {
-  let content = await readFile(path, "utf-8");
-  let originalContent = content;
+// 인라인 코드 구간을 피해 볼드 교정
+function fixLineOutsideInlineCode(line: string): { line: string; count: number; } {
+  // 백틱으로 split하고 짝수 인덱스(코드 외부)만 변환
+  const parts = line.split("`");;
+  let count = 0;
 
-  // 패턴 1: 구두점으로 끝나는 볼드체가 공백/ZWS 없이 문자와 이어질 때
-  // 볼드 부분($1)을 캡처하고, 뒤에 공백이 아닌지 확인(lookahead)
-  const punctuationRegex = /(\*\*(?:(?!\*\*).)+?[.:;!?)]\*\*)(?=[^ \t\r\n\u00A0\u200B\u3000\uFEFF.:;!?])/g;
-
-  // 패턴 1 교체
-  content = content.replace(punctuationRegex, (match) => {
-    // 수정이 필요한지 결정
-    // Lookahead가 매칭되었으므로 수정 대상임.
-    return match + ZWS;
-  });
-
-  // 패턴 2: (사용자 피드백에 따라 추가 가능)
-  // 현재는 "까다로운 케이스"에 대한 명시적 조언에 따라 구두점 수정만 적용합니다.
-
-  if (content !== originalContent) {
-    console.log(`[FIX] ${path}`);
-    if (!DRY_RUN) {
-      await writeFile(path, content, "utf-8");
-    }
-  } else {
-    // console.log(`[OK] ${path}`);
+  for (let i = 0; i < parts.length; i += 2) {
+    const fixed = fixBoldBeforeCJK(parts[i]);
+    parts[i] = fixed.text;
+    count += fixed.count;
   }
+
+  return { line: parts.join("`"), count };
+}
+
+// 펜스 코드블록과 인라인 코드를 건너뛰며 마크다운 교정
+function fixMarkdownKeepingCodeFences(content: string): { content: string; count: number; } {
+  const lines = content.split("\n");
+  let inFence = false;
+  let fenceToken = "";
+  let count = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trimStart();
+    const fenceStarts = trimmed.startsWith("```") || trimmed.startsWith("~~~");
+
+    if (!inFence && fenceStarts) {
+      inFence = true;
+      fenceToken = trimmed.slice(0, 3);
+      continue;
+    }
+
+    if (inFence) {
+      const fenceEnds = trimmed.startsWith(fenceToken);
+      if (fenceEnds) {
+        inFence = false;
+        fenceToken = "";
+      }
+      continue;
+    }
+
+    const fixed = fixLineOutsideInlineCode(line);
+    lines[i] = fixed.line;
+    count += fixed.count;
+  }
+
+  return { content: lines.join("\n"), count };
+}
+
+async function fixFile(path: string): Promise<number> {
+  const original = await readFile(path, "utf-8");
+  const fixed = fixMarkdownKeepingCodeFences(original);
+
+  if (fixed.content !== original) {
+    console.log(`[FIX] ${path}  (${fixed.count}건)`);
+    if (!DRY_RUN) {
+      await writeFile(path, fixed.content, "utf-8");
+    }
+  }
+  return fixed.count;
 }
 
 async function main() {
-  console.log(`Scanning directory: ${TARGET_DIR}`);
+  const TARGET = process.argv[2] || "src/content";
+  console.log(`Scanning: ${TARGET}`);
   if (DRY_RUN) console.log("DRY RUN MODE: No files will be modified.");
 
   try {
-    const files = await walk(TARGET_DIR);
-    console.log(`Found ${files.length} markdown files.`);
+    const targetStat = await stat(TARGET);
+    let files: string[];
 
-    for (const file of files) {
-      await fixFile(file);
+    if (targetStat.isFile()) {
+      // 단일 파일 처리
+      const ext = extname(TARGET);
+      if (ext !== ".md" && ext !== ".mdx") {
+        console.log("Error: Only .md or .mdx files are supported.");
+        return;
+      }
+      files = [TARGET];
+    } else {
+      // 디렉토리 처리
+      files = await walk(TARGET);
     }
 
-    console.log("Done.");
+    console.log(`Found ${files.length} markdown file(s).`);
+
+    let totalFixed = 0;
+    for (const file of files) {
+      totalFixed += await fixFile(file);
+    }
+
+    console.log(`Done. Total fixes: ${totalFixed}`);
   } catch (error) {
     console.error("Error:", error);
   }

@@ -109,7 +109,8 @@
 | `KNOWLEDGE/`           | 기술 지식 베이스 (언어별 가이드 등)                        |
 | `TROUBLE/`             | 문제 해결 기록 (SOLVED.md 등)                              |
 | `SOS/`                 | 긴급 이슈 및 디버깅 로그                                   |
-| `TOOLS/`               | 개발 생산성 향상 및 자동화 스크립트 모음                   |
+| `TOOLS/`               | 자동화 스크립트 모음 (README.md에 사용법 문서화)           |
+| `TOOLS/fix-bold-issues.ts` | 마크다운 볼드 파싱 오류 자동 수정 도구                 |
 
 ### e2e/
 

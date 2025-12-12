@@ -79,10 +79,21 @@ bun lint          # Biome 린트 + 포맷팅
 
 프로젝트 유지보수를 위한 자동화 도구가 `.vibe-coding/TOOLS/`에 있습니다.
 
-- **마크다운 볼드체 수정 도구** (`fix-bold-issues.ts`):
-  - 마크다운 파싱 오류(예: 구두점 뒤에 붙는 볼드체 `**Text:**내용`)를 자동으로 감지하여 `&#8203;`을 삽입해 수정합니다.
-  - 실행: `bun .vibe-coding/TOOLS/fix-bold-issues.ts [폴더명]`
-  - 예시: `bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content`
+### 마크다운 볼드체 수정 (`fix-bold-issues.ts`)
+
+마크다운 파싱 오류(예: `**Text:**내용`)를 자동으로 감지하여 ZWS(`&#8203;`)를 삽입해 수정합니다.
+
+```bash
+# 전체 콘텐츠 스캔
+bun .vibe-coding/TOOLS/fix-bold-issues.ts
+
+# 특정 폴더 또는 파일
+bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog
+bun .vibe-coding/TOOLS/fix-bold-issues.ts test-bold.md
+
+# 미리보기 (수정 없이 확인만)
+bun .vibe-coding/TOOLS/fix-bold-issues.ts --dry-run
+```
 
 ## 문서
 
