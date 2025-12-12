@@ -298,6 +298,50 @@ const handleRootRedirect: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-// 4. 핸들러 병합 및 내보내기
-// 순서: Rate Limit → 테마/폰트 → 루트 리다이렉트 → Paraglide
-export const handle: Handle = sequence(handleRateLimit, handleThemeAndFont, handleRootRedirect, handleParaglide);
+// ============================================================================
+// 4. 보안 헤더 핸들러
+// 기본 보안 헤더를 응답에 추가 (CSP는 사이트별로 kit.csp 또는 플랫폼에서 설정 권장)
+// ============================================================================
+
+/**
+ * 헤더가 없을 때만 설정
+ */
+function setIfMissing(headers: Headers, name: string, value: string): void {
+	if (!headers.has(name)) headers.set(name, value);
+}
+
+const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
+	const response = await resolve(event);
+	const headers = response.headers;
+
+	// 기본 보안 헤더들
+	setIfMissing(headers, 'X-Content-Type-Options', 'nosniff');
+	setIfMissing(headers, 'Referrer-Policy', 'strict-origin-when-cross-origin');
+	setIfMissing(headers, 'X-Frame-Options', 'DENY');
+	setIfMissing(headers, 'X-Permitted-Cross-Domain-Policies', 'none');
+	setIfMissing(headers, 'Origin-Agent-Cluster', '?1');
+
+	// 불필요한 브라우저 기능 차단
+	setIfMissing(
+		headers,
+		'Permissions-Policy',
+		'geolocation=(), microphone=(), camera=(), payment=(), usb=()'
+	);
+
+	// HTTPS에서만 HSTS (1년, 서브도메인 포함)
+	if (event.url.protocol === 'https:') {
+		setIfMissing(headers, 'Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+	}
+
+	// CSP는 사이트별로 설정 권장:
+	// - SvelteKit: svelte.config.js의 kit.csp 옵션
+	// - Vercel/Cloudflare: 대시보드 또는 설정 파일
+	// - Netlify: netlify.toml의 [[headers]] 섹션
+
+	return response;
+};
+
+// 5. 핸들러 병합 및 내보내기
+// 순서: 보안 헤더 → Rate Limit → 테마/폰트 → 루트 리다이렉트 → Paraglide
+// 보안 헤더가 맨 앞이어야 모든 응답(429 포함)에 헤더가 붙음
+export const handle: Handle = sequence(handleSecurityHeaders, handleRateLimit, handleThemeAndFont, handleRootRedirect, handleParaglide);
