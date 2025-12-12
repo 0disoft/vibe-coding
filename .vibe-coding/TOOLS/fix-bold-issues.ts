@@ -62,59 +62,76 @@ interface InlineCodeRange {
 
 function findInlineCodeRanges(line: string): InlineCodeRange[] {
 	const ranges: InlineCodeRange[] = [];
+	const n = line.length;
 	let i = 0;
 
-	while (i < line.length) {
+	while (i < n) {
 		if (line[i] !== '`') {
 			i++;
 			continue;
 		}
 
-		// 백틱 run 시작
 		const start = i;
+
 		let tickLen = 0;
-		while (i < line.length && line[i] === '`') {
+		while (i < n && line[i] === '`') {
 			tickLen++;
 			i++;
 		}
 
-		// 동일한 길이의 닫는 run 찾기
-		let closeIndex = -1;
 		let j = i;
-		while (j < line.length) {
+		let foundEnd = -1;
+
+		while (j < n) {
 			if (line[j] !== '`') {
 				j++;
 				continue;
 			}
 
-			// 닫는 run 시작
-			const closeStart = j;
 			let closeLen = 0;
-			while (j < line.length && line[j] === '`') {
+			while (j < n && line[j] === '`') {
 				closeLen++;
 				j++;
 			}
 
 			if (closeLen === tickLen) {
-				closeIndex = closeStart;
+				foundEnd = j;
 				break;
 			}
 		}
 
-		if (closeIndex !== -1) {
-			// 닫는 run 끝 위치 (닫는 백틱 포함)
-			ranges.push({ start, end: closeIndex + tickLen });
-			i = closeIndex + tickLen;
+		if (foundEnd !== -1) {
+			ranges.push({ start, end: foundEnd });
+			i = foundEnd;
+		} else {
+			// 닫힘 하나라도 못 찾으면 라인 전체를 위험 구역으로 보고 스킵 유도
+			return [];
 		}
-		// else: 닫힘 못 찾으면 i는 이미 start + tickLen에 있음 (run 전체 건너뜀)
 	}
 
 	return ranges;
 }
 
 // 인라인 코드 구간을 피해 볼드 교정 (상태 머신 기반)
-function fixLineOutsideInlineCode(line: string): { line: string; count: number; } {
+function fixLineOutsideInlineCode(line: string): { line: string; count: number; skipped: boolean; } {
+	// 빠른 경로 1: 볼드 표식이 없으면 바로 리턴 (수정 대상 없음)
+	if (!line.includes('**')) {
+		return { line, count: 0, skipped: false };
+	}
+
+	// 빠른 경로 2: 백틱이 없으면 바로 처리 (코드 경로 단순화)
+	if (!line.includes('`')) {
+		const fixed = fixBoldBeforeCJK(line);
+		return { line: fixed.text, count: fixed.count, skipped: false };
+	}
+
 	const ranges = findInlineCodeRanges(line);
+
+	// 닫히지 않은 백틱이 있을 수 있음 - 안전하게 원본 유지하고 스킵 표시
+	if (ranges.length === 0) {
+		return { line, count: 0, skipped: true };
+	}
+
 	let result = '';
 	let count = 0;
 	let lastEnd = 0;
@@ -131,9 +148,9 @@ function fixLineOutsideInlineCode(line: string): { line: string; count: number; 
 			count += fixed.count;
 		}
 
-		// 코드 내부는 그대로 유지
-		result += line.slice(range.start, range.end);
-		lastEnd = range.end;
+		// 코드 내부는 그대로 유지 (겹침 안전 처리)
+		result += line.slice(Math.max(range.start, lastEnd), range.end);
+		lastEnd = Math.max(lastEnd, range.end);
 	}
 
 	// 마지막 코드 이후 나머지 처리
@@ -144,7 +161,7 @@ function fixLineOutsideInlineCode(line: string): { line: string; count: number; 
 		count += fixed.count;
 	}
 
-	return { line: result, count };
+	return { line: result, count, skipped: false };
 }
 
 // 인용문 기호(>)와 공백을 제거하여 펜스 패턴 확인
@@ -153,7 +170,7 @@ function stripBlockquote(line: string): string {
 }
 
 // 펜스 코드블록과 인라인 코드를 건너뛰며 마크다운 교정
-function fixMarkdownKeepingCodeFences(content: string): { content: string; count: number; } {
+function fixMarkdownKeepingCodeFences(content: string): { content: string; count: number; skipped: number; } {
 	const lineEnding = content.includes('\r\n') ? '\r\n' : '\n';
 	const lines = content.split(lineEnding);
 
@@ -161,6 +178,7 @@ function fixMarkdownKeepingCodeFences(content: string): { content: string; count
 	let fenceChar = '';
 	let fenceLength = 0;
 	let count = 0;
+	let skipped = 0;
 
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i];
@@ -189,26 +207,31 @@ function fixMarkdownKeepingCodeFences(content: string): { content: string; count
 		const fixed = fixLineOutsideInlineCode(line);
 		lines[i] = fixed.line;
 		count += fixed.count;
+		if (fixed.skipped) skipped++;
 	}
 
-	return { content: lines.join(lineEnding), count };
+	return { content: lines.join(lineEnding), count, skipped };
 }
 
 interface FixResult {
 	file: string;
 	count: number;
+	skipped: number;
 }
 
 async function fixFile(path: string): Promise<FixResult | null> {
 	const original = await readFile(path, 'utf-8');
 	const fixed = fixMarkdownKeepingCodeFences(original);
 
-	if (fixed.content !== original) {
-		console.log(`[FIX] ${path}  (${fixed.count}건)`);
-		if (!DRY_RUN) {
+	if (fixed.content !== original || fixed.skipped > 0) {
+		const parts: string[] = [];
+		if (fixed.count > 0) parts.push(`${fixed.count}건 수정`);
+		if (fixed.skipped > 0) parts.push(`${fixed.skipped}줄 스킵`);
+		console.log(`[FIX] ${path}  (${parts.join(', ')})`);
+		if (!DRY_RUN && fixed.content !== original) {
 			await writeFile(path, fixed.content, 'utf-8');
 		}
-		return { file: path, count: fixed.count };
+		return { file: path, count: fixed.count, skipped: fixed.skipped };
 	}
 	return null;
 }
@@ -227,13 +250,18 @@ function formatReport(
 	lines.push(`Mode: ${dryRun ? 'DRY RUN (파일 미수정)' : 'APPLIED (파일 수정됨)'}`);
 	lines.push('='.repeat(50));
 
+	const totalSkipped = results.reduce((sum, r) => sum + r.skipped, 0);
+
 	if (results.length === 0) {
 		lines.push('\n✅ 수정이 필요한 파일이 없습니다.');
 	} else {
 		lines.push(`\n📝 수정된 파일: ${results.length}개 / 전체 ${totalFiles}개\n`);
 
 		for (const r of results) {
-			lines.push(`  📄 ${r.file} (${r.count}건)`);
+			const parts: string[] = [];
+			if (r.count > 0) parts.push(`${r.count}건`);
+			if (r.skipped > 0) parts.push(`${r.skipped}줄 스킵`);
+			lines.push(`  📄 ${r.file} (${parts.join(', ')})`);
 		}
 
 		const totalFixes = results.reduce((sum, r) => sum + r.count, 0);
@@ -241,10 +269,74 @@ function formatReport(
 		lines.push(`총 ${totalFixes}건 수정${dryRun ? ' 예정' : ' 완료'}`);
 	}
 
+	// 스킵된 라인이 있으면 안내 추가
+	if (totalSkipped > 0) {
+		lines.push(`\n⚠️  ${totalSkipped}줄이 닫히지 않은 백틱으로 인해 스킵됨 (수동 확인 필요)`);
+	}
+
 	return lines.join('\n');
 }
 
+// 회귀 방지용 미니 테스트 (--self-test 옵션으로 실행)
+function runSelfTests(): void {
+	// 라인 단위 테스트
+	const lineTests: Array<{ input: string; shouldChange: boolean; description: string; }> = [
+		// 수정돼야 함
+		{ input: '**무료:**이', shouldChange: true, description: '구두점 뒤 한글 조사' },
+		// 수정되면 안 됨
+		{ input: '**무료:** 이', shouldChange: false, description: '구두점 뒤 공백' },
+		{ input: '`**무료:**이`', shouldChange: false, description: '인라인 코드 내부' },
+		{ input: '``**무료:**이``', shouldChange: false, description: '멀티 백틱 인라인 코드' },
+		// 멀티 백틱 안에 단일 백틱 포함 (멀티 백틱의 핵심 용도)
+		{ input: '``코드 안에 `백틱` 있고 **무료:**이``', shouldChange: false, description: '멀티 백틱 안에 단일 백틱' },
+		// 닫히지 않은 백틱은 손대지 않음
+		{ input: '`닫히지 않은 **무료:**이', shouldChange: false, description: '닫히지 않은 백틱' },
+		// 정상 스팬 후 미닫힘 백틱 (안전 구멍 테스트)
+		{ input: '`ok` 그리고 `닫히지 않은 **무료:**이', shouldChange: false, description: '정상 스팬 후 미닫힘 백틱' },
+	];
+
+	for (const test of lineTests) {
+		const result = fixLineOutsideInlineCode(test.input);
+		// 문자열 비교로 판정 (count는 내부 구현에 묶임)
+		const changed = result.line !== test.input;
+		if (changed !== test.shouldChange) {
+			throw new Error(
+				`self-test failed: ${test.description}\n` +
+				`input: ${test.input}\n` +
+				`expected change: ${test.shouldChange}, got: ${changed}`
+			);
+		}
+	}
+
+	// 펜스 회귀 방지 테스트: 4개 펜스 내부는 절대 수정 안 됨
+	const fenceContent = '````markdown\n**무료:**이\n````';
+	const fenceResult = fixMarkdownKeepingCodeFences(fenceContent);
+	if (fenceResult.content !== fenceContent) {
+		throw new Error('self-test failed: fence test - content inside fence was modified');
+	}
+
+	// 멱등성 테스트: 두 번 돌려도 결과가 같아야 함
+	const idempotentInput = '**무료:**이';
+	const first = fixLineOutsideInlineCode(idempotentInput);
+	const second = fixLineOutsideInlineCode(first.line);
+	if (first.line !== second.line) {
+		throw new Error('self-test failed: idempotent test - result changed on second run');
+	}
+}
+
 async function main() {
+	// self-test 모드
+	if (process.argv.includes('--self-test')) {
+		try {
+			runSelfTests();
+			console.log('✅ self-test passed');
+			process.exit(0);
+		} catch (error) {
+			console.error(error);
+			process.exit(1);
+		}
+	}
+
 	// --로 시작하지 않는 첫 번째 인자를 경로로 사용
 	const TARGET = process.argv.slice(2).find((arg) => !arg.startsWith('--')) || 'src/content';
 	console.log(`Scanning: ${TARGET}`);

@@ -66,9 +66,9 @@ const RULES: LintRule[] = [
 		id: 'a11y-icon-only-interactive',
 		name: '아이콘만 있는 버튼/링크',
 		description: '아이콘만 있으면 aria-label 필요',
-		// \bi-로 부분 매칭 오탐 방지, self-closing svg도 지원
+		// 캡처 그룹 + 백레퍼런스로 여는/닫는 태그 일치 강제, <svg/> 공백 없이도 지원
 		pattern:
-			/<(?:button|a)(?=\s|>)(?![^>]*\saria-label\s*=\s*)(?![^>]*\saria-labelledby\s*=\s*)[^>]*>\s*<(?:span|i|svg)(?=\s|>)[^>]*\sclass\s*=\s*["'][^"']*\bi-[^"']*["'][^>]*(?:\/>|>[\s\S]*?<\/(?:span|i|svg)>)\s*<\/(?:button|a)>/gi,
+			/<(?:button|a)(?=\s|>)(?![^>]*\saria-label\s*=\s*)(?![^>]*\saria-labelledby\s*=\s*)[^>]*>\s*<(span|i|svg)(?=[\s/>])[^>]*\sclass\s*=\s*["'][^"']*\bi-[^"']*["'][^>]*(?:\/>|>[\s\S]*?<\/\1>)\s*<\/(?:button|a)>/gi,
 		suggestion: 'aria-label="설명" 또는 aria-labelledby 추가',
 		severity: 'info',
 		scope: 'markup'
@@ -566,7 +566,59 @@ function formatResults(results: LintResult[], basePath: string): string {
 	return lines.join('\n');
 }
 
+// 회귀 방지용 미니 테스트 (--self-test 옵션으로 실행)
+function runSelfTests(): void {
+	const rule = RULES.find((r) => r.id === 'a11y-icon-only-interactive');
+	if (!rule) throw new Error('self-test failed: icon rule missing');
+
+	// g/y 플래그 제거 (lastIndex 문제 방지)
+	const testFlags = rule.pattern.flags.replaceAll('g', '').replaceAll('y', '');
+	const testRe = new RegExp(rule.pattern.source, testFlags);
+
+	const shouldMatch = [
+		`<button><svg class="i-x"></svg></button>`,
+		`<button><svg class="i-menu" /></button>`,
+		`<a><span class="i-lucide"></span></a>`,
+		// 개행 포함 케이스
+		`<button>\n  <svg class="i-x"></svg>\n</button>`,
+		// SVG 내부에 path가 있는 케이스 (실제 아이콘 형태)
+		`<button><svg class="i-x"><path d=""/></svg></button>`
+	];
+
+	const shouldNotMatch = [
+		`<button aria-label="닫기"><svg class="i-x"/></button>`,
+		`<button><svg class="i-x"></svg><span>닫기</span></button>`,
+		`<button><i class="bi-x"></i></button>`,
+		`<button><svg class="i-x"></span></button>`,
+		// sr-only 케이스 (접근성 정상)
+		`<button><svg class="i-x"></svg><span class="sr-only">닫기</span></button>`,
+		// aria-labelledby 케이스 (접근성 정상)
+		`<button aria-labelledby="x"><svg class="i-x"/></button>`,
+		// aria-labelledby 싱글쿼트 변형
+		`<button aria-labelledby='x'><svg class="i-x"/></button>`
+	];
+
+	for (const s of shouldMatch) {
+		if (!testRe.test(s)) throw new Error(`self-test failed: expected match\n${s}`);
+	}
+	for (const s of shouldNotMatch) {
+		if (testRe.test(s)) throw new Error(`self-test failed: expected no match\n${s}`);
+	}
+}
+
 async function main() {
+	// self-test 모드
+	if (process.argv.includes('--self-test')) {
+		try {
+			runSelfTests();
+			console.log('✅ self-test passed');
+			process.exit(0);
+		} catch (error) {
+			console.error(error);
+			process.exit(1);
+		}
+	}
+
 	const TARGET = process.argv.slice(2).find((arg) => !arg.startsWith('--')) || 'src';
 	// severity 필터 확장: --errors-only, --warnings-only, --infos-only
 	const FILTER_SEVERITY = process.argv.includes('--errors-only')
