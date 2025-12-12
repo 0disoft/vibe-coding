@@ -627,7 +627,7 @@ async function main() {
 
     // 리포트 저장
     const scriptDir = dirname(fileURLToPath(import.meta.url));
-    const reportPath = join(scriptDir, "security-report.txt");
+    const reportPath = join(scriptDir, "reports", "security-report.txt");
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
     const header = `Security Report - ${timestamp}\nTarget: ${TARGET}\n${"=".repeat(50)}\n`;
     await writeFile(reportPath, header + report, "utf-8");

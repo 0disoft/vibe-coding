@@ -83,7 +83,8 @@ const RULES: LintRule[] = [
     id: "a11y-popup-no-expanded",
     name: "팝업 버튼에 aria-expanded 누락",
     description: "aria-haspopup 있으면 aria-expanded 필요",
-    pattern: /aria-haspopup\s*=\s*["'][^"']+["'](?![^>]*aria-expanded)/gi,
+    // 태그 전체를 매치하고 lookahead로 판정 (속성 순서 무관)
+    pattern: /<[a-z][\w:-]*\b(?=[^>]*\baria-haspopup\s*=)(?![^>]*\baria-expanded\s*=)[^>]*>/gi,
     suggestion: "aria-expanded={isOpen} 추가",
     severity: "warning",
     scope: "markup",
@@ -95,8 +96,8 @@ const RULES: LintRule[] = [
     name: "Input 레이블 누락 의심",
     description: "input 태그에 aria-label 또는 aria-labelledby 권장",
     pattern: /<input\s+(?![^>]*\btype=["']?(?:hidden|submit|button|image|reset)["']?)(?![^>]*\baria-label)(?![^>]*\baria-labelledby)[^>]*>/gi,
-    suggestion: "aria-label 추가 또는 <label for=...> 사용 확인",
-    severity: "warning",
+    suggestion: "aria-label 추가 또는 <label for=...> 사용 확인 (label로 감싼 경우 무시 가능)",
+    severity: "info", // 오탐 가능성이 높아 info로 설정
     scope: "markup",
   },
 
@@ -305,6 +306,28 @@ async function walk(dir: string): Promise<string[]> {
   return files;
 }
 
+// 동시 실행 제한 유틸리티 (파일 핸들 한도 방지)
+async function runWithLimit<T, R>(
+  items: readonly T[],
+  limit: number,
+  worker: (item: T) => Promise<R>
+): Promise<R[]> {
+  const results: R[] = [];
+  let nextIndex = 0;
+
+  async function runner() {
+    while (true) {
+      const i = nextIndex++;
+      if (i >= items.length) return;
+      results[i] = await worker(items[i]);
+    }
+  }
+
+  const n = Math.max(1, Math.min(limit, items.length));
+  await Promise.all(Array.from({ length: n }, () => runner()));
+  return results;
+}
+
 // HTML 주석을 공백으로 치환 (줄바꿈은 유지하여 라인 넘버 보존)
 function stripHtmlComments(content: string): string {
   return content.replace(/<!--[\s\S]*?-->/g, (match) => {
@@ -333,7 +356,7 @@ function lintBlockWhole(
       const colInBlock = match.index - (lastNl === -1 ? 0 : lastNl + 1) + 1;
 
       // 원본 content에서 match 텍스트 추출 (디버깅용)
-      const originalMatch = content.substr(match.index, match[0].length);
+      const originalMatch = content.slice(match.index, match.index + match[0].length);
       results.push({
         file: filePath,
         line: lineInBlock + lineOffset,
@@ -406,10 +429,11 @@ function lintContent(content: string, filePath: string): LintResult[] {
     const mainMatches = [...content.matchAll(/<main\b/gi)];
     if (mainMatches.length > 1) {
       const secondMain = mainMatches[1];
-      const beforeSecond = content.slice(0, secondMain.index);
+      const idx = secondMain.index ?? 0;
+      const beforeSecond = content.slice(0, idx);
       const line = (beforeSecond.match(/\n/g) || []).length + 1;
       const lastNl = beforeSecond.lastIndexOf("\n");
-      const column = (secondMain.index ?? 0) - (lastNl === -1 ? 0 : lastNl + 1) + 1;
+      const column = idx - (lastNl === -1 ? 0 : lastNl + 1) + 1;
       results.push({
         file: filePath,
         line,
@@ -419,11 +443,14 @@ function lintContent(content: string, filePath: string): LintResult[] {
       });
     }
   } else if (isHtml) {
-    // HTML 파일은 markup + html 규칙 모두 적용
-    results.push(...lintBlockWhole(content, filePath, markupRules));
-    results.push(...lintBlockWhole(content, filePath, htmlRules));
+    // HTML 파일은 markup + html + all 규칙을 한 번에 적용 (중복 방지)
+    const htmlFileRules = RULES.filter(
+      (r) => r.scope === "markup" || r.scope === "html" || r.scope === "all"
+    );
+    results.push(...lintBlockWhole(content, filePath, htmlFileRules));
   } else if (isCss) {
-    results.push(...lintBlock(content, filePath, styleRules));
+    // CSS 파일도 블록 전체 검사 (여러 줄 CSS 규칙 검출)
+    results.push(...lintBlockWhole(content, filePath, styleRules));
   }
 
   return results;
@@ -510,28 +537,33 @@ async function main() {
 
     console.log(`📁 ${files.length}개 파일 발견\n`);
 
-    // 병렬 처리로 성능 향상
-    const resultsArrays = await Promise.all(files.map((file) => lintFile(file)));
-    let allResults: LintResult[] = resultsArrays.flat();
+    // 동시 실행 제한으로 안정성 향상 (파일 핸들 한도 방지)
+    const resultsArrays = await runWithLimit(files, 16, lintFile);
+    const allFound: LintResult[] = resultsArrays.flat();
 
-    // 심각도 필터링
+    // 필터링 전에 에러 카운트 계산 (CI exit code용)
+    const errorCount = allFound.filter((r) => r.rule.severity === "error").length;
+
+    // 심각도 필터링 (출력용)
+    let allResults = allFound;
     if (FILTER_SEVERITY) {
-      allResults = allResults.filter((r) => r.rule.severity === FILTER_SEVERITY);
+      allResults = allFound.filter((r) => r.rule.severity === FILTER_SEVERITY);
     }
 
-    const report = formatResults(allResults, TARGET);
+    // basePath 처리: 파일일 때는 디렉토리 기준
+    const basePath = targetStat.isFile() ? dirname(TARGET) : TARGET;
+    const report = formatResults(allResults, basePath);
     console.log(report);
 
     // 리포트 파일로 저장
     const scriptDir = dirname(fileURLToPath(import.meta.url));
-    const reportPath = join(scriptDir, "a11y-ux-report.txt");
+    const reportPath = join(scriptDir, "reports", "a11y-ux-report.txt");
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
     const header = `A11y/UX Report - ${timestamp}\nTarget: ${TARGET}\n${"=".repeat(40)}\n`;
     await writeFile(reportPath, header + report, "utf-8");
     console.log(`\n📝 리포트 저장됨: ${reportPath}`);
 
-    // CI/CD 통합: 에러 발견 시 exit code 1 반환
-    const errorCount = allResults.filter((r) => r.rule.severity === "error").length;
+    // CI/CD 통합: 에러 발견 시 exit code 1 반환 (필터와 무관하게 원본 기준)
     if (errorCount > 0) {
       process.exit(1);
     }

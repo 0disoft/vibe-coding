@@ -83,7 +83,9 @@ const handleRootRedirect: Handle = async ({ event, resolve }) => {
 
 		// 감지된 언어가 있고, 기본 언어와 다르며, 유효한 로케일인 경우 리다이렉트
 		if (preferredLocale && preferredLocale !== baseLocale && isLocale(preferredLocale)) {
-			console.log(`[Root Redirect] Redirecting to /${preferredLocale} based on Accept-Language`);
+			if (import.meta.env.DEV) {
+				console.log(`[Root Redirect] Redirecting to /${preferredLocale} based on Accept-Language`);
+			}
 			return new Response(null, {
 				status: 302, // 307(임시) 또는 302(Found) 사용. 
 				// 검색엔진은 보통 루트의 302/307을 보고 로컬라이즈된 페이지를 인덱싱함.

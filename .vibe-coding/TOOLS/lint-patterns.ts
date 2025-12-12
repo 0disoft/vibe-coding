@@ -41,15 +41,7 @@ function isServerFile(filePath: string): boolean {
 
 const RULES: LintRule[] = [
   // 레벨 1: 기본적인 타입 안전성 문제 (script scope)
-  {
-    id: "no-explicit-any",
-    name: "명시적 any 사용 금지",
-    description: ": any 또는 as any 사용 감지",
-    pattern: /\b(?::\s*any\b|as\s+any\b)/g,
-    suggestion: "unknown + 타입 가드 또는 구체적인 타입으로 교체",
-    severity: "error",
-    scope: "script",
-  },
+  // 참고: no-explicit-any는 security-patterns.ts로 이동됨
   {
     id: "no-ts-ignore",
     name: "@ts-ignore 사용 금지",
@@ -128,15 +120,7 @@ const RULES: LintRule[] = [
   },
 
   // Svelte 마크업 전용 규칙 (markup scope)
-  {
-    id: "no-html-tag",
-    name: "@html 사용 주의 (XSS 위험)",
-    description: "{@html ...} 사용 감지",
-    pattern: /\{@html\s+/g,
-    suggestion: "신뢰할 수 없는 입력에 사용 시 XSS 위험. DOMPurify 등 sanitize 필수",
-    severity: "warning",
-    scope: "markup",
-  },
+  // 참고: no-html-tag(XSS)는 security-patterns.ts로 이동됨
   {
     id: "no-on-directive",
     name: "on:event 문법 (Svelte 4)",
@@ -479,7 +463,7 @@ async function main() {
 
     // 리포트 파일로 저장
     const scriptDir = dirname(fileURLToPath(import.meta.url));
-    const reportPath = join(scriptDir, "lint-report.txt");
+    const reportPath = join(scriptDir, "reports", "lint-report.txt");
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
     const header = `Lint Report - ${timestamp}\nTarget: ${TARGET}\n${"=".repeat(40)}\n`;
     await writeFile(reportPath, header + report, "utf-8");

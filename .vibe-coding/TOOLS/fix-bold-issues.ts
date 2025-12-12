@@ -194,7 +194,7 @@ async function main() {
     // 결과 파일 저장
     const report = formatReport(results, TARGET, files.length, DRY_RUN);
     const scriptDir = dirname(fileURLToPath(import.meta.url));
-    const reportPath = join(scriptDir, "fix-bold-report.txt");
+    const reportPath = join(scriptDir, "reports", "fix-bold-report.txt");
     await writeFile(reportPath, report, "utf-8");
     console.log(`\n📝 리포트 저장됨: ${reportPath}`);
   } catch (error) {

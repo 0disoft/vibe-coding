@@ -102,7 +102,9 @@
       copied = true;
       setTimeout(() => (copied = false), 1500);
     } catch (error) {
-      console.error('[CodeBlock] Failed to copy:', error);
+      if (import.meta.env.DEV) {
+        console.error('[CodeBlock] Failed to copy:', error);
+      }
     }
   }
 
@@ -132,7 +134,9 @@
         if (active) highlightedHtml = html;
       } catch (error) {
         if (active) {
-          console.error(`[CodeBlock] Failed to highlight code:`, error);
+          if (import.meta.env.DEV) {
+            console.error(`[CodeBlock] Failed to highlight code:`, error);
+          }
           highlightedHtml = `<pre><code>${escapeHtml(currentCode)}</code></pre>`;
         }
       }
@@ -159,7 +163,7 @@
     type="button"
     onclick={copyCode}
     aria-label={copied ? 'Copied to clipboard' : 'Copy code'}
-    class="absolute right-2 top-2 z-10 rounded-md bg-muted/80 px-2 py-1 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+    class="absolute end-2 top-2 z-10 rounded-md bg-muted/80 px-2 py-1 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
   >
     {copied ? '✓ Copied!' : '📋 Copy'}
   </button>
