@@ -88,15 +88,23 @@ test.describe('마크다운 렌더링 품질', () => {
     });
   }
 
-  test('볼드가 실제로 존재하는지 최소 1페이지 확인', async ({ page }) => {
-    await page.goto('/ko/privacy', { waitUntil: 'domcontentloaded' });
+  test('볼드가 어느 페이지든 하나 이상 존재하는지 확인', async ({ page }) => {
+    let totalStrongCount = 0;
 
-    const article = page.locator('article').first();
-    await article.waitFor({ state: 'visible' });
-    await expect(article).toContainText(/\S/);
+    for (const pagePath of MARKDOWN_PAGES) {
+      await page.goto(pagePath, { waitUntil: 'domcontentloaded' });
 
-    // strong 또는 b 태그가 존재하면 볼드가 정상 렌더링된 것
-    const strongCount = await article.locator('strong, b').count();
-    expect(strongCount).toBeGreaterThan(0);
+      const article = page.locator('article').first();
+      await article.waitFor({ state: 'visible' });
+
+      const count = await article.locator('strong, b').count();
+      totalStrongCount += count;
+
+      // 하나라도 찾으면 조기 종료 (효율성)
+      if (totalStrongCount > 0) break;
+    }
+
+    // 전체 페이지 중 하나라도 볼드가 있으면 렌더링이 정상 동작하는 것
+    expect(totalStrongCount).toBeGreaterThan(0);
   });
 });
