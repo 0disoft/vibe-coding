@@ -28,13 +28,16 @@ import { checkRateLimit, getClientIP, type RateLimitRule } from '$lib/server/rat
 const RATE_LIMIT_RULES: RateLimitRule[] = [
 	{
 		name: 'high-risk',
-		pattern: /^\/(auth|login|signup|reset)/, // 로그인, 가입, 리셋 등 고위험 경로
+		// 인증 관련 경로는 엄격하게 제한 (10회/분)
+		// 정규식 경계 조건((?:/|$))을 추가하여 /authorize 같은 경로 오탐 방지
+		pattern: /^\/(auth|login|signup|reset)(?:$|\/)/,
 		windowMs: 60 * 1000,
-		max: 10 // 1분당 10회로 엄격하게 제한
+		max: 10
 	},
 	{
 		name: 'default',
-		pattern: /.*/, // 그 외 모든 경로
+		// 그 외 경로는 일반 정책 적용 (50회/분 - constants 정책 사용)
+		pattern: /.*/,
 		windowMs: policy.rateLimit.windowMs,
 		max: policy.rateLimit.maxRequests
 	}
@@ -117,14 +120,26 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 	}
 
 	// 모듈을 통한 Rate Limit 검사
-	const { blocked, retryAfter, ruleName } = checkRateLimit(event, RATE_LIMIT_RULES);
+	const { blocked, retryAfter, ruleName, limit, remaining, reset } = checkRateLimit(
+		event,
+		RATE_LIMIT_RULES
+	);
+
+	// Rate Limit 정보 헤더 준비
+	const setRateLimitHeaders = (headers: Headers) => {
+		if (limit > 0) {
+			headers.set('X-RateLimit-Limit', String(limit));
+			headers.set('X-RateLimit-Remaining', String(remaining));
+			headers.set('X-RateLimit-Reset', String(reset));
+		}
+	};
 
 	if (blocked) {
 		console.warn(
 			`[RateLimit] Triggered block for ${clientIP} (ID: ${event.locals.requestId}) on ${pathname} [Rule: ${ruleName}]. Retry after ${retryAfter}s.`
 		);
 
-		return new Response(render429Html(retryAfter), {
+		const response = new Response(render429Html(retryAfter), {
 			status: 429,
 			headers: {
 				'Content-Type': 'text/html; charset=utf-8',
@@ -132,9 +147,14 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 				'Cache-Control': 'private, no-store'
 			}
 		});
+		setRateLimitHeaders(response.headers);
+		return response;
 	}
 
-	return resolve(event);
+	const response = await resolve(event);
+	setRateLimitHeaders(response.headers);
+
+	return response;
 };
 
 // 1. 테마/폰트 크기 처리 핸들러

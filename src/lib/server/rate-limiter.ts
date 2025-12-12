@@ -48,7 +48,14 @@ function sweep(now: number) {
 export function checkRateLimit(
 	event: RequestEvent,
 	rules: RateLimitRule[]
-): { blocked: boolean; retryAfter: number; ruleName?: string } {
+): {
+	blocked: boolean;
+	retryAfter: number;
+	ruleName?: string;
+	limit: number;
+	remaining: number;
+	reset: number;
+} {
 	const now = Date.now();
 	sweep(now);
 
@@ -60,21 +67,31 @@ export function checkRateLimit(
 
 	// 매칭되는 규칙이 없으면 제한 없음
 	if (!rule) {
-		return { blocked: false, retryAfter: 0 };
+		return {
+			blocked: false,
+			retryAfter: 0,
+			limit: 0,
+			remaining: 0,
+			reset: 0
+		};
 	}
 
 	// 2. 식별자 생성 (Identifier Generation)
-	// TODO: 추후 User ID가 추가되면 `event.locals.user.id`를 우선 사용하도록 변경 가능
-	// 예: const userId = event.locals.user?.id;
-	//     const identifier = userId ? `u:${userId}:${rule.name}` : `i:${clientIP}:${rule.name}`;
 	const identifier = `i:${clientIP}:${rule.name}`;
-
 	let record = storage.get(identifier);
 
 	// 3. 차단 상태 확인
 	if (record?.blocked && now < record.blockedUntil) {
 		const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
-		return { blocked: true, retryAfter, ruleName: rule.name };
+		// 차단된 상태여도 limit 정보 반환 (remaining 0)
+		return {
+			blocked: true,
+			retryAfter,
+			ruleName: rule.name,
+			limit: rule.max,
+			remaining: 0,
+			reset: Math.ceil(record.blockedUntil / 1000)
+		};
 	}
 
 	// 4. 기록 초기화 또는 갱신
@@ -86,6 +103,15 @@ export function checkRateLimit(
 			blocked: false,
 			blockedUntil: 0
 		});
+		// 새 레코드이므로 remaining = max - 1
+		return {
+			blocked: false,
+			retryAfter: 0,
+			ruleName: rule.name,
+			limit: rule.max,
+			remaining: Math.max(0, rule.max - 1),
+			reset: Math.ceil((now + rule.windowMs) / 1000)
+		};
 	} else {
 		// 기존 윈도우 카운트 증가
 		record.count++;
@@ -99,9 +125,26 @@ export function checkRateLimit(
 			record.count = 0; // 카운트 리셋
 
 			const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
-			return { blocked: true, retryAfter, ruleName: rule.name };
+			return {
+				blocked: true,
+				retryAfter,
+				ruleName: rule.name,
+				limit: rule.max,
+				remaining: 0,
+				reset: Math.ceil(record.blockedUntil / 1000)
+			};
 		}
-	}
 
-	return { blocked: false, retryAfter: 0, ruleName: rule.name };
+		// 정상 통과
+		const remaining = rule.max - record.count;
+		const reset = Math.ceil(record.resetTime / 1000);
+		return {
+			blocked: false,
+			retryAfter: 0,
+			ruleName: rule.name,
+			limit: rule.max,
+			remaining: Math.max(0, remaining),
+			reset
+		};
+	}
 }
