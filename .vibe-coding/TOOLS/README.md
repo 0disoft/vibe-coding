@@ -28,6 +28,9 @@ bun .vibe-coding/TOOLS/a11y-ux-patterns.ts src/lib/components
 
 # 오류만 표시
 bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --errors-only
+
+# 회귀 방지 테스트 실행
+bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --self-test
 ```
 
 ### a11y-ux-patterns 감지 규칙
@@ -39,6 +42,8 @@ bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --errors-only
 | `a11y-img-alt-missing` | ❌ 오류 | `<img>` alt 속성 누락 |
 | `a11y-empty-link` | ❌ 오류 | 빈 `<a>` 태그 |
 | `a11y-button-type` | ⚠️ 경고 | `<button>` type 속성 누락 |
+| `a11y-icon-only-interactive` | 💡 정보 | 아이콘만 있는 버튼/링크 (aria-label 필요) |
+| `a11y-input-missing-label` | 💡 정보 | Input 레이블 누락 의심 |
 | `a11y-tabindex-positive` | ⚠️ 경고 | 양수 tabindex 사용 |
 | `a11y-popup-no-expanded` | ⚠️ 경고 | aria-haspopup에 aria-expanded 누락 |
 | `a11y-multiple-main` | ❌ 오류 | `<main>` 요소 중복 |
@@ -111,8 +116,19 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog --dry-run
 
 1. 대상 디렉토리에서 `.md`, `.mdx` 파일을 재귀 탐색
 2. 펜스 코드블록(` ``` `, `~~~`)과 인라인 코드(`` ` ``)는 건너뜀
-3. 구두점(`:`, `.`, `;`, `!`, `?`, `)`)으로 끝나는 볼드 뒤에 CJK 문자가 오면 Zero-Width Space 삽입
-4. 멱등성 보장: 여러 번 실행해도 결과가 누적되지 않음
+3. 닫히지 않은 백틱이 있는 라인은 안전을 위해 스킵 (리포트에 표시)
+4. 구두점(`:`, `.`, `;`, `!`, `?`, `)`)으로 끝나는 볼드 뒤에 CJK 문자가 오면 Zero-Width Space 삽입
+5. 멱등성 보장: 여러 번 실행해도 결과가 누적되지 않음
+
+### 추가 옵션
+
+```bash
+# 스킵된 줄번호 상세 표시
+bun .vibe-coding/TOOLS/fix-bold-issues.ts --verbose
+
+# 회귀 방지 테스트 실행
+bun .vibe-coding/TOOLS/fix-bold-issues.ts --self-test
+```
 
 ### 지원 문자
 

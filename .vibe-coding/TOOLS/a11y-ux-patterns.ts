@@ -273,7 +273,7 @@ function extractMarkupBlocks(content: string): CodeBlock[] {
 				});
 				currentBlock = [];
 			}
-			// 한 줄짜리 script 처리 - 공백 패딩으로 컨럼 위치 보존
+			// 한 줄짜리 script 처리 - 공백 패딩으로 컬럼 위치 보존
 			const closePos = line.indexOf('</script>');
 			if (closePos !== -1) {
 				inScript = false;
@@ -302,7 +302,7 @@ function extractMarkupBlocks(content: string): CodeBlock[] {
 				});
 				currentBlock = [];
 			}
-			// 한 줄짜리 style 처리 - 공백 패딩으로 컨럼 위치 보존
+			// 한 줄짜리 style 처리 - 공백 패딩으로 컬럼 위치 보존
 			const styleClosePos = line.indexOf('</style>');
 			if (styleClosePos !== -1) {
 				inStyle = false;
@@ -595,7 +595,18 @@ function runSelfTests(): void {
 		// aria-labelledby 케이스 (접근성 정상)
 		`<button aria-labelledby="x"><svg class="i-x"/></button>`,
 		// aria-labelledby 싱글쿼트 변형
-		`<button aria-labelledby='x'><svg class="i-x"/></button>`
+		`<button aria-labelledby='x'><svg class="i-x"/></button>`,
+		// aria-labelledby + 일반 SVG 형태 (내부 path 포함)
+		`<button aria-labelledby="x"><svg class="i-x"><path d=""/></svg></button>`,
+		// aria-labelledby 싱글쿼트 + 일반 SVG 형태
+		`<button aria-labelledby='x'><svg class="i-x"><path d=""/></svg></button>`,
+		// aria-labelledby 따옴표 없는 케이스
+		`<button aria-labelledby=x><svg class="i-x"><path d=""/></svg></button>`,
+		// aria-labelledby Svelte 바인딩 케이스
+		`<button aria-labelledby={id}><svg class="i-x"><path d=""/></svg></button>`,
+		`<button aria-labelledby={'x'}><svg class="i-x"><path d=""/></svg></button>`,
+		// aria-labelledby 다중 id 참조 케이스
+		`<button aria-labelledby="x y"><svg class="i-x"><path d=""/></svg></button>`
 	];
 
 	for (const s of shouldMatch) {

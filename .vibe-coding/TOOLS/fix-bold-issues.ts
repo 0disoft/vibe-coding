@@ -170,7 +170,10 @@ function stripBlockquote(line: string): string {
 }
 
 // 펜스 코드블록과 인라인 코드를 건너뛰며 마크다운 교정
-function fixMarkdownKeepingCodeFences(content: string): { content: string; count: number; skipped: number; } {
+function fixMarkdownKeepingCodeFences(
+	content: string,
+	maxSkippedLinesToStore: number = 0
+): { content: string; count: number; skipped: number; skippedLines: number[]; } {
 	const lineEnding = content.includes('\r\n') ? '\r\n' : '\n';
 	const lines = content.split(lineEnding);
 
@@ -179,6 +182,7 @@ function fixMarkdownKeepingCodeFences(content: string): { content: string; count
 	let fenceLength = 0;
 	let count = 0;
 	let skipped = 0;
+	const skippedLines: number[] = [];
 
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i];
@@ -207,21 +211,28 @@ function fixMarkdownKeepingCodeFences(content: string): { content: string; count
 		const fixed = fixLineOutsideInlineCode(line);
 		lines[i] = fixed.line;
 		count += fixed.count;
-		if (fixed.skipped) skipped++;
+		if (fixed.skipped) {
+			skipped++;
+			// 메모리 최적화: 상한선 이하일 때만 줄번호 저장
+			if (maxSkippedLinesToStore > 0 && skippedLines.length < maxSkippedLinesToStore) {
+				skippedLines.push(i + 1); // 1-indexed
+			}
+		}
 	}
 
-	return { content: lines.join(lineEnding), count, skipped };
+	return { content: lines.join(lineEnding), count, skipped, skippedLines };
 }
 
 interface FixResult {
 	file: string;
 	count: number;
 	skipped: number;
+	skippedLines: number[];
 }
 
-async function fixFile(path: string): Promise<FixResult | null> {
+async function fixFile(path: string, maxSkippedLinesToStore: number = 0): Promise<FixResult | null> {
 	const original = await readFile(path, 'utf-8');
-	const fixed = fixMarkdownKeepingCodeFences(original);
+	const fixed = fixMarkdownKeepingCodeFences(original, maxSkippedLinesToStore);
 
 	if (fixed.content !== original || fixed.skipped > 0) {
 		const parts: string[] = [];
@@ -231,7 +242,7 @@ async function fixFile(path: string): Promise<FixResult | null> {
 		if (!DRY_RUN && fixed.content !== original) {
 			await writeFile(path, fixed.content, 'utf-8');
 		}
-		return { file: path, count: fixed.count, skipped: fixed.skipped };
+		return { file: path, count: fixed.count, skipped: fixed.skipped, skippedLines: fixed.skippedLines };
 	}
 	return null;
 }
@@ -240,7 +251,8 @@ function formatReport(
 	results: FixResult[],
 	target: string,
 	totalFiles: number,
-	dryRun: boolean
+	dryRun: boolean,
+	verbose: boolean = false
 ): string {
 	const lines: string[] = [];
 	const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
@@ -262,6 +274,17 @@ function formatReport(
 			if (r.count > 0) parts.push(`${r.count}건`);
 			if (r.skipped > 0) parts.push(`${r.skipped}줄 스킵`);
 			lines.push(`  📄 ${r.file} (${parts.join(', ')})`);
+			// verbose 모드: 스킵된 줄번호 표시 (상위 10개까지)
+			if (verbose && r.skippedLines.length > 0) {
+				const displayLines = r.skippedLines.slice(0, 10);
+				// 실제 스킵 수 기준으로 남은 줄 계산 (저장 상한과 무관)
+				const remaining = Math.max(0, r.skipped - displayLines.length);
+				const suffix = remaining > 0 ? ` ... 외 ${remaining}줄` : '';
+				// 저장 상한에 걸렸으면 안내 추가
+				const capped = r.skippedLines.length < r.skipped;
+				const capNote = capped ? ' (줄번호는 저장 상한으로 일부만 기록됨)' : '';
+				lines.push(`       └─ L${displayLines.join(', L')}${suffix}${capNote}`);
+			}
 		}
 
 		const totalFixes = results.reduce((sum, r) => sum + r.count, 0);
@@ -271,7 +294,7 @@ function formatReport(
 
 	// 스킵된 라인이 있으면 안내 추가
 	if (totalSkipped > 0) {
-		lines.push(`\n⚠️  ${totalSkipped}줄이 닫히지 않은 백틱으로 인해 스킵됨 (수동 확인 필요)`);
+		lines.push(`\n⚠️  ${totalSkipped}줄이 닫히지 않은 백틱으로 인해 스킵됨 (--verbose로 줄번호 확인)`);
 	}
 
 	return lines.join('\n');
@@ -279,20 +302,20 @@ function formatReport(
 
 // 회귀 방지용 미니 테스트 (--self-test 옵션으로 실행)
 function runSelfTests(): void {
-	// 라인 단위 테스트
-	const lineTests: Array<{ input: string; shouldChange: boolean; description: string; }> = [
+	// 라인 단위 테스트 (shouldSkip 필드 추가로 skipped 플래그도 검증)
+	const lineTests: Array<{ input: string; shouldChange: boolean; shouldSkip?: boolean; description: string; }> = [
 		// 수정돼야 함
-		{ input: '**무료:**이', shouldChange: true, description: '구두점 뒤 한글 조사' },
+		{ input: '**무료:**이', shouldChange: true, shouldSkip: false, description: '구두점 뒤 한글 조사' },
 		// 수정되면 안 됨
-		{ input: '**무료:** 이', shouldChange: false, description: '구두점 뒤 공백' },
-		{ input: '`**무료:**이`', shouldChange: false, description: '인라인 코드 내부' },
-		{ input: '``**무료:**이``', shouldChange: false, description: '멀티 백틱 인라인 코드' },
+		{ input: '**무료:** 이', shouldChange: false, shouldSkip: false, description: '구두점 뒤 공백' },
+		{ input: '`**무료:**이`', shouldChange: false, shouldSkip: false, description: '인라인 코드 내부' },
+		{ input: '``**무료:**이``', shouldChange: false, shouldSkip: false, description: '멀티 백틱 인라인 코드' },
 		// 멀티 백틱 안에 단일 백틱 포함 (멀티 백틱의 핵심 용도)
-		{ input: '``코드 안에 `백틱` 있고 **무료:**이``', shouldChange: false, description: '멀티 백틱 안에 단일 백틱' },
-		// 닫히지 않은 백틱은 손대지 않음
-		{ input: '`닫히지 않은 **무료:**이', shouldChange: false, description: '닫히지 않은 백틱' },
-		// 정상 스팬 후 미닫힘 백틱 (안전 구멍 테스트)
-		{ input: '`ok` 그리고 `닫히지 않은 **무료:**이', shouldChange: false, description: '정상 스팬 후 미닫힘 백틱' },
+		{ input: '``코드 안에 `백틱` 있고 **무료:**이``', shouldChange: false, shouldSkip: false, description: '멀티 백틱 안에 단일 백틱' },
+		// 닫히지 않은 백틱은 손대지 않음 + skipped
+		{ input: '`닫히지 않은 **무료:**이', shouldChange: false, shouldSkip: true, description: '닫히지 않은 백틱' },
+		// 정상 스팬 후 미닫힘 백틱 (안전 구멍 테스트) + skipped
+		{ input: '`ok` 그리고 `닫히지 않은 **무료:**이', shouldChange: false, shouldSkip: true, description: '정상 스팬 후 미닫힘 백틱' },
 	];
 
 	for (const test of lineTests) {
@@ -304,6 +327,14 @@ function runSelfTests(): void {
 				`self-test failed: ${test.description}\n` +
 				`input: ${test.input}\n` +
 				`expected change: ${test.shouldChange}, got: ${changed}`
+			);
+		}
+		// shouldSkip이 정의된 경우 skipped 플래그도 검증
+		if (test.shouldSkip !== undefined && result.skipped !== test.shouldSkip) {
+			throw new Error(
+				`self-test failed: ${test.description}\n` +
+				`input: ${test.input}\n` +
+				`expected skipped: ${test.shouldSkip}, got: ${result.skipped}`
 			);
 		}
 	}
@@ -322,6 +353,64 @@ function runSelfTests(): void {
 	if (first.line !== second.line) {
 		throw new Error('self-test failed: idempotent test - result changed on second run');
 	}
+
+	// formatReport 출력 검증: 저장 상한에 걸렸을 때 정확한 숫자와 안내 표시
+	const mockResult: FixResult = {
+		file: 'test.md',
+		count: 0,
+		skipped: 1000, // 실제 스킵 1000줄
+		skippedLines: Array.from({ length: 500 }, (_, i) => i + 1) // 저장은 500개만
+	};
+	const reportOutput = formatReport([mockResult], 'test', 1, false, true);
+	// " ... 외 990줄"이 포함되어야 함 (1000 - 10 = 990)
+	if (!reportOutput.includes(' ... 외 990줄')) {
+		throw new Error('self-test failed: formatReport - remaining count incorrect');
+	}
+	// 저장 상한 안내가 포함되어야 함
+	if (!reportOutput.includes('저장 상한')) {
+		throw new Error('self-test failed: formatReport - cap note missing');
+	}
+
+	// 비캡 케이스: 상한에 안 걸렸을 때 "저장 상한" 문구가 없어야 함
+	const nonCappedResult: FixResult = {
+		file: 'test2.md',
+		count: 0,
+		skipped: 15, // 실제 스킵 15줄
+		skippedLines: Array.from({ length: 15 }, (_, i) => i + 1) // 전부 저장됨
+	};
+	const nonCappedOutput = formatReport([nonCappedResult], 'test', 1, false, true);
+	if (nonCappedOutput.includes('저장 상한')) {
+		throw new Error('self-test failed: formatReport - cap note shown when not capped');
+	}
+	// 긍정 케이스: 15줄 중 10줄 표시 후 " ... 외 5줄"이 반드시 표시되어야 함
+	if (!nonCappedOutput.includes(' ... 외 5줄')) {
+		throw new Error('self-test failed: formatReport - remaining suffix missing when expected');
+	}
+
+	// remaining 0 케이스: 스킵 수가 표시 상한(10) 이하면 "외 N줄"이 없어야 함
+	const noRemainResult: FixResult = {
+		file: 'test3.md',
+		count: 0,
+		skipped: 3, // 실제 스킵 3줄
+		skippedLines: [1, 2, 3] // 전부 저장 + 전부 표시됨
+	};
+	const noRemainOutput = formatReport([noRemainResult], 'test', 1, false, true);
+	// " ... 외 " 패턴으로 검사 ("예외 " 같은 단어와 충돌 방지)
+	if (noRemainOutput.includes(' ... 외 ')) {
+		throw new Error('self-test failed: formatReport - suffix shown when remaining is 0');
+	}
+
+	// 경계값 케이스: 표시 상한(10)과 같을 때도 "외 N줄"이 없어야 함
+	const boundaryResult: FixResult = {
+		file: 'test4.md',
+		count: 0,
+		skipped: 10, // 표시 상한과 동일
+		skippedLines: Array.from({ length: 10 }, (_, i) => i + 1)
+	};
+	const boundaryOutput = formatReport([boundaryResult], 'test', 1, false, true);
+	if (boundaryOutput.includes(' ... 외 ')) {
+		throw new Error('self-test failed: formatReport - suffix shown at exact display limit');
+	}
 }
 
 async function main() {
@@ -339,8 +428,12 @@ async function main() {
 
 	// --로 시작하지 않는 첫 번째 인자를 경로로 사용
 	const TARGET = process.argv.slice(2).find((arg) => !arg.startsWith('--')) || 'src/content';
+	const VERBOSE = process.argv.includes('--verbose');
+	// 메모리 최적화: verbose일 때만 줄번호 저장 (상한 500개)
+	const MAX_SKIPPED_LINES = VERBOSE ? 500 : 0;
 	console.log(`Scanning: ${TARGET}`);
 	if (DRY_RUN) console.log('DRY RUN MODE: No files will be modified.');
+	if (VERBOSE) console.log('VERBOSE MODE: Skipped line numbers will be shown.');
 
 	try {
 		const targetStat = await stat(TARGET);
@@ -363,7 +456,7 @@ async function main() {
 
 		const results: FixResult[] = [];
 		for (const file of files) {
-			const result = await fixFile(file);
+			const result = await fixFile(file, MAX_SKIPPED_LINES);
 			if (result) results.push(result);
 		}
 
@@ -371,7 +464,7 @@ async function main() {
 		console.log(`Done. Total fixes: ${totalFixes}`);
 
 		// 결과 파일 저장 (reports 폴더 자동 생성)
-		const report = formatReport(results, TARGET, files.length, DRY_RUN);
+		const report = formatReport(results, TARGET, files.length, DRY_RUN, VERBOSE);
 		const scriptDir = dirname(fileURLToPath(import.meta.url));
 		const reportsDir = join(scriptDir, 'reports');
 		await mkdir(reportsDir, { recursive: true });
