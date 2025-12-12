@@ -2,6 +2,15 @@
 
 프로젝트에서 반복적으로 필요한 작업을 자동화하는 스크립트 모음입니다.
 
+## 도구 목록
+
+| 도구 | 용도 | 빠른 실행 |
+|------|------|-----------|
+| [fix-bold-issues.ts](#fix-bold-issuests) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
+| [lint-patterns.ts](#lint-patternsts) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
+
+---
+
 ## fix-bold-issues.ts
 
 마크다운 파일에서 볼드 파싱 오류를 자동으로 수정합니다.
@@ -58,3 +67,48 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog --dry-run
 ### 지원 문자
 
 한글, 한자, 히라가나, 가타카나 앞에서만 ZWS를 삽입합니다.
+
+---
+
+## lint-patterns.ts
+
+타입스크립트 코드에서 안티패턴을 감지합니다. `elegant-typescript-patterns.md` 문서 기반.
+
+### 실행 방법
+
+```bash
+# 기본: src 디렉토리 전체 스캔
+bun .vibe-coding/TOOLS/lint-patterns.ts
+
+# 특정 디렉토리
+bun .vibe-coding/TOOLS/lint-patterns.ts src/lib
+
+# 단일 파일
+bun .vibe-coding/TOOLS/lint-patterns.ts src/lib/utils.ts
+
+# 오류만 표시 (경고, 정보 제외)
+bun .vibe-coding/TOOLS/lint-patterns.ts --errors-only
+```
+
+### 감지 규칙
+
+#### TypeScript
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `no-explicit-any` | ❌ 오류 | `: any` 또는 `as any` 사용 |
+| `no-ts-ignore` | ❌ 오류 | `@ts-ignore`, `@ts-nocheck` 주석 |
+| `no-non-null-assertion` | 💡 정보 | `obj!.prop` 형태의 non-null assertion |
+| `prefer-isdef-filter` | 💡 정보 | `filter` 내 `!= null` → `isDef` 권장 |
+| `no-console-outside-dev` | ⚠️ 경고 | DEV 가드 없는 `console.*` 호출 |
+| `prefer-set-over-includes` | 💡 정보 | 상수 배열 `.includes()` 대신 `Set.has()` 권장 |
+
+#### Svelte 5 / SvelteKit 2
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `no-app-stores` | ⚠️ 경고 | `$app/stores` → `$app/state` 마이그레이션 필요 |
+| `no-html-tag` | ⚠️ 경고 | `{@html}` 사용 (XSS 위험, sanitize 필수) |
+| `no-legacy-store` | 💡 정보 | `svelte/store` → runes (`$state`, `$derived`) 권장 |
+| `no-on-directive` | 💡 정보 | `on:click` → `onclick` 권장 (Svelte 5) |
+| `no-reactive-statement` | 💡 정보 | `$:` → `$derived`, `$effect` 권장 (Svelte 5) |

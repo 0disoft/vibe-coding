@@ -1,0 +1,134 @@
+Lint Report - 2025-12-12T06-39-19
+Target: src
+========================================
+
+📄 hooks.server.ts
+  ⚠️ L86:4 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 lib\components\CodeBlock.svelte
+  ⚠️ L105:7 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.error("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L135:11 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.error("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 lib\stores\persisted-state.svelte.ts
+  ⚠️ L165:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.warn("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 routes\[[lang]]\privacy\+page.server.ts
+  ❌ L67:23 [no-explicit-any]
+     명시적 any 사용 금지: "as any"
+     → unknown + 타입 가드 또는 구체적인 타입으로 교체
+
+📄 scripts\fix_json_newlines.js
+  ⚠️ L8:3 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.error("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L15:1 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L23:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L28:1 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 scripts\generate_cookie_markdowns.js
+  ⚠️ L40:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L42:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L46:3 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.error("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 scripts\generate_translated_cookie_policies_full.js
+  ⚠️ L298:3 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 scripts\replace_privacy_table.js
+  ⚠️ L11:1 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L18:3 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L39:6 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L52:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 scripts\update_cookie_messages.js
+  ⚠️ L6:1 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L236:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L238:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.error("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L241:4 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.warn("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 scripts\update_font_size_messages.js
+  ⚠️ L6:1 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L96:9 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L98:9 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.error("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L101:7 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.warn("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 scripts\update_md_dates.js
+  ⚠️ L11:1 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L18:3 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L43:6 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 scripts\update_messages_18_langs.js
+  ⚠️ L6:1 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L373:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L375:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.error("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L378:4 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.warn("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+📄 scripts\update_missing_privacy_messages.js
+  ⚠️ L64:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.log("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+  ⚠️ L66:5 [no-console-outside-dev]
+     DEV 블록 외 console 사용: "console.error("
+     → import.meta.env.DEV 조건문으로 감싸거나 제거
+
+────────────────────────────────────
+총 34개 이슈: ❌ 1 오류, ⚠️ 33 경고, 💡 0 정보

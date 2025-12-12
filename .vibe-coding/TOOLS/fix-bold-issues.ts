@@ -68,26 +68,34 @@ function fixLineOutsideInlineCode(line: string): { line: string; count: number; 
   return { line: parts.join("`"), count };
 }
 
+// 인용문 기호(>)와 공백을 제거하여 펜스 패턴 확인
+function stripBlockquote(line: string): string {
+  return line.replace(/^(?:\s*>\s*)+/, "");
+}
+
 // 펜스 코드블록과 인라인 코드를 건너뛰며 마크다운 교정
 function fixMarkdownKeepingCodeFences(content: string): { content: string; count: number; } {
-  const lines = content.split("\n");
+  // 원본 줄바꿈 스타일 감지 (CRLF vs LF)
+  const lineEnding = content.includes("\r\n") ? "\r\n" : "\n";
+  const lines = content.split(lineEnding);
   let inFence = false;
   let fenceToken = "";
   let count = 0;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    const trimmed = line.trimStart();
-    const fenceStarts = trimmed.startsWith("```") || trimmed.startsWith("~~~");
+    // 인용문 기호를 제거한 후 펜스 패턴 검사
+    const stripped = stripBlockquote(line).trimStart();
+    const fenceStarts = stripped.startsWith("```") || stripped.startsWith("~~~");
 
     if (!inFence && fenceStarts) {
       inFence = true;
-      fenceToken = trimmed.slice(0, 3);
+      fenceToken = stripped.slice(0, 3);
       continue;
     }
 
     if (inFence) {
-      const fenceEnds = trimmed.startsWith(fenceToken);
+      const fenceEnds = stripped.startsWith(fenceToken);
       if (fenceEnds) {
         inFence = false;
         fenceToken = "";
@@ -100,7 +108,7 @@ function fixMarkdownKeepingCodeFences(content: string): { content: string; count
     count += fixed.count;
   }
 
-  return { content: lines.join("\n"), count };
+  return { content: lines.join(lineEnding), count };
 }
 
 async function fixFile(path: string): Promise<number> {
