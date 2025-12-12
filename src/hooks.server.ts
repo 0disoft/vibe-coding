@@ -13,10 +13,212 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
-import { FONT_SIZE_COOKIE, THEME_COOKIE } from '$lib/constants';
+import { FONT_SIZE_COOKIE, THEME_COOKIE, policy } from '$lib/constants';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
+
+// ============================================================================
+// 0. Rate Limiting 핸들러
+// IP별 요청 횟수를 추적하여 초당 최대 요청 수를 초과하면 429 응답 반환
+// ============================================================================
+
+// 인메모리 Rate Limit 저장소 (서버리스에서는 인스턴스별로 초기화되지만 기본 방어 가능)
+const rateLimitMap = new Map<string, { count: number; resetTime: number; blocked: boolean; blockedUntil: number; }>();
+let sweepTick = 0;
+
+/**
+ * 다양한 프록시/CDN 환경에서 실제 클라이언트 IP 추출
+ * 플랫폼이 보증하는 헤더를 우선 사용 (Cloudflare 뒤에서 getClientAddress가 프록시 IP 줄 수 있음)
+ */
+function getClientIP(event: { request: Request; getClientAddress: () => string; }): string {
+	const h = event.request.headers;
+
+	// 플랫폼 보증 헤더 우선 (CDN/프록시가 설정)
+	const cf = h.get('cf-connecting-ip');
+	if (cf) return cf;
+
+	const real = h.get('x-real-ip');
+	if (real) return real;
+
+	const xff = h.get('x-forwarded-for')?.split(',')[0]?.trim();
+	if (xff) return xff;
+
+	// 헤더 없으면 SvelteKit 어댑터 사용
+	try {
+		const addr = event.getClientAddress();
+		if (addr) return addr;
+	} catch {
+		// 어댑터에 따라 실패할 수 있음
+	}
+
+	return 'unknown';
+}
+
+/**
+ * 정적 파일 요청인지 확인 (Rate Limit 제외 대상)
+ */
+function isStaticRequest(pathname: string): boolean {
+	const p = pathname.toLowerCase();
+	return (
+		p.startsWith('/_app/') || // SvelteKit 빌드 출력
+		p.startsWith('/favicon') ||
+		p === '/robots.txt' ||
+		p === '/sitemap.xml'
+	);
+}
+
+/**
+ * 브라우저 문서 네비게이션 요청인지 확인
+ * F5 새로고침, 주소창 직접 입력, 링크 클릭 등만 타깃
+ */
+function isDocumentNavigation(request: Request): boolean {
+	if (request.method !== 'GET') return false;
+
+	// sec-fetch-dest: document가 가장 정확 (문서 요청 전용)
+	const dest = request.headers.get('sec-fetch-dest');
+	if (dest === 'document') return true;
+
+	// 폴백: navigate 모드 또는 HTML Accept 헤더
+	const mode = request.headers.get('sec-fetch-mode');
+	const accept = request.headers.get('accept') || '';
+	return mode === 'navigate' || accept.includes('text/html');
+}
+
+// Map 사이즈 제한 (메모리 보호 최후 안전장치)
+const MAX_RATE_LIMIT_ENTRIES = 20000;
+
+/**
+ * 오래된 Rate Limit 기록 정리 (메모리 누수 방지)
+ */
+function maybeSweep(now: number): void {
+	sweepTick++;
+
+	// 사이즈가 너무 커지면 즉시 정리
+	if (rateLimitMap.size > MAX_RATE_LIMIT_ENTRIES) {
+		for (const [key, rec] of rateLimitMap) {
+			if (now >= rec.resetTime && (!rec.blocked || now >= rec.blockedUntil)) {
+				rateLimitMap.delete(key);
+			}
+		}
+		// 그래도 너무 크면 최후의 안전장치
+		if (rateLimitMap.size > MAX_RATE_LIMIT_ENTRIES) rateLimitMap.clear();
+		return;
+	}
+
+	if (sweepTick % 512 !== 0) return; // 512 요청마다 한 번
+
+	for (const [key, rec] of rateLimitMap) {
+		// 차단 해제됐고 윈도우도 만료된 기록 삭제
+		if (now >= rec.resetTime && (!rec.blocked || now >= rec.blockedUntil)) {
+			rateLimitMap.delete(key);
+		}
+	}
+}
+
+/**
+ * 429 응답 HTML 생성 (중복 제거)
+ */
+function render429Html(retryAfter: number): string {
+	return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>요청 제한</title>
+	<style>
+		body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f5f5f5; }
+		.container { text-align: center; padding: 2rem; }
+		h1 { font-size: 3rem; margin: 0; }
+		p { color: #666; margin-top: 1rem; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>⏳</h1>
+		<p>요청이 너무 빨라요.<br>${retryAfter}초 후 다시 시도해 주세요.</p>
+	</div>
+</body>
+</html>`;
+}
+
+const handleRateLimit: Handle = async ({ event, resolve }) => {
+	const { pathname } = event.url;
+
+	// 정적 파일은 Rate Limit 제외
+	if (isStaticRequest(pathname)) {
+		return resolve(event);
+	}
+
+	// 문서 네비게이션 요청만 Rate Limit 적용 (내부 fetch, 프리로드 제외)
+	if (!isDocumentNavigation(event.request)) {
+		return resolve(event);
+	}
+
+	const clientIP = getClientIP(event);
+
+	// unknown IP는 Rate Limit 건너뛰기 (모두가 같은 바구니 문제 방지)
+	if (clientIP === 'unknown') {
+		return resolve(event);
+	}
+
+	const now = Date.now();
+	const { maxRequests, windowMs, penaltyMs } = policy.rateLimit;
+
+	// 주기적으로 오래된 기록 정리
+	maybeSweep(now);
+
+	// 현재 IP의 요청 기록 조회
+	let record = rateLimitMap.get(clientIP);
+
+	// 차단 상태 확인
+	if (record?.blocked && now < record.blockedUntil) {
+		const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
+		return new Response(
+			render429Html(retryAfter),
+			{
+				status: 429,
+				headers: {
+					'Content-Type': 'text/html; charset=utf-8',
+					'Retry-After': String(retryAfter),
+					'Cache-Control': 'private, no-store'
+				}
+			}
+		);
+	}
+
+	// 차단 해제 또는 새 윈도우 시작
+	if (!record || now >= record.resetTime) {
+		rateLimitMap.set(clientIP, { count: 1, resetTime: now + windowMs, blocked: false, blockedUntil: 0 });
+	} else {
+		// 기존 윈도우에서 카운트 증가
+		record.count++;
+
+		if (record.count > maxRequests) {
+			// Rate Limit 초과 - 페널티 적용
+			record.blocked = true;
+			record.blockedUntil = now + penaltyMs;
+			// 차단이 끝나는 시점에 윈도우도 끝나게 고정 (설정값 변경 시에도 안전)
+			record.resetTime = record.blockedUntil;
+			// 카운트 리셋으로 차단 해제 후 새 윈도우 시작 보장
+			record.count = 0;
+			const retryAfter = Math.ceil((record.blockedUntil - now) / 1000);
+			return new Response(
+				render429Html(retryAfter),
+				{
+					status: 429,
+					headers: {
+						'Content-Type': 'text/html; charset=utf-8',
+						'Retry-After': String(retryAfter),
+						'Cache-Control': 'private, no-store'
+					}
+				}
+			);
+		}
+	}
+
+	return resolve(event);
+};
 
 // 1. 테마/폰트 크기 처리 핸들러
 // 쿠키를 확인하여 HTML에 data-theme, data-font-size 속성을 주입하는 역할을 합니다.
@@ -97,5 +299,5 @@ const handleRootRedirect: Handle = async ({ event, resolve }) => {
 };
 
 // 4. 핸들러 병합 및 내보내기
-// 순서: 테마/폰트 → 루트 리다이렉트 → Paraglide
-export const handle: Handle = sequence(handleThemeAndFont, handleRootRedirect, handleParaglide);
+// 순서: Rate Limit → 테마/폰트 → 루트 리다이렉트 → Paraglide
+export const handle: Handle = sequence(handleRateLimit, handleThemeAndFont, handleRootRedirect, handleParaglide);

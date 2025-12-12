@@ -96,5 +96,11 @@ export const policy = {
 		social: ['github', 'giscus', 'remark42', 'github_sponsors'],
 		support: ['chatwoot'],
 		ai: ['openrouter', 'vercel_ai']
+	},
+	// Rate Limiting 설정
+	rateLimit: {
+		maxRequests: 7, // 윈도우 내 최대 요청 수
+		windowMs: 2000, // 탐지 윈도우 (밀리초) - 2초
+		penaltyMs: 5000 // 차단 시 페널티 기간 (밀리초) - 5초
 	}
 } as const;
