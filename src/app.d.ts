@@ -14,11 +14,15 @@ import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
  */
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			requestId?: string;
+			message: string;
+		}
 		interface Locals {
 			paraglide: ParaglideLocals<AvailableLanguageTag>;
 			theme: 'light' | 'dark' | null;
 			fontSize: string | null;
+			requestId: string;
 		}
 		// interface PageData {}
 		// interface PageState {}

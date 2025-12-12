@@ -13,7 +13,7 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks'; // 여러 핸들을 묶기 위해 가져옵니다.
 import { FONT_SIZE_COOKIE, policy, THEME_COOKIE } from '$lib/constants';
 import { paraglideMiddleware } from '$lib/paraglide/server';
@@ -343,13 +343,41 @@ const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
-// 5. 핸들러 병합 및 내보내기
-// 순서: 보안 헤더 → Rate Limit → 테마/폰트 → 루트 리다이렉트 → Paraglide
-// 보안 헤더가 맨 앞이어야 모든 응답(429 포함)에 헤더가 붙음
+// 5. Request ID 핸들러
+// 모든 요청에 고유 ID를 부여하여 로그 추적 및 디버깅 용이성 확보
+const handleRequestId: Handle = async ({ event, resolve }) => {
+	// 외부(로드밸런서 등)에서 전달된 ID가 있으면 재사용, 없으면 새로 생성
+	const requestId = event.request.headers.get('x-request-id') || crypto.randomUUID();
+	event.locals.requestId = requestId;
+
+	const response = await resolve(event);
+	response.headers.set('x-request-id', requestId);
+
+	return response;
+};
+
+// 6. 핸들러 병합 및 내보내기
+// 순서: Request ID → 보안 헤더 → Rate Limit → 테마/폰트 → 루트 리다이렉트 → Paraglide
+// Request ID가 맨 앞이어야 모든 로그와 에러 처리에 ID를 연결할 수 있음
 export const handle: Handle = sequence(
+	handleRequestId,
 	handleSecurityHeaders,
 	handleRateLimit,
 	handleThemeAndFont,
 	handleRootRedirect,
 	handleParaglide
 );
+
+// [Handler] 서버 에러 핸들링
+export const handleError: HandleServerError = ({ error, event }) => {
+	const requestId = event.locals.requestId || 'unknown';
+	const message = 'Internal Server Error';
+
+	// 서버 측 로그 (실제 운영 환경에서는 Sentry 등으로 전송 권장)
+	console.error(`[${requestId}] Server Error:`, error);
+
+	return {
+		message,
+		requestId
+	};
+};
