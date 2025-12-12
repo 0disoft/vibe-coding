@@ -118,9 +118,7 @@ pre:not(.shiki) {
 }
 
 .code-card pre,
-.code-card pre code,
-.code-card code.hljs,
-.code-card pre.hljs {
+.code-card pre code {
 	background-color: oklch(var(--code-card));
 	color: oklch(var(--code-card-foreground));
 	border: none;
