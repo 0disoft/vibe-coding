@@ -7,8 +7,15 @@ import { base, build, files, prerendered, version } from '$service-worker';
 // 상수 정의
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** 캐시 이름 prefix (다른 앱/런타임 캐시와 충돌 방지) */
+// __APP_NAME__은 vite.config.ts의 define에서 site.name으로 주입됨
+declare const __APP_NAME__: string;
+// 특수문자 정제: 공백/슬래시 등이 섞여도 안전한 캐시 키 생성
+const SAFE_APP_NAME = __APP_NAME__.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+const CACHE_PREFIX = `${SAFE_APP_NAME}-sw-`;
+
 /** 캐시 이름 (빌드 버전 포함) */
-const CACHE = `cache-${version}`;
+const CACHE = `${CACHE_PREFIX}${version}`;
 
 /** Range 요청이 필요한 미디어 파일 확장자 */
 const MEDIA_EXTENSIONS = /\.(mp4|webm|ogg|mov|mp3|wav|m4a)$/i;
@@ -23,8 +30,21 @@ const ASSETS = [
 	...prerendered // 프리렌더링된 HTML 페이지 (offline 포함)
 ];
 
-/** 빌드 자산 Set (빠른 조회용) */
-const ASSET_SET = new Set([...build, ...files.filter((path) => !MEDIA_EXTENSIONS.test(path))]);
+/**
+ * 빌드 자산 Set (빠른 조회용)
+ * pathname으로 정규화하여 환경별 형태 차이를 무력화
+ */
+const ASSET_SET = new Set(
+	[...build, ...files.filter((path) => !MEDIA_EXTENSIONS.test(path))].map((path) => {
+		// 이미 pathname 형태면 그대로, URL 형태면 pathname만 추출
+		if (path.startsWith('/')) return path;
+		try {
+			return new URL(path, sw.location.origin).pathname;
+		} catch {
+			return path;
+		}
+	})
+);
 
 /** ServiceWorkerGlobalScope 타입 캐스팅 */
 const sw = self as unknown as ServiceWorkerGlobalScope;
@@ -44,6 +64,12 @@ function shouldHandleRequest(request: Request): boolean {
 	if (request.method !== 'GET') return false;
 	if (!request.url.startsWith('http')) return false;
 
+	// 크롬 예외 케이스 방어: only-if-cached + same-origin 아닌 경우 fetch 예외 발생
+	if (request.cache === 'only-if-cached' && request.mode !== 'same-origin') return false;
+
+	// Range 요청은 캐시 로직에 태우지 않음 (비디오 탐색 등 호환성 문제 방지)
+	if (request.headers.has('range')) return false;
+
 	const url = new URL(request.url);
 	if (url.origin !== sw.location.origin) return false;
 
@@ -54,12 +80,23 @@ function shouldHandleRequest(request: Request): boolean {
 }
 
 /**
+ * 현재 앱의 캐시에서만 매칭 (전역 캐시 오염 방지)
+ * - caches.match()는 오리진의 모든 캐시를 뒤지므로
+ * - 다른 앱/런타임 캐시와 충돌할 수 있음
+ */
+async function matchFromMyCache(request: Request | string): Promise<Response | undefined> {
+	const cache = await caches.open(CACHE);
+	const response = await cache.match(request);
+	return response || undefined;
+}
+
+/**
  * 캐시 우선 전략 (Cache First)
  * - 캐시에 있으면 캐시 반환
  * - 없으면 네트워크 요청
  */
 async function cacheFirst(request: Request): Promise<Response> {
-	const cachedResponse = await caches.match(request);
+	const cachedResponse = await matchFromMyCache(request);
 	return cachedResponse || fetch(request);
 }
 
@@ -90,8 +127,8 @@ async function networkFirst(request: Request): Promise<Response> {
 
 		return response;
 	} catch {
-		// 오프라인: 캐시된 데이터 반환 시도
-		const cachedResponse = await caches.match(request);
+		// 오프라인: 현재 앱 캐시에서 데이터 반환 시도
+		const cachedResponse = await matchFromMyCache(request);
 		if (cachedResponse) return cachedResponse;
 
 		// 네비게이션 요청이면 오프라인 폴백 페이지 반환
@@ -110,7 +147,7 @@ async function networkFirst(request: Request): Promise<Response> {
  * - 없으면 최소한의 HTML 응답 (완전한 무응답 방지)
  */
 async function getOfflineFallback(): Promise<Response> {
-	const cached = await caches.match(OFFLINE_PATH);
+	const cached = await matchFromMyCache(OFFLINE_PATH);
 	if (cached) return cached;
 
 	// 최후의 안전망: 캐시된 오프라인 페이지가 없을 경우
@@ -154,7 +191,9 @@ function isAssetRequest(url: URL): boolean {
 	if (ASSET_SET.has(pathname)) return true;
 
 	// /_app/ 하위는 모두 빌드 자산으로 취급 (immutable assets)
-	if (pathname.startsWith('/_app/')) return true;
+	// base 경로 지원: base가 /foo인 경우 /foo/_app/로 판정
+	const appPrefix = `${base}/_app/`;
+	if (pathname.startsWith(appPrefix)) return true;
 
 	return false;
 }
@@ -174,11 +213,16 @@ sw.addEventListener('install', (event) => {
 	event.waitUntil(addFilesToCache());
 });
 
-// 2. 활성화 (Activate) - 이전 캐시 정리
+// 2. 활성화 (Activate) - 이전 캐시 정리 (내 캐시만)
 sw.addEventListener('activate', (event) => {
 	async function deleteOldCaches() {
 		const keys = await caches.keys();
-		await Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)));
+		// prefix로 필터하여 내 앱의 캐시만 정리 (다른 앱/런타임 캐시 보호)
+		await Promise.all(
+			keys
+				.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE)
+				.map((key) => caches.delete(key))
+		);
 	}
 
 	event.waitUntil(Promise.all([deleteOldCaches(), sw.clients.claim()]));

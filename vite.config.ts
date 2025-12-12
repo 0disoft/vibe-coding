@@ -4,9 +4,16 @@ import { playwright } from '@vitest/browser-playwright';
 import UnoCSS from 'unocss/vite';
 import { defineConfig } from 'vitest/config';
 
+// 서비스 워커에서 $lib를 import할 수 없으므로, 빌드 타임에 상수를 주입합니다.
+// site.ts의 name을 동적으로 가져옵니다.
+import { site } from './src/lib/constants/site';
+
 export default defineConfig({
 	// info 레벨 메시지 숨김 (SvelteKit 설정 덮어쓰기 알림 등)
 	logLevel: 'warn',
+	define: {
+		__APP_NAME__: JSON.stringify(site.name)
+	},
 	// Vite/Vitest 버전 불일치로 인한 Plugin 타입 호환성 문제 우회
 	// vitest가 자체 vite 의존성을 가지고 있어 타입이 충돌함
 	plugins: [
