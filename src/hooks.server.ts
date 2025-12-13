@@ -15,6 +15,7 @@
 
 import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
+
 import { FONT_SIZE_COOKIE, policy, THEME_COOKIE } from '$lib/constants';
 import { baseLocale, extractLocaleFromHeader, isLocale } from '$lib/paraglide/runtime.js';
 import { paraglideMiddleware } from '$lib/paraglide/server';
@@ -39,10 +40,11 @@ const RATE_LIMIT_RULES: RateLimitRule[] = [
 	},
 	{
 		name: 'default',
-		// 그 외 경로는 일반 정책 적용 (50회/분 - constants 정책 사용)
+		// 그 외 경로는 일반 정책 적용 (constants 정책 사용)
 		pattern: /.*/,
 		windowMs: policy.rateLimit.windowMs,
-		max: policy.rateLimit.maxRequests
+		max: policy.rateLimit.maxRequests,
+		penaltyMs: policy.rateLimit.penaltyMs
 	}
 ];
 
@@ -549,12 +551,12 @@ function pickHttpMessage(error: unknown): string | undefined {
 	if (!error || typeof error !== 'object') return undefined;
 	if (!('body' in error)) return undefined;
 
-	const body = (error as { body?: unknown }).body;
+	const body = (error as { body?: unknown; }).body;
 	// body가 문자열인 경우 (예: error(401, 'Unauthorized'))
 	if (typeof body === 'string' && body.trim()) return body;
 	// body가 객체인 경우 (예: error(401, { message: 'Unauthorized' }))
 	if (body && typeof body === 'object' && 'message' in body) {
-		const msg = (body as { message?: unknown }).message;
+		const msg = (body as { message?: unknown; }).message;
 		if (typeof msg === 'string' && msg.trim()) return msg;
 	}
 	return undefined;
@@ -566,7 +568,7 @@ export const handleError: HandleServerError = ({ error, event }) => {
 	// 에러 객체에서 status 추출 (Safe Duck Typing + NaN/0 방어)
 	const rawStatus =
 		error && typeof error === 'object' && 'status' in error
-			? (error as { status: unknown }).status
+			? (error as { status: unknown; }).status
 			: 500;
 	const status =
 		typeof rawStatus === 'number' && Number.isFinite(rawStatus) && rawStatus > 0 ? rawStatus : 500;

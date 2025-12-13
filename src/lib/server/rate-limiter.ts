@@ -5,6 +5,7 @@ export interface RateLimitRule {
 	pattern: RegExp;
 	windowMs: number;
 	max: number;
+	penaltyMs?: number; // 차단 시 페널티 기간 (기본값: windowMs)
 }
 
 interface RateLimitRecord {
@@ -118,7 +119,7 @@ export function checkRateLimit(
 
 		// 5. 제한 초과 확인
 		if (record.count > rule.max) {
-			const penaltyMs = rule.windowMs; // 페널티는 윈도우 시간만큼
+			const penaltyMs = rule.penaltyMs ?? rule.windowMs; // 설정된 페널티, 없으면 윈도우 시간
 			record.blocked = true;
 			record.blockedUntil = now + penaltyMs;
 			record.resetTime = record.blockedUntil; // 윈도우 동기화
