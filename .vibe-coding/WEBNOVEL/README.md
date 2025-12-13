@@ -23,5 +23,6 @@ WEBNOVEL/
 │   └── _template.md
 │
 └── works/              # 실제 원고
-    └── episode-NNN.md  # 3자리 0패딩 (001~999)
+    ├── _template.md
+    └── episode-NNNN.md  # 4자리 0패딩 (0001~9999)
 ```

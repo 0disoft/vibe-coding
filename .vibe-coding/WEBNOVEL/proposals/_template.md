@@ -4,8 +4,8 @@ AI가 4가지 옵션을 제안할 때 이 형식으로 저장합니다.
 
 **파일명 규칙:**
 
-- 줄거리: `plot-NNN-options.md` (예: `plot-001-options.md`)
-- 등장요소: `elements-NNN-options.md` (예: `elements-001-options.md`)
+- 줄거리: `plot-NNNN-options.md` (예: `plot-0001-options.md`)
+- 등장요소: `elements-NNNN-options.md` (예: `elements-0001-options.md`)
 - 캐릭터 상세: `character-슬러그-options.md` (예: `character-han-seo-jun-options.md`)
 - 사물 상세: `object-슬러그-options.md`
 - 현상 상세: `phenomenon-슬러그-options.md`

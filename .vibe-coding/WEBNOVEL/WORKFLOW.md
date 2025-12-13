@@ -27,7 +27,7 @@ flowchart TD
     J2 -->|예| Q
     
     Q[5단계: N화 집필]
-    Q --> R[works/episode-NNN.md 저장]
+    Q --> R[works/episode-NNNN.md 저장]
     
     R --> S[6단계: 정합성 검토]
     S --> T{불일치 있음?}
@@ -53,17 +53,19 @@ flowchart TD
 
 - **AI가 추천하는 4가지**: 해당 화의 핵심 줄거리 4개 버전
 - 예: "1화에서 주인공이 각성하는 과정" 4가지 시나리오
-- **제안 저장**: `proposals/plot-NNN-options.md`
+- **제안 저장**: `proposals/plot-NNNN-options.md`
 - **선택 기록**: `EPISODES.md` → N화 줄거리 섹션
 
 ### 3단계: N화 등장요소
 
 - **AI가 추천하는 4가지**: 해당 화에 등장할 캐릭터/사물/현상 조합
 - 예: "주인공, 히로인, 멘토, 전설의 검" 등 4가지 조합
-- **제안 저장**: `proposals/elements-NNN-options.md`
+- **제안 저장**: `proposals/elements-NNNN-options.md`
 - **선택 기록**: `EPISODES.md` → N화 등장요소 표
 
 ### 4단계: 등장요소 상세화
+
+> **핵심 원칙**: 해당 화에서 **신규/변경**되는 요소만 상세화합니다. 기존 요소는 참조만 합니다.
 
 - **파일명 규칙**: 소문자 ASCII + 하이픈, 공백/언더스코어 금지, 중복 시 접미사(-2)
 - **설정 파일 위치**:
@@ -76,8 +78,8 @@ flowchart TD
 
 ### 5단계: N화 집필
 
-- 모든 등장요소 설정이 완료되면 AI가 원고 작성
-- **저장 위치**: `works/episode-NNN.md`
+- 해당 화의 신규/변경 요소 정리가 끝나면 AI가 원고 작성
+- **저장 위치**: `works/episode-NNNN.md`
 
 ### 6단계: 정합성 검토
 

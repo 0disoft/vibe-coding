@@ -15,13 +15,13 @@
 
 | 유형 | 표시명 | 파일(슬러그) |
 |------|--------|-------------|
-| 캐릭터 | (작성 예정) | `characters/slug.md` |
-| 사물 | (작성 예정) | `objects/slug.md` |
-| 현상 | (작성 예정) | `phenomena/slug.md` |
+| 캐릭터 | (작성 예정) | `characters/han-seo-jun.md` |
+| 사물 | (작성 예정) | `objects/ashen-sword.md` |
+| 현상 | (작성 예정) | `phenomena/mana-overflow.md` |
 
 ### 1화 원고
 
-→ `works/episode-001.md`
+→ `works/episode-0001.md`
 
 ---
 
@@ -39,7 +39,7 @@
 
 ### 2화 원고
 
-→ `works/episode-002.md`
+→ `works/episode-0002.md`
 
 ---
 
@@ -59,7 +59,7 @@
 
 ### N화 원고
 
-→ `works/episode-NNN.md`
+→ `works/episode-NNNN.md`
 
 ---
 -->
