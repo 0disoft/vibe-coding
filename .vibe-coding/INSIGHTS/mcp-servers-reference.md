@@ -52,7 +52,7 @@ Chromium 기반 브라우저 제어 및 스크래핑.
 | 항목 | 내용 |
 |------|------|
 | 패키지 | `@upstash/context7-mcp` |
-| 런타임 | Node.js (bunx) |
+| 런타임 | Node.js (npx) |
 | 용도 | 프롬프트에 "use context7" 추가 시 최신 문서 참조 |
 
 ---
@@ -76,7 +76,7 @@ Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강
 | 항목 | 내용 |
 |------|------|
 | 패키지 | `shell-mcp-server` |
-| 런타임 | Node.js (bunx) |
+| 런타임 | Node.js (npx) |
 | 용도 | 터미널 명령 실행, 프로세스 관리, 빌드 자동화 |
 | ⚠️ 주의 | 보안상 허용할 명령어/디렉토리를 제한하는 것을 권장 |
 
@@ -102,19 +102,16 @@ Chrome DevTools 기반 브라우저 자동화 및 디버깅. Puppeteer보다 강
       "args": ["@modelcontextprotocol/server-puppeteer"]
     },
     "context7": {
-      "command": "bunx",
-      "args": ["@upstash/context7-mcp"],
-      "env": {
-        "CONTEXT7_API_KEY": ""
-      }
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
     },
     "chrome-devtools": {
       "command": "bunx",
       "args": ["chrome-devtools-mcp@latest"]
     },
     "shell": {
-      "command": "bunx",
-      "args": ["shell-mcp-server"]
+      "command": "npx",
+      "args": ["-y", "shell-mcp-server"]
     }
   }
 }

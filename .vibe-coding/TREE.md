@@ -105,8 +105,10 @@
 | `WIP.md`               | 세부 실행 계획 및 작업 분해 (임시 저장소)                  |
 | `API.md`               | API 엔드포인트 문서                                        |
 | `REVIEW.md`            | 코드 리뷰 가이드라인                                       |
-| `temporary.txt`        | 사용자/LLM이 긴 질문이나 응답을 임시 저장하는 스크래치패드 |
-| `project.meta.toml`    | 프로젝트 메타데이터 설정                                   |
+| `.temporary.txt`       | 사용자/LLM이 긴 질문이나 응답을 임시 저장하는 스크래치패드 |
+| `.suggestions.txt`     | 코드 개선 제안을 임시 저장하는 스크래치패드                |
+| `.questions.txt`       | 추가 질문을 임시 저장하는 스크래치패드                     |
+| `.reports.txt`         | 수정 보고를 임시 저장하는 스크래치패드                     |
 | `stack.manifest.toml`  | 기술 스택 매니페스트                                       |
 | `INSIGHTS/`            | 전략적 인사이트, 아키텍처 결정, 레퍼런스 문서 모음         |
 | `KNOWLEDGE/`           | 기술 지식 베이스 (언어별 가이드 등)                        |
