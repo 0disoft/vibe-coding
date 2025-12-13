@@ -128,7 +128,6 @@ LLM과 바이브코딩할 때 "어떤 Public API를 어떤 방식으로 호출/�
 | [Reddit](https://www.reddit.com/dev/api) | 커뮤니티 데이터, 글 | OAuth | Yes | Unknown | 서버 프록시 권장 | 8 | 커뮤니티 |
 | [Telegram Bot](https://core.telegram.org/bots/api) | 텔레그램 봇 | OAuth | Yes | Unknown | 서버 프록시 권장 | 7 | 봇 |
 | [HackerNews](https://github.com/HackerNews/API) | 개발자 뉴스 | No | Yes | Unknown | 서버 프록시 권장 | 8 | 뉴스 |
-| [Mailjet](https://dev.mailjet.com/email/reference/overview/) | 트랜잭션, 마케팅 메일 발송 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 이메일발송 |
 | [Gmail](https://developers.google.com/gmail/api) | 메일 읽기, 라벨, 검색 | OAuth | Yes | Unknown | 서버 프록시 권장 | 8 | 이메일, OAuth |
 
 ### 지도·모빌리티
@@ -157,15 +156,10 @@ LLM과 바이브코딩할 때 "어떤 Public API를 어떤 방식으로 호출/�
 | [GraphHopper](https://graphhopper.com/api/1/docs/) | 경로 탐색, 턴바이턴 안내 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 경로, 라우팅 |
 | [Navitia](https://api.navitia.io/) | 대중교통 데이터로 검색, 경로 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 대중교통 |
 | [Open Charge Map](https://openchargemap.org/site/develop/api) | 전기차 충전소 위치 데이터 | No | Yes | Unknown | 서버 프록시 권장 | 7 | 충전소 |
-| [Uber](https://developer.uber.com/products) | 요금 추정, 호출 연동 | OAuth | Yes | Yes | 서버 프록시 권장 | 7 | 라이드헤일링 |
-| [ADS-B Exchange](https://www.adsbexchange.com/data/) | 항공기 실시간, 과거 데이터 | No | Yes | Unknown | 서버 프록시 권장 | 7 | 항공 |
 | [REST Countries](https://restcountries.com) | 국가 기본 정보 | No | Yes | Yes | 브라우저 직호출 가능 | 8 | 국가 |
 | [OpenCage](https://opencagedata.com) | 지오코딩 | apiKey | Yes | Yes | 서버 프록시 권장 | 7 | 지오코딩 |
 | [LocationIQ](https://locationiq.org/docs/) | 지오코딩, 대량 지오코딩 | apiKey | Yes | Yes | 서버 프록시 권장 | 7 | 지오코딩 |
 | [Postcodes.io](https://postcodes.io) | 영국 우편번호, 지오코딩 | No | Yes | Yes | 브라우저 직호출 가능 | 7 | 우편번호, 영국 |
-| [Smarty US Autocomplete](https://smartystreets.com/docs/cloud/us-autocomplete-api) | 미국 주소 자동완성 | apiKey | Yes | Yes | 서버 프록시 권장 | 7 | 주소검증, 미국 |
-| [Smarty US Extract](https://www.smarty.com/products/apis/us-extract-api) | 텍스트에서 미국 주소 추출 | apiKey | Yes | Yes | 서버 프록시 권장 | 7 | 주소검증, 미국 |
-| [Smarty US Street Address](https://www.smarty.com/docs/cloud/us-street-api) | 미국 주소 검증, 정규화 | apiKey | Yes | Yes | 서버 프록시 권장 | 7 | 주소검증, 미국 |
 
 ### 공공·통계·연구
 
@@ -186,7 +180,6 @@ LLM과 바이브코딩할 때 "어떤 Public API를 어떤 방식으로 호출/�
 | [한국부동산원 부동산통계](https://www.reb.or.kr/r-one/portal/openapi/openApiIntroPage.do) | 시장 동향, 통계 지표 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 부동산, 통계 |
 | [NASA](https://api.nasa.gov) | NASA 데이터와 이미지 | No | Yes | Unknown | 서버 프록시 권장 | 8 | 우주, 교육 |
 | [SpaceX API](https://github.com/r-spacex/SpaceX-API) | 발사, 로켓, 발사대 데이터 | No | Yes | Unknown | 서버 프록시 권장 | 8 | 우주, 데모 |
-| [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589) | 국가 지표 데이터 | No | No | Unknown | 서버 프록시 권장 | 7 | 경제지표 |
 | [Open Science Framework](https://developer.osf.io) | 연구 자료 저장소 API | No | Yes | Unknown | 서버 프록시 권장 | 7 | 연구, 아카이브 |
 | [CORE](https://core.ac.uk/services#api) | 오픈 액세스 논문 데이터 | apiKey | Yes | Unknown | 서버 프록시 권장 | 8 | 논문, 검색 |
 | [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page) | 위키 데이터 조회 | No | Yes | Unknown | 서버 프록시 권장 | 8 | 지식, 백과 |
@@ -206,7 +199,6 @@ LLM과 바이브코딩할 때 "어떤 Public API를 어떤 방식으로 호출/�
 | [Beeceptor CRUD APIs](https://beeceptor.com/crud-api/?ref=public-api-lists) | 상태 저장되는 가짜 REST 백엔드 | No | Yes | Yes | 브라우저 직호출 가능 | 8 | 모킹 |
 | [JSONPlaceholder](https://jsonplaceholder.typicode.com/) | 샘플 REST 데이터 | No | Yes | Unknown | 서버 프록시 권장 | 8 | 모킹 |
 | [RandomUser](https://randomuser.me) | 랜덤 유저 프로필 생성 | No | Yes | Unknown | 서버 프록시 권장 | 8 | 모킹, 더미 |
-| [Bitly](http://dev.bitly.com/get_started.html) | 링크 단축, 클릭 분석, 관리 | OAuth | Yes | Unknown | 서버 프록시 권장 | 7 | URL단축, 분석 |
 | [Microlink.io](https://microlink.io/docs/api/getting-started/overview) | URL을 구조화 데이터로 변환 | No | Yes | Yes | 브라우저 직호출 가능 | 9 | 링크프리뷰 |
 | [LinkPreview](https://www.linkpreview.net) | URL 요약, 미리보기 이미지 | apiKey | Yes | Yes | 서버 프록시 권장 | 7 | 링크카드 |
 | [Libraries.io](https://libraries.io/api) | 오픈소스 패키지 메타데이터 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 패키지 |
@@ -239,13 +231,10 @@ LLM과 바이브코딩할 때 "어떤 Public API를 어떤 방식으로 호출/�
 | [Open Library Covers API](https://openlibrary.org/dev/docs/api/covers) | 책 표지 이미지 | No | Yes | Unknown | 브라우저 직호출 가능 | 8 | 도서, 이미지 |
 | [Google Books API](https://developers.google.com/books/) | 책 검색 품질 강화 | apiKey/OAuth2 | Yes | Unknown | 서버 프록시 권장 | 7 | 도서 |
 | [TMDb](https://www.themoviedb.org/documentation/api) | 영화, TV, 인물 메타데이터 | apiKey | Yes | Unknown | 서버 프록시 권장 | 8 | 영화, TV |
-| [Open Movie Database](http://www.omdbapi.com/) | 영화 정보 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 영화 |
 | [Trakt](https://trakt.tv/b/api-docs) | 시청 기록, 목록, 추천 데이터 | apiKey | Yes | Yes | 서버 프록시 권장 | 8 | 영화, 워치리스트 |
 | [YouTube](https://developers.google.com/youtube/) | 검색, 채널, 재생목록 | OAuth | Yes | Unknown | 서버 프록시 권장 | 9 | 영상, OAuth |
-| [Shotstack](https://shotstack.io/) | 클라우드 영상 편집 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 영상편집 |
 | [국립국어원 우리말샘](https://opendict.korean.go.kr/service/openApiInfo) | 표준국어대사전 기반 조회 | apiKey | Yes | Unknown | 서버 프록시 권장 | 8 | 사전, 한국어 |
 | [iTunes Search](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/) | iTunes 검색 | No | Yes | Unknown | 서버 프록시 권장 | 7 | 검색, 음악 |
-| [TasteDive](https://tastedive.com/read/api) | 유사 아티스트, 영화, TV 추천 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 추천 |
 | [New York Times](https://developer.nytimes.com/) | 기사 검색, 메타데이터 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 뉴스 |
 | [The Guardian](http://open-platform.theguardian.com/) | 섹션, 태그 기반 기사 접근 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 뉴스 |
 | [NewsAPI](https://newsapi.org/docs) | 여러 매체 헤드라인, 검색 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | 뉴스 |
@@ -263,8 +252,6 @@ LLM과 바이브코딩할 때 "어떤 Public API를 어떤 방식으로 호출/�
 | [IGDB](https://api.igdb.com/) | 게임 DB | apiKey | Yes | Unknown | 서버 프록시 권장 | 9 | 게임 |
 | [Steam Web API](https://developer.valvesoftware.com/wiki/Steam_Web_API) | Steam 계정, 게임 데이터 | OAuth | Yes | Unknown | 서버 프록시 권장 | 8 | 게임 |
 | [Riot Games](https://developer.riotgames.com/) | 리그 오브 레전드 데이터 | apiKey | Yes | Unknown | 서버 프록시 권장 | 8 | 게임, e스포츠 |
-| [OpenDota](https://docs.opendota.com/) | Dota 2 매치, 플레이어 통계 | No | Yes | Unknown | 서버 프록시 권장 | 7 | 게임 |
-| [PandaScore](https://api.pandascore.co) | e스포츠 경기, 결과 | apiKey | Yes | Unknown | 서버 프록시 권장 | 7 | e스포츠 |
 | [Pokéapi](https://pokeapi.co) | 포켓몬 데이터 | No | Yes | Unknown | 서버 프록시 권장 | 8 | 게임, 데모 |
 | [Scryfall](https://scryfall.com/docs/api) | 매직 카드 DB | No | Yes | Yes | 브라우저 직호출 가능 | 8 | 카드게임 |
 | [Open Trivia DB](https://opentdb.com/api_config.php) | 퀴즈 문제 | No | Yes | Unknown | 서버 프록시 권장 | 7 | 퀴즈 |
@@ -292,7 +279,6 @@ LLM과 바이브코딩할 때 "어떤 Public API를 어떤 방식으로 호출/�
 | [Abstract Holiday API](https://www.abstractapi.com/holidays-api) | 지역, 종교 휴일 | apiKey | Yes | Yes | 서버 프록시 권장 | 7 | 휴일 |
 | [TheMealDB](https://www.themealdb.com/api.php) | 식사 레시피 | apiKey | Yes | Yes | 서버 프록시 권장 | 7 | 푸드, 레시피 |
 | [Todoist](https://developer.todoist.com) | 할 일, 프로젝트 자동화 | OAuth | Yes | Unknown | 서버 프록시 권장 | 8 | 업무자동화 |
-| [WakaTime](https://wakatime.com/developers) | 코딩 시간 추적 데이터 | No | Yes | Unknown | 서버 프록시 권장 | 7 | 생산성 |
 
 ### 생물·환경
 
