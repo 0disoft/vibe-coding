@@ -6,6 +6,7 @@
 
 | 도구 | 용도 | 빠른 실행 |
 |------|------|-----------|
+| [api-catalog](#api-catalog) | Public API 카탈로그 뷰어 | `bun .vibe-coding/TOOLS/api-catalog/server.ts` |
 | [a11y-ux-patterns.ts](#a11y-ux-patternsts) | 접근성 및 UX 패턴 검사 | `bun .vibe-coding/TOOLS/a11y-ux-patterns.ts` |
 | [fix-bold-issues.ts](#fix-bold-issuests) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
 | [lint-patterns.ts](#lint-patternsts) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
@@ -270,3 +271,58 @@ bun .vibe-coding/TOOLS/security-patterns.ts --no-report
 | ID | 심각도 | 설명 |
 |----|--------|------|
 | `ts-any-cast` | ⚠️ 경고 | `as any` 캐스팅 사용 |
+
+---
+
+## api-catalog
+
+`.vibe-coding/PUBLIC_APIS/README.md`의 Public API 카탈로그를 브라우저에서 필터링/정렬할 수 있는 인터랙티브 뷰어입니다.
+
+### api-catalog 실행 방법
+
+```bash
+# 1. README.md → SQLite 동기화
+bun .vibe-coding/TOOLS/api-catalog/sync.ts
+
+# 2. 로컬 서버 시작 (http://localhost:3333)
+bun .vibe-coding/TOOLS/api-catalog/server.ts
+```
+
+### api-catalog 주요 기능
+
+- **필터링**: 카테고리, 인증 방식, CORS, 통합 방식
+- **검색**: API명, 용도, 태그 키워드 검색
+- **정렬**: 추천도, 이름, 카테고리 기준 정렬
+- **UI**: 다크/라이트 테마, 반응형 디자인
+
+### api-catalog API 엔드포인트
+
+| 엔드포인트 | 설명 |
+|------------|------|
+| `GET /api/apis` | API 목록 (쿼리 파라미터로 필터/정렬) |
+| `GET /api/categories` | 카테고리 목록 |
+| `GET /api/stats` | 통계 (총 개수, 카테고리별 개수) |
+| `GET /api/options` | 필터 드롭다운 옵션 |
+
+### api-catalog 쿼리 파라미터
+
+```bash
+# 필터 예시
+curl "http://localhost:3333/api/apis?category=보안·리스크"
+curl "http://localhost:3333/api/apis?auth=No&cors=Yes"
+curl "http://localhost:3333/api/apis?q=날씨"
+
+# 정렬 예시
+curl "http://localhost:3333/api/apis?sort=rating&order=desc"
+curl "http://localhost:3333/api/apis?sort=name&order=asc"
+```
+
+### api-catalog 파일 구조
+
+| 파일 | 역할 |
+|------|------|
+| `db.ts` | SQLite 스키마 및 초기화 |
+| `sync.ts` | README.md → SQLite 동기화 |
+| `server.ts` | Bun.serve 기반 API 서버 |
+| `viewer.html` | 프론트엔드 뷰어 |
+| `api-catalog.sqlite` | 데이터베이스 파일 (gitignore) |
