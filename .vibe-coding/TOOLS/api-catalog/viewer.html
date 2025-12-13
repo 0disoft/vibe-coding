@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,6 +29,8 @@
       --bg-card: #ffffff;
       --text-primary: #1a1a2e;
       --text-secondary: #666666;
+      --accent: #0077aa;
+      --accent-hover: #005580;
       --border: #e0e0e0;
       --shadow: rgba(0, 0, 0, 0.1);
       --glass: rgba(0, 0, 0, 0.02);
@@ -37,6 +40,25 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    /* 키보드 포커스 스타일 */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* 스크린리더 전용 텍스트 */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     body {
@@ -250,6 +272,11 @@
       font-size: 0.875rem;
     }
 
+    #tableContent {
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -265,6 +292,9 @@
       color: var(--text-secondary);
       letter-spacing: 0.5px;
       border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     td {
@@ -330,9 +360,17 @@
       font-size: 1rem;
     }
 
-    .rating-high { color: var(--success); }
-    .rating-mid { color: var(--warning); }
-    .rating-low { color: var(--error); }
+    .rating-high {
+      color: var(--success);
+    }
+
+    .rating-mid {
+      color: var(--warning);
+    }
+
+    .rating-low {
+      color: var(--error);
+    }
 
     .tags {
       display: flex;
@@ -361,7 +399,9 @@
     }
 
     /* 로딩 & 에러 */
-    .loading, .error, .empty {
+    .loading,
+    .error,
+    .empty {
       text-align: center;
       padding: 4rem 2rem;
       color: var(--text-secondary);
@@ -380,7 +420,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .error {
@@ -409,12 +451,13 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
       <h1>🔗 API Catalog Viewer</h1>
       <div class="header-actions">
-        <button class="theme-toggle" id="themeToggle" title="테마 변경">🌙</button>
+        <button class="theme-toggle" id="themeToggle" title="다크 모드" aria-label="다크 모드" aria-pressed="true">🌙</button>
       </div>
     </header>
 
@@ -433,7 +476,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-value" id="corsYesCount">-</div>
-        <div class="stat-label">CORS 지원</div>
+        <div class="stat-label">현재 결과 CORS 지원</div>
       </div>
     </div>
 
@@ -479,7 +522,7 @@
 
     <div class="table-container">
       <div class="table-header">
-        <div class="result-count" id="resultCount">로딩 중...</div>
+        <div class="result-count" id="resultCount" role="status">로딩 중...</div>
         <div class="sort-controls">
           <select id="sortSelect">
             <option value="rating">추천도순</option>
@@ -492,7 +535,7 @@
           </select>
         </div>
       </div>
-      <div id="tableContent">
+      <div id="tableContent" aria-live="polite">
         <div class="loading">데이터를 불러오는 중...</div>
       </div>
     </div>
@@ -535,7 +578,15 @@
     function initTheme() {
       const saved = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', saved);
-      elements.themeToggle.textContent = saved === 'dark' ? '🌙' : '☀️';
+      updateThemeButton(saved);
+    }
+
+    function updateThemeButton(theme) {
+      const isDark = theme === 'dark';
+      elements.themeToggle.textContent = isDark ? '🌙' : '☀️';
+      elements.themeToggle.setAttribute('aria-pressed', String(isDark));
+      elements.themeToggle.setAttribute('aria-label', isDark ? '다크 모드' : '라이트 모드');
+      elements.themeToggle.setAttribute('title', isDark ? '다크 모드' : '라이트 모드');
     }
 
     elements.themeToggle.addEventListener('click', () => {
@@ -543,7 +594,7 @@
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
-      elements.themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+      updateThemeButton(next);
     });
 
     // 필터 옵션 로드
@@ -626,7 +677,11 @@
         const corsYesCount = apis.filter(a => a.cors === 'Yes').length;
         elements.corsYesCount.textContent = corsYesCount;
       } catch (error) {
-        elements.tableContent.innerHTML = `<div class="error">❌ 데이터 로드 실패: ${error.message}</div>`;
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error';
+        errorDiv.textContent = `❌ 데이터 로드 실패: ${error.message}`;
+        elements.tableContent.innerHTML = '';
+        elements.tableContent.appendChild(errorDiv);
       }
     }
 
@@ -641,26 +696,29 @@
       elements.resultCount.textContent = `${apis.length}개 결과`;
 
       const html = `
-        <table>
+        <table aria-label="API 목록">
+          <caption class="sr-only">API 카탈로그 목록</caption>
           <thead>
             <tr>
-              <th>API</th>
-              <th>용도</th>
-              <th>인증</th>
-              <th>CORS</th>
-              <th>통합 방식</th>
-              <th>추천도</th>
-              <th>태그</th>
-              <th>카테고리</th>
+              <th scope="col">API</th>
+              <th scope="col">용도</th>
+              <th scope="col">인증</th>
+              <th scope="col">CORS</th>
+              <th scope="col">통합 방식</th>
+              <th scope="col">추천도</th>
+              <th scope="col">태그</th>
+              <th scope="col">카테고리</th>
             </tr>
           </thead>
           <tbody>
-            ${apis.map(api => `
+            ${apis.map(api => {
+        const safeUrl = sanitizeUrl(api.url);
+        return `
               <tr>
                 <td class="api-name">
-                  ${api.url 
-                    ? `<a href="${escapeHtml(api.url)}" target="_blank" rel="noopener">${escapeHtml(api.name)}</a>` 
-                    : escapeHtml(api.name)}
+                  ${safeUrl
+            ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">${escapeHtml(api.name)}</a>`
+            : escapeHtml(api.name)}
                 </td>
                 <td>${escapeHtml(api.description || '')}</td>
                 <td><span class="badge badge-auth">${escapeHtml(api.auth || '-')}</span></td>
@@ -670,7 +728,8 @@
                 <td>${renderTags(api.tags)}</td>
                 <td><span class="category-badge">${escapeHtml(api.category || '-')}</span></td>
               </tr>
-            `).join('')}
+            `;
+      }).join('')}
           </tbody>
         </table>
       `;
@@ -684,6 +743,17 @@
       return str.replace(/[&<>"']/g, char => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       })[char]);
+    }
+
+    // URL sanitize (javascript: 등 위험한 스킴 차단)
+    function sanitizeUrl(url) {
+      if (!url) return null;
+      try {
+        const parsed = new URL(url, window.location.origin);
+        return ['http:', 'https:'].includes(parsed.protocol) ? url : null;
+      } catch {
+        return null;
+      }
     }
 
     function renderCors(cors) {
@@ -700,7 +770,7 @@
 
     function renderTags(tags) {
       if (!tags) return '-';
-      return tags.split(',').map(tag => 
+      return tags.split(',').map(tag =>
         `<span class="tag">${escapeHtml(tag.trim())}</span>`
       ).join('');
     }
@@ -750,4 +820,5 @@
     init();
   </script>
 </body>
+
 </html>

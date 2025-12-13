@@ -3,10 +3,13 @@
  * Bun.serve 기반 REST API + 정적 파일 서빙
  */
 import { Database } from "bun:sqlite";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { DB_PATH } from "./db";
 
-// DB 경로
-const DB_PATH = new URL("./api-catalog.sqlite", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1");
-const VIEWER_PATH = new URL("./viewer.html", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1");
+// Viewer 경로 (스크립트 위치 기준)
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const VIEWER_PATH = join(__dirname, "viewer.html");
 
 // 포트 설정
 const PORT = parseInt(process.env.PORT || "3333", 10);
@@ -15,7 +18,10 @@ const PORT = parseInt(process.env.PORT || "3333", 10);
  * DB 연결 (읽기 전용)
  */
 function getDb(): Database {
-  return new Database(DB_PATH, { readonly: true });
+  const db = new Database(DB_PATH, { readonly: true });
+  // 동기화 중 쓰기 트랜잭션과 충돌 시 대기 (3초)
+  db.run("PRAGMA busy_timeout = 3000;");
+  return db;
 }
 
 /**
@@ -53,8 +59,8 @@ function buildApisQuery(params: URLSearchParams): { sql: string; bindings: Recor
     bindings.$integration = integration;
   }
 
-  // 키워드 검색
-  const q = params.get("q");
+  // 키워드 검색 (길이 제한 200자)
+  const q = params.get("q")?.trim().slice(0, 200);
   if (q) {
     conditions.push("(a.name LIKE $q OR a.description LIKE $q OR a.tags LIKE $q)");
     bindings.$q = `%${q}%`;
@@ -96,8 +102,39 @@ function jsonResponse(data: unknown, status = 200): Response {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
+      "Cache-Control": "no-store",
     },
   });
+}
+
+/**
+ * 에러 응답 생성
+ */
+function errorResponse(message: string, status = 500): Response {
+  console.error(`[API Error] ${message}`);
+  return jsonResponse({ error: message }, status);
+}
+
+/**
+ * 405 Method Not Allowed 응답 (Allow 헤더 포함)
+ */
+function methodNotAllowed(): Response {
+  return new Response(JSON.stringify({ error: "Method Not Allowed" }), {
+    status: 405,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Cache-Control": "no-store",
+      "Allow": "GET, OPTIONS",
+    },
+  });
+}
+
+/**
+ * 404 Not Found 응답 (JSON + CORS)
+ */
+function notFound(): Response {
+  return jsonResponse({ error: "Not Found" }, 404);
 }
 
 /**
@@ -117,6 +154,7 @@ void Bun.serve({
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Max-Age": "600",
         },
       });
     }
@@ -129,16 +167,19 @@ void Bun.serve({
           headers: { "Content-Type": "text/html; charset=utf-8" },
         });
       }
-      return new Response("viewer.html not found", { status: 404 });
+      return notFound();
     }
 
     // API: 목록 조회
     if (path === "/api/apis") {
+      if (req.method !== "GET") return methodNotAllowed();
       const db = getDb();
       try {
         const { sql, bindings } = buildApisQuery(url.searchParams);
         const apis = db.query(sql).all(bindings as unknown as import("bun:sqlite").SQLQueryBindings);
         return jsonResponse(apis);
+      } catch (e) {
+        return errorResponse((e as Error).message);
       } finally {
         db.close();
       }
@@ -146,10 +187,13 @@ void Bun.serve({
 
     // API: 카테고리 목록
     if (path === "/api/categories") {
+      if (req.method !== "GET") return methodNotAllowed();
       const db = getDb();
       try {
         const categories = db.query<{ name: string; }, []>("SELECT name FROM categories ORDER BY name").all();
         return jsonResponse(categories.map((c) => c.name));
+      } catch (e) {
+        return errorResponse((e as Error).message);
       } finally {
         db.close();
       }
@@ -157,6 +201,7 @@ void Bun.serve({
 
     // API: 통계
     if (path === "/api/stats") {
+      if (req.method !== "GET") return methodNotAllowed();
       const db = getDb();
       try {
         const total = db.query("SELECT COUNT(*) as count FROM apis").get() as { count: number; };
@@ -171,6 +216,8 @@ void Bun.serve({
           SELECT auth, COUNT(*) as count FROM apis GROUP BY auth ORDER BY count DESC
         `).all();
         return jsonResponse({ total: total.count, byCategory, byAuth });
+      } catch (e) {
+        return errorResponse((e as Error).message);
       } finally {
         db.close();
       }
@@ -178,6 +225,7 @@ void Bun.serve({
 
     // API: 필터 옵션 (드롭다운용)
     if (path === "/api/options") {
+      if (req.method !== "GET") return methodNotAllowed();
       const db = getDb();
       try {
         const auth = db.query<{ auth: string; }, []>("SELECT DISTINCT auth FROM apis WHERE auth IS NOT NULL ORDER BY auth").all();
@@ -188,12 +236,14 @@ void Bun.serve({
           cors: cors.map((c) => c.cors),
           integration: integration.map((i) => i.integration),
         });
+      } catch (e) {
+        return errorResponse((e as Error).message);
       } finally {
         db.close();
       }
     }
 
-    return new Response("Not Found", { status: 404 });
+    return notFound();
   },
 });
 

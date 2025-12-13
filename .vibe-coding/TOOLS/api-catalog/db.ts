@@ -3,9 +3,12 @@
  * bun:sqlite 기반 SQLite 데이터베이스
  */
 import { Database } from "bun:sqlite";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 // DB 파일 경로 (스크립트 위치 기준)
-const DB_PATH = new URL("./api-catalog.sqlite", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1");
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const DB_PATH = join(__dirname, "api-catalog.sqlite");
 
 /**
  * 데이터베이스 연결 및 스키마 초기화
@@ -13,11 +16,17 @@ const DB_PATH = new URL("./api-catalog.sqlite", import.meta.url).pathname.replac
 export function initDatabase(): Database {
   const db = new Database(DB_PATH, { create: true });
 
+  // 외래 키 제약조건 활성화 (참조 무결성)
+  db.run("PRAGMA foreign_keys = ON;");
+
   // WAL 모드 활성화 (성능 향상)
-  db.exec("PRAGMA journal_mode = WAL;");
+  db.run("PRAGMA journal_mode = WAL;");
+
+  // busy_timeout 설정 (동시 접근 시 대기, 3초)
+  db.run("PRAGMA busy_timeout = 3000;");
 
   // 카테고리 테이블
-  db.exec(`
+  db.run(`
     CREATE TABLE IF NOT EXISTS categories (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT UNIQUE NOT NULL
@@ -25,7 +34,7 @@ export function initDatabase(): Database {
   `);
 
   // API 테이블
-  db.exec(`
+  db.run(`
     CREATE TABLE IF NOT EXISTS apis (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -42,29 +51,25 @@ export function initDatabase(): Database {
     );
   `);
 
-  // 인덱스 생성
-  db.exec(`
-    CREATE INDEX IF NOT EXISTS idx_apis_category ON apis(category_id);
-    CREATE INDEX IF NOT EXISTS idx_apis_auth ON apis(auth);
-    CREATE INDEX IF NOT EXISTS idx_apis_cors ON apis(cors);
-    CREATE INDEX IF NOT EXISTS idx_apis_rating ON apis(rating);
-  `);
+  // 인덱스 생성 (개별 실행으로 런타임 호환성 보장)
+  db.run("CREATE INDEX IF NOT EXISTS idx_apis_category ON apis(category_id);");
+  db.run("CREATE INDEX IF NOT EXISTS idx_apis_auth ON apis(auth);");
+  db.run("CREATE INDEX IF NOT EXISTS idx_apis_cors ON apis(cors);");
+  db.run("CREATE INDEX IF NOT EXISTS idx_apis_rating ON apis(rating);");
 
   return db;
 }
 
 /**
- * 카테고리 삽입 또는 ID 조회
+ * 카테고리 삽입 또는 ID 조회 (UPSERT 패턴으로 경합 안전)
  */
 export function getOrCreateCategory(db: Database, name: string): number {
-  const existing = db.query<{ id: number; }, [string]>(
-    "SELECT id FROM categories WHERE name = ?"
-  ).get(name);
-
-  if (existing) return existing.id;
-
+  // INSERT ... ON CONFLICT 패턴으로 동시 실행 경합 방지
+  // DO UPDATE는 RETURNING을 사용하기 위한 no-op (실제 값 변경 없음)
   const result = db.query<{ id: number; }, [string]>(
-    "INSERT INTO categories (name) VALUES (?) RETURNING id"
+    `INSERT INTO categories (name) VALUES (?)
+     ON CONFLICT(name) DO UPDATE SET name = excluded.name
+     RETURNING id`
   ).get(name);
 
   if (!result) throw new Error(`카테고리 생성 실패: ${name}`);
@@ -120,8 +125,8 @@ export function insertApis(db: Database, apis: ApiEntry[]): void {
  * 모든 데이터 삭제 (동기화 전 초기화)
  */
 export function clearAllData(db: Database): void {
-  db.exec("DELETE FROM apis;");
-  db.exec("DELETE FROM categories;");
+  db.run("DELETE FROM apis;");
+  db.run("DELETE FROM categories;");
 }
 
 export { DB_PATH };
