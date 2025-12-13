@@ -13,12 +13,12 @@
  * 7. [테마 감지] 초기 요청 시 쿠키를 읽어 다크/라이트 모드를 판별하고 깜빡임 없는 HTML 렌더링 지원
  */
 
+import type { Handle, HandleServerError } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 import { FONT_SIZE_COOKIE, policy, THEME_COOKIE } from '$lib/constants';
 import { baseLocale, extractLocaleFromHeader, isLocale } from '$lib/paraglide/runtime.js';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { checkRateLimit, getClientIP, type RateLimitRule } from '$lib/server/rate-limiter';
-import { type Handle, type HandleServerError } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks';
 
 // ============================================================================
 // 0. Rate Limiting 핸들러
@@ -150,10 +150,10 @@ function create429Response(request: Request, result: RateLimitHeaderFields): Res
 	}
 
 	headers.set('Content-Type', 'application/json; charset=utf-8');
-	return new Response(
-		JSON.stringify({ error: 'rate_limited', retryAfter: result.retryAfter }),
-		{ status: 429, headers }
-	);
+	return new Response(JSON.stringify({ error: 'rate_limited', retryAfter: result.retryAfter }), {
+		status: 429,
+		headers
+	});
 }
 
 const handleRateLimit: Handle = async ({ event, resolve }) => {
@@ -246,13 +246,13 @@ function setAttrOnTag(tag: string, name: string, value: string): string {
 	const i = tag.indexOf(needle);
 	if (i >= 0) {
 		const j = tag.indexOf('"', i + needle.length);
-		if (j >= 0) return tag.slice(0, i) + needle + value + '"' + tag.slice(j + 1);
+		if (j >= 0) return `${tag.slice(0, i)}${needle}${value}"${tag.slice(j + 1)}`;
 		return tag;
 	}
 	// 속성이 없으면 > 앞에 새로 추가
 	const k = tag.lastIndexOf('>');
 	if (k < 0) return tag;
-	return tag.slice(0, k) + ` ${name}="${value}"` + tag.slice(k);
+	return `${tag.slice(0, k)} ${name}="${value}"${tag.slice(k)}`;
 }
 
 /**
@@ -260,11 +260,15 @@ function setAttrOnTag(tag: string, name: string, value: string): string {
  * - 정규식 대신 문자열 파싱으로 예측 가능성 향상
  * - 대소문자 안전 처리 (앞부분만 lowercase 비교로 성능 최적화)
  * - 다른 엘리먼트의 동일 속성에 영향 주지 않음
- * 
+ *
  * 참고: setAttrOnTag는 name="만 찾으므로, SSR 출력에서 속성이
  * 큰따옴표(")를 사용한다는 전제가 있습니다 (SvelteKit 기본 동작).
  */
-function patchHtmlRoot(html: string, theme: string | null, fontSize: string | null | undefined): string {
+function patchHtmlRoot(
+	html: string,
+	theme: string | null,
+	fontSize: string | null | undefined
+): string {
 	// 성능 최적화: 전체 HTML 대신 앞 8KB만 lowercase 처리
 	const HEAD_LIMIT = 8192;
 	const head = html.slice(0, HEAD_LIMIT);
@@ -394,9 +398,12 @@ function appendVary(headers: Headers, value: string): void {
 	// Vary: * 는 모든 변형을 의미하므로 그대로 둠
 	if (existing.trim() === '*') return;
 
-	const parts = existing.split(',').map(s => s.trim()).filter(Boolean);
-	const has = parts.some(p => p.toLowerCase() === value.toLowerCase());
-	if (!has) headers.set('Vary', parts.join(', ') + ', ' + value);
+	const parts = existing
+		.split(',')
+		.map((s) => s.trim())
+		.filter(Boolean);
+	const has = parts.some((p) => p.toLowerCase() === value.toLowerCase());
+	if (!has) headers.set('Vary', `${parts.join(', ')}, ${value}`);
 }
 
 const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
@@ -477,7 +484,7 @@ const handleBodySizeLimit: Handle = async ({ event, resolve }) => {
 			// 로그 인젝션 방지: 줄바꿈 제거 + 양끝 공백 제거
 			const safeRaw = raw.replaceAll('\r', '').replaceAll('\n', '').trim();
 			// 로그 값 길이 제한: 비정상적으로 긴 값이 로그를 오염시키는 것 방지
-			const rawForLog = safeRaw.length > 80 ? safeRaw.slice(0, 80) + '...' : safeRaw;
+			const rawForLog = safeRaw.length > 80 ? `${safeRaw.slice(0, 80)}...` : safeRaw;
 
 			// Content-Length는 순수 10진수 숫자만 허용 (RFC 9110, RFC 9112)
 			// 비정상적으로 긴 값은 정규식 검사 전에 차단 (32자 = 10^32 bytes, 현실 불가)
@@ -542,12 +549,12 @@ function pickHttpMessage(error: unknown): string | undefined {
 	if (!error || typeof error !== 'object') return undefined;
 	if (!('body' in error)) return undefined;
 
-	const body = (error as { body?: unknown; }).body;
+	const body = (error as { body?: unknown }).body;
 	// body가 문자열인 경우 (예: error(401, 'Unauthorized'))
 	if (typeof body === 'string' && body.trim()) return body;
 	// body가 객체인 경우 (예: error(401, { message: 'Unauthorized' }))
 	if (body && typeof body === 'object' && 'message' in body) {
-		const msg = (body as { message?: unknown; }).message;
+		const msg = (body as { message?: unknown }).message;
 		if (typeof msg === 'string' && msg.trim()) return msg;
 	}
 	return undefined;
@@ -559,11 +566,10 @@ export const handleError: HandleServerError = ({ error, event }) => {
 	// 에러 객체에서 status 추출 (Safe Duck Typing + NaN/0 방어)
 	const rawStatus =
 		error && typeof error === 'object' && 'status' in error
-			? (error as { status: unknown; }).status
+			? (error as { status: unknown }).status
 			: 500;
-	const status = typeof rawStatus === 'number' && Number.isFinite(rawStatus) && rawStatus > 0
-		? rawStatus
-		: 500;
+	const status =
+		typeof rawStatus === 'number' && Number.isFinite(rawStatus) && rawStatus > 0 ? rawStatus : 500;
 
 	const clientMsg = pickHttpMessage(error);
 

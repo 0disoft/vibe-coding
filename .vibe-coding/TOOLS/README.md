@@ -138,7 +138,7 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts --self-test
 
 ## lint-patterns.ts
 
-타입스크립트, Svelte, HTML, CSS 코드에서 안티패턴을 감지합니다. `elegant-typescript-patterns.md` 문서 기반.
+타입스크립트, Svelte 코드에서 안티패턴을 감지합니다. `elegant-typescript-patterns.md` 문서 기반.
 
 ### lint-patterns 실행 방법
 
@@ -162,7 +162,6 @@ bun .vibe-coding/TOOLS/lint-patterns.ts --errors-only
 
 | ID | 심각도 | 설명 |
 |----|--------|------|
-| `no-explicit-any` | ❌ 오류 | `: any` 또는 `as any` 사용 |
 | `no-ts-ignore` | ❌ 오류 | `@ts-ignore`, `@ts-nocheck` 주석 |
 | `no-non-null-assertion` | 💡 정보 | `obj!.prop`, `arr![0]`, `fn!()` 형태 |
 | `prefer-isdef-filter` | 💡 정보 | `filter` 내 `!= null` → `isDef` 권장 |
@@ -174,7 +173,6 @@ bun .vibe-coding/TOOLS/lint-patterns.ts --errors-only
 | ID | 심각도 | scope | 설명 |
 |----|--------|-------|------|
 | `no-app-stores` | ⚠️ 경고 | script | `$app/stores` → `$app/state` 마이그레이션 |
-| `no-html-tag` | ⚠️ 경고 | **markup** | `{@html}` 사용 (XSS 위험) |
 | `no-legacy-store` | 💡 정보 | script | `svelte/store` → runes 권장 |
 | `no-on-directive` | 💡 정보 | **markup** | `on:click` → `onclick` 권장 |
 | `no-reactive-statement` | 💡 정보 | script | `$:` → `$derived`, `$effect` 권장 |

@@ -27,18 +27,70 @@ interface LintResult {
 
 // 서버 파일 패턴 (윈도우 경로 대응을 위해 슬래시로 정규화 후 검사)
 const SERVER_FILE_PATTERNS = [
-	/\+page\.server\.(ts|js)$/,
-	/\+layout\.server\.(ts|js)$/,
-	/\+server\.(ts|js)$/,
-	/hooks\.server\.(ts|js)$/,
+	/\+page\.server\.(ts|tsx|js|jsx)$/,
+	/\+layout\.server\.(ts|tsx|js|jsx)$/,
+	/\+server\.(ts|tsx|js|jsx)$/,
+	/hooks\.server\.(ts|tsx|js|jsx)$/,
 	/\/server\//,
-	/\.server\.(ts|js)$/ // src/lib/whatever.server.ts 형태
+	/\.server\.(ts|tsx|js|jsx)$/ // src/lib/whatever.server.ts 형태
 ];
 
 function isServerFile(filePath: string): boolean {
 	// 윈도우 역슬래시를 슬래시로 정규화
 	const normalized = filePath.replace(/\\/g, '/');
 	return SERVER_FILE_PATTERNS.some((p) => p.test(normalized));
+}
+
+// DEV 가드 파싱 헬퍼: if 조건 닫힘 위치 찾기
+function findIfConditionEnd(line: string): number {
+	// \bif\b로 단어 경계 매칭 (diff 같은 단어에 걸리는 문제 방지)
+	const m = /\bif\b/.exec(line);
+	if (!m) return -1;
+
+	const ifPos = m.index;
+	const open = line.indexOf('(', ifPos);
+	if (open === -1) return -1;
+
+	let depth = 0;
+	for (let i = open; i < line.length; i++) {
+		const c = line[i];
+		if (c === '(') depth++;
+		else if (c === ')') {
+			depth--;
+			if (depth === 0) return i;
+		}
+	}
+	return -1;
+}
+
+// DEV 가드 파싱 헬퍼: 닫히는 중괄호 위치 찾기
+function findMatchingBrace(line: string, openIdx: number): number {
+	let depth = 0;
+	for (let i = openIdx; i < line.length; i++) {
+		const c = line[i];
+		if (c === '{') depth++;
+		else if (c === '}') {
+			depth--;
+			if (depth === 0) return i;
+		}
+	}
+	return -1;
+}
+
+// DEV 가드 파싱 헬퍼: if 조건 내부에 DEV가 있는지 확인 (중첩 괄호 지원)
+function isDevIfLine(line: string): boolean {
+	const m = /\bif\b/.exec(line);
+	if (!m) return false;
+
+	const open = line.indexOf('(', m.index);
+	if (open === -1) return false;
+
+	const end = findIfConditionEnd(line);
+	if (end === -1) return false;
+
+	// 조건 범위 내에서 DEV 확인 (중첩 괄호 문제 해결)
+	const cond = line.slice(open + 1, end);
+	return cond.includes('import.meta.env.DEV');
 }
 
 const RULES: LintRule[] = [
@@ -68,7 +120,8 @@ const RULES: LintRule[] = [
 		id: 'prefer-isdef-filter',
 		name: 'filter에서 isDef 타입 가드 권장',
 		description: 'filter 내 != null 패턴 감지',
-		pattern: /\.filter\s*\([^)]*(?:!=\s*null|!==\s*null)/g,
+		// [\s\S]*? 로 괄호 안 내용 느슨하게 매칭 (x) => x != null 스타일도 탐지
+		pattern: /\.filter\s*\([\s\S]*?(?:!=\s*null|!==\s*null)/g,
 		suggestion: 'isDef 타입 가드 함수로 교체하면 타입 추론 향상',
 		severity: 'info',
 		scope: 'script'
@@ -154,17 +207,18 @@ const RULES: LintRule[] = [
 	}
 ];
 
-// 파일 확장자 필터
-const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte', '.css', '.html'];
+// 파일 확장자 필터 (css, html은 js 모드로 처리하면 오탐 발생하여 제외)
+const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte'];
 
-// 무시할 경로 패턴 (경로 세그먼트 시작/끝 모두 매칭)
+// 무시할 경로 패턴 (정규화된 경로 / 기준 매칭)
 const IGNORE_PATTERNS = [
-	/(?:^|[\/\\])node_modules(?:[\/\\]|$)/,
-	/(?:^|[\/\\])\.svelte-kit(?:[\/\\]|$)/,
-	/(?:^|[\/\\])dist(?:[\/\\]|$)/,
-	/(?:^|[\/\\])build(?:[\/\\]|$)/,
-	/(?:^|[\/\\])\.git(?:[\/\\]|$)/,
-	/(?:^|[\/\\])scripts(?:[\/\\]|$)/
+	/(?:^|\/)node_modules(?:\/|$)/,
+	/(?:^|\/)\.svelte-kit(?:\/|$)/,
+	/(?:^|\/)dist(?:\/|$)/,
+	/(?:^|\/)build(?:\/|$)/,
+	/(?:^|\/)\.git(?:\/|$)/,
+	/(?:^|\/)scripts(?:\/|$)/,
+	/(?:^|\/)\.vibe-coding(?:\/|$)/
 ];
 
 // Svelte 파일에서 script/style 블록 추출 (시작 라인 오프셋 포함)
@@ -399,34 +453,76 @@ function lintLines(
 		// ... 나머지 로직 (DEV 블록 등) 유지 ...
 
 		// DEV 블록 추적 (if, {, } 단위로 깊이 계산)
-		const hasDevGuard = /import\.meta\.env\.DEV/.test(line);
+		// devConditionThisLine: 블록 깊이 추적용 (중첩 괄호 내 DEV 포함 확인)
+		const ifDevThisLine = isDevIfLine(line);
+		const devConditionThisLine = ifDevThisLine;
+
+		// devGuardsConsoleInline: console 스킵용 (블록/세미콜론 범위 기반)
+		// - console이 실제로 DEV 블록 내부에 있는지 확인
+		// - if (DEV) foo(); console.log() 같은 멀티 문장 오탐 방지
+		const consoleIdx = line.indexOf('console.');
+		const devIdx = line.indexOf('import.meta.env.DEV');
+
+		let devGuardsConsoleInline = false;
+
+		if (consoleIdx !== -1 && devIdx !== -1 && devIdx < consoleIdx) {
+			// DEV와 console 사이에 세미콜론이 있으면 다른 문장으로 간주
+			const semi = line.indexOf(';', devIdx);
+			const semiBetweenDevAndConsole = semi !== -1 && semi < consoleIdx;
+
+			if (!semiBetweenDevAndConsole) {
+				// && 형태: DEV && 바로 console만 인정 (콤마/OR 연산자 오탐 방지)
+				const devAndConsoleDirect = /import\.meta\.env\.DEV\s*&&\s*(?:\(\s*)?console\./.test(line);
+
+				if (devAndConsoleDirect) {
+					devGuardsConsoleInline = true;
+				} else if (ifDevThisLine) {
+					// if 형태: 중괄호 블록 또는 단일 문 확인
+					const condEnd = findIfConditionEnd(line);
+					const braceOpen = condEnd === -1 ? -1 : line.indexOf('{', condEnd + 1);
+
+					if (braceOpen !== -1 && braceOpen < consoleIdx) {
+						// 중괄호 블록: console이 {} 내부에 있는지
+						const braceClose = findMatchingBrace(line, braceOpen);
+						devGuardsConsoleInline = braceClose !== -1 && consoleIdx < braceClose;
+					} else if (condEnd !== -1) {
+						// 중괄호 없는 단일 문: 첫 세미콜론 전까지
+						const semiAfterCond = line.indexOf(';', condEnd + 1);
+						devGuardsConsoleInline = semiAfterCond === -1 || consoleIdx < semiAfterCond;
+					}
+				}
+			}
+		}
+
+		// "if (DEV)만 있고 뒤에 아무 것도 없는 줄"에서만 pending 활성화
+		const guardOnly = /^\s*if\s*\(\s*import\.meta\.env\.DEV\s*\)\s*$/.test(line);
 		const openBraces = (line.match(/{/g) || []).length;
 		const closeBraces = (line.match(/}/g) || []).length;
 
 		const pending = devGuardPending;
+		devGuardPending = false;
 
-		if (hasDevGuard && devBlockDepth === 0) {
+		if (devConditionThisLine && devBlockDepth === 0) {
 			const diff = openBraces - closeBraces;
-			if (diff > 0) devBlockDepth = diff;
-			else devGuardPending = true;
-		} else if (pending) {
-			const diff = openBraces - closeBraces;
-			// 다음 줄이 { 로 블록을 여는 스타일
-			if (openBraces > 0) {
-				devBlockDepth = Math.max(0, diff);
+			if (diff > 0) {
+				devBlockDepth = diff;
+			} else if (guardOnly) {
+				// 한 줄 가드가 아니라 순수 if (DEV)만 있을 때만 pending
+				devGuardPending = true;
 			}
-			// 블록을 열든 말든, pending은 이 줄에서 소비
-			devGuardPending = false;
+		} else if (pending && devBlockDepth === 0) {
+			const diff = openBraces - closeBraces;
+			if (openBraces > 0 && diff > 0) devBlockDepth = diff;
 		} else if (devBlockDepth > 0) {
 			devBlockDepth += openBraces - closeBraces;
 			if (devBlockDepth < 0) devBlockDepth = 0;
 		}
 
 		for (const rule of rules) {
-			// DEV 블록 내부이거나, 같은 줄에 DEV 가드가 있으면 console 규칙 건너뜀
+			// DEV 블록 내부, pending, 또는 DEV가 console을 직접 감싸는 경우만 스킵
 			if (
 				rule.id === 'no-console-outside-dev' &&
-				(devBlockDepth > 0 || hasDevGuard || pending)
+				(devBlockDepth > 0 || devGuardsConsoleInline || pending)
 			)
 				continue;
 

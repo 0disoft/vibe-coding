@@ -36,6 +36,9 @@
     ├── routes/                    # SvelteKit 페이지 라우트
     └── lib/
         ├── index.ts
+        ├── assets/                # 정적 에셋 (이미지, 아이콘 등)
+        ├── i18n/                  # i18n 테스트 및 유틸리티
+        │   └── messages.test.ts
         ├── server/                # 서버 전용 코드 (모노레포 전환 시 apps/api로 이동)
         │   ├── index.ts
         │   └── services/          # 비즈니스 서비스 레이어
@@ -156,12 +159,14 @@
 | 파일                                              | 역할                                                           |
 | ------------------------------------------------- | -------------------------------------------------------------- |
 | `index.ts`                                        | $lib 배럴 export (스토어, 상수 통합)                           |
+| `assets/`                                         | 정적 에셋 폴더 (이미지, 아이콘 등)                             |
+| `i18n/messages.test.ts`                           | i18n 메시지 테스트                                             |
 | `server/index.ts`                                 | 서버 전용 코드 진입점 (모노레포 전환 시 apps/api로 이동)       |
 | `server/services/`                                | 비즈니스 서비스 레이어 (auth, user, payment 등)                |
 | `shared/index.ts`                                 | 프론트/백 공유 코드 진입점 (모노레포 시 packages/shared로 이동)|
 | `shared/types/`                                   | 공용 타입 정의 (ApiResponse, User 등)                          |
 | `shared/utils/`                                   | 공용 유틸리티 함수 (format, validate 등)                       |
-| `shared/schemas/`                                 | API 스키마 (TypeBox 검증용)                                |
+| `shared/schemas/`                                 | API 스키마 (TypeBox 검증용)                                    |
 | `constants/index.ts`                              | 상수 배럴 export                                               |
 | `constants/cookies.ts`                            | 쿠키 키 상수 (THEME_COOKIE, FONT_SIZE_COOKIE)                  |
 | `constants/site.ts`                               | 사이트 기본 정보 (name, description, email, links)             |

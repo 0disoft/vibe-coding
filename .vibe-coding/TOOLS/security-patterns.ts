@@ -64,7 +64,7 @@ const RULES: SecurityRule[] = [
 		name: 'innerHTML 사용 (XSS 위험)',
 		category: 'XSS',
 		description: 'innerHTML, outerHTML 사용 감지',
-		pattern: /\.(innerHTML|outerHTML)\s*=/g,
+		pattern: /\.(innerHTML|outerHTML)\s*(?:\+?=)/g,
 		suggestion: 'textContent 사용 권장. HTML 필요 시 DOMPurify로 정화',
 		severity: 'error',
 		scope: 'script',
@@ -91,7 +91,7 @@ const RULES: SecurityRule[] = [
 		// 패턴을 매칭되지 않게 설정하거나, lintContent에서 직접 로직 구현
 		pattern: /$^/g, // 매칭되지 않음 (더미)
 		check: () => false,
-		suggestion: 'rel="noopener noreferrer" 추가 필요',
+		suggestion: 'rel="noopener noreferrer" 추가 권장',
 		severity: 'warning',
 		scope: 'markup',
 		references: ['https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#security_and_privacy']
@@ -153,7 +153,8 @@ const RULES: SecurityRule[] = [
 		name: '__proto__ 접근 (프로토타입 오염)',
 		category: 'Prototype Pollution',
 		description: '__proto__ 속성 접근 감지',
-		pattern: /\["?__proto__"?\]/g,
+		// 공백 허용 + 따옴표 필수 + 열림/닫힘 일치
+		pattern: /\[\s*(['"`])__proto__\1\s*\]/g,
 		suggestion: '입력에서 __proto__, prototype, constructor 키 필터링 필수',
 		severity: 'error',
 		scope: 'script',
@@ -162,11 +163,22 @@ const RULES: SecurityRule[] = [
 		]
 	},
 	{
+		id: 'prototype-pollution-proto-dot',
+		name: '__proto__ 점 표기 접근',
+		category: 'Prototype Pollution',
+		description: '__proto__ 점 표기 접근 감지',
+		pattern: /\.__proto__\b/g,
+		suggestion: '입력에서 __proto__, prototype, constructor 키 필터링 필수',
+		severity: 'warning',
+		scope: 'script'
+	},
+	{
 		id: 'prototype-pollution-constructor',
 		name: 'constructor 동적 접근',
 		category: 'Prototype Pollution',
 		description: 'constructor 속성 동적 접근 감지',
-		pattern: /\["?constructor"?\]/g,
+		// 공백 허용 + 따옴표 필수 + 열림/닫힘 일치
+		pattern: /\[\s*(['"`])constructor\1\s*\]/g,
 		suggestion: 'Object.create(null) 또는 Map 사용 권장',
 		severity: 'warning',
 		scope: 'script'
@@ -335,7 +347,8 @@ const RULES: SecurityRule[] = [
 		name: 'bunx 버전 명시 없이 실행',
 		category: 'Bun',
 		description: 'bunx 패키지 실행 시 버전 미명시',
-		pattern: /bunx\s+(?!.*@[\d.])[a-z][\w-]*/gi,
+		// tsx, eslint 등은 버전 명시 없이 자주 사용되므로 제외
+		pattern: /bunx\s+(?!.*@[\d.])(?!(?:tsx|eslint|remix|vite|wrangler|playwright|biome)\b)(?:@[\w-]+\/)?[\w-]+/gi,
 		suggestion: 'typosquatting 위험. bunx package@version 형태로 버전 명시',
 		severity: 'info',
 		scope: 'script',
@@ -401,7 +414,10 @@ const IGNORE_PATTERNS = [
 	/(?:^|\/)dist(?:\/|$)/,
 	/(?:^|\/)build(?:\/|$)/,
 	/(?:^|\/)\.git(?:\/|$)/,
-	/(?:^|\/)scripts(?:\/|$)/
+	/(?:^|\/)scripts(?:\/|$)/,
+	/(?:^|\/)\.vibe-coding(?:\/|$)/,
+	// 자체 리포트 폴더만 무시 (다른 reports 폴더는 스캔)
+	/\.vibe-coding\/TOOLS\/reports(?:\/|$)/
 ];
 
 // Svelte script/style 블록 추출
@@ -472,20 +488,32 @@ async function walk(dir: string): Promise<string[]> {
  * - css: /* 제거
  * - markup: <!-- --> 제거 (//, /* 는 무시)
  */
+interface ParsingState {
+	inBlock: boolean;
+	inTemplate: boolean;
+}
+
+/**
+ * 모드별 주석 제거 및 라인 정제
+ * - js: 문자열 고려하여 // 및 /* 내부 주석 제거 (블록, 템플릿 리터럴 상태 유지 지원)
+ * - css: /* 제거
+ * - markup: <!-- --> 제거 (//, /* 는 무시)
+ */
 function stripComments(
 	line: string,
 	mode: CommentMode,
-	inBlock: boolean
-): { line: string; inBlock: boolean; } {
+	state: ParsingState
+): { line: string; state: ParsingState; } {
 	let result = '';
 	let i = 0;
 	const len = line.length;
-	let currentInBlock = inBlock;
 
-	// JS String state
+	// Copy state to local variables
+	let { inBlock: currentInBlock, inTemplate } = state;
+
+	// JS String state (Line-local)
 	let inSingle = false;
 	let inDouble = false;
-	let inTemplate = false;
 	let escaped = false;
 	let inRegex = false;
 	let inCharClass = false; // Regex 문자 클래스 [...] 내부 여부
@@ -496,12 +524,17 @@ function stripComments(
 			const closeIdx = line.indexOf(closeMarker, i);
 
 			if (closeIdx === -1) {
-				return { line: result, inBlock: true };
+				// 끝까지 전부 주석이므로 남은 길이만큼 공백 보존
+				result += ' '.repeat(len - i);
+				return { line: result, state: { inBlock: true, inTemplate } };
 			}
+
+			// 주석 제거된 길이만큼 공백으로 채워 위치 보존
+			const removedLen = closeIdx + closeMarker.length - i;
+			result += ' '.repeat(removedLen);
 
 			i = closeIdx + closeMarker.length;
 			currentInBlock = false;
-			result += ` ${' '.repeat(closeMarker.length - 1)}`; // 주석 길이만큼 공백 유지 (위치 보존)
 			continue;
 		}
 
@@ -534,29 +567,15 @@ function stripComments(
 						else if (char === '/') inRegex = false; // 정규식 종료
 					}
 				} else {
-					// 정규식 시작 조건 체크 (간이 파서)
-					// 이전 중요 토큰이 연산자나 키워드라면 / 는 정규식 시작일 확률 높음
-					// 여기서는 간단히: 바로 앞이 / 가 아니고, 문자열 밖일 때
-					// (완벽하지 않으므로, 주석 제거를 위해 보수적으로 접근)
-
-					// 단순히 문자열 밖에서 / 가 나오면... 
-					// 그런데 나눗셈일 수도 있음 (ex: 1 / 2)
-					// 하지만 나눗셈 뒤에 바로 /, * 가 오는 경우는 드뭄 (1 / / 2 -> 문법 에러)
-					// 따라서 단순히 /.../ 패턴을 찾기보다, 
-					// "주석이 아닌 슬래시"가 나왔을 때, 그게 주석 시작( //, /* )이 아니면
-					// 정규식 시작일 가능성을 열어둠.
-					// 단, 단순 주석 제거기이므로 "정규식 내부의 //"만 보호하면 됨.
-
-					// 기존 로직 강화: 정규식 리터럴 추론
-					// (이번 개선에서는 명확한 토큰 파싱 없이 "정규식처럼 보이는" 구간을 보호)
-					// 피드백 제안: inRegex 상태 도입
-					// 대충 괄호, 연산자 뒤의 / 는 정규식 시작
+					// 정규식 시작 조건 체크
 					if (char === '/' && next !== '/' && next !== '*') {
-						// 앞이 문자나 숫자가 아니면 정규식일 가능성 높음
-						// 예: return /abc/, ( /abc/ ),  =/abc/
-						// 반례: num / 2
-						const prevNonWs = line.slice(0, i).trim().slice(-1);
-						if (!/[\w\d)]/.test(prevNonWs)) { // 닫는 괄호나 숫자, 문자 뒤가 아니면
+						const prevTrim = line.slice(0, i).trim();
+						const prevNonWs = prevTrim.slice(-1);
+
+						// 정규식 시작 유도 키워드
+						const isKeyword = /\b(return|throw|case|typeof|instanceof|in|of)$/.test(prevTrim);
+
+						if (isKeyword || !/[\w\d)\]}]/.test(prevNonWs)) {
 							inRegex = true;
 						}
 					}
@@ -565,15 +584,13 @@ function stripComments(
 
 			// 4. 주석 시작 체크 (문자열, 정규식 내부가 아닐 때만)
 			if (!escaped && !inSingle && !inDouble && !inTemplate && !inRegex) {
-				// 정규식 리터럴 오탐 방지: 바로 앞이 역슬래시인 경우 (위에서 처리됨)
-				// 추가: 정규식 내부가 아님을 확인했으므로 안전
-
 				// 1. 한 줄 주석 (//)
 				if (char === '/' && next === '/') {
 					break;
 				}
 				// 2. 블록 주석 (/*)
 				if (char === '/' && next === '*') {
+					result += '  '; // "/*" 길이 보존
 					currentInBlock = true;
 					i += 2;
 					continue;
@@ -602,20 +619,19 @@ function stripComments(
 			// 문자열 밖에서만 블록 주석 시작 체크
 			if (!inSingle && !inDouble) {
 				if (char === '/' && next === '*') {
+					result += '  '; // "/*" 길이 보존
 					currentInBlock = true;
 					i += 2;
 					continue;
 				}
 			}
 		} else {
-			// Markup 모드 등 (기존 로직: 1. // 무시, 2. 블록 주석 시작)
-			// 문자열 밖인지 체크할 필요 없음 (HTML 주석은 문자열 안에서도 유효할 수 있지만, 보통은 태그 밖)
-			// 여기서는 단순히 <!-- 만 체크 (기존 로직 유지)
-
+			// Markup 모드
 			const isBlockStart =
 				(mode === 'markup' && char === '<' && next === '!' && line.slice(i, i + 4) === '<!--');
 
 			if (isBlockStart) {
+				result += '    '; // "<!--" 길이 보존
 				currentInBlock = true;
 				i += 4;
 				continue;
@@ -626,7 +642,7 @@ function stripComments(
 		i++;
 	}
 
-	return { line: result, inBlock: currentInBlock };
+	return { line: result, state: { inBlock: currentInBlock, inTemplate } };
 }
 
 /**
@@ -648,12 +664,18 @@ function lintLines(
 	commentMode: CommentMode = 'js'
 ): SecurityResult[] {
 	const results: SecurityResult[] = [];
-	let inBlockComment = false;
+	let parsingState: ParsingState = { inBlock: false, inTemplate: false };
 
 	for (let lineNum = 0; lineNum < lines.length; lineNum++) {
 		const actualLine = lineNum + lineOffset;
 
 		if (skipLineRanges.some((r) => actualLine >= r.start && actualLine < r.end)) {
+			// 스킵 구간이어도 상태 업데이트를 위해 파싱은 수행
+			const stripped = stripComments(lines[lineNum], commentMode, parsingState);
+			parsingState = stripped.state;
+			// line-local state인 inTemplate이 true면 다음 줄도 template 내부로 시작됨
+			// 단, commentMode가 js가 아니면 inTemplate은 의미 없음
+			if (commentMode !== 'js') parsingState.inTemplate = false;
 			continue;
 		}
 
@@ -664,8 +686,12 @@ function lintLines(
 		const suppressed = extractSuppressedRuleIds(rawLine);
 
 		// 통합 주석 처리
-		const stripped = stripComments(line, commentMode, inBlockComment);
-		inBlockComment = stripped.inBlock;
+		const stripped = stripComments(line, commentMode, parsingState);
+		parsingState = stripped.state;
+		// line-local state인 inTemplate이 true면 다음 줄도 template 내부로 시작됨
+		// 단, commentMode가 js가 아니면 inTemplate은 의미 없음
+		if (commentMode !== 'js') parsingState.inTemplate = false;
+
 		line = stripped.line;
 
 		// 빈 줄이면 건너뜀
@@ -835,17 +861,46 @@ function lintContent(content: string, filePath: string): SecurityResult[] {
 
 		// [NEW] Multi-line Markup Check (예: xss-target-blank)
 		// 줄 단위가 아니라 전체 컨텐츠에서 태그를 찾음
-		// 단순화를 위해 원본 컨텐츠에서 검색 (주석 포함될 수 있으나, HTML 태그 내 주석은 드뭄)
+		// script/style 내부 내용은 공백으로 치환하여 오탐 방지 (줄바꿈은 유지)
+		const maskedContent = content.replace(
+			/<script[^>]*>([\s\S]*?)<\/script>/gi,
+			(match, body) => match.replace(body, body.replace(/[^\n]/g, ' '))
+		).replace(
+			/<style[^>]*>([\s\S]*?)<\/style>/gi,
+			(match, body) => match.replace(body, body.replace(/[^\n]/g, ' '))
+		);
+
 		const markupRulesForMultiLine = RULES.filter(r => r.id === 'xss-target-blank');
+		const allLines = content.split('\n');
+
 		for (const rule of markupRulesForMultiLine) {
-			// <a> 태그 전체 매칭 (멀티라인 포함)
+			// <a> 태그 전체 매칭 (멀티라인 포함) - maskedContent 사용
 			const pattern = /<a\s+[^>]*target=["']_blank["'][^>]*>/gis;
 			let match: RegExpExecArray | null;
 			// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-			while ((match = pattern.exec(content)) !== null) {
+			while ((match = pattern.exec(maskedContent)) !== null) {
 				const fullMatch = match[0];
 
-				// rel 확인
+				// 매치된 구간의 줄 범위 계산
+				const startPos = indexToLineCol(content, match.index);
+				const endPos = indexToLineCol(content, match.index + fullMatch.length);
+				const startLine = startPos.line;
+				const endLine = endPos.line;
+
+				// Suppression Check: 매치 구간 내 어떤 줄이라도 security-ignore가 있으면 스킵
+				// + 바로 윗줄도 확인 (표준적인 주석 위치)
+				let suppressed = false;
+				for (let l = startLine - 2; l < endLine; l++) { // startLine-2 captures the line before
+					if (l >= 0 && l < allLines.length) {
+						if (extractSuppressedRuleIds(allLines[l]).has(rule.id)) {
+							suppressed = true;
+							break;
+						}
+					}
+				}
+				if (suppressed) continue;
+
+				// rel 확인 (원본 매치 문자열 사용 - maskedContent에서 태그 자체는 유지됨)
 				const relMatch = fullMatch.match(/rel=["']([^"']*)["']/i); // case insensitive checking
 				let safe = false;
 				if (relMatch) {
@@ -856,16 +911,15 @@ function lintContent(content: string, filePath: string): SecurityResult[] {
 				}
 
 				if (!safe) {
-					// 줄번호 계산
-					const before = content.slice(0, match.index);
-					const lineNum = before.split('\n').length;
+					const compact = fullMatch.replace(/\n/g, ' ');
+					const preview = compact.length > 200 ? `${compact.slice(0, 200)}...` : compact;
 
 					results.push({
 						file: filePath,
-						line: lineNum,
-						column: 1, // 정확한 컬럼 계산은 복잡하므로 1로 통일
-						rule: rule, // RULE 정의에 있는 더미 패턴 대신 실제 리포팅용 객체 필요할 수 있음
-						match: fullMatch.replace(/\n/g, ' ') // 한 줄로 요약해서 보여줌
+						line: startLine,
+						column: startPos.column,
+						rule: rule,
+						match: preview
 					});
 				}
 			}
@@ -908,9 +962,22 @@ function formatResults(results: SecurityResult[], basePath: string): string {
 		return lines.join('\n');
 	}
 
+	// 결과 정렬 (카테고리 → 상대경로 → 라인 → 컬럼)
+	// 상대 경로 기준 정렬로 실행 위치 무관한 일관된 결과 보장
+	const toRelPath = (file: string) => relative(basePath, file).replace(/\\/g, '/');
+	const sorted = [...results].sort((a, b) => {
+		const catCmp = a.rule.category.localeCompare(b.rule.category);
+		if (catCmp !== 0) return catCmp;
+		const fileCmp = toRelPath(a.file).localeCompare(toRelPath(b.file));
+		if (fileCmp !== 0) return fileCmp;
+		const lineCmp = a.line - b.line;
+		if (lineCmp !== 0) return lineCmp;
+		return a.column - b.column;
+	});
+
 	// 카테고리별로 그룹화
 	const byCategory = new Map<string, SecurityResult[]>();
-	for (const r of results) {
+	for (const r of sorted) {
 		const cat = r.rule.category;
 		if (!byCategory.has(cat)) byCategory.set(cat, []);
 		byCategory.get(cat)?.push(r);
@@ -921,10 +988,10 @@ function formatResults(results: SecurityResult[], basePath: string): string {
 	for (const [category, catResults] of byCategory) {
 		lines.push(`\n🔐 [${category}]`);
 
-		// 파일별로 하위 그룹화
+		// 파일별로 하위 그룹화 (슬래시 통일된 상대경로 사용)
 		const byFile = new Map<string, SecurityResult[]>();
 		for (const r of catResults) {
-			const rel = relative(basePath, r.file);
+			const rel = toRelPath(r.file);
 			if (!byFile.has(rel)) byFile.set(rel, []);
 			byFile.get(rel)?.push(r);
 		}
@@ -937,7 +1004,8 @@ function formatResults(results: SecurityResult[], basePath: string): string {
 				lines.push(`    ${icon} L${r.line}:${r.column} [${r.rule.id}]`);
 				lines.push(`       ${r.rule.name}: "${r.match.trim()}"`);
 				lines.push(`       → ${r.rule.suggestion}`);
-				counts[r.rule.severity]++;
+				const sev = r.rule.severity as keyof typeof counts;
+				counts[sev]++;
 			}
 		}
 	}
@@ -970,7 +1038,10 @@ async function main() {
 			}
 			files = [TARGET];
 		} else {
-			files = await walk(TARGET);
+			// 경로 구분자 정규화 후 정렬 (OS 무관 일관된 순서)
+			files = (await walk(TARGET)).sort((a, b) =>
+				a.replace(/\\/g, '/').localeCompare(b.replace(/\\/g, '/'))
+			);
 		}
 
 		console.log(`📁 ${files.length}개 파일 발견\n`);
@@ -990,6 +1061,12 @@ async function main() {
 		const report = formatResults(allResults, basePath);
 		console.log(report);
 
+		// 에러가 있으면 종료 코드 1 설정 (CI 실패 유도)
+		const errorCount = allResults.filter((r) => r.rule.severity === 'error').length;
+		if (errorCount > 0) {
+			process.exitCode = 1;
+		}
+
 		// 리포트 저장 (폴더 자동 생성)
 		if (!NO_REPORT) {
 			const scriptDir = dirname(fileURLToPath(import.meta.url));
@@ -1003,6 +1080,7 @@ async function main() {
 		}
 	} catch (error) {
 		console.error('Error:', error);
+		process.exit(1);
 	}
 }
 
