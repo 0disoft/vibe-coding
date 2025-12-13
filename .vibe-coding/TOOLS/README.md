@@ -203,6 +203,9 @@ bun .vibe-coding/TOOLS/security-patterns.ts src/routes
 
 # 오류만 표시
 bun .vibe-coding/TOOLS/security-patterns.ts --errors-only
+
+# 리포트 파일 생성 끄기
+bun .vibe-coding/TOOLS/security-patterns.ts --no-report
 ```
 
 ### 탐지 카테고리
