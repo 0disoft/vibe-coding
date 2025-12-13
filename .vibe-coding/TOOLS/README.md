@@ -8,6 +8,7 @@
 |------|------|-----------|
 | [api-catalog](#api-catalog) | Public API 카탈로그 뷰어 | `bun .vibe-coding/TOOLS/api-catalog/server.ts` |
 | [a11y-ux-patterns.ts](#a11y-ux-patternsts) | 접근성 및 UX 패턴 검사 | `bun .vibe-coding/TOOLS/a11y-ux-patterns.ts` |
+| [file-size-patterns.ts](#file-size-patternsts) | 파일 크기 및 복잡도 검사 | `bun .vibe-coding/TOOLS/file-size-patterns.ts` |
 | [fix-bold-issues.ts](#fix-bold-issuests) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
 | [lint-patterns.ts](#lint-patternsts) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
 | [security-patterns.ts](#security-patternsts) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
@@ -64,6 +65,56 @@ bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --self-test
 |----|--------|------|
 | `mobile-no-zoom` | ❌ 오류 | `user-scalable=no`, `maximum-scale=1` 금지 |
 | `mobile-tap-highlight-global` | ⚠️ 경고 | 전역 tap-highlight 제거 비권장 |
+
+---
+
+## file-size-patterns.ts
+
+파일 크기 및 복잡도를 검사합니다. `AGENTS.md`의 '파일 크기 및 분리 기준'에 따라 분석합니다.
+
+### file-size-patterns 실행 방법
+
+```bash
+# 기본: src 전체 스캔
+bun .vibe-coding/TOOLS/file-size-patterns.ts
+
+# 특정 디렉토리
+bun .vibe-coding/TOOLS/file-size-patterns.ts src/lib
+
+# 모든 이슈 파일 표시 (기본: 상위 20개)
+bun .vibe-coding/TOOLS/file-size-patterns.ts --all
+
+# JSON 형식 출력
+bun .vibe-coding/TOOLS/file-size-patterns.ts --json
+
+# 리포트 파일 생성 생략
+bun .vibe-coding/TOOLS/file-size-patterns.ts --no-report
+```
+
+### file-size-patterns 검사 기준
+
+| 줄 수 | 상태 | 행동 |
+|-------|------|------|
+| ~150 | 🟡 경고 | 책임이 2개 이상 섞였는지 점검 |
+| ~300 | 🟠 권장 | 모듈 경계를 잡고 파일 분리 |
+| ~600 | 🔴 필수 | 리뷰·테스트 비용 급증, 즉시 분리 |
+| 1000+ | 💀 리스크 | 진입 파일은 조립만 남기고 로직 이동 |
+
+### file-size-patterns 추가 검사
+
+- **import 개수**: 20개 초과 시 경고
+- **진입 파일**: `hooks.server.ts`, `vite.config.ts` 등은 더 엄격한 기준 (50~150줄 목표)
+- **최적화**: 4KB 이하 파일은 줄 수 검사 생략 (150줄 미달 확실)
+
+### file-size-patterns 리포트 저장
+
+이슈가 발견되면 `.vibe-coding/TOOLS/reports/file-size-report-{timestamp}.txt`에 자동 저장됩니다.
+`--no-report` 옵션으로 생략할 수 있습니다.
+
+### file-size-patterns 종료 코드
+
+- `0`: 모든 파일이 기준 충족 또는 경고/권장 수준만 존재
+- `1`: 필수(🔴) 또는 리스크(💀) 수준 파일 존재
 
 ---
 
