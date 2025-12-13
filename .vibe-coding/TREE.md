@@ -13,6 +13,9 @@
 ├── uno.config.ts
 ├── playwright.config.ts
 ├── bun.lock
+├── .vibe-coding/
+│   └── PUBLIC_APIS/
+│       └── README.md               # Public API 카탈로그 (하위 구조는 이 파일 참조)
 ├── e2e/                            # E2E 테스트 (Playwright)
 ├── messages/
 ├── project.inlang/
@@ -112,6 +115,7 @@
 | `stack.manifest.toml`  | 기술 스택 매니페스트                                       |
 | `INSIGHTS/`            | 전략적 인사이트, 아키텍처 결정, 레퍼런스 문서 모음         |
 | `KNOWLEDGE/`           | 기술 지식 베이스 (언어별 가이드 등)                        |
+| `PUBLIC_APIS/`         | Public API 카탈로그(Provider별 연동 메모/레시피)           |
 | `TROUBLE/`             | 문제 해결 기록 (SOLVED.md 등)                              |
 | `SOS/`                 | 긴급 이슈 및 디버깅 로그                                   |
 | `TOOLS/README.md`      | 자동화 스크립트 사용법 문서 (개별 도구는 이 파일 참조)     |
