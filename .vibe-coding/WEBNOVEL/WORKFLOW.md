@@ -53,20 +53,23 @@ flowchart TD
 
 - **AI가 추천하는 4가지**: 해당 부의 핵심 줄거리 4개 버전
 - 예: "1부에서 주인공이 각성하는 과정" 4가지 시나리오
-- **기록 위치**: `EPISODES.md` → N부 줄거리 섹션
+- **제안 저장**: `proposals/plot-NNN-options.md`
+- **선택 기록**: `EPISODES.md` → N부 줄거리 섹션
 
 ### 3단계: N부 등장요소
 
 - **AI가 추천하는 4가지**: 해당 부에 등장할 캐릭터/사물/현상 조합
 - 예: "주인공, 히로인, 멘토, 전설의 검" 등 4가지 조합
-- **기록 위치**: `EPISODES.md` → N부 등장요소 표
+- **제안 저장**: `proposals/elements-NNN-options.md`
+- **선택 기록**: `EPISODES.md` → N부 등장요소 표
 
 ### 4단계: 등장요소 상세화
 
+- **파일명 규칙**: 소문자 ASCII + 하이픈, 공백/언더스코어 금지, 중복 시 접미사(-2)
 - **설정 파일 위치**:
-  - 캐릭터: `characters/캐릭터명.md`
-  - 사물: `objects/사물명.md`
-  - 현상: `phenomena/현상명.md`
+  - 캐릭터: `characters/han-seo-jun.md` (표시명: 한서준)
+  - 사물: `objects/ashen-sword.md` (표시명: 재의 검)
+  - 현상: `phenomena/mana-overflow.md` (표시명: 마나폭주)
 - **AI가 제안하는 4가지 버전**: 해당 요소의 상세 설정 4개 버전
   - 예: 주인공의 성격, 외모, 말투, 배경 등을 4가지 다른 스타일로 제안
 - 작가가 선택하면 해당 폴더에 개별 파일로 저장

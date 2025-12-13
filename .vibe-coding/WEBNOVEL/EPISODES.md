@@ -15,9 +15,9 @@
 
 | 유형 | 이름 | 파일 |
 |------|------|------|
-| 캐릭터 | (작성 예정) | `characters/이름.md` |
-| 사물 | (작성 예정) | `objects/이름.md` |
-| 현상 | (작성 예정) | `phenomena/이름.md` |
+| 캐릭터 | (작성 예정) | `characters/slug.md` |
+| 사물 | (작성 예정) | `objects/slug.md` |
+| 현상 | (작성 예정) | `phenomena/slug.md` |
 
 ### 1부 원고
 

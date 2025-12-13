@@ -13,6 +13,8 @@ WEBNOVEL/
 ├── TEMPLATE.md         # 작품 기본 정보 (장르, 시놉시스)
 ├── EPISODES.md         # 부별 줄거리 + 등장요소 목록
 │
+├── proposals/          # AI 제안 저장소
+│   └── _template.md
 ├── characters/         # 캐릭터 개별 파일
 │   └── _template.md
 ├── objects/            # 사물 개별 파일
@@ -21,5 +23,5 @@ WEBNOVEL/
 │   └── _template.md
 │
 └── works/              # 실제 원고
-    └── part-NNN.md     # 001, 002, 003...
+    └── part-NNN.md     # 3자리 0패딩 (001~999)
 ```
