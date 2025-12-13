@@ -33,6 +33,8 @@ const semanticColors = [
 	'success-foreground',
 	'warning',
 	'warning-foreground',
+	'selected',
+	'selected-foreground',
 	'border',
 	'input',
 	'ring',

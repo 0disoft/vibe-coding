@@ -33,9 +33,9 @@
 	--text-xs-fontSize: 0.65rem;
 
 	/* 메뉴 폰트 크기 (3단계) */
-	--fs-menu-lg: 0.95rem;
+	--fs-menu-lg: 0.9rem;
 	--fs-menu: 0.85rem;
-	--fs-menu-sm: 0.75rem;
+	--fs-menu-sm: 0.8rem;
 
 	/* 로고/브랜드용 */
 	--fs-logo-base: 1.15rem;
@@ -76,9 +76,9 @@
 	--fs-body-secondary-base: 0.95rem;
 	--fs-comment-base: 0.95rem;
 	--fs-code-base: 0.8rem;
-	--fs-xs-base: 0.65rem;
-	--fs-h1-base: 2.0rem;
-	--fs-h2-base: 1.7rem;
+	--fs-xs-base: 0.7rem;
+	--fs-h1-base: 1.8rem;
+	--fs-h2-base: 1.6rem;
 	--fs-h3-base: 1.4rem;
 	--fs-caption-base: 0.85rem;
 
@@ -93,7 +93,7 @@
 	--fs-placeholder-base: 0.9rem;
 
 	/* 배지/태그용 */
-	--fs-badge-base: 0.7rem;
+	--fs-badge-base: 0.75rem;
 	--fs-tag-base: 0.75rem;
 
 	/* 기타 UI */
@@ -136,12 +136,12 @@
 	--popover-foreground: 35% 0.04 331;
 
 	/* 주요 액션 */
-	--primary: 78% 0.14 332;
+	--primary: 65% 0.14 332;
 	--primary-foreground: 19% 0.015 332;
 
 	/* 보조 액션 / 서브 버튼 */
-	--secondary: 92% 0.0746 209;
-	--secondary-foreground: 20% 0.02 209;
+	--secondary: 85% 0.0746 209;
+	--secondary-foreground: 15% 0.02 209;
 
 	/* 강조 요소 (배지, 토글 등) */
 	--accent: 94% 0.03 97;
@@ -166,6 +166,10 @@
 	/* 경고 상태 (노란색) */
 	--warning: 70% 0.15 75;
 	--warning-foreground: 98% 0.01 90;
+
+	/* 선택 상태 (초록색) - 드롭다운 선택, 활성 탭 등 */
+	--selected: 85% 0.12 150;
+	--selected-foreground: 15% 0.02 150;
 
 	/* 경계 / 입력 / 포커스 링 */
 	--border: 92% 0.008 106;
@@ -244,8 +248,13 @@ body:lang(ko-KR) {
 /* ───────────────────────────────────────────────────────────
    Decorative Fonts (Logos, Brands)
 ─────────────────────────────────────────────────────────── */
-.font-righteous { font-family: 'Righteous', cursive; }
-.font-pacifico  { font-family: 'Pacifico', cursive; }
+.font-righteous {
+	font-family: 'Righteous', cursive;
+}
+
+.font-pacifico {
+	font-family: 'Pacifico', cursive;
+}
 
 /* 한국어 UI 텍스트 미세 조정 (본문보다 살짝 덜 조임) */
 :lang(ko) small,
@@ -529,8 +538,8 @@ body:lang(ru) {
 	--muted-foreground: 88% 0.015 106;
 
 	/* 파괴적 액션 (삭제 등) */
-	--destructive: 88% 0.1 25;
-	--destructive-foreground: 14% 0.02 25;
+	--destructive: 70% 0.18 25;
+	--destructive-foreground: 98% 0.01 25;
 
 	/* 성공 / 경고 상태 */
 	--success: 82% 0.09 150;
@@ -538,6 +547,10 @@ body:lang(ru) {
 
 	--warning: 86% 0.1 45;
 	--warning-foreground: 14% 0.02 95;
+
+	/* 선택 상태 (초록색) */
+	--selected: 68% 0.12 150;
+	--selected-foreground: 95% 0.02 150;
 
 	/* 경계 / 입력 / 포커스 링 */
 	--border: 36% 0.012 274;

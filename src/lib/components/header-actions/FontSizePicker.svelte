@@ -132,7 +132,7 @@
             onclick={() => selectFontSize(level)}
             class="inline-flex h-8 w-full items-center justify-center rounded-md text-menu-sm outline-none transition-colors {fontSize.current ===
             level
-              ? 'bg-primary/70 text-primary-foreground'
+              ? 'bg-selected text-selected-foreground'
               : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'}"
             aria-checked={fontSize.current === level}
             role="menuitemradio"
