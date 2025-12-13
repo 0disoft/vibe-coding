@@ -11,7 +11,7 @@ WEBNOVEL/
 ├── README.md           # 이 파일
 ├── WORKFLOW.md         # 집필 워크플로우 + 플로우차트
 ├── TEMPLATE.md         # 작품 기본 정보 (장르, 시놉시스)
-├── EPISODES.md         # 부별 줄거리 + 등장요소 목록
+├── EPISODES.md         # 화별 줄거리 + 등장요소 목록
 │
 ├── proposals/          # AI 제안 저장소
 │   └── _template.md
@@ -23,5 +23,5 @@ WEBNOVEL/
 │   └── _template.md
 │
 └── works/              # 실제 원고
-    └── part-NNN.md     # 3자리 0패딩 (001~999)
+    └── episode-NNN.md  # 3자리 0패딩 (001~999)
 ```
