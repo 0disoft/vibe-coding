@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webnovel Viewer</title>
+  <style>
+    :root {
+      --bg-primary: #0f0f23;
+      --bg-secondary: #1a1a2e;
+      --bg-card: #16213e;
+      --text-primary: #e8e8e8;
+      --text-secondary: #a0a0a0;
+      --accent: #ff6b9d;
+      --accent-hover: #ff4785;
+      --success: #00e676;
+      --warning: #ffab00;
+      --border: #2d2d44;
+      --shadow: rgba(0, 0, 0, 0.3);
+      --radius: 12px;
+      --glass: rgba(255, 255, 255, 0.05);
+      --character: #ff6b9d;
+      --object: #00d9ff;
+      --phenomenon: #a855f7;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8f9fa;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #666666;
+      --accent: #d63384;
+      --accent-hover: #b02a6f;
+      --border: #e0e0e0;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --glass: rgba(0, 0, 0, 0.02);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* 헤더 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      background: linear-gradient(135deg, var(--character), var(--phenomenon));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .theme-toggle {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* 통계 카드 */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    /* 필터 섹션 */
+    .filters {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .filters-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-count {
+      background: var(--accent);
+      color: var(--bg-primary);
+      font-size: 0.75rem;
+      padding: 0.125rem 0.5rem;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .clear-filters {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.875rem;
+      text-decoration: underline;
+    }
+
+    .clear-filters:hover {
+      color: var(--accent);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+    }
+
+    .filter-group select,
+    .filter-group input {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.15);
+    }
+
+    /* 메인 콘텐츠 */
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .main-content.with-detail {
+      grid-template-columns: 1fr 400px;
+    }
+
+    /* 카드 그리드 */
+    .cards-container {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .cards-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-count {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .sort-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .sort-controls select {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 1.5rem;
+      max-height: calc(100vh - 400px);
+      overflow-y: auto;
+    }
+
+    /* 요소 카드 */
+    .element-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .element-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .element-card.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .element-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .element-card.type-character::before {
+      background: var(--character);
+    }
+
+    .element-card.type-object::before {
+      background: var(--object);
+    }
+
+    .element-card.type-phenomenon::before {
+      background: var(--phenomenon);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .card-type {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .card-type.type-character {
+      background: rgba(255, 107, 157, 0.2);
+      color: var(--character);
+    }
+
+    .card-type.type-object {
+      background: rgba(0, 217, 255, 0.2);
+      color: var(--object);
+    }
+
+    .card-type.type-phenomenon {
+      background: rgba(168, 85, 247, 0.2);
+      color: var(--phenomenon);
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+
+    .tag {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    /* 상세 패널 */
+    .detail-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: sticky;
+      top: 2rem;
+      max-height: calc(100vh - 4rem);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .detail-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .detail-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      line-height: 1;
+    }
+
+    .detail-close:hover {
+      color: var(--accent);
+    }
+
+    .detail-content {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .detail-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-section h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-raw {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 0.875rem;
+      white-space: pre-wrap;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header h3 {
+      margin-bottom: 0;
+    }
+
+    .copy-btn {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.375rem 0.75rem;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    .copy-btn.copied {
+      background: var(--success);
+      border-color: var(--success);
+      color: var(--bg-primary);
+    }
+
+    /* 로딩 / 에러 / 빈 상태 */
+    .loading,
+    .error,
+    .empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-secondary);
+    }
+
+    .loading::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error {
+      color: var(--warning);
+    }
+
+    /* 반응형 */
+    @media (max-width: 1024px) {
+      .main-content.with-detail {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 450px;
+        max-height: 100vh;
+        z-index: 100;
+        border-radius: 0;
+        box-shadow: -4px 0 24px var(--shadow);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>📖 Webnovel Viewer</h1>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" title="다크 모드" aria-label="다크 모드" aria-pressed="true">🌙</button>
+      </div>
+    </header>
+
+    <div class="stats" id="stats">
+      <div class="stat-card">
+        <div class="stat-value" id="totalElements">-</div>
+        <div class="stat-label">전체 요소</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="characterCount">-</div>
+        <div class="stat-label">캐릭터</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="objectCount">-</div>
+        <div class="stat-label">사물</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="phenomenonCount">-</div>
+        <div class="stat-label">현상</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="episodeCount">-</div>
+        <div class="stat-label">에피소드</div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="filters-header">
+        <div class="filters-title">
+          🔍 필터
+          <span class="filter-count" id="filterCount">0</span>
+        </div>
+        <button class="clear-filters" id="clearFilters">필터 초기화</button>
+      </div>
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label for="searchInput">검색</label>
+          <input type="text" id="searchInput" placeholder="이름, 태그, 내용...">
+        </div>
+        <div class="filter-group">
+          <label for="typeFilter">유형</label>
+          <select id="typeFilter">
+            <option value="">전체</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="roleFilter">역할</label>
+          <select id="roleFilter">
+            <option value="">전체</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="tagFilter">태그</label>
+          <select id="tagFilter">
+            <option value="">전체</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="firstAppearFilter">등장화</label>
+          <select id="firstAppearFilter">
+            <option value="">전체</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+      <div class="cards-container">
+        <div class="cards-header">
+          <div class="result-count" id="resultCount" role="status">로딩 중...</div>
+          <div class="sort-controls">
+            <select id="sortSelect" aria-label="정렬 기준">
+              <option value="first_appear">등장순</option>
+              <option value="display_name">이름순</option>
+              <option value="type">유형순</option>
+            </select>
+            <select id="orderSelect" aria-label="정렬 순서">
+              <option value="asc">오름차순</option>
+              <option value="desc">내림차순</option>
+            </select>
+          </div>
+        </div>
+        <div class="cards-grid" id="cardsGrid" aria-live="polite">
+          <div class="loading">데이터를 불러오는 중...</div>
+        </div>
+      </div>
+
+      <div class="detail-panel" id="detailPanel" style="display: none;">
+        <div class="detail-header">
+          <div class="detail-title" id="detailTitle">상세 정보</div>
+          <button class="detail-close" id="detailClose" aria-label="닫기">&times;</button>
+        </div>
+        <div class="detail-content" id="detailContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 상태
+    let elements = [];
+    let options = { types: [], roles: [], tags: [], firstAppears: [] };
+    let selectedSlug = null;
+
+    // DOM 요소
+    const el = {
+      themeToggle: document.getElementById('themeToggle'),
+      searchInput: document.getElementById('searchInput'),
+      typeFilter: document.getElementById('typeFilter'),
+      roleFilter: document.getElementById('roleFilter'),
+      tagFilter: document.getElementById('tagFilter'),
+      firstAppearFilter: document.getElementById('firstAppearFilter'),
+      sortSelect: document.getElementById('sortSelect'),
+      orderSelect: document.getElementById('orderSelect'),
+      clearFilters: document.getElementById('clearFilters'),
+      filterCount: document.getElementById('filterCount'),
+      resultCount: document.getElementById('resultCount'),
+      cardsGrid: document.getElementById('cardsGrid'),
+      mainContent: document.getElementById('mainContent'),
+      detailPanel: document.getElementById('detailPanel'),
+      detailTitle: document.getElementById('detailTitle'),
+      detailContent: document.getElementById('detailContent'),
+      detailClose: document.getElementById('detailClose'),
+      totalElements: document.getElementById('totalElements'),
+      characterCount: document.getElementById('characterCount'),
+      objectCount: document.getElementById('objectCount'),
+      phenomenonCount: document.getElementById('phenomenonCount'),
+      episodeCount: document.getElementById('episodeCount'),
+    };
+
+    // API 호출
+    async function fetchApi(endpoint) {
+      const response = await fetch(endpoint);
+      if (!response.ok) throw new Error(`API Error: ${response.status}`);
+      return response.json();
+    }
+
+    // 테마 토글
+    function initTheme() {
+      const saved = localStorage.getItem('wn-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      updateThemeButton(saved);
+    }
+
+    function updateThemeButton(theme) {
+      const isDark = theme === 'dark';
+      el.themeToggle.textContent = isDark ? '🌙' : '☀️';
+      el.themeToggle.setAttribute('aria-pressed', String(isDark));
+      el.themeToggle.setAttribute('aria-label', isDark ? '다크 모드' : '라이트 모드');
+    }
+
+    el.themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('wn-theme', next);
+      updateThemeButton(next);
+    });
+
+    // 필터 옵션 로드
+    async function loadOptions() {
+      try {
+        options = await fetchApi('/api/options');
+
+        // 유형
+        options.types.forEach(t => {
+          const opt = document.createElement('option');
+          opt.value = t.name;
+          opt.textContent = t.display_name;
+          el.typeFilter.appendChild(opt);
+        });
+
+        // 역할
+        options.roles.forEach(r => {
+          const opt = document.createElement('option');
+          opt.value = r;
+          opt.textContent = r;
+          el.roleFilter.appendChild(opt);
+        });
+
+        // 태그
+        options.tags.forEach(t => {
+          const opt = document.createElement('option');
+          opt.value = t;
+          opt.textContent = `#${t}`;
+          el.tagFilter.appendChild(opt);
+        });
+
+        // 등장화
+        options.firstAppears.forEach(f => {
+          const opt = document.createElement('option');
+          opt.value = f;
+          opt.textContent = `${f}화`;
+          el.firstAppearFilter.appendChild(opt);
+        });
+      } catch (error) {
+        console.error('옵션 로드 실패:', error);
+      }
+    }
+
+    // 통계 로드
+    async function loadStats() {
+      try {
+        const stats = await fetchApi('/api/stats');
+        el.totalElements.textContent = stats.totalElements;
+        el.episodeCount.textContent = stats.totalEpisodes;
+
+        // 유형별 카운트
+        const byType = {};
+        stats.byType.forEach(t => byType[t.type] = t.count);
+        el.characterCount.textContent = byType['캐릭터'] || 0;
+        el.objectCount.textContent = byType['사물'] || 0;
+        el.phenomenonCount.textContent = byType['현상'] || 0;
+      } catch (error) {
+        console.error('통계 로드 실패:', error);
+      }
+    }
+
+    // 요소 목록 로드
+    async function loadElements() {
+      const params = new URLSearchParams();
+
+      if (el.searchInput.value) params.set('q', el.searchInput.value);
+      if (el.typeFilter.value) params.set('type', el.typeFilter.value);
+      if (el.roleFilter.value) params.set('role', el.roleFilter.value);
+      if (el.tagFilter.value) params.set('tag', el.tagFilter.value);
+      if (el.firstAppearFilter.value) params.set('first_appear', el.firstAppearFilter.value);
+      params.set('sort', el.sortSelect.value);
+      params.set('order', el.orderSelect.value);
+
+      try {
+        el.cardsGrid.innerHTML = '<div class="loading">데이터를 불러오는 중...</div>';
+        elements = await fetchApi(`/api/elements?${params}`);
+        renderCards();
+        updateFilterCount();
+      } catch (error) {
+        el.cardsGrid.innerHTML = `<div class="error">❌ 로드 실패: ${error.message}</div>`;
+      }
+    }
+
+    // 카드 렌더링
+    function renderCards() {
+      if (elements.length === 0) {
+        el.cardsGrid.innerHTML = '<div class="empty">검색 결과가 없습니다.</div>';
+        el.resultCount.textContent = '0개 결과';
+        return;
+      }
+
+      el.resultCount.textContent = `${elements.length}개 결과`;
+
+      el.cardsGrid.innerHTML = elements.map(e => `
+        <div class="element-card type-${e.type} ${selectedSlug === e.slug ? 'active' : ''}" 
+             data-slug="${escapeHtml(e.slug)}"
+             tabindex="0"
+             role="button"
+             aria-pressed="${selectedSlug === e.slug}">
+          <div class="card-header">
+            <div class="card-title">${escapeHtml(e.display_name)}</div>
+            <span class="card-type type-${e.type}">${escapeHtml(e.type_display)}</span>
+          </div>
+          <div class="card-meta">
+            ${e.role ? `<span>📌 ${escapeHtml(e.role)}</span>` : ''}
+            ${e.first_appear ? `<span>📖 ${e.first_appear}화</span>` : ''}
+          </div>
+          ${e.tags ? `
+            <div class="card-tags">
+              ${e.tags.split(',').map(t => `<span class="tag">#${escapeHtml(t.trim())}</span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+
+      // 카드 클릭 이벤트
+      el.cardsGrid.querySelectorAll('.element-card').forEach(card => {
+        card.addEventListener('click', () => showDetail(card.dataset.slug));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            showDetail(card.dataset.slug);
+          }
+        });
+      });
+    }
+
+    // 상세 보기
+    async function showDetail(slug) {
+      if (selectedSlug === slug) {
+        closeDetail();
+        return;
+      }
+
+      selectedSlug = slug;
+      el.mainContent.classList.add('with-detail');
+      el.detailPanel.style.display = 'flex';
+
+      try {
+        const detail = await fetchApi(`/api/elements/${slug}`);
+        el.detailTitle.textContent = detail.display_name;
+
+        el.detailContent.innerHTML = `
+          <div class="detail-section">
+            <h3>기본 정보</h3>
+            <p><strong>유형:</strong> ${escapeHtml(detail.type_display)}</p>
+            ${detail.role ? `<p><strong>역할:</strong> ${escapeHtml(detail.role)}</p>` : ''}
+            ${detail.first_appear ? `<p><strong>등장화:</strong> ${detail.first_appear}화</p>` : ''}
+            ${detail.tags ? `<p><strong>태그:</strong> ${detail.tags.split(',').map(t => `#${escapeHtml(t.trim())}`).join(' ')}</p>` : ''}
+          </div>
+          <div class="detail-section">
+            <div class="section-header">
+              <h3>원본 내용</h3>
+              <button class="copy-btn" id="copyRawBtn" type="button" aria-label="원본 내용 복사">📋 복사</button>
+            </div>
+            <pre class="detail-raw" id="rawContentPre">${escapeHtml(detail.raw_content)}</pre>
+          </div>
+        `;
+
+        // 카드 active 상태 업데이트
+        renderCards();
+        // 복사 버튼 설정
+        setupCopyButton(detail.raw_content);
+      } catch (error) {
+        el.detailContent.innerHTML = `<div class="error">❌ 로드 실패: ${error.message}</div>`;
+      }
+    }
+
+    // 상세 닫기
+    function closeDetail() {
+      selectedSlug = null;
+      el.mainContent.classList.remove('with-detail');
+      el.detailPanel.style.display = 'none';
+      renderCards();
+    }
+
+    el.detailClose.addEventListener('click', closeDetail);
+
+    // 원본 내용 복사
+    function setupCopyButton(rawContent) {
+      const btn = document.getElementById('copyRawBtn');
+      if (!btn) return;
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(rawContent);
+          btn.classList.add('copied');
+          btn.innerHTML = '✅ 복사됨';
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.innerHTML = '📋 복사';
+          }, 2000);
+        } catch (err) {
+          console.error('복사 실패:', err);
+          btn.innerHTML = '❌ 실패';
+          setTimeout(() => btn.innerHTML = '📋 복사', 2000);
+        }
+      });
+    }
+
+    // 유틸리티
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[char]);
+    }
+
+    function updateFilterCount() {
+      let count = 0;
+      if (el.searchInput.value) count++;
+      if (el.typeFilter.value) count++;
+      if (el.roleFilter.value) count++;
+      if (el.tagFilter.value) count++;
+      if (el.firstAppearFilter.value) count++;
+      el.filterCount.textContent = count;
+    }
+
+    // 이벤트 리스너
+    let debounceTimer;
+    function debounce(fn, delay = 300) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(fn, delay);
+    }
+
+    el.searchInput.addEventListener('input', () => debounce(loadElements));
+    el.typeFilter.addEventListener('change', loadElements);
+    el.roleFilter.addEventListener('change', loadElements);
+    el.tagFilter.addEventListener('change', loadElements);
+    el.firstAppearFilter.addEventListener('change', loadElements);
+    el.sortSelect.addEventListener('change', loadElements);
+    el.orderSelect.addEventListener('change', loadElements);
+
+    el.clearFilters.addEventListener('click', () => {
+      el.searchInput.value = '';
+      el.typeFilter.value = '';
+      el.roleFilter.value = '';
+      el.tagFilter.value = '';
+      el.firstAppearFilter.value = '';
+      loadElements();
+    });
+
+    // ESC로 상세 닫기
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && selectedSlug) closeDetail();
+    });
+
+    // 초기화
+    async function init() {
+      initTheme();
+      await loadOptions();
+      await loadStats();
+      await loadElements();
+    }
+
+    init();
+  </script>
+</body>
+
+</html>

@@ -7,6 +7,7 @@
 | 도구 | 용도 | 빠른 실행 |
 |------|------|-----------|
 | [api-catalog](#api-catalog) | Public API 카탈로그 뷰어 | `bun .vibe-coding/TOOLS/api-catalog/server.ts` |
+| [webnovel-viewer](#webnovel-viewer) | 웹소설 등장요소 뷰어 | `bun .vibe-coding/TOOLS/webnovel-viewer/server.ts` |
 | [a11y-ux-patterns](#a11y-ux-patterns) | 접근성 및 UX 패턴 검사 | `bun .vibe-coding/TOOLS/a11y-ux-patterns.ts` |
 | [file-size-patterns](#file-size-patterns) | 파일 크기 및 복잡도 검사 | `bun .vibe-coding/TOOLS/file-size-patterns.ts` |
 | [find-word](#find-word) | 프로젝트 단어/패턴 검색 | `bun .vibe-coding/TOOLS/find-word.ts <패턴>` |
@@ -434,3 +435,47 @@ curl "http://localhost:3333/api/apis?sort=name&order=asc"
 | `server.ts` | Bun.serve 기반 API 서버 |
 | `viewer.html` | 프론트엔드 뷰어 |
 | `api-catalog.sqlite` | 데이터베이스 파일 (gitignore) |
+
+---
+
+## webnovel-viewer
+
+`.vibe-coding/WEBNOVEL/` 폴더의 캐릭터, 사물, 현상 등 등장요소를 브라우저에서 조회하는 인터랙티브 뷰어입니다.
+
+### webnovel-viewer 실행 방법
+
+```bash
+# 1. 마크다운 → SQLite 동기화
+bun .vibe-coding/TOOLS/webnovel-viewer/sync.ts
+
+# 2. 로컬 서버 시작 (http://localhost:3334)
+bun .vibe-coding/TOOLS/webnovel-viewer/server.ts
+```
+
+### webnovel-viewer 주요 기능
+
+- **필터링**: 유형(캐릭터/사물/현상), 역할, 태그, 등장화
+- **검색**: 이름, 태그, 원본 내용 키워드 검색
+- **정렬**: 등장순, 이름순, 유형순
+- **상세 보기**: 기본 정보 + 원본 마크다운 (복사 버튼 포함)
+- **UI**: 다크/라이트 테마, 반응형 디자인
+
+### webnovel-viewer API 엔드포인트
+
+| 엔드포인트 | 설명 |
+|------------|------|
+| `GET /api/elements` | 요소 목록 (필터/정렬 지원) |
+| `GET /api/elements/:slug` | 요소 상세 |
+| `GET /api/episodes` | 에피소드 목록 |
+| `GET /api/stats` | 통계 (총 개수, 유형별 개수) |
+| `GET /api/options` | 필터 드롭다운 옵션 |
+
+### webnovel-viewer 파일 구조
+
+| 파일 | 역할 |
+|------|------|
+| `db.ts` | SQLite 스키마 및 초기화 |
+| `sync.ts` | 마크다운 → SQLite 동기화 |
+| `server.ts` | Bun.serve 기반 API 서버 |
+| `viewer.html` | 프론트엔드 뷰어 |
+| `webnovel.sqlite` | 데이터베이스 파일 (gitignore) |
