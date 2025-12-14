@@ -21,6 +21,7 @@
 | [elegant-typescript-patterns.md](./elegant-typescript-patterns.md) | 우아한 타입스크립트 설계 패턴 모음 |
 | [accessibility-ux-patterns.md](./accessibility-ux-patterns.md) | 접근성(a11y) 및 UX 패턴 가이드 |
 | [mobile-ux-patterns.md](./mobile-ux-patterns.md) | PWA 네이티브 경험 패턴 (제스처, 햅틱, Progressive Enhancement) |
+| [design-system-guide.md](./design-system-guide.md) | 디자인 시스템 구축 가이드 (토큰, 컴포넌트, 문서화) |
 
 ### 개발 컨벤션
 
