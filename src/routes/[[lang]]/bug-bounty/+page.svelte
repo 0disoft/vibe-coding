@@ -17,5 +17,5 @@
 </svelte:head>
 
 <article class="prose mx-auto max-w-3xl px-4 py-12 md:px-6" lang={data.lang}>
-  {@html data.content}
+  {@html data.content}<!-- security-ignore: xss-svelte-html (레포 내 정적 마크다운을 빌드 타임에 로드해 marked로 변환한 결과) -->
 </article>

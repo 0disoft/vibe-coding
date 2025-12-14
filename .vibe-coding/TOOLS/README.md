@@ -393,8 +393,11 @@ bun .vibe-coding/TOOLS/security-patterns.ts --no-report
 # 1. README.md → SQLite 동기화
 bun .vibe-coding/TOOLS/api-catalog/sync.ts
 
-# 2. 로컬 서버 시작 (http://localhost:3333)
+# 2. 로컬 서버 시작 (http://127.0.0.1:3333)
 bun .vibe-coding/TOOLS/api-catalog/server.ts
+
+# 포트/호스트 변경 (PowerShell/Git Bash 공통)
+bun .vibe-coding/TOOLS/api-catalog/server.ts --port 3334 --host 127.0.0.1
 ```
 
 ### api-catalog 주요 기능
@@ -450,6 +453,9 @@ bun .vibe-coding/TOOLS/webnovel-viewer/sync.ts
 
 # 2. 로컬 서버 시작 (http://localhost:3334)
 bun .vibe-coding/TOOLS/webnovel-viewer/server.ts
+
+# 포트/호스트 변경 (PowerShell/Git Bash 공통)
+bun .vibe-coding/TOOLS/webnovel-viewer/server.ts --port 3335 --host 127.0.0.1
 ```
 
 > **주의**: `sync.ts`는 엄격 모드로 동작합니다. `characters/`, `objects/`, `phenomena/` 폴더 중 하나라도 없으면 에러로 중단됩니다.

@@ -12,3 +12,14 @@
  * 6. [실시간 연결] 웹소켓(Socket.io 등) 연결을 전역에서 초기화하고 페이지 이동 간에도 연결 유지
  * 7. [데이터 보호] 작성 중인 양식이 있을 때 창을 닫거나 새로고침 하려 하면 경고창(beforeunload) 띄움
  */
+
+import type { ClientInit, HandleClientError } from '@sveltejs/kit';
+
+export const init: ClientInit = async () => {};
+
+export const handleError: HandleClientError = ({ error, status, message }) => {
+	// 이 훅은 절대 throw 하면 안 됩니다.
+	if (import.meta.env.DEV) {
+		console.error('[hooks.client] Error during navigation:', { status, message, error });
+	}
+};

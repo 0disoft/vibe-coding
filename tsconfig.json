@@ -3,8 +3,9 @@
 	"compilerOptions": {
 		// JavaScript 파일도 프로젝트에 포함
 		"allowJs": true,
-		// JavaScript 파일도 타입 체크 수행
-		"checkJs": true,
+		// 템플릿 기본값: JS는 허용하되 타입 체크는 하지 않음 (복사 후 마찰 최소화)
+		// 필요하면 tsconfig.scripts.json로 스크립트만 별도 체크하세요.
+		"checkJs": false,
 		// CommonJS 모듈의 default import 허용
 		"esModuleInterop": true,
 		// 파일명 대소문자 일관성 강제 (Windows/Mac 호환)

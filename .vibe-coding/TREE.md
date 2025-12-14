@@ -10,6 +10,7 @@
 ├── vite.config.ts
 ├── svelte.config.js
 ├── tsconfig.json
+├── tsconfig.scripts.json
 ├── uno.config.ts
 ├── playwright.config.ts
 ├── bun.lock
@@ -108,6 +109,7 @@
 | `vite.config.ts`       | Vite 번들링 설정과 플러그인 구성                |
 | `svelte.config.js`     | SvelteKit 설정 (어댑터, 프리프로세서)           |
 | `tsconfig.json`        | TypeScript 컴파일러 설정                        |
+| `tsconfig.scripts.json`| 스크립트 전용 TypeScript 설정 (JS 체크 포함)    |
 | `uno.config.ts`        | UnoCSS 테마 토큰, 프리셋, 디자인 시스템 설정    |
 | `playwright.config.ts` | Playwright E2E 테스트 설정 (webServer, testDir) |
 | `bun.lock`             | Bun 패키지 버전 고정 잠금 파일                  |
@@ -180,7 +182,11 @@
 
 ### src/scripts/
 
-빌드·유지보수용 일회성 스크립트 모음입니다. i18n 메시지 일괄 업데이트, 쿠키 정책 마크다운 생성, 날짜 갱신 등 자동화 작업에 사용합니다.
+빌드·유지보수용 스크립트 모음입니다.
+
+| 파일 | 역할 |
+| --- | --- |
+| `postbuild-sitemap.ts` | `postbuild` 훅에서 sitemap 생성(도메인/출력폴더 안전가드 포함) |
 
 ### src/lib/
 
@@ -199,7 +205,7 @@
 | `shared/schemas/`                                 | API 스키마 (TypeBox 검증용)                                    |
 | `constants/index.ts`                              | 상수 배럴 export                                               |
 | `constants/cookies.ts`                            | 쿠키 키 상수 (THEME_COOKIE, FONT_SIZE_COOKIE)                  |
-| `constants/site.ts`                               | 사이트 기본 정보 (name, description, email, links)             |
+| `constants/site.ts`                               | 사이트 기본 정보 (name, description, origin, email, links)     |
 | `constants/policy.ts`                             | 정책 설정 (effectiveDate, cpoName, dataProcessors)             |
 | `stores/index.ts`                                 | 스토어 배럴 export                                             |
 | `stores/persisted-state.svelte.ts`                | 쿠키+DOM 동기화 퍼시스턴스 스토어 팩토리                       |

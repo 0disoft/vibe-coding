@@ -1,0 +1,14 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		// 스크립트는 JS도 엄격 체크
+		"allowJs": true,
+		"checkJs": true,
+		"noEmit": true,
+		"lib": ["esnext"],
+		"types": ["node"]
+	},
+	"include": ["src/scripts/**/*.ts", "src/scripts/**/*.js"],
+	"exclude": ["node_modules/**", ".svelte-kit/**", "build/**"]
+}
+

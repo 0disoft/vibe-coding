@@ -13,6 +13,9 @@
  * 7. [마이크로 프론트엔드] 특정 경로 패턴(/app/*)을 인식하여 다른 앱이나 서비스로 라우팅 분기
  */
 
+import type { Transport } from '@sveltejs/kit';
 import { deLocalizeUrl } from '$lib/paraglide/runtime';
 
 export const reroute = (request) => deLocalizeUrl(request.url).pathname;
+
+export const transport: Transport = {};

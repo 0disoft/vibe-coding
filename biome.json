@@ -7,11 +7,29 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"includes": ["**/*.ts", "**/*.js", "**/*.json", "**/*.mjs", "**/*.cjs", "**/*.mts", "**/*.cts"]
+		"includes": [
+			"biome.json",
+			"e2e/**/*.ts",
+			"e2e/**/*.js",
+			"src/**/*.ts",
+			"src/**/*.js",
+			"src/**/*.json",
+			"src/**/*.mjs",
+			"src/**/*.cjs",
+			"src/**/*.mts",
+			"src/**/*.cts",
+			"vite.config.ts",
+			"uno.config.ts",
+			"playwright.config.ts",
+			"svelte.config.js",
+			"tsconfig.json",
+			"package.json"
+		]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
+		"lineEnding": "lf",
 		"lineWidth": 100
 	},
 	"linter": {

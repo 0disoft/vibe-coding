@@ -24,4 +24,3 @@ export const handle: Handle = sequence(
 );
 
 export { handleError };
-

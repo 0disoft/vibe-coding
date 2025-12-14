@@ -3,19 +3,22 @@
 import type { CacheMatchKind } from './cache';
 
 export function createStrategies(args: {
-  cacheName: string;
-  offlinePath: string;
-  matchFromMyCache: (request: Request | string, kind: CacheMatchKind) => Promise<Response | undefined>;
+	cacheName: string;
+	offlinePath: string;
+	matchFromMyCache: (
+		request: Request | string,
+		kind: CacheMatchKind
+	) => Promise<Response | undefined>;
 }): {
-  cacheFirst: (request: Request) => Promise<Response>;
-  networkFirst: (request: Request) => Promise<Response>;
+	cacheFirst: (request: Request) => Promise<Response>;
+	networkFirst: (request: Request) => Promise<Response>;
 } {
-  async function getOfflineFallback(): Promise<Response> {
-    const cached = await args.matchFromMyCache(args.offlinePath, 'navigation');
-    if (cached) return cached;
+	async function getOfflineFallback(): Promise<Response> {
+		const cached = await args.matchFromMyCache(args.offlinePath, 'navigation');
+		if (cached) return cached;
 
-    return new Response(
-      `<!DOCTYPE html>
+		return new Response(
+			`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -35,63 +38,65 @@ export function createStrategies(args: {
   </div>
 </body>
 </html>`,
-      {
-        status: 503,
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      }
-    );
-  }
+			{
+				status: 503,
+				headers: { 'Content-Type': 'text/html; charset=utf-8' }
+			}
+		);
+	}
 
-  async function cacheFirst(request: Request): Promise<Response> {
-    const cachedResponse = await args.matchFromMyCache(request, 'asset');
-    if (cachedResponse) return cachedResponse;
+	async function cacheFirst(request: Request): Promise<Response> {
+		const cachedResponse = await args.matchFromMyCache(request, 'asset');
+		if (cachedResponse) return cachedResponse;
 
-    try {
-      return await fetch(request);
-    } catch {
-      return new Response('Offline', {
-        status: 503,
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-      });
-    }
-  }
+		try {
+			return await fetch(request);
+		} catch {
+			return new Response('Offline', {
+				status: 503,
+				headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+			});
+		}
+	}
 
-  async function networkFirst(request: Request): Promise<Response> {
-    const isNavigation = request.mode === 'navigate';
+	async function networkFirst(request: Request): Promise<Response> {
+		const isNavigation = request.mode === 'navigate';
 
-    try {
-      const response = await fetch(request);
+		try {
+			const response = await fetch(request);
 
-      const contentType = response.headers.get('content-type')?.toLowerCase() || '';
-      const isHtml = contentType.includes('text/html');
-      const cacheControl = response.headers.get('cache-control')?.toLowerCase() || '';
-      const shouldSkipCache =
-        cacheControl.includes('no-store') ||
-        cacheControl.includes('private') ||
-        cacheControl.includes('no-cache') ||
-        cacheControl.includes('must-revalidate');
+			const contentType = response.headers.get('content-type')?.toLowerCase() || '';
+			const isHtml = contentType.includes('text/html');
+			const cacheControl = response.headers.get('cache-control')?.toLowerCase() || '';
+			const shouldSkipCache =
+				cacheControl.includes('no-store') ||
+				cacheControl.includes('private') ||
+				cacheControl.includes('no-cache') ||
+				cacheControl.includes('must-revalidate');
 
-      if (isNavigation && response.ok && isHtml && !shouldSkipCache) {
-        const cache = await caches.open(args.cacheName);
-        await cache.put(request, response.clone());
-      }
+			if (isNavigation && response.ok && isHtml && !shouldSkipCache) {
+				const cache = await caches.open(args.cacheName);
+				await cache.put(request, response.clone());
+			}
 
-      return response;
-    } catch {
-      const cachedResponse = await args.matchFromMyCache(request, isNavigation ? 'navigation' : 'other');
-      if (cachedResponse) return cachedResponse;
+			return response;
+		} catch {
+			const cachedResponse = await args.matchFromMyCache(
+				request,
+				isNavigation ? 'navigation' : 'other'
+			);
+			if (cachedResponse) return cachedResponse;
 
-      if (isNavigation) {
-        return getOfflineFallback();
-      }
+			if (isNavigation) {
+				return getOfflineFallback();
+			}
 
-      return new Response('Offline', {
-        status: 503,
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-      });
-    }
-  }
+			return new Response('Offline', {
+				status: 503,
+				headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+			});
+		}
+	}
 
-  return { cacheFirst, networkFirst };
+	return { cacheFirst, networkFirst };
 }
-

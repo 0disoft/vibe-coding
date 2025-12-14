@@ -72,8 +72,19 @@ src/
 bun test:unit     # Vitest 유닛 테스트
 bun test:e2e      # Playwright E2E 테스트
 bun check         # svelte-check 타입 검사
+bun run check:scripts  # (선택) 스크립트 전용 타입 체크
 bun lint          # Biome 린트 + 포맷팅
 ```
+
+## 배포 도메인 (sitemap)
+
+`postbuild`에서 sitemap을 생성할 때 도메인이 필요합니다.
+
+- 권장: 배포 환경에서 `PUBLIC_SITE_ORIGIN` 환경변수로 설정 (예: `https://myapp.com`)
+- 대안: `src/lib/constants/site.ts`의 `site.origin` 사용
+- 안전장치: 도메인이 없거나 `example.com` 같은 플레이스홀더면 sitemap 생성은 자동으로 스킵됩니다.
+- 출력 폴더가 `build/`가 아닌 경우 `SITEMAP_OUT_DIR`로 지정할 수 있습니다. (예: `SITEMAP_OUT_DIR=.vercel/output/static`)
+- CI에서 도메인/출력폴더 미설정을 실패로 처리하려면 `SITEMAP_STRICT=1`을 사용합니다.
 
 ## 유틸리티 도구
 

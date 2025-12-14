@@ -7,15 +7,44 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { DB_PATH } from "./db";
 
+function getArgValue(names: string[]): string | null {
+  const args = process.argv.slice(2);
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+
+    for (const name of names) {
+      if (a === name) {
+        const v = args[i + 1];
+        if (!v || v.startsWith("-")) return null;
+        return v;
+      }
+      if (a.startsWith(`${name}=`)) {
+        return a.slice(name.length + 1);
+      }
+    }
+  }
+  return null;
+}
+
+function parsePort(raw: string | null, fallback: number): number {
+  if (!raw) return fallback;
+  const n = parseInt(raw, 10);
+  if (!Number.isFinite(n) || n < 1 || n > 65535) return fallback;
+  return n;
+}
+
 // Viewer 경로
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const VIEWER_PATH = join(__dirname, "viewer.html");
 
 // 포트 설정 (유효성 검증 포함)
-const portRaw = parseInt(process.env.WEBNOVEL_VIEWER_PORT || process.env.PORT || "3334", 10);
-const PORT = Number.isFinite(portRaw) && portRaw >= 1 && portRaw <= 65535 ? portRaw : 3334;
-// 호스트 설정 (기본 localhost, 전용 환경변수로만 열기)
-const HOSTNAME = process.env.WEBNOVEL_VIEWER_HOST || "127.0.0.1";
+const PORT = parsePort(
+  getArgValue(["--port", "-p"]) ?? process.env.WEBNOVEL_VIEWER_PORT ?? process.env.PORT ?? null,
+  3334
+);
+// 호스트 설정 (기본 localhost). 외부 바인딩(0.0.0.0)은 명시 설정 시에만 사용하세요.
+const HOSTNAME = (getArgValue(["--host"]) ?? process.env.WEBNOVEL_VIEWER_HOST ?? "127.0.0.1").trim() ||
+  "127.0.0.1";
 
 /**
  * DB 연결 (읽기 전용)
@@ -369,6 +398,7 @@ console.log(`
 🚀 Webnovel Viewer 서버 실행 중!
 
    로컬:  http://${displayHost}:${PORT}
+   힌트:  bun .vibe-coding/TOOLS/webnovel-viewer/server.ts --port ${PORT} --host ${HOSTNAME}
 ${bindingNote}
    API 엔드포인트:
    - GET /api/elements       요소 목록 (필터/정렬 지원)

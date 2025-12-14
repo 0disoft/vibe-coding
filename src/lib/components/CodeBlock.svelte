@@ -168,7 +168,7 @@
     {copied ? '✓ Copied!' : '📋 Copy'}
   </button>
   {#if highlightedHtml}
-    {@html highlightedHtml}
+    {@html highlightedHtml}<!-- security-ignore: xss-svelte-html (Shiki가 생성한 코드 하이라이트 HTML; 사용자 입력 HTML을 직접 렌더링하지 않음) -->
   {:else}
     <!-- 로딩 중 fallback -->
     <pre class="rounded-lg bg-muted p-4"><code class="text-sm">{code}</code></pre>

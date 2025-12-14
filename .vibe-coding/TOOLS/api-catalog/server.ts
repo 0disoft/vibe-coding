@@ -7,12 +7,39 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { DB_PATH } from "./db";
 
+function getArgValue(names: string[]): string | null {
+  const args = process.argv.slice(2);
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+
+    for (const name of names) {
+      if (a === name) {
+        const v = args[i + 1];
+        if (!v || v.startsWith("-")) return null;
+        return v;
+      }
+      if (a.startsWith(`${name}=`)) {
+        return a.slice(name.length + 1);
+      }
+    }
+  }
+  return null;
+}
+
+function parsePort(raw: string | null, fallback: number): number {
+  if (!raw) return fallback;
+  const n = parseInt(raw, 10);
+  if (!Number.isFinite(n) || n < 1 || n > 65535) return fallback;
+  return n;
+}
+
 // Viewer 경로 (스크립트 위치 기준)
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const VIEWER_PATH = join(__dirname, "viewer.html");
 
 // 포트 설정
-const PORT = parseInt(process.env.PORT || "3333", 10);
+const PORT = parsePort(getArgValue(["--port", "-p"]) ?? process.env.PORT ?? null, 3333);
+const HOST = (getArgValue(["--host"]) ?? process.env.HOST ?? "127.0.0.1").trim() || "127.0.0.1";
 
 /**
  * DB 연결 (읽기 전용)
@@ -141,6 +168,7 @@ function notFound(): Response {
  * 서버 시작
  */
 void Bun.serve({
+  hostname: HOST,
   port: PORT,
 
   async fetch(req: Request) {
@@ -250,7 +278,8 @@ void Bun.serve({
 console.log(`
 🚀 API Catalog Server 실행 중!
 
-   로컬:  http://localhost:${PORT}
+   로컬:  http://${HOST}:${PORT}
+   힌트:  bun .vibe-coding/TOOLS/api-catalog/server.ts --port ${PORT} --host ${HOST}
 
    API 엔드포인트:
    - GET /api/apis        API 목록 (필터/정렬 지원)
