@@ -252,13 +252,15 @@ function formatReport(
 	target: string,
 	totalFiles: number,
 	dryRun: boolean,
-	verbose: boolean = false
+	verbose: boolean = false,
+	elapsed: string = ''
 ): string {
 	const lines: string[] = [];
 	const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 
 	lines.push(`Fix Bold Issues Report - ${timestamp}`);
 	lines.push(`Target: ${target}`);
+	if (elapsed) lines.push(`Elapsed: ${elapsed}`);
 	lines.push(`Mode: ${dryRun ? 'DRY RUN (파일 미수정)' : 'APPLIED (파일 수정됨)'}`);
 	lines.push('='.repeat(50));
 
@@ -436,6 +438,7 @@ async function main() {
 	if (VERBOSE) console.log('VERBOSE MODE: Skipped line numbers will be shown.');
 
 	try {
+		const startTime = performance.now();
 		const targetStat = await stat(TARGET);
 		let files: string[];
 
@@ -460,17 +463,21 @@ async function main() {
 			if (result) results.push(result);
 		}
 
+		const elapsed = performance.now() - startTime;
+		const elapsedStr = elapsed < 1000 ? `${elapsed.toFixed(0)}ms` : `${(elapsed / 1000).toFixed(2)}s`;
+
 		const totalFixes = results.reduce((sum, r) => sum + r.count, 0);
 		console.log(`Done. Total fixes: ${totalFixes}`);
+		console.log(`⏱️ 소요 시간: ${elapsedStr}`);
 
 		// 결과 파일 저장 (reports 폴더 자동 생성)
-		const report = formatReport(results, TARGET, files.length, DRY_RUN, VERBOSE);
+		const report = formatReport(results, TARGET, files.length, DRY_RUN, VERBOSE, elapsedStr);
 		const scriptDir = dirname(fileURLToPath(import.meta.url));
 		const reportsDir = join(scriptDir, 'reports');
 		await mkdir(reportsDir, { recursive: true });
 		const reportPath = join(reportsDir, 'fix-bold-report.txt');
 		await writeFile(reportPath, report, 'utf-8');
-		console.log(`\n📝 리포트 저장됨: ${reportPath}`);
+		console.log(`📝 리포트 저장됨: ${reportPath}`);
 	} catch (error) {
 		console.error('Error:', error);
 	}

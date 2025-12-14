@@ -643,6 +643,7 @@ async function main() {
 	console.log(`🔍 접근성/UX 패턴 스캔: ${TARGET}`);
 
 	try {
+		const startTime = performance.now();
 		const targetStat = await stat(TARGET);
 		let files: string[];
 
@@ -663,6 +664,9 @@ async function main() {
 		const resultsArrays = await runWithLimit(files, 16, lintFile);
 		const allFound: LintResult[] = resultsArrays.flat();
 
+		const elapsed = performance.now() - startTime;
+		const elapsedStr = elapsed < 1000 ? `${elapsed.toFixed(0)}ms` : `${(elapsed / 1000).toFixed(2)}s`;
+
 		// 필터링 전에 에러 카운트 계산 (CI exit code용)
 		const errorCount = allFound.filter((r) => r.rule.severity === 'error').length;
 
@@ -676,6 +680,7 @@ async function main() {
 		const basePath = targetStat.isFile() ? dirname(TARGET) : TARGET;
 		const report = formatResults(allResults, basePath);
 		console.log(report);
+		console.log(`\n⏱️ 소요 시간: ${elapsedStr}`);
 
 		// 리포트 파일로 저장 (reports 디렉토리 자동 생성)
 		const scriptDir = dirname(fileURLToPath(import.meta.url));
@@ -683,9 +688,9 @@ async function main() {
 		await mkdir(reportsDir, { recursive: true });
 		const reportPath = join(reportsDir, 'a11y-ux-report.txt');
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-		const header = `A11y/UX Report - ${timestamp}\nTarget: ${TARGET}\n${'='.repeat(40)}\n`;
+		const header = `A11y/UX Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(40)}\n`;
 		await writeFile(reportPath, header + report, 'utf-8');
-		console.log(`\n📝 리포트 저장됨: ${reportPath}`);
+		console.log(`📝 리포트 저장됨: ${reportPath}`);
 
 		// CI/CD 통합: 에러 발견 시 exit code 1 반환 (필터와 무관하게 원본 기준)
 		if (errorCount > 0) {

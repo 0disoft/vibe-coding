@@ -108,10 +108,10 @@
 | `WIP.md`               | 세부 실행 계획 및 작업 분해 (임시 저장소)                  |
 | `API.md`               | API 엔드포인트 문서                                        |
 | `REVIEW.md`            | 코드 리뷰 가이드라인                                       |
-| `.temporary.txt`       | 사용자/LLM이 긴 질문이나 응답을 임시 저장하는 스크래치패드 |
-| `.suggestions.txt`     | 코드 개선 제안을 임시 저장하는 스크래치패드                |
-| `.questions.txt`       | 추가 질문을 임시 저장하는 스크래치패드                     |
-| `.reports.txt`         | 수정 보고를 임시 저장하는 스크래치패드                     |
+| `.temporary.txt`       | 긴 질문/응답 임시 저장 스크래치패드 (항상 덮어쓰기 저장)   |
+| `.suggestions.txt`     | 코드 개선 제안 임시 저장 스크래치패드 (항상 덮어쓰기 저장) |
+| `.questions.txt`       | 추가 질문 임시 저장 스크래치패드 (항상 덮어쓰기 저장)      |
+| `.reports.txt`         | 수정 보고 임시 저장 스크래치패드 (항상 덮어쓰기 저장)      |
 | `stack.manifest.toml`  | 기술 스택 매니페스트                                       |
 | `INSIGHTS/`            | 전략적 인사이트, 아키텍처 결정, 레퍼런스 문서 모음         |
 | `KNOWLEDGE/`           | 기술 지식 베이스 (언어별 가이드 등)                        |
@@ -159,6 +159,10 @@
 | `scrollbar.css`   | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일)          |
 | `prose.css`       | .prose 마크다운 콘텐츠 타이포그래피                       |
 | `transitions.css` | View Transitions API 기반 페이지 전환 효과                |
+
+### src/scripts/
+
+빌드·유지보수용 일회성 스크립트 모음입니다. i18n 메시지 일괄 업데이트, 쿠키 정책 마크다운 생성, 날짜 갱신 등 자동화 작업에 사용합니다.
 
 ### src/lib/
 

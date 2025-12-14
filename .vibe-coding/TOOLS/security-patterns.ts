@@ -1027,6 +1027,7 @@ async function main() {
 	console.log(`🔍 스캔 대상: ${TARGET}`);
 
 	try {
+		const startTime = performance.now();
 		const targetStat = await stat(TARGET);
 		let files: string[];
 
@@ -1052,6 +1053,9 @@ async function main() {
 			allResults.push(...results);
 		}
 
+		const elapsed = performance.now() - startTime;
+		const elapsedStr = elapsed < 1000 ? `${elapsed.toFixed(0)}ms` : `${(elapsed / 1000).toFixed(2)}s`;
+
 		if (FILTER_SEVERITY) {
 			allResults = allResults.filter((r) => r.rule.severity === FILTER_SEVERITY);
 		}
@@ -1060,6 +1064,7 @@ async function main() {
 		const basePath = targetStat.isFile() ? dirname(TARGET) : TARGET;
 		const report = formatResults(allResults, basePath);
 		console.log(report);
+		console.log(`\n⏱️ 소요 시간: ${elapsedStr}`);
 
 		// 에러가 있으면 종료 코드 1 설정 (CI 실패 유도)
 		const errorCount = allResults.filter((r) => r.rule.severity === 'error').length;
@@ -1074,9 +1079,9 @@ async function main() {
 			await mkdir(reportsDir, { recursive: true });
 			const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 			const reportPath = join(reportsDir, `security-report-${timestamp}.txt`);
-			const header = `Security Report - ${timestamp}\nTarget: ${TARGET}\n${'='.repeat(50)}\n`;
+			const header = `Security Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(50)}\n`;
 			await writeFile(reportPath, header + report, 'utf-8');
-			console.log(`\n📝 리포트 저장됨: ${reportPath}`);
+			console.log(`📝 리포트 저장됨: ${reportPath}`);
 		}
 	} catch (error) {
 		console.error('Error:', error);

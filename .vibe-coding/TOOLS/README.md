@@ -7,15 +7,16 @@
 | 도구 | 용도 | 빠른 실행 |
 |------|------|-----------|
 | [api-catalog](#api-catalog) | Public API 카탈로그 뷰어 | `bun .vibe-coding/TOOLS/api-catalog/server.ts` |
-| [a11y-ux-patterns.ts](#a11y-ux-patternsts) | 접근성 및 UX 패턴 검사 | `bun .vibe-coding/TOOLS/a11y-ux-patterns.ts` |
-| [file-size-patterns.ts](#file-size-patternsts) | 파일 크기 및 복잡도 검사 | `bun .vibe-coding/TOOLS/file-size-patterns.ts` |
-| [fix-bold-issues.ts](#fix-bold-issuests) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
-| [lint-patterns.ts](#lint-patternsts) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
-| [security-patterns.ts](#security-patternsts) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
+| [a11y-ux-patterns](#a11y-ux-patterns) | 접근성 및 UX 패턴 검사 | `bun .vibe-coding/TOOLS/a11y-ux-patterns.ts` |
+| [file-size-patterns](#file-size-patterns) | 파일 크기 및 복잡도 검사 | `bun .vibe-coding/TOOLS/file-size-patterns.ts` |
+| [find-word](#find-word) | 프로젝트 단어/패턴 검색 | `bun .vibe-coding/TOOLS/find-word.ts <패턴>` |
+| [fix-bold-issues](#fix-bold-issues) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
+| [lint-patterns](#lint-patterns) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
+| [security-patterns](#security-patterns) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
 
 ---
 
-## a11y-ux-patterns.ts
+## a11y-ux-patterns
 
 Svelte/HTML/CSS 파일에서 접근성 및 UX 패턴을 검사합니다.
 
@@ -68,7 +69,7 @@ bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --self-test
 
 ---
 
-## file-size-patterns.ts
+## file-size-patterns
 
 파일 크기 및 복잡도를 검사합니다. `AGENTS.md`의 '파일 크기 및 분리 기준'에 따라 분석합니다.
 
@@ -118,7 +119,63 @@ bun .vibe-coding/TOOLS/file-size-patterns.ts --no-report
 
 ---
 
-## fix-bold-issues.ts
+## find-word
+
+프로젝트에서 특정 단어나 패턴을 검색합니다.
+
+### find-word 실행 방법
+
+```bash
+# 단일 단어 검색
+bun .vibe-coding/TOOLS/find-word.ts TODO
+
+# OR 검색 (따옴표 필수)
+bun .vibe-coding/TOOLS/find-word.ts "TODO|FIXME|HACK"
+
+# 특정 경로에서 검색
+bun .vibe-coding/TOOLS/find-word.ts "console\\.log" src/lib
+
+# 정규식 사용
+bun .vibe-coding/TOOLS/find-word.ts "function\\s+\\w+"
+```
+
+### find-word 옵션
+
+| 옵션 | 설명 |
+|------|------|
+| `--case-sensitive, -s` | 대소문자 구분 검색 (기본: 무시) |
+| `--no-color` | 색상 하이라이트 없이 출력 |
+| `--no-report` | 리포트 파일 생성 생략 |
+| `--json` | JSON 형식으로 출력 |
+| `--help` | 도움말 표시 |
+
+### find-word 검색 대상
+
+- TypeScript/JavaScript: `.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs`
+- 프레임워크: `.svelte`, `.vue`, `.html`
+- 스타일: `.css`, `.scss`, `.sass`
+- 설정: `.json`, `.yaml`, `.yml`, `.toml`
+- 문서: `.md`, `.mdx`
+
+### find-word 출력 예시
+
+```plaintext
+🔍 패턴: TODO|FIXME
+대소문자: 무시
+
+검색: 42개 파일 | 매치: 5개 | 파일: 3개
+
+📄 src/lib/utils.ts (2)
+    15: // TODO: 리팩터링 필요
+    28: // FIXME: 엣지 케이스 처리
+
+📄 src/routes/+page.svelte (3)
+     8: <!-- TODO: 반응형 개선 -->
+```
+
+---
+
+## fix-bold-issues
 
 마크다운 파일에서 볼드 파싱 오류를 자동으로 수정합니다.
 
@@ -188,7 +245,7 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts --self-test
 
 ---
 
-## lint-patterns.ts
+## lint-patterns
 
 타입스크립트, Svelte 코드에서 안티패턴을 감지합니다. `elegant-typescript-patterns.md` 문서 기반.
 
@@ -238,7 +295,7 @@ bun .vibe-coding/TOOLS/lint-patterns.ts --errors-only
 
 ---
 
-## security-patterns.ts
+## security-patterns
 
 SvelteKit 2, Svelte 5, TypeScript, UnoCSS, Bun, HTML, CSS 스택에서 보안 취약점 패턴을 탐지합니다.
 

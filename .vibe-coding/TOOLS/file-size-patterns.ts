@@ -446,15 +446,19 @@ function main(): void {
   const targetPath = args.find((arg) => !arg.startsWith("--")) ?? "src";
 
   try {
+    const startTime = performance.now();
     const result = scan(targetPath);
+    const elapsed = performance.now() - startTime;
+    const elapsedStr = elapsed < 1000 ? `${elapsed.toFixed(0)}ms` : `${(elapsed / 1000).toFixed(2)}s`;
     let output: string;
 
     if (jsonOutput) {
-      output = JSON.stringify(result, null, 2);
+      output = JSON.stringify({ ...result, elapsed: elapsedStr }, null, 2);
       console.log(output);
     } else {
       // printResult는 console.log로 출력하므로 별도 처리
       printResult(result, showAll);
+      console.log(`⏱️ 소요 시간: ${elapsedStr}\n`);
       // 리포트용 텍스트 생성
       output = generateReportText(result, showAll);
     }
@@ -467,9 +471,9 @@ function main(): void {
       mkdirSync(reportsDir, { recursive: true });
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
       const reportPath = join(reportsDir, `file-size-report-${timestamp}.txt`);
-      const header = `File Size Report - ${timestamp}\nTarget: ${targetPath}\n${'='.repeat(50)}\n\n`;
+      const header = `File Size Report - ${timestamp}\nTarget: ${targetPath}\nElapsed: ${elapsedStr}\n${'='.repeat(50)}\n\n`;
       writeFileSync(reportPath, header + output, "utf-8");
-      console.log(`\n📝 리포트 저장됨: ${reportPath}`);
+      console.log(`📝 리포트 저장됨: ${reportPath}`);
     }
 
     // 필수/리스크 레벨이 있으면 exit code 1
