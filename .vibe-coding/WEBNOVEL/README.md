@@ -22,6 +22,8 @@ WEBNOVEL/
 ├── phenomena/          # 현상 개별 파일
 │   └── _template.md
 │
+├── draft.txt           # 작가 초고 (선택, 사용 후 내용 삭제)
+│
 └── works/              # 실제 원고
     ├── _template.md
     └── episode-NNNN.md  # 4자리 0패딩 (0001~9999)
