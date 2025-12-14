@@ -28,6 +28,7 @@
     ├── hooks.client.ts
     ├── hooks.server.ts
     ├── service-worker.ts
+    ├── service-worker/            # 서비스 워커 로직 모듈 (service-worker.ts 조립용)
     ├── content/                   # 콘텐츠 디렉토리 (Markdown 등)
     ├── scripts/                   # 빌드 스크립트
     ├── styles/
@@ -44,6 +45,15 @@
         │   └── messages.test.ts
         ├── server/                # 서버 전용 코드 (모노레포 전환 시 apps/api로 이동)
         │   ├── index.ts
+        │   ├── rate-limiter.ts
+        │   ├── hooks/             # SvelteKit 서버 훅 구성 요소 (hooks.server.ts 조립용)
+        │   │   ├── request-id.ts
+        │   │   ├── security-headers.ts
+        │   │   ├── body-size-limit.ts
+        │   │   ├── rate-limit.ts
+        │   │   ├── root-redirect.ts
+        │   │   ├── paraglide-theme-font.ts
+        │   │   └── error-handler.ts
         │   └── services/          # 비즈니스 서비스 레이어
         ├── shared/                # 프론트/백 공유 코드 (모노레포 전환 시 packages/shared로 이동)
         │   ├── index.ts
@@ -70,6 +80,12 @@
         │   ├── CodeBlock.svelte
         │   ├── Footer.svelte
         │   ├── Header.svelte
+        │   ├── typography/          # 스타일 가이드/타이포그래피 테스트 컴포넌트
+        │   │   ├── TypographyCard.svelte
+        │   │   ├── TypographySection.svelte
+        │   │   ├── TypographyPageBasics.svelte
+        │   │   ├── TypographyPageUi.svelte
+        │   │   └── TypographyPageInline.svelte
         │   ├── footer-actions/
         │   │   └── FooterMenu.svelte
         │   ├── header-actions/
@@ -149,7 +165,8 @@
 | `hooks.ts`          | locale 프리픽스 제거 reroute 훅                              |
 | `hooks.client.ts`   | 클라이언트 전용 훅 (브라우저 API, 분석 등)                   |
 | `hooks.server.ts`   | 서버 훅 (테마 쿠키 주입, Paraglide 미들웨어)                 |
-| `service-worker.ts` | PWA 서비스 워커 (캐싱, 오프라인 지원)                        |
+| `service-worker.ts` | PWA 서비스 워커 엔트리 (캐싱, 오프라인 지원)                 |
+| `service-worker/`   | 서비스 워커 로직 모듈 (캐시 전략, 요청 판별, 경로 보정)       |
 
 ### src/styles/
 
@@ -173,6 +190,8 @@
 | `assets/`                                         | 정적 에셋 폴더 (이미지, 아이콘 등)                             |
 | `i18n/messages.test.ts`                           | i18n 메시지 테스트                                             |
 | `server/index.ts`                                 | 서버 전용 코드 진입점 (모노레포 전환 시 apps/api로 이동)       |
+| `server/rate-limiter.ts`                          | IP 기반 Rate Limit 유틸리티                                   |
+| `server/hooks/`                                   | SvelteKit 서버 훅 핸들러 모듈 (hooks.server.ts 조립용)         |
 | `server/services/`                                | 비즈니스 서비스 레이어 (auth, user, payment 등)                |
 | `shared/index.ts`                                 | 프론트/백 공유 코드 진입점 (모노레포 시 packages/shared로 이동)|
 | `shared/types/`                                   | 공용 타입 정의 (ApiResponse, User 등)                          |
@@ -190,6 +209,7 @@
 | `components/CodeBlock.svelte`                     | Shiki 기반 코드 하이라이팅 + 복사 버튼 컴포넌트                |
 | `components/Header.svelte`                        | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯)         |
 | `components/Footer.svelte`                        | 공통 푸터 컴포넌트 (카피라이트, 약관 링크)                     |
+| `components/typography/`                          | 타이포그래피/유틸리티 테스트 섹션 컴포넌트                      |
 | `components/header-actions/ThemeToggle.svelte`    | 테마 토글 버튼                                                 |
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달                                         |
 | `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달                                    |
