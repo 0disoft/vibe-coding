@@ -14,6 +14,7 @@
 | [fix-bold-issues](#fix-bold-issues) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
 | [lint-patterns](#lint-patterns) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
 | [security-patterns](#security-patterns) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
+| [route-audit](#route-audit) | 라우트/내부 링크 정적 점검 | `bun .vibe-coding/TOOLS/route-audit.ts` |
 
 ---
 
@@ -510,3 +511,45 @@ bun .vibe-coding/TOOLS/webnovel-viewer/server.ts --port 3335 --host 127.0.0.1
 | `server.ts` | Bun.serve 기반 API 서버 |
 | `viewer.html` | 프론트엔드 뷰어 |
 | `webnovel.sqlite` | 데이터베이스 파일 (gitignore) |
+
+---
+
+## route-audit
+
+SvelteKit의 `src/routes` 라우트 정의와 프로젝트 내 내부 링크(`/...`)를 비교하여 깨진 링크/라우트 충돌을 탐지합니다.
+
+### route-audit 실행 방법
+
+```bash
+# 기본: 라우트 + 내부 링크 점검 (src/, e2e/)
+bun .vibe-coding/TOOLS/route-audit.ts
+
+# 라우트 수집/충돌만
+bun .vibe-coding/TOOLS/route-audit.ts --routes-only
+
+# 내부 링크 스캔만
+bun .vibe-coding/TOOLS/route-audit.ts --links-only
+
+# 링크 스캔 대상 디렉토리 추가 (예: 콘텐츠 폴더까지 포함)
+bun .vibe-coding/TOOLS/route-audit.ts --scan src/content
+
+# base path가 있는 앱 (예: /myapp 하위에 배포)
+bun .vibe-coding/TOOLS/route-audit.ts --base /myapp
+
+# 특정 prefix 무시 (예: 백엔드 프록시/외부 라우팅)
+bun .vibe-coding/TOOLS/route-audit.ts --ignore-prefix /api --ignore-prefix /products
+
+# JSON 출력
+bun .vibe-coding/TOOLS/route-audit.ts --json
+
+# 디버그 로그 포함 (파일 접근 실패 등)
+bun .vibe-coding/TOOLS/route-audit.ts --verbose
+```
+
+### ignore 파일
+
+`.vibe-coding/TOOLS/route-audit.ignore`에 라인 단위로 prefix를 추가하면 내부 링크 검사에서 제외됩니다.
+
+### 상대 링크 지원
+
+`./foo`, `../bar` 형태의 상대 링크는 `src/routes/**` 내부 파일에서만 제한적으로 해석하여 검사합니다.
