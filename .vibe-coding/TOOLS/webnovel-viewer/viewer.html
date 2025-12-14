@@ -612,7 +612,7 @@
           🔍 필터
           <span class="filter-count" id="filterCount">0</span>
         </div>
-        <button class="clear-filters" id="clearFilters">필터 초기화</button>
+        <button type="button" class="clear-filters" id="clearFilters">필터 초기화</button>
       </div>
       <div class="filter-grid">
         <div class="filter-group">
@@ -728,6 +728,7 @@
       el.themeToggle.textContent = isDark ? '🌙' : '☀️';
       el.themeToggle.setAttribute('aria-pressed', String(isDark));
       el.themeToggle.setAttribute('aria-label', isDark ? '다크 모드' : '라이트 모드');
+      el.themeToggle.setAttribute('title', isDark ? '다크 모드' : '라이트 모드');
     }
 
     el.themeToggle.addEventListener('click', () => {
@@ -815,7 +816,11 @@
         renderCards();
         updateFilterCount();
       } catch (error) {
-        el.cardsGrid.innerHTML = `<div class="error">❌ 로드 실패: ${error.message}</div>`;
+        const errDiv = document.createElement('div');
+        errDiv.className = 'error';
+        errDiv.textContent = `❌ 로드 실패: ${error.message}`;
+        el.cardsGrid.innerHTML = '';
+        el.cardsGrid.appendChild(errDiv);
       }
     }
 
@@ -875,7 +880,7 @@
       el.detailPanel.style.display = 'flex';
 
       try {
-        const detail = await fetchApi(`/api/elements/${slug}`);
+        const detail = await fetchApi(`/api/elements/${encodeURIComponent(slug)}`);
         el.detailTitle.textContent = detail.display_name;
 
         el.detailContent.innerHTML = `
@@ -899,17 +904,37 @@
         renderCards();
         // 복사 버튼 설정
         setupCopyButton(detail.raw_content);
+
+        // 접근성: 패널 열린 후 닫기 버튼으로 포커스 이동
+        setTimeout(() => el.detailClose.focus(), 0);
+
+        // 모바일 UX: 패널 열릴 때 body 스크롤 막기
+        if (window.innerWidth <= 1024) {
+          document.body.style.overflow = 'hidden';
+        }
       } catch (error) {
-        el.detailContent.innerHTML = `<div class="error">❌ 로드 실패: ${error.message}</div>`;
+        const errDiv = document.createElement('div');
+        errDiv.className = 'error';
+        errDiv.textContent = `❌ 로드 실패: ${error.message}`;
+        el.detailContent.innerHTML = '';
+        el.detailContent.appendChild(errDiv);
       }
     }
 
     // 상세 닫기
     function closeDetail() {
+      const prevSlug = selectedSlug;
       selectedSlug = null;
       el.mainContent.classList.remove('with-detail');
       el.detailPanel.style.display = 'none';
+      // 모바일 UX: body 스크롤 복원
+      document.body.style.overflow = '';
       renderCards();
+      // 접근성: 이전 선택 카드로 포커스 복원
+      if (prevSlug) {
+        const card = el.cardsGrid.querySelector(`[data-slug="${CSS.escape(prevSlug)}"]`);
+        if (card) card.focus();
+      }
     }
 
     el.detailClose.addEventListener('click', closeDetail);
@@ -937,8 +962,8 @@
 
     // 유틸리티
     function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>"']/g, char => ({
+      if (str == null) return '';
+      return String(str).replace(/[&<>"']/g, char => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       })[char]);
     }
