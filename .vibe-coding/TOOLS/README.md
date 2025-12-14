@@ -452,6 +452,15 @@ bun .vibe-coding/TOOLS/webnovel-viewer/sync.ts
 bun .vibe-coding/TOOLS/webnovel-viewer/server.ts
 ```
 
+> **주의**: `sync.ts`는 엄격 모드로 동작합니다. `characters/`, `objects/`, `phenomena/` 폴더 중 하나라도 없으면 에러로 중단됩니다.
+
+### webnovel-viewer 환경변수
+
+| 변수 | 기본값 | 설명 |
+|------|--------|------|
+| `WEBNOVEL_VIEWER_PORT` | `3334` | 서버 포트 |
+| `WEBNOVEL_VIEWER_HOST` | `127.0.0.1` | 바인딩 주소 (보안상 localhost 고정) |
+
 ### webnovel-viewer 주요 기능
 
 - **필터링**: 유형(캐릭터/사물/현상), 역할, 태그, 등장화
@@ -464,11 +473,27 @@ bun .vibe-coding/TOOLS/webnovel-viewer/server.ts
 
 | 엔드포인트 | 설명 |
 |------------|------|
-| `GET /api/elements` | 요소 목록 (필터/정렬 지원) |
+| `GET /api/elements` | 요소 목록 (필터/정렬/페이지네이션 지원) |
 | `GET /api/elements/:slug` | 요소 상세 |
 | `GET /api/episodes` | 에피소드 목록 |
 | `GET /api/stats` | 통계 (총 개수, 유형별 개수) |
 | `GET /api/options` | 필터 드롭다운 옵션 |
+
+### webnovel-viewer 쿼리 파라미터
+
+`/api/elements` 엔드포인트는 다음 파라미터를 지원합니다:
+
+| 파라미터 | 설명 | 예시 |
+|------------|------|------|
+| `type` | 유형 필터 | `?type=character` |
+| `role` | 역할 필터 | `?role=주연` |
+| `first_appear` | 등장화 필터 | `?first_appear=1` |
+| `tag` | 태그 필터 (정확 매칭) | `?tag=태그1` |
+| `q` | 키워드 검색 (200자 제한) | `?q=검색어` |
+| `sort` | 정렬 기준 | `?sort=display_name` |
+| `order` | 정렬 방향 | `?order=desc` |
+| `limit` | 최대 개수 (기본 1000, 상한 2000) | `?limit=50` |
+| `offset` | 오프셋 | `?offset=100` |
 
 ### webnovel-viewer 파일 구조
 
