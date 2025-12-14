@@ -11,14 +11,18 @@ import { DB_PATH } from "./db";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const VIEWER_PATH = join(__dirname, "viewer.html");
 
-// 포트 설정
-const PORT = parseInt(process.env.PORT || "3334", 10);
+// 포트 설정 (유효성 검증 포함)
+const portRaw = parseInt(process.env.WEBNOVEL_VIEWER_PORT || process.env.PORT || "3334", 10);
+const PORT = Number.isFinite(portRaw) && portRaw >= 1 && portRaw <= 65535 ? portRaw : 3334;
+// 호스트 설정 (기본 localhost, 전용 환경변수로만 열기)
+const HOSTNAME = process.env.WEBNOVEL_VIEWER_HOST || "127.0.0.1";
 
 /**
  * DB 연결 (읽기 전용)
  */
 function getDb(): Database {
   const db = new Database(DB_PATH, { readonly: true });
+  db.run("PRAGMA foreign_keys = ON;");
   db.run("PRAGMA busy_timeout = 3000;");
   return db;
 }
@@ -31,7 +35,6 @@ function jsonResponse(data: unknown, status = 200): Response {
     status,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
       "Cache-Control": "no-store",
     },
   });
@@ -53,9 +56,8 @@ function methodNotAllowed(): Response {
     status: 405,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
       "Cache-Control": "no-store",
-      Allow: "GET, OPTIONS",
+      Allow: "GET",
     },
   });
 }
@@ -72,10 +74,11 @@ function notFound(): Response {
  */
 function buildElementsQuery(params: URLSearchParams): {
   sql: string;
-  bindings: Record<string, unknown>;
+  bindings: Record<string, string | number>;
+  error?: string;
 } {
   const conditions: string[] = [];
-  const bindings: Record<string, unknown> = {};
+  const bindings: Record<string, string | number> = {};
 
   // 유형 필터
   const type = params.get("type");
@@ -91,18 +94,22 @@ function buildElementsQuery(params: URLSearchParams): {
     bindings.$role = role;
   }
 
-  // 등장화 필터
-  const firstAppear = params.get("first_appear");
-  if (firstAppear) {
+  // 등장화 필터 (숫자 검증)
+  const firstAppearRaw = params.get("first_appear");
+  if (firstAppearRaw) {
+    const firstAppearNum = parseInt(firstAppearRaw, 10);
+    if (Number.isNaN(firstAppearNum) || firstAppearNum <= 0) {
+      return { sql: "", bindings: {}, error: "first_appear는 양의 정수여야 합니다" };
+    }
     conditions.push("e.first_appear = $firstAppear");
-    bindings.$firstAppear = parseInt(firstAppear, 10);
+    bindings.$firstAppear = firstAppearNum;
   }
 
-  // 태그 필터
-  const tag = params.get("tag");
+  // 태그 필터 (정확한 매칭: 공백 제거 후 ,tag, 패턴)
+  const tag = params.get("tag")?.trim();
   if (tag) {
-    conditions.push("e.tags LIKE $tag");
-    bindings.$tag = `%${tag}%`;
+    conditions.push("(',' || REPLACE(e.tags, ' ', '') || ',') LIKE $tag");
+    bindings.$tag = `%,${tag},%`;
   }
 
   // 키워드 검색 (200자 제한)
@@ -114,21 +121,39 @@ function buildElementsQuery(params: URLSearchParams): {
 
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
-  // 정렬
-  const sort = params.get("sort") || "first_appear";
+  // 정렬 (정규화된 sortKey로 분기)
+  const sortRaw = params.get("sort") || "first_appear";
   const order = params.get("order") === "desc" ? "DESC" : "ASC";
-  const validSorts = ["first_appear", "display_name", "type"];
-  const sortColumn = validSorts.includes(sort)
-    ? sort === "type"
-      ? "t.display_name"
-      : `e.${sort}`
-    : "e.first_appear";
+  const validSorts = ["first_appear", "display_name", "type"] as const;
+  type SortKey = (typeof validSorts)[number];
+  const sortKey: SortKey = validSorts.includes(sortRaw as SortKey)
+    ? (sortRaw as SortKey)
+    : "first_appear";
+  const sortColumn = sortKey === "type" ? "t.display_name" : `e.${sortKey}`;
 
-  // NULL 처리
+  // NULL 처리 (정규화된 sortKey 기준)
   const orderClause =
-    sort === "first_appear"
+    sortKey === "first_appear"
       ? `ORDER BY e.first_appear IS NULL, ${sortColumn} ${order}`
       : `ORDER BY ${sortColumn} ${order}`;
+
+  // 페이지네이션 (limit: 1~2000, offset: 0~)
+  const limitRaw = params.get("limit");
+  const offsetRaw = params.get("offset");
+  let limit = 1000; // 기본값 (웹소설 도구는 데이터가 작으므로 충분)
+  let offset = 0;
+  if (limitRaw) {
+    const parsed = parseInt(limitRaw, 10);
+    if (!Number.isNaN(parsed) && parsed > 0) {
+      limit = Math.min(parsed, 2000); // 상한 2000
+    }
+  }
+  if (offsetRaw) {
+    const parsed = parseInt(offsetRaw, 10);
+    if (!Number.isNaN(parsed) && parsed >= 0) {
+      offset = parsed;
+    }
+  }
 
   const sql = `
     SELECT 
@@ -138,7 +163,10 @@ function buildElementsQuery(params: URLSearchParams): {
     LEFT JOIN element_types t ON e.type_id = t.id
     ${whereClause}
     ${orderClause}
+    LIMIT $limit OFFSET $offset
   `;
+  bindings.$limit = limit;
+  bindings.$offset = offset;
 
   return { sql, bindings };
 }
@@ -148,21 +176,15 @@ function buildElementsQuery(params: URLSearchParams): {
  */
 void Bun.serve({
   port: PORT,
+  hostname: HOSTNAME,
 
   async fetch(req: Request) {
     const url = new URL(req.url);
     const path = url.pathname;
 
-    // CORS preflight
+    // OPTIONS 요청은 405 반환 (CORS 불필요 - same-origin)
     if (req.method === "OPTIONS") {
-      return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Max-Age": "600",
-        },
-      });
+      return methodNotAllowed();
     }
 
     // 정적 파일: viewer.html
@@ -181,8 +203,12 @@ void Bun.serve({
       if (req.method !== "GET") return methodNotAllowed();
       const db = getDb();
       try {
-        const { sql, bindings } = buildElementsQuery(url.searchParams);
-        const elements = db.query(sql).all(bindings as unknown as import("bun:sqlite").SQLQueryBindings);
+        const result = buildElementsQuery(url.searchParams);
+        // 입력 검증 에러 처리
+        if (result.error) {
+          return jsonResponse({ error: result.error }, 400);
+        }
+        const elements = db.query(result.sql).all(result.bindings);
         return jsonResponse(elements);
       } catch (e) {
         return errorResponse((e as Error).message);
@@ -194,7 +220,16 @@ void Bun.serve({
     // API: 요소 상세
     if (path.startsWith("/api/elements/")) {
       if (req.method !== "GET") return methodNotAllowed();
-      const slug = path.split("/").pop();
+      const slugRaw = path.split("/").pop();
+      if (!slugRaw) return notFound();
+
+      // slug 디코딩 및 검증 (길이 200자 제한)
+      let slug: string;
+      try {
+        slug = decodeURIComponent(slugRaw).trim().slice(0, 200);
+      } catch {
+        return jsonResponse({ error: "잘못된 slug 형식입니다" }, 400);
+      }
       if (!slug) return notFound();
 
       const db = getDb();
@@ -295,13 +330,16 @@ void Bun.serve({
           "SELECT DISTINCT first_appear FROM elements WHERE first_appear IS NOT NULL ORDER BY first_appear"
         ).all();
 
-        // 태그 수집 (쉼표 분리된 태그 파싱)
+        // 태그 수집 (쉼표 분리된 태그 파싱, 빈 문자열 제외)
         const allTags = db.query<{ tags: string; }, []>(
           "SELECT DISTINCT tags FROM elements WHERE tags IS NOT NULL"
         ).all();
         const tagSet = new Set<string>();
         for (const row of allTags) {
-          row.tags.split(",").forEach((t) => tagSet.add(t.trim()));
+          for (const t of row.tags.split(",")) {
+            const cleaned = t.trim();
+            if (cleaned) tagSet.add(cleaned);
+          }
         }
 
         return jsonResponse({
@@ -321,11 +359,17 @@ void Bun.serve({
   },
 });
 
+// 접속 URL 안내 (바인딩 주소 반영)
+const displayHost = HOSTNAME === "0.0.0.0" ? "localhost" : HOSTNAME;
+const bindingNote = HOSTNAME === "0.0.0.0"
+  ? `   (바인딩: ${HOSTNAME} - 접속은 localhost 또는 로컬 IP 사용)\n`
+  : "";
+
 console.log(`
 🚀 Webnovel Viewer 서버 실행 중!
 
-   로컬:  http://localhost:${PORT}
-
+   로컬:  http://${displayHost}:${PORT}
+${bindingNote}
    API 엔드포인트:
    - GET /api/elements       요소 목록 (필터/정렬 지원)
    - GET /api/elements/:slug 요소 상세

@@ -5,9 +5,11 @@
 import { readdir } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+
 import {
   type ElementEntry,
-  clearAllData,
+  DB_PATH,
+  deleteAllRows,
   getTypeId,
   initDatabase,
   upsertElement,
@@ -27,17 +29,19 @@ const TYPE_FOLDERS = [
 
 /**
  * 마크다운 테이블에서 키-값 추출
- * | **키** | 값 | 형식 파싱
+ * | **키** | 값 | 또는 | 키 | 값 | 형식 파싱 (볼드 선택적)
  */
 function parseMarkdownTable(content: string): Map<string, string> {
   const result = new Map<string, string>();
   const lines = content.split("\n");
 
   for (const line of lines) {
-    // 테이블 행 패턴: | **키** | 값 |
-    const match = line.match(/^\|\s*\*\*(.+?)\*\*\s*\|\s*(.+?)\s*\|/);
+    // 테이블 행 패턴: | **키** | 값 | 또는 | 키 | 값 | (볼드 선택적)
+    const match = line.match(/^\|\s*(?:\*\*)?(.+?)(?:\*\*)?\s*\|\s*(.+?)\s*\|/);
     if (match) {
       const key = match[1].trim();
+      // 구분선 행(| --- |, | :--- |, | ---: | 등) 스킵
+      if (/^:?-+:?$/.test(key)) continue;
       const value = match[2].trim();
       result.set(key, value);
     }
@@ -52,7 +56,10 @@ function parseMarkdownTable(content: string): Map<string, string> {
 function parseFirstAppear(value: string | undefined): number | null {
   if (!value || value === "(몇 화에서 등장)" || value === "(작성 예정)") return null;
   const match = value.match(/(\d+)/);
-  return match ? parseInt(match[1], 10) : null;
+  if (!match) return null;
+  const num = parseInt(match[1], 10);
+  // DB CHECK (first_appear > 0) 정합성 유지
+  return num > 0 ? num : null;
 }
 
 /**
@@ -61,7 +68,9 @@ function parseFirstAppear(value: string | undefined): number | null {
 function parseTags(value: string | undefined): string | null {
   if (!value || value.startsWith("(예:") || value === "(작성 예정)") return null;
   const tags = value.match(/#([^\s#]+)/g);
-  return tags ? tags.map((t) => t.slice(1)).join(",") : null;
+  if (!tags) return null;
+  // 태그 끝 구두점 제거 (, . ) ] 등)
+  return tags.map((t) => t.slice(1).replace(/[,.)\]]+$/, "").trim()).filter(Boolean).join(",") || null;
 }
 
 /**
@@ -113,23 +122,27 @@ async function parseElementsInFolder(
   folderPath: string,
   typeId: number
 ): Promise<ElementEntry[]> {
-  const entries: ElementEntry[] = [];
-
   try {
     const files = await readdir(folderPath);
-    for (const file of files) {
-      if (!file.endsWith(".md")) continue;
+    const mdFiles = files.filter((f) => f.endsWith(".md"));
 
-      const filePath = join(folderPath, file);
-      const entry = await parseElementFile(filePath, typeId);
-      if (entry) entries.push(entry);
-    }
+    // 병렬로 모든 파일 파싱 (I/O 대기 시간 최소화)
+    const results = await Promise.all(
+      mdFiles.map((file) => parseElementFile(join(folderPath, file), typeId))
+    );
+
+    // null 제외한 유효한 엔트리만 반환
+    return results.filter((entry): entry is ElementEntry => entry !== null);
   } catch (e) {
-    // 폴더가 없으면 무시
-    console.log(`  (폴더 없음: ${folderPath})`);
+    // 폴더 없음은 데이터 손실 위험이 있으므로 throw (엄격 모드)
+    if ((e as NodeJS.ErrnoException).code === "ENOENT") {
+      throw new Error(
+        `❌ 필수 폴더가 없습니다: ${folderPath}\n` +
+        `   폴더를 생성하거나 경로를 확인하세요.`
+      );
+    }
+    throw e;
   }
-
-  return entries;
 }
 
 /**
@@ -161,8 +174,8 @@ async function parseEpisodes(): Promise<{ num: number; summary: string; }[]> {
       continue;
     }
 
-    // 줄거리 섹션 시작
-    if (line.includes("줄거리")) {
+    // 줄거리 섹션 시작 (### 줄거리 헤딩만 매칭)
+    if (/^###\s*줄거리\b/.test(line)) {
       inSummary = true;
       continue;
     }
@@ -197,35 +210,43 @@ async function main() {
   console.log("📦 데이터베이스 초기화 완료");
 
   try {
-    // 기존 데이터 삭제
-    clearAllData(db);
-    console.log("🗑️  기존 데이터 삭제 완료\n");
-
-    // 요소 동기화
-    let totalElements = 0;
+    // 요소 파싱 (트랜잭션 밖에서 수행 - I/O 완료 후 DB 삭제+삽입 원자적 처리)
+    const allElements: { folder: string; elements: ElementEntry[]; }[] = [];
     for (const { folder, type } of TYPE_FOLDERS) {
       const typeId = getTypeId(db, type);
       if (!typeId) {
-        console.error(`유형 ID를 찾을 수 없음: ${type}`);
-        continue;
+        throw new Error(
+          `❌ 유형 ID를 찾을 수 없음: ${type}\n` +
+          `   다음 파일을 삭제 후 재동기화하세요:\n` +
+          `   "${DB_PATH}"`
+        );
       }
 
       const folderPath = join(WEBNOVEL_PATH, folder);
       const elements = await parseElementsInFolder(folderPath, typeId);
+      allElements.push({ folder, elements });
+    }
 
-      for (const element of elements) {
-        upsertElement(db, element);
+    const episodes = await parseEpisodes();
+
+    // 트랜잭션으로 삭제+삽입 일괄 처리 (원자성 보장, 성능 향상)
+    let totalElements = 0;
+    db.transaction(() => {
+      // 기존 데이터 삭제 (트랜잭션 안에서 수행)
+      deleteAllRows(db);
+
+      for (const { folder, elements } of allElements) {
+        for (const element of elements) {
+          upsertElement(db, element);
+        }
+        console.log(`  ✅ ${folder}: ${elements.length}개`);
+        totalElements += elements.length;
       }
 
-      console.log(`  ✅ ${folder}: ${elements.length}개`);
-      totalElements += elements.length;
-    }
-
-    // 에피소드 동기화
-    const episodes = await parseEpisodes();
-    for (const ep of episodes) {
-      upsertEpisode(db, ep.num, ep.summary);
-    }
+      for (const ep of episodes) {
+        upsertEpisode(db, ep.num, ep.summary);
+      }
+    })();
     console.log(`\n  ✅ episodes: ${episodes.length}개`);
 
     console.log(`\n🎉 동기화 완료! 총 ${totalElements}개 요소, ${episodes.length}개 에피소드`);

@@ -868,6 +868,15 @@
       });
     }
 
+    // 카드 active 상태만 업데이트 (스크롤 위치 보존)
+    function updateActiveCard(newSlug) {
+      el.cardsGrid.querySelectorAll('.element-card').forEach(card => {
+        const isActive = card.dataset.slug === newSlug;
+        card.classList.toggle('active', isActive);
+        card.setAttribute('aria-pressed', String(isActive));
+      });
+    }
+
     // 상세 보기
     async function showDetail(slug) {
       if (selectedSlug === slug) {
@@ -878,6 +887,11 @@
       selectedSlug = slug;
       el.mainContent.classList.add('with-detail');
       el.detailPanel.style.display = 'flex';
+
+      // 딜 링킹: URL 업데이트
+      const url = new URL(window.location.href);
+      url.searchParams.set('slug', slug);
+      history.pushState({ slug }, '', url);
 
       try {
         const detail = await fetchApi(`/api/elements/${encodeURIComponent(slug)}`);
@@ -900,8 +914,8 @@
           </div>
         `;
 
-        // 카드 active 상태 업데이트
-        renderCards();
+        // 카드 active 상태 업데이트 (전체 렌더링 없이 스크롤 보존)
+        updateActiveCard(slug);
         // 복사 버튼 설정
         setupCopyButton(detail.raw_content);
 
@@ -929,7 +943,12 @@
       el.detailPanel.style.display = 'none';
       // 모바일 UX: body 스크롤 복원
       document.body.style.overflow = '';
-      renderCards();
+      // 카드 active 상태 업데이트 (전체 렌더링 없이 스크롤 보존)
+      updateActiveCard(null);
+      // 딜 링킹: URL에서 slug 제거
+      const url = new URL(window.location.href);
+      url.searchParams.delete('slug');
+      history.pushState({}, '', url);
       // 접근성: 이전 선택 카드로 포커스 복원
       if (prevSlug) {
         const card = el.cardsGrid.querySelector(`[data-slug="${CSS.escape(prevSlug)}"]`);
@@ -1013,7 +1032,23 @@
       await loadOptions();
       await loadStats();
       await loadElements();
+
+      // 딜 링킹: URL에서 slug 확인 후 상세 패널 열기
+      const urlParams = new URLSearchParams(window.location.search);
+      const slugFromUrl = urlParams.get('slug');
+      if (slugFromUrl) {
+        showDetail(slugFromUrl);
+      }
     }
+
+    // 브라우저 뒤로가기/앞으로가기 지원
+    window.addEventListener('popstate', (e) => {
+      if (e.state?.slug) {
+        showDetail(e.state.slug);
+      } else if (selectedSlug) {
+        closeDetail();
+      }
+    });
 
     init();
   </script>
