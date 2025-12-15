@@ -220,6 +220,31 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
 
 ---
 
+## [Playwright / E2E]
+
+### 1. webServer 빌드 타임아웃으로 E2E 실행 실패
+
+- **증상:** `bun run test:e2e` 실행 시 `Error: Timed out waiting ... from config.webServer.` 에러로 실패함.
+- **원인:** Playwright의 `webServer`가 `bun run build` + `bun run preview`를 준비하는 동안, 설정된 timeout 안에 준비가 완료되지 못함. (Windows/초기 캐시/빌드 부하 등에 따라 편차가 큼)
+- **해결:** `playwright.config.ts`의 `webServer.timeout`을 늘려 빌드 준비 시간을 확보함.
+- **적용 시점:** E2E가 “서버 기동 단계”에서 간헐적으로 타임아웃 나는 경우.
+
+### 2. 라벨 중복으로 인한 잘못된 요소 선택 (Selector 충돌)
+
+- **증상:** `aria-haspopup="menu"` 등 특정 ARIA 계약을 기대했는데, 실제로는 빈 값/다른 값이 잡히며 테스트가 실패함.
+- **원인:** 같은 accessible name(예: `Open menu`)을 가진 버튼이 헤더/본문에 동시에 존재할 때, `getByRole(...).first()`가 의도하지 않은 요소(예: 헤더의 모바일 메뉴 버튼)를 선택할 수 있음.
+- **해결:** 테스트 selector를 lab 영역으로 스코프하거나(예: `data-ds-theme="light"`), 고유한 식별자(test id 등)를 부여해 충돌을 제거함.
+- **적용 시점:** 라벨이 중복될 수 있는 페이지에서 role/name 기반 selector를 사용할 때.
+
+### 3. Hydration/준비 이전 실행으로 인한 플래키(간헐 실패)
+
+- **증상:** 클릭/호버를 했는데 `dialog[open]`이 나타나지 않거나, tooltip이 열리지 않는 등 테스트가 간헐적으로 실패함.
+- **원인:** lab 페이지의 일부 로직이 `onMount` 이후에만 동작하는데, E2E가 hydration 완료 전에 상호작용을 시작하면 이벤트/상태가 기대대로 반영되지 않을 수 있음.
+- **해결:** `onMount` 시점에 `html[data-ds-lab-ready="1"]` 같은 준비 플래그를 세팅하고, 테스트는 해당 플래그를 기다린 뒤 상호작용을 수행함.
+- **적용 시점:** SvelteKit/Svelte 5에서 `onMount` 기반 초기화가 있는 페이지를 E2E로 안정적으로 검증해야 할 때.
+
+---
+
 ## [UI / UX / RTL]
 
 ### 1. 모바일 메뉴 RTL(아랍어) 호환성 및 유령 레이어 버그

@@ -5,12 +5,15 @@
 ## 어디에 무엇이 있나
 
 - 토큰(스코프, generated): `src/styles/design-system-lab.tokens.css`
+- 토큰(전역, generated): `src/styles/design-system.tokens.css`
 - 토큰 SSOT(DTCG-ish): `.vibe-coding/TOOLS/design-system/tokens.dtcg.json`
 - 토큰 동기화 도구: `.vibe-coding/TOOLS/design-system/dtcg-sync.ts`
 - 검증 페이지: `src/routes/lab/design-system/+page.svelte`
 - DEV 전용 가드: `src/routes/lab/+layout.server.ts`
-- lab UI 컴포넌트: `src/lib/components/lab/design-system/*`
-- lab 컴포넌트/패턴 스타일: `src/styles/design-system-lab.css`
+- 디자인 시스템 컴포넌트(프로덕션 기준): `src/lib/components/design-system/*`
+- lab 컴포넌트 엔트리(re-export 전용): `src/lib/components/lab/design-system/index.ts`
+- 공통 패턴 스타일(프로덕션 기준): `src/styles/design-system.css`
+- lab 전용 데모/레이아웃 스타일: `src/styles/design-system-lab.css`
 - 토큰 매니페스트 생성기: `.vibe-coding/TOOLS/design-system/tokens-manifest.ts`
 - 생성 산출물: `.vibe-coding/TOOLS/design-system/TOKENS.md`, `.vibe-coding/TOOLS/design-system/tokens.manifest.json`
 - 컴포넌트 스펙: `.vibe-coding/TOOLS/design-system/SPECS.md`
@@ -20,16 +23,17 @@
 1. 개발 서버 실행
 
    ```bash
-   bun dev
+    bun dev
    ```
 
 2. 브라우저에서 확인
 
    ```bash
-   /lab/design-system
+    /lab/design-system
    ```
 
-> 이 라우트는 DEV 환경에서만 열립니다. 프로덕션에서는 404가 나도록 막혀 있습니다.
+> 이 라우트는 기본적으로 DEV 환경에서만 열립니다.
+> 예외적으로 `LAB_ENABLED=1`이면 DEV가 아니어도 열리도록 허용합니다. (`src/routes/lab/+layout.server.ts` 기준)
 
 ## 시각 회귀 테스트(선택)
 
@@ -62,8 +66,23 @@ A11Y=1 bun run test:e2e -- e2e/design-system-lab.a11y.spec.ts --project=Desktop
 ## 운영 원칙
 
 - lab 토큰은 **`.ds-lab` 컨테이너 내부에서만** 적용합니다.
-- 값(OKLCH)은 실험용입니다. 합의/검증이 끝난 뒤에만 `src/styles/tokens.css`로 승격합니다.
+- 값(OKLCH)은 실험용입니다. 합의/검증이 끝난 뒤에만 전역 토큰(`src/styles/design-system.tokens.css`) 또는 기존 토큰 레이어로 승격합니다.
 - 시맨틱 컬러 유틸(예: `bg-primary`)은 `uno.config.ts`의 매핑을 통해 **canonical(`--color-*`)** 을 참조합니다. (클래스 이름은 유지, 내부 참조 변수만 통일)
+- lab 컴포넌트는 “실험용 구현”이 아니라 “검증 UI에서 쓰기 위한 엔트리”입니다. 구현은 `src/lib/components/design-system/`를 단일 소스로 둡니다.
+
+## 토큰 계층 / 규칙(요약)
+
+`design-system-guide.md`의 핵심 규칙을 최소만 요약합니다.
+
+- 원시(Primitive): `--raw-*` 등, 리터럴에 가까운 값 (팔레트/기본 값)
+- 시맨틱(Semantic): `--color-*`, `--font-size-*` 등, 역할 기반 값 (테마 전환은 여기서 처리)
+- 컴포넌트(Component): `--button-*`, `--input-*` 등, 내부 미세 조정용 (필요할 때만)
+
+규칙:
+
+- 컴포넌트는 원시 토큰을 직접 참조하지 않고, 시맨틱/컴포넌트 토큰만 사용합니다.
+- 오버라이드 우선순위는 “테마(시맨틱 값) → 컴포넌트 토큰 → 인스턴스(style)” 순으로 제한합니다.
+- 원시 토큰 값 변경은 영향이 크므로, 합의/RFC 성격의 작업으로 취급합니다.
 
 ## 체크리스트 (최소)
 
@@ -78,6 +97,7 @@ A11Y=1 bun run test:e2e -- e2e/design-system-lab.a11y.spec.ts --project=Desktop
 1. lab 토큰을 `src/styles/tokens.css`(또는 별도 토큰 레이어)로 이동
 2. 필요한 경우 `uno.config.ts` 시맨틱 토큰 유틸리티 목록 동기화
 3. 기존 화면 중 1~2곳에만 점진 적용 후 회귀 확인
+4. 컴포넌트 승격 시 `src/lib/components/design-system/`에 구현을 두고, lab 엔트리는 re-export만 남깁니다.
 
 ## 토큰 매니페스트 생성
 

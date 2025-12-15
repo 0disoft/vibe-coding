@@ -60,7 +60,11 @@
 
 	/* Fallback: 최신 CSS(sqrt) 미지원 브라우저용 (vh-factor 제외, fs-scale 포함) */
 	font-size: calc(14.7692px * var(--fs-scale));
-	font-size: calc(19.6842px * var(--fs-scale) * var(--vh-factor));
+
+	/* 최신 브라우저: vh-factor 포함 */
+	@supports (font-size: calc(1px * sqrt(1))) {
+		font-size: calc(19.6842px * var(--fs-scale) * var(--vh-factor));
+	}
 
 	/* 색상 토큰은 `src/styles/design-system.tokens.css`에서 관리합니다. */
 }
