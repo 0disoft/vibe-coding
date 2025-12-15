@@ -2,11 +2,154 @@
 
 > 복잡한 작업의 세부 계획을 기록하고 추적하는 공간입니다.
 > `AGENTS.md`의 [기본 운영 원칙]에 따라 복잡한 요청 시 이 문서를 활용합니다.
+> 참고: `.vibe-coding/.suggestions.txt`의 제안 사항이 반영되었습니다.
 
-## 현재 작업
+## 작업 배경 및 목적
 
-- (없음)
+이 프로젝트는 현재 **디자인 시스템(DS) 고도화 및 전면 적용** 단계에 있습니다. 초기 개발 단계에서 파편화된 UI 구현체들을 표준 DS 컴포넌트로 통합하고, DS 컴포넌트 자체의 품질(접근성, SSR 안전성, 확장성)을 강화하는 것이 핵심 목표입니다.
 
-## 작업 후보 목록 (다음 액션)
+**왜 이 작업을 하는가?**
 
-- (없음)
+1. **일관성 (Consistency)**: `header-actions`, `footer` 등에서 개별적으로 구현된 커스텀 드롭다운/버튼을 DS 컴포넌트로 교체하여 UI/UX 통일성을 확보합니다.
+2. **품질 (Quality)**: 개별 구현체에서 놓치기 쉬운 **웹 접근성(A11y)**, **키보드 네비게이션**, **SSR ID 안정성** 등을 DS 수준에서 보장합니다.
+3. **생산성 (Productivity)**: 강력하고 유연한 기초 컴포넌트(`DsDropdown`, `DsInput` 등)를 제공하여 향후 기능 개발 시 UI 구현 비용을 절감합니다.
+4. **유지보수 (Maintainability)**: 스타일과 동작 로직을 중앙에서 관리하여, 디자인 변경이나 버그 수정 시 전역 반영이 용이하도록 합니다.
+
+## 현재 작업: 디자인 시스템 컴포넌트 개선
+
+전체 13개 DS 컴포넌트를 검토하여 기능 추가 및 개선이 필요한 부분을 정리합니다.
+
+## 0. 공통 아키텍처 및 정책 개선 (우선순위 높음)
+
+- [ ] **SSR/하이드레이션 안전한 ID 정책**: 랜덤 ID 생성 로직을 `onMount` 이후 수행하거나 `useId` 패턴 도입하여 서버/클라이언트 불일치 방지
+- [ ] **제어형 상태 유틸**: `open`/`onOpenChange` 패턴을 위한 `createControllableState` 유틸 도입 (Dropdown, Tooltip, Dialog 공통)
+- [ ] **타입/Intent 통일**: `danger`를 `error`로 통합하고, `Intent`, `Size`, `Variant` 타입을 공통 정의 (`types.ts`)로 분리
+- [ ] **스니펫 네이밍 표준화**: 본문은 `children`, 그 외는 `trigger`, `header`, `footer`, `start` (좌측), `end` (우측) 등으로 통일
+
+---
+
+## 1. DsDropdown 확장 ⭐ (우선순위 높음)
+
+커스텀 드롭다운 4개를 DS로 마이그레이션하기 위한 확장.
+
+### Phase 1: 핵심 확장 (안전성 및 계약)
+
+- [ ] `trigger` 슬롯 구현 - `TriggerProps` (id, aria-controls, aria-expanded, handlers) 제공 계약 명시
+- [ ] `itemSelector` prop - 키보드 탐색 대상 커스터마이징
+- [ ] `align` prop - `start` | `end`. CSS `data-ds-align` 속성으로 처리 추천
+- [ ] `disabled` prop - 트리거 비활성화 처리
+- [ ] **SSR ID 안정화** - triggerId/menuId 생성 로직 개선
+
+### Phase 2: 레이아웃 및 모드
+
+- [ ] `items` vs `children` 모드 분리 - Union Props로 명확한 타입 정의
+- [ ] `maxHeight` prop - CSS 변수(`--dropdown-max-height`) 활용 + `overflow: auto`
+- [ ] `menuClass` prop - 메뉴 컨테이너 스타일링 (Grid 등)
+
+### Phase 3: 동작 및 역할
+
+- [ ] `closeOnSelect` prop
+- [ ] `haspopup` prop - `menu` (액션) vs `listbox` (선택) 역할 분리 고려
+  - *참고: 폼 선택 목적은 별도 `DsSelect` 컴포넌트로 분리 권장*
+
+### Phase 4: 슬롯 확장
+
+- [ ] `header` / `footer` 슬롯
+
+---
+
+## 2. DsButton / IconButton / LinkButton 개선
+
+### 기능 확장
+
+- [ ] `leftIcon` / `rightIcon` 대신 `start` / `end` 스니펫 지원 (확장성 확보)
+- [ ] `fullWidth` prop - `data-ds-full-width="true"` 속성으로 처리
+- [ ] **Loading UX 개선** - `loadingText` 외에 스피너 아이콘(`loader-circle`) 기본 제공 옵션 추가, `aria-disabled` 유지
+
+---
+
+## 3. DsDialog 개선
+
+### 정책 분리 및 접근성
+
+- [ ] `closeOnOutsideClick` / `closeOnEscape` 독립 옵션화
+- [ ] **닫힘 후 포커스 복귀** - `returnFocusTo` 옵션 또는 이전 `activeElement` 자동 복귀 로직 구현
+- [ ] `scrollable` prop - Header/Footer 고정, Body만 스크롤 구조 (`max-height` 토큰 활용)
+- [ ] `size` prop
+
+---
+
+## 4. DsTooltip 개선
+
+### 구조 개선
+
+- [ ] `placement` 세분화 - 정렬 축(`side`, `align`) 분리 고려 또는 `top-start` 등 조합형 지원
+- [ ] `arrow` prop - CSS 변수(`--tooltip-arrow-size`) 기반 토큰화
+- [ ] **Interactive Tooltip** - 툴팁 내 상호작용 필요 시 `DsPopover`로 분리 검토
+
+---
+
+## 5. DsCard 개선
+
+- [ ] `padding`, `radius` 토큰화 - `data-ds-padding` 등을 통해 CSS 변수 제어 (`--card-padding`)
+- [ ] `variant` prop
+- [ ] `header` / `footer` 슬롯
+
+---
+
+## 6. DsToast 개선
+
+- [ ] **Store 분리** - `duration` 등 로직은 Store에서 관리, `DsToastRegion`은 뷰만 담당
+- [ ] `position` 토큰화 - `data-ds-position` 속성으로 CSS 제어
+- [ ] `action` 슬롯 - 커스텀 액션 지원
+
+---
+
+## 7. DsInput / DsField 개선
+
+### 기능 보강
+
+- [ ] `start` / `end` 슬롯 - 아이콘, 단위, 버튼 등 (`div.relative` 래퍼 구조 도입)
+- [ ] **Ref 노출** - 버튼과 일관되게 `ref` prop 제공 (포커싱 제어 등)
+- [ ] `clearable` prop - 접근성(ESC clear, 포커스 순서) 고려하여 구현
+- [ ] 패딩 계산 토큰화 - 아이콘 유무에 따른 패딩 자동 계산 (`--input-padding-start` 등)
+
+---
+
+## 8. 신규 컴포넌트 후보
+
+### 우선 검토
+
+- [ ] **DsSelect** - `DsDropdown`과 역할 분리. Form 연동, Native Select 유사 동작
+- [ ] **DsTextarea** - `DsInput` 스타일 공유
+- [ ] **DsSkeleton** - Layout Shift 방지용 로딩 플레이스홀더
+
+### 추후 검토
+
+- [ ] **DsCheckbox** / **DsRadio** / **DsSwitch**
+- [ ] **DsAvatar** / **DsBadge**
+- [ ] **DsTabs** / **DsAccordion**
+- [ ] **DsPopover** (Interactive Tooltip 대체재)
+
+---
+
+## 문서 및 테스트 (신설)
+
+- [ ] `SPECS.md` 업데이트 - Props/Slots 변경 사항 반영
+- [ ] **접근성 테스트 보강** - Custom Trigger, Keyboard Navigation, Focus Management (Dialog)
+- [ ] **시각 회귀 테스트** - 다양한 Variant/Size 조합 테스트
+
+---
+
+## 작업 우선순위
+
+1. **DsDropdown 확장** (Phase 1, 2 집중) -> 4개 커스텀 드롭다운 마이그레이션
+2. **DsButton / DsInput 개선** (사용 빈도 높음)
+3. **DsDialog 접근성 개선** (포커스 복귀 등)
+4. 신규 컴포넌트 (`DsSelect`, `DsSkeleton`) 도입
+
+## 다음 액션 (DsDropdown)
+
+- [ ] 공통 유틸(`createControllableState`) 및 SSR Safe ID 로직 준비
+- [ ] Phase 1 (Trigger Slot, Align, Disabled) 구현
+- [ ] LanguagePicker 마이그레이션 및 검증
