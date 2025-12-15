@@ -2,7 +2,10 @@ import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// 06-fix-bold-issues.ts — 마크다운 볼드 파싱 오류 수정 도구
+
 const DRY_RUN = process.argv.includes('--dry-run');
+const NO_REPORT = process.argv.includes('--no-report');
 
 // 제로폭 공백을 HTML 엔티티로 삽입
 const ZWS_ENTITY = '&#8203;';
@@ -470,14 +473,16 @@ async function main() {
 		console.log(`Done. Total fixes: ${totalFixes}`);
 		console.log(`⏱️ 소요 시간: ${elapsedStr}`);
 
-		// 결과 파일 저장 (reports 폴더 자동 생성)
-		const report = formatReport(results, TARGET, files.length, DRY_RUN, VERBOSE, elapsedStr);
-		const scriptDir = dirname(fileURLToPath(import.meta.url));
-		const reportsDir = join(scriptDir, 'reports');
-		await mkdir(reportsDir, { recursive: true });
-		const reportPath = join(reportsDir, 'fix-bold-report.txt');
-		await writeFile(reportPath, report, 'utf-8');
-		console.log(`📝 리포트 저장됨: ${reportPath}`);
+		if (!NO_REPORT) {
+			// 결과 파일 저장 (reports 폴더 자동 생성)
+			const report = formatReport(results, TARGET, files.length, DRY_RUN, VERBOSE, elapsedStr);
+			const scriptDir = dirname(fileURLToPath(import.meta.url));
+			const reportsDir = join(scriptDir, 'reports');
+			await mkdir(reportsDir, { recursive: true });
+			const reportPath = join(reportsDir, 'fix-bold-report.txt');
+			await writeFile(reportPath, report, 'utf-8');
+			console.log(`📝 리포트 저장됨: ${reportPath}`);
+		}
 	} catch (error) {
 		console.error('Error:', error);
 	}

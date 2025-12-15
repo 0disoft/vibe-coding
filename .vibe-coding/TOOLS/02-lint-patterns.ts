@@ -95,7 +95,7 @@ function isDevIfLine(line: string): boolean {
 
 const RULES: LintRule[] = [
 	// 레벨 1: 기본적인 타입 안전성 문제 (script scope)
-	// 참고: no-explicit-any는 security-patterns.ts로 이동됨
+	// 참고: no-explicit-any는 01-security-patterns.ts로 이동됨
 	{
 		id: 'no-ts-ignore',
 		name: '@ts-ignore 사용 금지',
@@ -175,7 +175,7 @@ const RULES: LintRule[] = [
 	},
 
 	// Svelte 마크업 전용 규칙 (markup scope)
-	// 참고: no-html-tag(XSS)는 security-patterns.ts로 이동됨
+	// 참고: no-html-tag(XSS)는 01-security-patterns.ts로 이동됨
 	{
 		id: 'no-on-directive',
 		name: 'on:event 문법 (Svelte 4)',
@@ -727,6 +727,7 @@ function formatResults(results: LintResult[], basePath: string): string {
 async function main() {
 	const TARGET = process.argv.slice(2).find((arg) => !arg.startsWith('--')) || 'src';
 	const FILTER_SEVERITY = process.argv.includes('--errors-only') ? 'error' : null;
+	const NO_REPORT = process.argv.includes('--no-report');
 
 	console.log(`🔍 스캔 대상: ${TARGET}`);
 
@@ -776,16 +777,18 @@ async function main() {
 		console.log(`\n⏱️ 소요 시간: ${elapsedStr}`);
 
 		// 리포트 파일로 저장 (폴더 자동 생성)
-		const scriptDir = dirname(fileURLToPath(import.meta.url));
-		const reportsDir = join(scriptDir, 'reports');
-		await mkdir(reportsDir, { recursive: true });
+		if (!NO_REPORT) {
+			const scriptDir = dirname(fileURLToPath(import.meta.url));
+			const reportsDir = join(scriptDir, 'reports');
+			await mkdir(reportsDir, { recursive: true });
 
-		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-		const reportPath = join(reportsDir, `lint-report-${timestamp}.txt`);
+			const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+			const reportPath = join(reportsDir, 'lint-report.txt');
 
-		const header = `Lint Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(40)}\n`;
-		await writeFile(reportPath, header + report, 'utf-8');
-		console.log(`📝 리포트 저장됨: ${reportPath}`);
+			const header = `Lint Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(40)}\n`;
+			await writeFile(reportPath, header + report, 'utf-8');
+			console.log(`📝 리포트 저장됨: ${reportPath}`);
+		}
 
 		// CI용 종료 코드: 오류가 있으면 exit(1)
 		const hasErrors = allResults.some((r) => r.rule.severity === 'error');

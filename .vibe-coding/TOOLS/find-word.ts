@@ -301,8 +301,7 @@ function main(): void {
       const reportsDir = join(scriptDir, "reports");
       mkdirSync(reportsDir, { recursive: true });
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
-      const safePattern = pattern.replace(/[\\/:*?"<>|]/g, "_").slice(0, 30);
-      const reportPath = join(reportsDir, `find-word-${safePattern}-${timestamp}.txt`);
+      const reportPath = join(reportsDir, "find-word-report.txt");
 
       const lines: string[] = [
         `Find Word Report - ${timestamp}`,

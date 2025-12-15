@@ -2,6 +2,8 @@ import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// 04-a11y-ux-patterns.ts — 접근성 및 UX 패턴 검사 도구
+
 // 규칙 스코프 정의
 type RuleScope = 'markup' | 'style' | 'html' | 'all';
 
@@ -631,6 +633,7 @@ async function main() {
 	}
 
 	const TARGET = process.argv.slice(2).find((arg) => !arg.startsWith('--')) || 'src';
+	const NO_REPORT = process.argv.includes('--no-report');
 	// severity 필터 확장: --errors-only, --warnings-only, --infos-only
 	const FILTER_SEVERITY = process.argv.includes('--errors-only')
 		? 'error'
@@ -683,14 +686,16 @@ async function main() {
 		console.log(`\n⏱️ 소요 시간: ${elapsedStr}`);
 
 		// 리포트 파일로 저장 (reports 디렉토리 자동 생성)
-		const scriptDir = dirname(fileURLToPath(import.meta.url));
-		const reportsDir = join(scriptDir, 'reports');
-		await mkdir(reportsDir, { recursive: true });
-		const reportPath = join(reportsDir, 'a11y-ux-report.txt');
-		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-		const header = `A11y/UX Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(40)}\n`;
-		await writeFile(reportPath, header + report, 'utf-8');
-		console.log(`📝 리포트 저장됨: ${reportPath}`);
+		if (!NO_REPORT) {
+			const scriptDir = dirname(fileURLToPath(import.meta.url));
+			const reportsDir = join(scriptDir, 'reports');
+			await mkdir(reportsDir, { recursive: true });
+			const reportPath = join(reportsDir, 'a11y-ux-report.txt');
+			const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+			const header = `A11y/UX Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(40)}\n`;
+			await writeFile(reportPath, header + report, 'utf-8');
+			console.log(`📝 리포트 저장됨: ${reportPath}`);
+		}
 
 		// CI/CD 통합: 에러 발견 시 exit code 1 반환 (필터와 무관하게 원본 기준)
 		if (errorCount > 0) {

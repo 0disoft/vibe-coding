@@ -6,18 +6,67 @@
 
 | 도구 | 용도 | 빠른 실행 |
 |------|------|-----------|
+| [00-run-tools](#00-run-tools) | 주요 도구 순차 실행 (권장 파이프라인) | `bun .vibe-coding/TOOLS/00-run-tools.ts` |
 | [api-catalog](#api-catalog) | Public API 카탈로그 뷰어 | `bun .vibe-coding/TOOLS/api-catalog/server.ts` |
 | [webnovel-viewer](#webnovel-viewer) | 웹소설 등장요소 뷰어 | `bun .vibe-coding/TOOLS/webnovel-viewer/server.ts` |
-| [a11y-ux-patterns](#a11y-ux-patterns) | 접근성 및 UX 패턴 검사 | `bun .vibe-coding/TOOLS/a11y-ux-patterns.ts` |
-| [file-size-patterns](#file-size-patterns) | 파일 크기 및 복잡도 검사 | `bun .vibe-coding/TOOLS/file-size-patterns.ts` |
+| [a11y-ux-patterns](#a11y-ux-patterns) | 접근성 및 UX 패턴 검사 | `bun .vibe-coding/TOOLS/04-a11y-ux-patterns.ts` |
+| [file-size-patterns](#file-size-patterns) | 파일 크기 및 복잡도 검사 | `bun .vibe-coding/TOOLS/05-file-size-patterns.ts` |
 | [find-word](#find-word) | 프로젝트 단어/패턴 검색 | `bun .vibe-coding/TOOLS/find-word.ts <패턴>` |
-| [fix-bold-issues](#fix-bold-issues) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/fix-bold-issues.ts` |
-| [lint-patterns](#lint-patterns) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
-| [security-patterns](#security-patterns) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
-| [route-audit](#route-audit) | 라우트/내부 링크 정적 점검 | `bun .vibe-coding/TOOLS/route-audit.ts` |
+| [fix-bold-issues](#fix-bold-issues) | 마크다운 볼드 파싱 오류 수정 | `bun .vibe-coding/TOOLS/06-fix-bold-issues.ts` |
+| [lint-patterns](#lint-patterns) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/02-lint-patterns.ts` |
+| [security-patterns](#security-patterns) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/01-security-patterns.ts` |
+| [route-audit](#route-audit) | 라우트/내부 링크 정적 점검 | `bun .vibe-coding/TOOLS/03-route-audit.ts` |
 | [design-system](design-system/README.md) | 디자인 시스템 lab 운영/검증 가이드 | `bun dev` 후 `/lab/design-system` |
 | [design-system dtcg](design-system/README.md#dtcgssot--css-토큰-동기화) | DTCG(SSOT) → CSS 토큰 동기화/검증 | `bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --verify` |
 | [design-system tokens](design-system/README.md#토큰-매니페스트-생성) | 디자인 시스템 토큰 매니페스트 생성 | `bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts` |
+
+---
+
+## 리포트 저장 규칙
+
+모든 도구의 리포트는 `.vibe-coding/TOOLS/reports/`에 **고정 파일명**으로 저장되며, 기존 파일이 있으면 **덮어쓰기**로 저장됩니다.
+
+예시:
+
+- `a11y-ux-report.txt`
+- `file-size-report.txt`
+- `find-word-report.txt`
+- `fix-bold-report.txt`
+- `lint-report.txt`
+- `route-audit-report.txt`
+- `security-report.txt`
+
+---
+
+## 00-run-tools
+
+`.vibe-coding/TOOLS/`의 주요 점검 도구들을 권장 순서로 단계 실행합니다.
+
+```bash
+# 전체 파이프라인 실행
+bun .vibe-coding/TOOLS/00-run-tools.ts
+
+# 한 단계라도 실패하면 즉시 중단
+bun .vibe-coding/TOOLS/00-run-tools.ts --stop-on-fail
+
+# 각 단계에 동일 옵션 전달 (예: 리포트 생략)
+bun .vibe-coding/TOOLS/00-run-tools.ts --no-report
+
+# 옵션 충돌을 피하고 싶다면 -- 구분자도 사용 가능
+bun .vibe-coding/TOOLS/00-run-tools.ts -- --no-report
+```
+
+단계별 실행 도구:
+
+- `01-security-patterns.ts`
+- `02-lint-patterns.ts`
+- `03-route-audit.ts`
+- `04-a11y-ux-patterns.ts`
+- `05-file-size-patterns.ts`
+- `06-fix-bold-issues.ts`
+
+`06-fix-bold-issues.ts`는 기본 동작이 파일을 수정하므로, `00-run-tools.ts`에서는 기본적으로 `--dry-run`으로 실행됩니다.
+실제 수정까지 포함하려면 `00-run-tools.ts`에 `--fix-bold-write`를 추가하세요.
 
 ---
 
@@ -29,16 +78,16 @@ Svelte/HTML/CSS 파일에서 접근성 및 UX 패턴을 검사합니다.
 
 ```bash
 # 기본: src 전체 스캔
-bun .vibe-coding/TOOLS/a11y-ux-patterns.ts
+bun .vibe-coding/TOOLS/04-a11y-ux-patterns.ts
 
 # 특정 디렉토리
-bun .vibe-coding/TOOLS/a11y-ux-patterns.ts src/lib/components
+bun .vibe-coding/TOOLS/04-a11y-ux-patterns.ts src/lib/components
 
 # 오류만 표시
-bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --errors-only
+bun .vibe-coding/TOOLS/04-a11y-ux-patterns.ts --errors-only
 
 # 회귀 방지 테스트 실행
-bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --self-test
+bun .vibe-coding/TOOLS/04-a11y-ux-patterns.ts --self-test
 ```
 
 ### a11y-ux-patterns 감지 규칙
@@ -82,19 +131,19 @@ bun .vibe-coding/TOOLS/a11y-ux-patterns.ts --self-test
 
 ```bash
 # 기본: src 전체 스캔
-bun .vibe-coding/TOOLS/file-size-patterns.ts
+bun .vibe-coding/TOOLS/05-file-size-patterns.ts
 
 # 특정 디렉토리
-bun .vibe-coding/TOOLS/file-size-patterns.ts src/lib
+bun .vibe-coding/TOOLS/05-file-size-patterns.ts src/lib
 
 # 모든 이슈 파일 표시 (기본: 상위 20개)
-bun .vibe-coding/TOOLS/file-size-patterns.ts --all
+bun .vibe-coding/TOOLS/05-file-size-patterns.ts --all
 
 # JSON 형식 출력
-bun .vibe-coding/TOOLS/file-size-patterns.ts --json
+bun .vibe-coding/TOOLS/05-file-size-patterns.ts --json
 
 # 리포트 파일 생성 생략
-bun .vibe-coding/TOOLS/file-size-patterns.ts --no-report
+bun .vibe-coding/TOOLS/05-file-size-patterns.ts --no-report
 ```
 
 ### file-size-patterns 검사 기준
@@ -114,7 +163,7 @@ bun .vibe-coding/TOOLS/file-size-patterns.ts --no-report
 
 ### file-size-patterns 리포트 저장
 
-이슈가 발견되면 `.vibe-coding/TOOLS/reports/file-size-report-{timestamp}.txt`에 자동 저장됩니다.
+이슈가 발견되면 `.vibe-coding/TOOLS/reports/file-size-report.txt`에 자동 저장됩니다.
 `--no-report` 옵션으로 생략할 수 있습니다.
 
 ### file-size-patterns 종료 코드
@@ -197,24 +246,24 @@ bun .vibe-coding/TOOLS/find-word.ts "function\\s+\\w+"
 
 ```bash
 # 기본: src/content 전체 스캔 및 수정
-bun .vibe-coding/TOOLS/fix-bold-issues.ts
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts
 ```
 
 #### 특정 폴더만 검사
 
 ```bash
 # 특정 디렉토리 지정 (첫 번째 인자)
-bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog
-bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/docs
-bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/bug-bounty
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts src/content/blog
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts src/content/docs
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts src/content/bug-bounty
 ```
 
 #### 단일 파일 검사
 
 ```bash
 # 단일 .md 또는 .mdx 파일 지정
-bun .vibe-coding/TOOLS/fix-bold-issues.ts test-bold.md
-bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog/my-post.mdx
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts test-bold.md
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts src/content/blog/my-post.mdx
 ```
 
 #### 미리보기 (Dry Run)
@@ -222,8 +271,8 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog/my-post.mdx
 실제 파일을 수정하지 않고 변경 대상만 확인합니다:
 
 ```bash
-bun .vibe-coding/TOOLS/fix-bold-issues.ts --dry-run
-bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog --dry-run
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts --dry-run
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts src/content/blog --dry-run
 ```
 
 ### 동작 방식
@@ -238,10 +287,10 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts src/content/blog --dry-run
 
 ```bash
 # 스킵된 줄번호 상세 표시
-bun .vibe-coding/TOOLS/fix-bold-issues.ts --verbose
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts --verbose
 
 # 회귀 방지 테스트 실행
-bun .vibe-coding/TOOLS/fix-bold-issues.ts --self-test
+bun .vibe-coding/TOOLS/06-fix-bold-issues.ts --self-test
 ```
 
 ### 지원 문자
@@ -258,16 +307,16 @@ bun .vibe-coding/TOOLS/fix-bold-issues.ts --self-test
 
 ```bash
 # 기본: src 디렉토리 전체 스캔
-bun .vibe-coding/TOOLS/lint-patterns.ts
+bun .vibe-coding/TOOLS/02-lint-patterns.ts
 
 # 특정 디렉토리
-bun .vibe-coding/TOOLS/lint-patterns.ts src/lib
+bun .vibe-coding/TOOLS/02-lint-patterns.ts src/lib
 
 # 단일 파일
-bun .vibe-coding/TOOLS/lint-patterns.ts src/lib/utils.ts
+bun .vibe-coding/TOOLS/02-lint-patterns.ts src/lib/utils.ts
 
 # 오류만 표시 (경고, 정보 제외)
-bun .vibe-coding/TOOLS/lint-patterns.ts --errors-only
+bun .vibe-coding/TOOLS/02-lint-patterns.ts --errors-only
 ```
 
 ### lint-patterns 감지 규칙
@@ -308,16 +357,16 @@ SvelteKit 2, Svelte 5, TypeScript, UnoCSS, Bun, HTML, CSS 스택에서 보안 �
 
 ```bash
 # 기본: src 전체 스캔
-bun .vibe-coding/TOOLS/security-patterns.ts
+bun .vibe-coding/TOOLS/01-security-patterns.ts
 
 # 특정 경로 스캔
-bun .vibe-coding/TOOLS/security-patterns.ts src/routes
+bun .vibe-coding/TOOLS/01-security-patterns.ts src/routes
 
 # 오류만 표시
-bun .vibe-coding/TOOLS/security-patterns.ts --errors-only
+bun .vibe-coding/TOOLS/01-security-patterns.ts --errors-only
 
 # 리포트 파일 생성 끄기
-bun .vibe-coding/TOOLS/security-patterns.ts --no-report
+bun .vibe-coding/TOOLS/01-security-patterns.ts --no-report
 ```
 
 ### 탐지 카테고리
@@ -525,28 +574,28 @@ SvelteKit의 `src/routes` 라우트 정의와 프로젝트 내 내부 링크(`/.
 
 ```bash
 # 기본: 라우트 + 내부 링크 점검 (src/, e2e/)
-bun .vibe-coding/TOOLS/route-audit.ts
+bun .vibe-coding/TOOLS/03-route-audit.ts
 
 # 라우트 수집/충돌만
-bun .vibe-coding/TOOLS/route-audit.ts --routes-only
+bun .vibe-coding/TOOLS/03-route-audit.ts --routes-only
 
 # 내부 링크 스캔만
-bun .vibe-coding/TOOLS/route-audit.ts --links-only
+bun .vibe-coding/TOOLS/03-route-audit.ts --links-only
 
 # 링크 스캔 대상 디렉토리 추가 (예: 콘텐츠 폴더까지 포함)
-bun .vibe-coding/TOOLS/route-audit.ts --scan src/content
+bun .vibe-coding/TOOLS/03-route-audit.ts --scan src/content
 
 # base path가 있는 앱 (예: /myapp 하위에 배포)
-bun .vibe-coding/TOOLS/route-audit.ts --base /myapp
+bun .vibe-coding/TOOLS/03-route-audit.ts --base /myapp
 
 # 특정 prefix 무시 (예: 백엔드 프록시/외부 라우팅)
-bun .vibe-coding/TOOLS/route-audit.ts --ignore-prefix /api --ignore-prefix /products
+bun .vibe-coding/TOOLS/03-route-audit.ts --ignore-prefix /api --ignore-prefix /products
 
 # JSON 출력
-bun .vibe-coding/TOOLS/route-audit.ts --json
+bun .vibe-coding/TOOLS/03-route-audit.ts --json
 
 # 디버그 로그 포함 (파일 접근 실패 등)
-bun .vibe-coding/TOOLS/route-audit.ts --verbose
+bun .vibe-coding/TOOLS/03-route-audit.ts --verbose
 ```
 
 ### ignore 파일

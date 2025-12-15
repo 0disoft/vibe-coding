@@ -9,8 +9,8 @@ import { fileURLToPath } from 'node:url';
  * 정적 분석으로 감지 가능한 보안 위험을 탐지합니다.
  *
  * 사용법:
- *   bunx tsx .vibe-coding/TOOLS/security-patterns.ts src
- *   bunx tsx .vibe-coding/TOOLS/security-patterns.ts src --errors-only
+ *   bunx tsx .vibe-coding/TOOLS/01-security-patterns.ts src
+ *   bunx tsx .vibe-coding/TOOLS/01-security-patterns.ts src --errors-only
  */
 
 // 규칙 스코프 정의
@@ -1078,7 +1078,7 @@ async function main() {
 			const reportsDir = join(scriptDir, 'reports');
 			await mkdir(reportsDir, { recursive: true });
 			const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-			const reportPath = join(reportsDir, `security-report-${timestamp}.txt`);
+			const reportPath = join(reportsDir, 'security-report.txt');
 			const header = `Security Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(50)}\n`;
 			await writeFile(reportPath, header + report, 'utf-8');
 			console.log(`📝 리포트 저장됨: ${reportPath}`);
