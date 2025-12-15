@@ -1,39 +1,66 @@
 <script lang="ts">
-  import type { HTMLTextareaAttributes } from 'svelte/elements';
+	import type { HTMLTextareaAttributes } from "svelte/elements";
 
-  interface Props extends HTMLTextareaAttributes {
-    variant?: 'outline' | 'filled';
-    invalid?: boolean;
-    ref?: HTMLTextAreaElement | null;
-  }
+	interface Props extends HTMLTextareaAttributes {
+		variant?: "outline" | "filled" | "ghost";
+		invalid?: boolean;
+		autoResize?: boolean;
+		maxHeight?: string;
+		ref?: HTMLTextAreaElement | null;
+	}
 
-  let {
-    variant = 'outline',
-    invalid = false,
-    value = $bindable(''),
-    ref = $bindable(null),
-    class: className = '',
-    style = '',
-    ...rest
-  }: Props = $props();
+	let {
+		variant = "outline",
+		invalid = false,
+		autoResize = false,
+		maxHeight,
+		value = $bindable(""),
+		ref = $bindable(null),
+		class: className = "",
+		style = "",
+		rows = 3,
+		...rest
+	}: Props = $props();
 
-  let bgClass = $derived(variant === 'filled' ? 'bg-muted' : 'bg-background');
-  let borderClass = $derived(invalid ? 'border-destructive' : 'border-input');
+	function adjustHeight() {
+		if (!autoResize || !ref) return;
+		ref.style.height = "auto";
+		ref.style.height = `${ref.scrollHeight}px`;
+	}
 
-  let variantClass = $derived(
-    `ds-focus-ring w-full border ${borderClass} ${bgClass} text-body placeholder:text-muted-foreground/60`
-  );
+	$effect(() => {
+		if (value !== undefined) {
+			adjustHeight();
+		}
+	});
 
-  let defaultStyle = $derived(
-    `padding: var(--input-padding-y) var(--input-padding-x); border-radius: var(--input-radius); min-height: 80px;`
-  );
+	$effect(() => {
+		if (ref) adjustHeight();
+	});
 </script>
 
 <textarea
-  {...rest}
-  bind:this={ref}
-  bind:value
-  class={`${variantClass} ${className}`.trim()}
-  style={`${defaultStyle} ${style}`}
-  aria-invalid={invalid ? 'true' : undefined}
+	{...rest}
+	bind:this={ref}
+	bind:value
+	{rows}
+	class={[
+		"ds-textarea ds-focus-ring",
+		autoResize ? "resize-none overflow-hidden" : "",
+		className,
+	]
+		.filter(Boolean)
+		.join(" ")}
+	style={[maxHeight ? `max-height: ${maxHeight}` : "", style]
+		.filter(Boolean)
+		.join("; ")}
+	aria-invalid={invalid ? "true" : undefined}
+	oninput={(e) => {
+		if (autoResize) adjustHeight();
+		// @ts-ignore
+		rest.oninput?.(e);
+	}}
+	data-ds-variant={variant}
+	data-invalid={invalid ? "true" : undefined}
+	data-disabled={rest.disabled ? "true" : undefined}
 ></textarea>

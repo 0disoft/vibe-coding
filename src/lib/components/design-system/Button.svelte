@@ -25,7 +25,7 @@
 		fullWidth = false,
 		disabled = false,
 		type = "button",
-		ref = $bindable<HTMLButtonElement | null>(null),
+		ref = $bindable(null),
 		class: className = "",
 		children,
 		start,
@@ -34,23 +34,17 @@
 	}: Props = $props();
 
 	let intentCss = $derived(toIntentCss(intent));
+	let isDisabled = $derived(disabled || loading);
 
-	let padding = $derived(
-		size === "sm"
-			? "var(--button-padding-y-sm) var(--button-padding-x-sm)"
-			: size === "lg"
-				? "var(--button-padding-y-lg) var(--button-padding-x-lg)"
-				: "var(--button-padding-y-md) var(--button-padding-x-md)",
-	);
-
-	const baseClass = "ds-button ds-focus-ring ds-touch-target";
-	let stateClass = $derived(
-		disabled || loading ? "cursor-not-allowed" : "cursor-pointer",
-	);
-	let widthClass = $derived(fullWidth ? "w-full flex justify-center" : "");
-	
-	let style = $derived(
-		`padding: ${padding}; border-radius: var(--button-radius);`,
+	// 클래스 조합
+	let buttonClass = $derived(
+		[
+			"ds-button ds-focus-ring ds-touch-target",
+			fullWidth ? "w-full justify-center" : "",
+			className,
+		]
+			.filter(Boolean)
+			.join(" "),
 	);
 </script>
 
@@ -58,17 +52,22 @@
 	{...rest}
 	bind:this={ref}
 	{type}
-	class={`${baseClass} ${stateClass} ${widthClass} ${className}`.trim()}
-	style={`${style}${disabled || loading ? ` opacity: var(--opacity-disabled);` : ""}`}
-	disabled={disabled || loading}
+	class={buttonClass}
+	disabled={isDisabled}
 	aria-busy={loading || undefined}
+	aria-disabled={isDisabled ? "true" : undefined}
 	data-ds-size={size}
 	data-ds-variant={variant}
 	data-ds-intent={intentCss}
 	data-ds-full-width={fullWidth ? "true" : undefined}
 >
 	{#if loading}
-		<span class="ds-icon i-lucide-loader-circle animate-spin" aria-hidden="true" style:width="var(--size-icon-{size})" style:height="var(--size-icon-{size})"></span>
+		<span
+			class="ds-icon i-lucide-loader-circle animate-spin"
+			aria-hidden="true"
+			style:width="var(--size-icon-{size})"
+			style:height="var(--size-icon-{size})"
+		></span>
 	{:else if start}
 		{@render start()}
 	{/if}

@@ -16,6 +16,7 @@
 		pressed?: boolean;
 		disabled?: boolean;
 		loading?: boolean;
+		flipInRtl?: boolean;
 		ref?: HTMLButtonElement | null;
 		children?: Snippet;
 	}
@@ -29,38 +30,48 @@
 		pressed,
 		loading = false,
 		disabled = false,
+		flipInRtl = false,
 		type = "button",
-		ref = $bindable<HTMLButtonElement | null>(null),
+		ref = $bindable(null),
 		class: className = "",
-		style = "",
 		children,
 		...rest
 	}: Props = $props();
 
-	let btnSize = $derived(size);
-	let iconSize = $derived(size);
 	let intentCss = $derived(toIntentCss(intent));
+	let isDisabled = $derived(disabled || loading);
+
+	// 클래스 조합
+	let buttonClass = $derived(
+		[
+			"ds-icon-button ds-focus-ring ds-touch-target",
+			isDisabled ? "is-disabled" : "",
+			className,
+		]
+			.filter(Boolean)
+			.join(" "),
+	);
 </script>
 
 <button
 	{...rest}
 	bind:this={ref}
 	{type}
-	class={`ds-button ds-focus-ring ds-touch-target ${disabled || loading ? "cursor-not-allowed" : "cursor-pointer"} ${className}`.trim()}
-	style={`border-radius: var(--button-radius); padding: 0 var(--button-padding-x-sm); ${disabled || loading ? `opacity: var(--opacity-disabled);` : ""} ${style}`}
-	disabled={disabled || loading}
+	class={buttonClass}
+	disabled={isDisabled}
 	aria-busy={loading || undefined}
 	aria-label={label}
-	aria-pressed={pressed ?? undefined}
-	data-ds-size={btnSize}
+	title={label}
+	aria-pressed={pressed}
+	data-ds-size={size}
 	data-ds-variant={variant}
 	data-ds-intent={intentCss}
 >
 	{#if loading}
-		<DsIcon name="loader-circle" size={iconSize} class="animate-spin" />
+		<DsIcon name="loader-circle" size={size} class="animate-spin" />
 	{:else}
 		{#if icon}
-			<DsIcon name={icon} size={iconSize} />
+			<DsIcon name={icon} size={size} {flipInRtl} />
 		{/if}
 		{#if children}
 			{@render children()}

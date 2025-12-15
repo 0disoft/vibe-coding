@@ -75,6 +75,56 @@ pnpm dlx sv create ./
   - `$page.url` → `page.url` (스토어 구독 `$` 접두사 제거)
 - **적용 시점:** SvelteKit + Svelte 5 환경에서 `page` 데이터 접근 시.
 
+### 5. svelte:element에서 href 속성 전달 시 타입 오류
+
+- **증상:** `svelte:element`에 `{href}` 속성을 직접 전달하면 `Object literal may only specify known properties, and 'href' does not exist in type 'HTMLAttributes<any>'.` 오류 발생.
+- **원인:** `HTMLAttributes<HTMLElement>`에는 `href`가 정의되어 있지 않음. `href`는 `HTMLAnchorElement`에만 존재하는 속성임.
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  <svelte:element
+    this={elementTag}
+    {href}
+    {...rest}
+  >
+
+  <!-- After (해결) - 조건부 spread로 전달 -->
+  <svelte:element
+    this={elementTag}
+    {...rest}
+    {...(href ? { href } : {})}
+  >
+  ```
+
+- **적용 시점:** `svelte:element`로 동적 태그(`div` ↔ `a`)를 렌더링하면서 `href`를 조건부로 전달할 때.
+
+### 6. 옵션 파라미터 함수를 onclick 핸들러로 직접 전달 시 타입 에러
+
+- **증상:** `Type '(options?: { focusButton?: boolean; }) => void' is not assignable to type 'MouseEventHandler<HTMLAnchorElement>'.` 오류 발생.
+- **원인:** `onclick={myFunction}`처럼 함수를 직접 전달하면, 브라우저가 MouseEvent를 첫 번째 인자로 넘기는데, 함수 시그니처가 `(options?: {...})` 형태일 경우 타입 불일치 발생.
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  <a href="/profile" onclick={closeUserMenu}>Profile</a>
+
+  <!-- After (해결) - 화살표 함수로 래핑 -->
+  <a href="/profile" onclick={() => closeUserMenu()}>Profile</a>
+  ```
+
+- **원리:** 화살표 함수가 MouseEvent를 받아서 무시하고, 내부에서 인자 없이 함수를 호출하므로 타입이 일치함.
+- **적용 시점:** 옵션 파라미터를 가진 함수(예: `closeModal({ animate: true })`)를 이벤트 핸들러로 사용할 때.
+
+### 7. 접근성: role="menuitem"에서 aria-pressed 미지원 오류
+
+- **증상:** `The attribute 'aria-pressed' is not supported by the role 'menuitem'` 린트 에러 발생.
+- **원인:** ARIA 명세상 `menuitem` 역할은 토글 상태(`aria-pressed`)를 가질 수 없음.
+- **해결:**
+  - 다중 선택(체크박스) 성격: `role="menuitemcheckbox"` + `aria-checked`
+  - 단일 선택(라디오) 성격: `role="menuitemradio"` + `aria-checked`
+- **적용 시점:** 폰트 크기 선택, 테마 선택 등 메뉴 내에서 옵션을 선택하는 UI 구현 시.
+
 ---
 
 ## [Paraglide / i18n]

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
+	import { tick } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
 	import { DsButton } from "$lib/components/design-system";
@@ -12,10 +13,6 @@
 		disabled?: boolean;
 	};
 
-	/**
-	 * trigger 슬롯에 전달되는 Props
-	 * 커스텀 트리거 요소에 필수 속성들을 spread해야 합니다.
-	 */
 	export type TriggerProps = {
 		id: string;
 		"aria-controls": string;
@@ -24,27 +21,21 @@
 		disabled: boolean;
 		onclick: () => void;
 		onkeydown: (e: KeyboardEvent) => void;
+		ref: (node: HTMLElement) => void;
 	};
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-		/** 기본 트리거 버튼 라벨 (trigger 슬롯 미사용 시 필수) */
 		label?: string;
-		/** 메뉴 아이템 배열 */
 		items?: Item[];
-		/** 아이템 선택 콜백 */
 		onSelect?: (id: string) => void;
-		/** 메뉴 열림 상태 (controlled) */
 		open?: boolean;
-		/** 상태 변경 콜백 */
 		onOpenChange?: (next: boolean) => void;
-		/** 메뉴 정렬 방향 */
 		align?: "start" | "end";
-		/** 트리거 비활성화 */
 		disabled?: boolean;
-		/** 커스텀 트리거 슬롯 */
 		trigger?: Snippet<[TriggerProps]>;
-		/** 커스텀 메뉴 콘텐츠 */
 		children?: Snippet<[{ close: () => void }]>;
+		menuClass?: string;
+		itemSelector?: string;
 	}
 
 	let {
@@ -64,21 +55,25 @@
 	}: Props = $props();
 
 	let rootEl = $state<HTMLDivElement | null>(null);
-	let buttonEl = $state<HTMLButtonElement | null>(null);
+	let triggerEl = $state<HTMLButtonElement | null>(null);
+	let menuEl = $state<HTMLDivElement | null>(null);
 
-	// SSR-safe ID 생성 (컴포넌트 초기화 시 한 번만)
+	// SSR-safe ID
 	const triggerId = useId("ds-dropdown");
 	const menuId = `${triggerId}-menu`;
 
-	// Controlled/Uncontrolled 상태 통합 관리
+	// State
 	let openState = createControllableState({
 		value: () => open,
-		onChange: onOpenChange,
+		onChange: (next) => onOpenChange?.(next),
 		defaultValue: false,
 	});
 
-	// isOpen getter로 간소화
 	let isOpen = $derived(openState.value);
+
+	// Typeahead State
+	let typeaheadBuffer = "";
+	let typeaheadTimer: number | null = null;
 
 	function setOpen(next: boolean): void {
 		openState.value = next;
@@ -91,61 +86,77 @@
 
 	function close(options?: { focusButton?: boolean }): void {
 		setOpen(false);
-		if (options?.focusButton) queueMicrotask(() => buttonEl?.focus());
+		if (options?.focusButton) {
+			tick().then(() => triggerEl?.focus());
+		}
+	}
+
+	// --- Focus Management ---
+
+	function getItems(): HTMLElement[] {
+		if (!rootEl) return [];
+		return Array.from(
+			rootEl.querySelectorAll<HTMLElement>(
+				'[role="menuitem"]:not([disabled]):not([aria-disabled="true"])',
+			),
+		);
 	}
 
 	function focusFirstItem(): void {
-		const root = rootEl;
-		if (!root) return;
-		const itemsEls = Array.from(
-			root.querySelectorAll<HTMLElement>(itemSelector),
-		);
-		const first = itemsEls.find((el) => !el.hasAttribute("data-disabled"));
-		first?.focus();
+		getItems()[0]?.focus();
 	}
 
 	function focusLastItem(): void {
-		const root = rootEl;
-		if (!root) return;
-		const itemsEls = Array.from(
-			root.querySelectorAll<HTMLElement>(itemSelector),
-		);
-		const enabled = itemsEls.filter((el) => !el.hasAttribute("data-disabled"));
-		enabled.at(-1)?.focus();
+		getItems().at(-1)?.focus();
 	}
 
 	function focusNext(current: HTMLElement, dir: 1 | -1): void {
-		const root = rootEl;
-		if (!root) return;
-		const itemsEls = Array.from(
-			root.querySelectorAll<HTMLElement>(itemSelector),
-		);
-		const enabled = itemsEls.filter((el) => !el.hasAttribute("data-disabled"));
-		const idx = enabled.indexOf(current);
+		const items = getItems();
+		const idx = items.indexOf(current);
 		if (idx === -1) return;
-		const next = enabled[(idx + dir + enabled.length) % enabled.length];
+		const next = items[(idx + dir + items.length) % items.length];
 		next?.focus();
 	}
+
+	// --- Typeahead ---
+	function handleTypeahead(key: string) {
+		if (key.length !== 1) return;
+
+		if (typeaheadTimer) window.clearTimeout(typeaheadTimer);
+		typeaheadBuffer += key.toLowerCase();
+
+		typeaheadTimer = window.setTimeout(() => {
+			typeaheadBuffer = "";
+		}, 500);
+
+		const items = getItems();
+		const match = items.find((item) => {
+			const text = item.textContent?.trim().toLowerCase() || "";
+			return text.startsWith(typeaheadBuffer);
+		});
+
+		if (match) match.focus();
+	}
+
+	// --- Event Handlers ---
 
 	function onTriggerKeyDown(e: KeyboardEvent): void {
 		if (disabled) return;
 
-		if (e.key === "Escape") {
-			e.preventDefault();
-			close();
-			return;
-		}
-
 		if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
 			e.preventDefault();
-			if (!isOpen) setOpen(true);
-			queueMicrotask(focusFirstItem);
+			if (!isOpen) {
+				setOpen(true);
+				tick().then(focusFirstItem);
+			}
 		}
 
 		if (e.key === "ArrowUp") {
 			e.preventDefault();
-			if (!isOpen) setOpen(true);
-			queueMicrotask(focusLastItem);
+			if (!isOpen) {
+				setOpen(true);
+				tick().then(focusLastItem);
+			}
 		}
 	}
 
@@ -153,82 +164,98 @@
 		const target = e.target as HTMLElement | null;
 		if (!target) return;
 
-		// 메뉴 컨테이너 자체에서 발생한 이벤트는 무시 (포커스가 아이템에 있지 않을 때)
-		// 단, children 모드에서 포커스 관리를 위해 필요할 수도 있으나,
-		// 보통 아이템에 포커스가 가 있는 상태에서 키 입력이 발생함.
-		
-		// Escape는 어디서든 동작해야 함
 		if (e.key === "Escape") {
 			e.preventDefault();
-			e.stopPropagation(); // 상위로 전파 방지
+			e.stopPropagation();
 			close({ focusButton: true });
 			return;
 		}
 
-		// 아이템 네비게이션은 아이템 위에서만 동작
+		if (e.key === "Tab") {
+			close();
+			return;
+		}
+
+		// Typeahead
+		if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+			handleTypeahead(e.key);
+			return;
+		}
+
 		if (!target.closest(itemSelector)) return;
 
 		if (e.key === "ArrowDown") {
 			e.preventDefault();
 			focusNext(target, 1);
-			return;
-		}
-
-		if (e.key === "ArrowUp") {
+		} else if (e.key === "ArrowUp") {
 			e.preventDefault();
 			focusNext(target, -1);
-			return;
-		}
-
-		if (e.key === "Home") {
+		} else if (e.key === "Home") {
 			e.preventDefault();
 			focusFirstItem();
-			return;
-		}
-
-		if (e.key === "End") {
+		} else if (e.key === "End") {
 			e.preventDefault();
 			focusLastItem();
-			return;
+		} else if (e.key === "Enter" || e.key === " ") {
+			if (target.tagName !== "BUTTON") {
+				e.preventDefault();
+				target.click();
+			}
 		}
-	}
-
-	function onRootFocusOut(e: FocusEvent): void {
-		const root = rootEl;
-		if (!root) return;
-		if (!isOpen) return;
-
-		const next = e.relatedTarget;
-		if (!(next instanceof Node)) {
-			close();
-			return;
-		}
-
-		if (root.contains(next)) return;
-		close();
 	}
 
 	function onDocumentPointerDown(e: PointerEvent): void {
-		const root = rootEl;
-		if (!root) return;
-		if (!isOpen) return;
-		if (root.contains(e.target as Node)) return;
+		if (!isOpen || !rootEl) return;
+		if (rootEl.contains(e.target as Node)) return;
 		close();
 	}
 
+	function onRootFocusOut(e: FocusEvent): void {
+		if (!isOpen || !rootEl) return;
+		const next = e.relatedTarget as Node | null;
+		if (next && rootEl.contains(next)) return;
+		close();
+	}
+
+	// --- Layout Logic ---
+	let placementStyles = $state("");
+
 	$effect(() => {
-		document.addEventListener("pointerdown", onDocumentPointerDown, {
-			capture: true,
-		});
-		return () =>
-			document.removeEventListener("pointerdown", onDocumentPointerDown, true);
+		if (isOpen && menuEl && triggerEl) {
+			const rect = triggerEl.getBoundingClientRect();
+			const menuRect = menuEl.getBoundingClientRect();
+			const spaceBelow = window.innerHeight - rect.bottom;
+
+			if (spaceBelow < menuRect.height && rect.top > menuRect.height) {
+				placementStyles =
+					"top: auto; bottom: 100%; margin-bottom: var(--spacing-2); margin-top: 0;";
+			} else {
+				placementStyles = "";
+			}
+		}
+	});
+
+	function triggerRef(node: HTMLElement) {
+		triggerEl = node as HTMLButtonElement;
+	}
+
+	$effect(() => {
+		if (isOpen) {
+			document.addEventListener("pointerdown", onDocumentPointerDown, true);
+			return () =>
+				document.removeEventListener(
+					"pointerdown",
+					onDocumentPointerDown,
+					true,
+				);
+		}
 	});
 </script>
 
 <div
 	{...rest}
 	bind:this={rootEl}
-	class={`ds-dropdown ${className}`.trim()}
+	class={["ds-dropdown", className].filter(Boolean).join(" ")}
 	data-ds-align={align}
 	onfocusout={onRootFocusOut}
 >
@@ -241,10 +268,11 @@
 			disabled,
 			onclick: toggle,
 			onkeydown: onTriggerKeyDown,
+			ref: triggerRef,
 		})}
 	{:else}
 		<DsButton
-			bind:ref={buttonEl}
+			bind:ref={triggerEl}
 			type="button"
 			intent="secondary"
 			variant="outline"
@@ -262,8 +290,12 @@
 
 	{#if isOpen}
 		<div
+			bind:this={menuEl}
 			id={menuId}
-			class={`ds-dropdown-menu ds-elevation-2 ${menuClass}`.trim()}
+			class={["ds-dropdown-menu ds-elevation-2", menuClass]
+				.filter(Boolean)
+				.join(" ")}
+			style={placementStyles}
 			role="menu"
 			aria-labelledby={triggerId}
 			tabindex="-1"
@@ -283,7 +315,7 @@
 						onclick={() => {
 							if (item.disabled) return;
 							onSelect?.(item.id);
-							close();
+							close({ focusButton: true });
 						}}
 					>
 						{item.label}

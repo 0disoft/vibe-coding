@@ -1,20 +1,47 @@
 <script lang="ts">
-  import type { HTMLAttributes } from 'svelte/elements';
+	import type { HTMLAttributes } from "svelte/elements";
+	import type { Snippet } from "svelte";
+	import { DsIcon } from "$lib/components/design-system";
 
-  import { DsIcon } from '$lib/components/design-system';
+	type Size = "sm" | "md" | "lg" | "inherit";
+	type Side = "start" | "end";
 
-  type Size = 'sm' | 'md' | 'lg';
+	interface Props extends HTMLAttributes<HTMLSpanElement> {
+		name: string;
+		side?: Side;
+		size?: Size;
+		label?: string;
+		children?: Snippet;
+	}
 
-  interface Props extends HTMLAttributes<HTMLSpanElement> {
-    name: string;
-    size?: Size;
-    label?: string;
-  }
+	let {
+		name,
+		side = "start",
+		size = "inherit",
+		label,
+		class: className = "",
+		children,
+		...rest
+	}: Props = $props();
 
-  let { name, size = 'sm', label, class: className = '', ...rest }: Props = $props();
+	// 텍스트(children)가 있으면 아이콘은 장식용이므로 라벨 제거
+	let iconLabel = $derived(children ? undefined : label);
 </script>
 
-<span {...rest} class={`inline-flex items-center gap-[var(--icon-gap)] align-middle ${className}`.trim()}>
-  <DsIcon name={name} size={size} label={label} />
-</span>
+<span
+	{...rest}
+	class={`ds-inline-icon ${className}`.trim()}
+	data-ds-side={side}
+>
+	{#if side === "start"}
+		<DsIcon {name} {size} label={iconLabel} />
+	{/if}
 
+	{#if children}
+		<span>{@render children()}</span>
+	{/if}
+
+	{#if side === "end"}
+		<DsIcon {name} {size} label={iconLabel} />
+	{/if}
+</span>

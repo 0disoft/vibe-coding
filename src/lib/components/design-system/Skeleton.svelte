@@ -1,28 +1,38 @@
 <script lang="ts">
-  import type { HTMLAttributes } from 'svelte/elements';
+	import type { HTMLAttributes } from "svelte/elements";
 
-  interface Props extends HTMLAttributes<HTMLDivElement> {
-    width?: string;
-    height?: string;
-    circle?: boolean;
-  }
+	type SkeletonVariant = "rectangular" | "circular" | "text";
 
-  let {
-    width,
-    height,
-    circle = false,
-    class: className = '',
-    style = '',
-    ...rest
-  }: Props = $props();
+	interface Props extends HTMLAttributes<HTMLDivElement> {
+		width?: string;
+		height?: string;
+		variant?: SkeletonVariant;
+		animate?: boolean;
+	}
 
-  let sizeStyle = $derived([width && `width: ${width}`, height && `height: ${height}`].filter(Boolean).join('; '));
-  let shapeClass = $derived(circle ? 'rounded-full' : 'rounded-md');
+	let {
+		width,
+		height,
+		variant = "rectangular",
+		animate = true,
+		class: className = "",
+		style = "",
+		...rest
+	}: Props = $props();
+
+	let defaultStyles = $derived.by(() => {
+		const s = [];
+		if (width) s.push(`width: ${width}`);
+		if (height) s.push(`height: ${height}`);
+		return s.join("; ");
+	});
 </script>
 
 <div
-  {...rest}
-  class={`animate-pulse bg-muted ${shapeClass} ${className}`.trim()}
-  style={`${sizeStyle}; ${style}`}
-  aria-hidden="true"
+	{...rest}
+	class={`ds-skeleton ${className}`.trim()}
+	style={`${defaultStyles}; ${style}`}
+	data-ds-variant={variant}
+	data-animate={animate ? "true" : undefined}
+	aria-hidden="true"
 ></div>
