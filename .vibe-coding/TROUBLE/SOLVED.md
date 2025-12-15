@@ -255,6 +255,14 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
   - 예: `bunx paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide --strategy url cookie preferredLanguage baseLocale`
 - **적용 시점:** Paraglide 산출물을 Git에 커밋하지 않고, CI에서 타입체크를 돌릴 때.
 
+### 2. Vitest browser 프로젝트에서 Playwright 브라우저 미설치로 유닛 테스트 실패
+
+- **증상:** GitHub Actions에서 `bun run test:unit -- --run` 실행 시 `browserType.launch: Executable doesn't exist ...` 오류가 발생하며 실패함.
+- **원인:** Vitest 설정에서 `@vitest/browser-playwright` 기반의 browser 프로젝트(client)가 포함되어 있는데, CI 환경에 Playwright Chromium 바이너리가 설치되어 있지 않아 브라우저 런치가 실패함.
+- **해결:** 유닛 테스트 실행 전에 Playwright 브라우저를 설치함.
+  - 예: `bunx playwright install --with-deps chromium`
+- **적용 시점:** Vitest browser 프로젝트(client)를 CI에서 실행할 때.
+
 ---
 
 ## [UI / UX / RTL]

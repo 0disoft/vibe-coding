@@ -47,6 +47,9 @@ jobs:
       - name: Typecheck (Scripts)
         run: bun run check:scripts
 
+      - name: Install Playwright (Chromium) for Vitest Browser
+        run: bunx playwright install --with-deps chromium
+
       - name: Unit Tests
         run: bun run test:unit -- --run
 
@@ -85,8 +88,11 @@ jobs:
 
   e2e_visual:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_visual }}
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: test
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -100,7 +106,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Install Playwright (Chromium)
-        run: bunx playwright install --with-deps chromium
+        run: bunx playwright install chromium
 
       - name: Design System Lab Visual Regression (Desktop)
         env:
