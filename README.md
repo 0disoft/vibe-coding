@@ -24,6 +24,22 @@ bun dev
 bun check && bun lint && bun test:unit
 ```
 
+## Windows 줄바꿈(LF/CRLF)
+
+이 저장소는 줄바꿈을 **LF로 고정**합니다(`.gitattributes`).
+
+Windows에서 `bun lint`가 `␍`(CR) 관련 포맷 에러로 실패하면, 아래를 한 번 실행하세요:
+
+```bash
+# 저장소 로컬 설정(권장)
+git config core.autocrlf false
+
+# 작업 중인 변경사항이 있으면 먼저 stash 권장
+git stash -u
+git restore --source=HEAD --worktree --staged .
+git stash pop
+```
+
 ### 템플릿으로 새 프로젝트 시작
 
 ```bash

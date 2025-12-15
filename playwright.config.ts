@@ -2,9 +2,17 @@ import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
 
+const withLabEnabled = (cmd: string) => {
+	if (process.platform === 'win32') return `set LAB_ENABLED=1&& ${cmd}`;
+
+	return `LAB_ENABLED=1 ${cmd}`;
+};
+
 export default defineConfig({
 	webServer: {
-		command: `bun run build && bun run preview -- --port ${PORT}`,
+		command: `${withLabEnabled('bun run build')} && ${withLabEnabled(
+			`bun run preview -- --host 127.0.0.1 --port ${PORT}`
+		)}`,
 		port: PORT,
 		reuseExistingServer: !process.env.CI,
 		timeout: 120_000

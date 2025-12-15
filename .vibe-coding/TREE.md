@@ -14,6 +14,10 @@
 ├── uno.config.ts
 ├── playwright.config.ts
 ├── bun.lock
+├── .bun-version
+├── .github/
+│   └── workflows/
+│       └── ci.yml                 # CI: lint/check/unit + 토큰 매니페스트 검증
 ├── .vibe-coding/
 │   └── PUBLIC_APIS/
 │       └── README.md               # Public API 카탈로그 (하위 구조는 이 파일 참조)
@@ -34,11 +38,15 @@
     ├── scripts/                   # 빌드 스크립트
     ├── styles/
     │   ├── tokens.css
+    │   ├── design-system-lab.css   # 디자인 시스템 lab 토큰(.ds-lab 스코프)
     │   ├── base.css
     │   ├── scrollbar.css
     │   ├── prose.css
     │   └── transitions.css
     ├── routes/                    # SvelteKit 페이지 라우트
+    │   └── lab/                   # DEV 전용 lab 라우트(프로덕션 404)
+    │       ├── +layout.server.ts  # DEV 가드
+    │       └── design-system/     # 디자인 시스템 검증 페이지
     └── lib/
         ├── index.ts
         ├── assets/                # 정적 에셋 (이미지, 아이콘 등)
@@ -81,6 +89,8 @@
         │   ├── CodeBlock.svelte
         │   ├── Footer.svelte
         │   ├── Header.svelte
+        │   ├── lab/                 # DEV 실험/검증용 컴포넌트
+        │   │   └── design-system/   # 디자인 시스템 lab UI 컴포넌트 (Button/Input/Card 등)
         │   ├── typography/          # 스타일 가이드/타이포그래피 테스트 컴포넌트
         │   │   ├── TypographyCard.svelte
         │   │   ├── TypographySection.svelte
@@ -137,13 +147,15 @@
 | `TROUBLE/`             | 문제 해결 기록 (SOLVED.md 등)                              |
 | `SOS/`                 | 긴급 이슈 및 디버깅 로그                                   |
 | `TOOLS/README.md`      | 자동화 스크립트 사용법 문서 (개별 도구는 이 파일 참조)     |
+| `TOOLS/design-system/` | 디자인 시스템 lab 운영/검증 문서 (토큰 매니페스트/스펙 포함) |
 | `WEBNOVEL/`            | 웹소설 집필 템플릿 (캐릭터, 사물, 현상, 에피소드 관리)     |
 
 ### e2e/
 
-| 파일             | 역할                                       |
-| ---------------- | ------------------------------------------ |
-| `layout.spec.ts` | 레이아웃 테스트 (헤더/푸터 요소 표시 검증) |
+| 파일 | 역할 |
+| --- | --- |
+| `markdown-rendering.spec.ts` | 마크다운 렌더링 품질(볼드 표식 잔존) 회귀 테스트 |
+| `design-system-lab.visual.spec.ts` | 디자인 시스템 lab 시각 회귀(스냅샷) 테스트 (옵션, `VISUAL=1`) |
 
 ### messages/
 
@@ -175,10 +187,18 @@
 | 파일              | 역할                                                      |
 | ----------------- | --------------------------------------------------------- |
 | `tokens.css`      | CSS 변수: 색상 팔레트, 폰트 스택, 사이즈 스케일, 다크모드 |
+| `design-system-lab.css` | 디자인 시스템 lab 토큰(.ds-lab 스코프, `--color-*` canonical + 기존 변수 alias) |
 | `base.css`        | 기본 HTML 요소 스타일 (body, h1-h3, code, pre)            |
 | `scrollbar.css`   | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일)          |
 | `prose.css`       | .prose 마크다운 콘텐츠 타이포그래피                       |
 | `transitions.css` | View Transitions API 기반 페이지 전환 효과                |
+
+### src/routes/
+
+| 파일/폴더 | 역할 |
+| --- | --- |
+| `routes/lab/+layout.server.ts` | DEV 전용 lab 가드 (프로덕션 404) |
+| `routes/lab/design-system/+page.svelte` | 디자인 시스템 토큰/상태 UI 검증 페이지 |
 
 ### src/scripts/
 
@@ -216,6 +236,7 @@
 | `components/Header.svelte`                        | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯)         |
 | `components/Footer.svelte`                        | 공통 푸터 컴포넌트 (카피라이트, 약관 링크)                     |
 | `components/typography/`                          | 타이포그래피/유틸리티 테스트 섹션 컴포넌트                      |
+| `components/lab/design-system/`                   | 디자인 시스템 lab 전용 UI 컴포넌트 (Button/Input/Card)          |
 | `components/header-actions/ThemeToggle.svelte`    | 테마 토글 버튼                                                 |
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달                                         |
 | `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달                                    |

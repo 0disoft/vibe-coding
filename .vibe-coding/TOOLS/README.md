@@ -15,6 +15,8 @@
 | [lint-patterns](#lint-patterns) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/lint-patterns.ts` |
 | [security-patterns](#security-patterns) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
 | [route-audit](#route-audit) | 라우트/내부 링크 정적 점검 | `bun .vibe-coding/TOOLS/route-audit.ts` |
+| [design-system](design-system/README.md) | 디자인 시스템 lab 운영/검증 가이드 | `bun dev` 후 `/lab/design-system` |
+| [design-system tokens](design-system/README.md#토큰-매니페스트-생성) | 디자인 시스템 토큰 매니페스트 생성 | `bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts` |
 
 ---
 
