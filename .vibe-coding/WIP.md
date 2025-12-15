@@ -21,10 +21,15 @@
 
 ## 0. 공통 아키텍처 및 정책 개선 (우선순위 높음)
 
-- [ ] **SSR/하이드레이션 안전한 ID 정책**: 랜덤 ID 생성 로직을 `onMount` 이후 수행하거나 `useId` 패턴 도입하여 서버/클라이언트 불일치 방지
-- [ ] **제어형 상태 유틸**: `open`/`onOpenChange` 패턴을 위한 `createControllableState` 유틸 도입 (Dropdown, Tooltip, Dialog 공통)
-- [ ] **타입/Intent 통일**: `danger`를 `error`로 통합하고, `Intent`, `Size`, `Variant` 타입을 공통 정의 (`types.ts`)로 분리
-- [ ] **스니펫 네이밍 표준화**: 본문은 `children`, 그 외는 `trigger`, `header`, `footer`, `start` (좌측), `end` (우측) 등으로 통일
+- [x] **SSR/하이드레이션 안전한 ID 정책**: `useId` 패턴 도입 (`$lib/shared/utils/use-id.ts`)
+  - Dropdown, Tooltip 적용 완료
+- [x] **제어형 상태 유틸**: `createControllableState` 유틸 도입 (`$lib/shared/utils/controllable-state.svelte.ts`)
+  - Dropdown, Tooltip 적용 완료 (Dialog는 기존 제어형 유지)
+- [x] **타입/Intent 통일**: `types.ts` 생성 (`$lib/components/design-system/types.ts`)
+  - Size, Intent, IntentWithNeutral, IntentCss, ButtonVariant, IconButtonVariant, InputVariant 정의
+  - `toIntentCss()` 변환 함수 제공 (danger → error)
+  - Button, IconButton, LinkButton 적용 완료
+- [x] **스니펫 네이밍 표준화**: 현재 상태 유지 (DsDropdown 확장 시 `trigger` 슬롯 도입 예정)
 
 ---
 

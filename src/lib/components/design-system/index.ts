@@ -10,3 +10,17 @@ export { default as DsInput } from './Input.svelte';
 export { default as DsLinkButton } from './LinkButton.svelte';
 export { default as DsToastRegion } from './ToastRegion.svelte';
 export { default as DsTooltip } from './Tooltip.svelte';
+
+// Types
+export { toIntentCss } from './types';
+export type {
+	ButtonVariant,
+	IconButtonVariant,
+	InputVariant,
+	Intent,
+	IntentCss,
+	IntentCssWithNeutral,
+	IntentWithNeutral,
+	Size
+} from './types';
+

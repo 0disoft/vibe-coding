@@ -2,6 +2,9 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
+	import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
+	import { useId } from "$lib/shared/utils/use-id";
+
 	type TriggerProps = {
 		describedBy?: string;
 		onpointerover: (e: PointerEvent) => void;
@@ -39,13 +42,18 @@
 		...rest
 	}: Props = $props();
 
-	let internalOpen = $state(false);
-	let isControlled = $derived(open !== undefined);
-	let isOpen = $derived(isControlled ? (open as boolean) : internalOpen);
+	// SSR-safe ID 생성 (컴포넌트 초기화 시 한 번만)
+	const tooltipId = useId("ds-tooltip");
 
-	let tooltipId = $derived(
-		`ds-tooltip-${(globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`).toString()}`,
-	);
+	// Controlled/Uncontrolled 상태 통합 관리
+	let openState = createControllableState({
+		value: () => open,
+		onChange: onOpenChange,
+		defaultValue: false,
+	});
+
+	// isOpen getter로 간소화
+	let isOpen = $derived(openState.value);
 
 	let openTimer = $state<number | null>(null);
 	let closeTimer = $state<number | null>(null);
@@ -62,8 +70,7 @@
 	}
 
 	function setOpen(next: boolean): void {
-		if (!isControlled) internalOpen = next;
-		onOpenChange?.(next);
+		openState.value = next;
 		// 닫힐 때 오프셋 리셋
 		if (!next) offsetX = 0;
 	}

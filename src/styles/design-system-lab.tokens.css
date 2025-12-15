@@ -312,7 +312,7 @@
   --raw-color-on-error: 14% 0.02 25;
   --raw-color-on-link: 92% 0.01 250;
   --raw-color-on-primary: 14% 0.02 250;
-  --raw-color-on-secondary: 92% 0.01 250;
+  --raw-color-on-secondary: 20% 0.01 250;
   --raw-color-on-selected: 95% 0.02 150;
   --raw-color-on-sidebar: 85% 0.01 255;
   --raw-color-on-success: 14% 0.02 150;
@@ -321,14 +321,14 @@
   --raw-color-primary: 78% 0.12 250;
   --raw-color-primary-hover: 82% 0.12 250;
   --raw-color-scrim: 10% 0.01 255;
-  --raw-color-secondary: 32% 0.04 250;
+  --raw-color-secondary: 85% 0.04 250;
   --raw-color-selected: 45% 0.09 150;
   --raw-color-sidebar: 15% 0.02 255;
   --raw-color-success: 75% 0.1 150;
   --raw-color-surface: 22% 0.02 255;
   --raw-color-surface-hover: 26% 0.02 255;
   --raw-color-text: 96% 0.01 255;
-  --raw-color-text-muted: 72% 0.01 255;
+  --raw-color-text-muted: 82% 0.01 255;
   --raw-color-warning: 80% 0.12 70;
 
   /* Semantic (Canonical) */
