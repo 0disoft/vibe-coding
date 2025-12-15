@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
-	import type { HTMLAttributes } from "svelte/elements";
 	import { flip } from "svelte/animate";
-	import { fly } from "svelte/transition";
 	import { cubicOut } from "svelte/easing";
+	import type { HTMLAttributes } from "svelte/elements";
+	import { fly } from "svelte/transition";
 
 	import { DsIcon, DsIconButton } from "$lib/components/design-system";
 	import type { ToastItem } from "$lib/stores/toast.svelte";
@@ -24,6 +24,11 @@
 		position?: ToastPosition;
 		class?: string;
 		action?: Snippet<[ToastItem]>;
+		/** i18n */
+		regionLabel?: string;
+		dismissLabel?: string;
+		/** error/warning을 assertive로 읽을 intent 목록 */
+		assertiveIntents?: Array<"error" | "warning">;
 	}
 
 	let {
@@ -34,6 +39,9 @@
 		position = "bottom-right",
 		class: className = "",
 		action,
+		regionLabel = "알림",
+		dismissLabel = "알림 닫기",
+		assertiveIntents = ["error"],
 		...rest
 	}: Props = $props();
 
@@ -46,31 +54,67 @@
 
 	let flyY = $derived(position.startsWith("top") ? -20 : 20);
 	let isTop = $derived(position.startsWith("top"));
+
+	function toastRole(t: ToastItem) {
+		const intent = (t.intent ?? "neutral") as "error" | "warning";
+		return assertiveIntents.includes(intent) ? "alert" : undefined;
+	}
+
+	function onRegionFocusOut(e: FocusEvent) {
+		const next = e.relatedTarget as Node | null;
+		const current = e.currentTarget as HTMLElement;
+		// 리전 내부 포커스 이동이면 resume 금지
+		if (next && current.contains(next)) return;
+		onResume?.();
+	}
+
+	function onToastKeyDown(e: KeyboardEvent, id: string) {
+		if (e.key === "Escape") {
+			e.preventDefault();
+			e.stopPropagation();
+			onDismiss(id);
+		}
+	}
+
+	const reduceMotion =
+		typeof window !== "undefined" &&
+		window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+	let flyParams = $derived(
+		reduceMotion
+			? { duration: 0 }
+			: { y: flyY, duration: 300, easing: cubicOut },
+	);
+	let flipParams = $derived(
+		reduceMotion ? { duration: 0 } : { duration: 300, easing: cubicOut },
+	);
 </script>
 
 <section
 	{...rest}
 	class={`ds-toast-region ${className}`.trim()}
-	aria-label="Notifications"
+	aria-label={regionLabel}
 	aria-live="polite"
 	aria-relevant="additions text"
 	data-ds-position={position}
 	onmouseenter={onPause}
 	onmouseleave={onResume}
 	onfocusin={onPause}
-	onfocusout={onResume}
+	onfocusout={onRegionFocusOut}
 >
 	<ol class={`flex w-full ${isTop ? "flex-col" : "flex-col-reverse"}`}>
 		{#each toasts as t (t.id)}
 			<li
 				class="ds-toast-wrapper pointer-events-auto py-1"
-				animate:flip={{ duration: 300, easing: cubicOut }}
-				transition:fly={{ y: flyY, duration: 300, easing: cubicOut }}
+				animate:flip={flipParams}
+				transition:fly={flyParams}
 			>
 				<div
 					class="ds-toast ds-elevation-3"
 					data-intent={t.intent ?? "neutral"}
-					role="status"
+					role={toastRole(t)}
+					tabindex="-1"
+					onkeydown={(e) => onToastKeyDown(e, t.id)}
 				>
 					<div class="ds-toast-icon" aria-hidden="true">
 						<DsIcon
@@ -94,8 +138,9 @@
 
 					<div class="ds-toast-close">
 						<DsIconButton
+							type="button"
 							icon="x"
-							label="Dismiss notification"
+							label={dismissLabel}
 							variant="ghost"
 							size="sm"
 							onclick={() => onDismiss(t.id)}

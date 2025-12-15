@@ -12,6 +12,8 @@
 		disabled?: boolean;
 		fullWidth?: boolean;
 		loading?: boolean;
+		/** 로딩 SR 텍스트 (i18n) */
+		loadingLabel?: string;
 		children?: Snippet;
 		start?: Snippet;
 		end?: Snippet;
@@ -24,7 +26,9 @@
 		disabled = false,
 		fullWidth = false,
 		loading = false,
+		loadingLabel = "이동 중…",
 		href,
+		tabindex,
 		class: className = "",
 		children,
 		start,
@@ -34,6 +38,8 @@
 
 	let intentCss = $derived(toIntentCss(intent));
 	let isDisabled = $derived(disabled || loading);
+	// CSS 변수 보간 수정
+	let iconSize = $derived(`var(--size-icon-${size})`);
 
 	function handleClick(e: MouseEvent) {
 		if (isDisabled) {
@@ -63,22 +69,23 @@
 	class={buttonClass}
 	aria-disabled={isDisabled ? "true" : undefined}
 	aria-busy={loading || undefined}
-	tabindex={isDisabled ? -1 : undefined}
+	tabindex={isDisabled ? -1 : tabindex}
 	draggable={isDisabled ? "false" : undefined}
-	role="button"
 	onclick={handleClick}
 	data-ds-size={size}
 	data-ds-variant={variant}
 	data-ds-intent={intentCss}
 	data-ds-full-width={fullWidth ? "true" : undefined}
+	data-ds-disabled={isDisabled ? "true" : undefined}
 >
 	{#if loading}
 		<span
 			class="ds-icon i-lucide-loader-circle animate-spin"
 			aria-hidden="true"
-			style:width="var(--size-icon-{size})"
-			style:height="var(--size-icon-{size})"
+			style:width={iconSize}
+			style:height={iconSize}
 		></span>
+		<span class="sr-only" aria-live="polite">{loadingLabel}</span>
 	{:else if start}
 		{@render start()}
 	{/if}
@@ -87,7 +94,7 @@
 		{@render children()}
 	{/if}
 
-	{#if end}
+	{#if !loading && end}
 		{@render end()}
 	{/if}
 </a>

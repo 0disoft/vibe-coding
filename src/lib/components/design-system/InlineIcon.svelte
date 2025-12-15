@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { HTMLAttributes } from "svelte/elements";
-	import type { Snippet } from "svelte";
 	import { DsIcon } from "$lib/components/design-system";
+	import type { Snippet } from "svelte";
+	import type { HTMLAttributes } from "svelte/elements";
 
 	type Size = "sm" | "md" | "lg" | "inherit";
 	type Side = "start" | "end";
@@ -10,6 +10,10 @@
 		name: string;
 		side?: Side;
 		size?: Size;
+		/**
+		 * 텍스트가 없을 때만 의미 아이콘으로 사용.
+		 * 텍스트(children)가 있으면 아이콘은 장식용(자동 aria-hidden).
+		 */
 		label?: string;
 		children?: Snippet;
 	}

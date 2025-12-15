@@ -13,10 +13,15 @@
 		size?: Size;
 		variant?: IconButtonVariant;
 		intent?: IntentWithNeutral;
+		/** 토글 버튼일 때만 사용 (미지정이면 일반 버튼) */
 		pressed?: boolean;
 		disabled?: boolean;
 		loading?: boolean;
 		flipInRtl?: boolean;
+		/** 툴팁 표시 여부 */
+		showTitle?: boolean;
+		/** 로딩 SR 텍스트 */
+		loadingLabel?: string;
 		ref?: HTMLButtonElement | null;
 		children?: Snippet;
 	}
@@ -31,6 +36,8 @@
 		loading = false,
 		disabled = false,
 		flipInRtl = false,
+		showTitle = false,
+		loadingLabel = "처리 중…",
 		type = "button",
 		ref = $bindable(null),
 		class: className = "",
@@ -39,18 +46,27 @@
 	}: Props = $props();
 
 	let intentCss = $derived(toIntentCss(intent));
-	let isDisabled = $derived(disabled || loading);
+	// 로딩 중에도 포커스 유지를 위해 native disabled는 disabled prop만 반영
+	let isNativeDisabled = $derived(disabled);
+	let isSoftDisabled = $derived(disabled || loading);
 
 	// 클래스 조합
 	let buttonClass = $derived(
 		[
 			"ds-icon-button ds-focus-ring ds-touch-target",
-			isDisabled ? "is-disabled" : "",
+			isSoftDisabled ? "is-disabled" : "",
 			className,
 		]
 			.filter(Boolean)
 			.join(" "),
 	);
+
+	/** 로딩 중 중복 클릭 방지 */
+	function guardIfLoading(e: Event) {
+		if (!loading) return;
+		e.preventDefault();
+		e.stopPropagation();
+	}
 </script>
 
 <button
@@ -58,20 +74,24 @@
 	bind:this={ref}
 	{type}
 	class={buttonClass}
-	disabled={isDisabled}
+	disabled={isNativeDisabled}
+	aria-disabled={isSoftDisabled || undefined}
 	aria-busy={loading || undefined}
 	aria-label={label}
-	title={label}
-	aria-pressed={pressed}
+	title={showTitle ? label : undefined}
+	aria-pressed={pressed === undefined ? undefined : pressed}
 	data-ds-size={size}
 	data-ds-variant={variant}
 	data-ds-intent={intentCss}
+	onclick={guardIfLoading}
+	onkeydown={guardIfLoading}
 >
 	{#if loading}
-		<DsIcon name="loader-circle" size={size} class="animate-spin" />
+		<DsIcon name="loader-circle" {size} class="animate-spin" />
+		<span class="sr-only" aria-live="polite">{loadingLabel}</span>
 	{:else}
 		{#if icon}
-			<DsIcon name={icon} size={size} {flipInRtl} />
+			<DsIcon name={icon} {size} {flipInRtl} />
 		{/if}
 		{#if children}
 			{@render children()}

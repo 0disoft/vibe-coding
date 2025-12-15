@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { useId } from "$lib/shared/utils/use-id";
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
-	import { useId } from "$lib/shared/utils/use-id";
 
 	export type TooltipPlacement = "top" | "bottom" | "left" | "right";
 
@@ -16,6 +16,10 @@
 		closeDelayMs?: number;
 		placement?: TooltipPlacement;
 		arrow?: boolean;
+
+		/** 터치 환경에서 툴팁을 기본 비활성(권장) */
+		disableOnCoarsePointer?: boolean;
+
 		children?: Snippet<[TriggerProps]>;
 		tooltip?: Snippet;
 	}
@@ -27,6 +31,7 @@
 		closeDelayMs = 150,
 		placement = "top",
 		arrow = true,
+		disableOnCoarsePointer = true,
 		class: className = "",
 		children,
 		tooltip,
@@ -39,11 +44,28 @@
 	let openTimer: number | null = null;
 	let closeTimer: number | null = null;
 
-	function clearTimers() {
+	function isCoarsePointer() {
+		return window.matchMedia?.("(pointer: coarse)")?.matches ?? false;
+	}
+
+	let isActuallyDisabled = $derived(
+		disabled ||
+			(disableOnCoarsePointer &&
+				typeof window !== "undefined" &&
+				isCoarsePointer()),
+	);
+
+	function clearOpenTimer() {
 		if (openTimer) clearTimeout(openTimer);
-		if (closeTimer) clearTimeout(closeTimer);
 		openTimer = null;
+	}
+	function clearCloseTimer() {
+		if (closeTimer) clearTimeout(closeTimer);
 		closeTimer = null;
+	}
+	function clearTimers() {
+		clearOpenTimer();
+		clearCloseTimer();
 	}
 
 	function open() {
@@ -57,17 +79,19 @@
 	}
 
 	function scheduleOpen() {
-		clearTimers();
+		clearCloseTimer();
+		clearOpenTimer();
 		openTimer = window.setTimeout(open, delayMs);
 	}
 
 	function scheduleClose() {
-		clearTimers();
+		clearOpenTimer();
+		clearCloseTimer();
 		closeTimer = window.setTimeout(close, closeDelayMs);
 	}
 
 	function onPointerEnter() {
-		if (disabled) return;
+		if (isActuallyDisabled) return;
 		scheduleOpen();
 	}
 
@@ -75,12 +99,16 @@
 		scheduleClose();
 	}
 
-	function onFocus() {
-		if (disabled) return;
+	function onFocusIn() {
+		if (isActuallyDisabled) return;
 		open();
 	}
 
-	function onBlur() {
+	function onFocusOut(e: FocusEvent) {
+		// wrapper 내부 포커스 이동이면 닫지 않기
+		const next = e.relatedTarget as Node | null;
+		const current = e.currentTarget as HTMLElement;
+		if (next && current.contains(next)) return;
 		close();
 	}
 
@@ -90,28 +118,32 @@
 			close();
 		}
 	}
-</script>
 
-<svelte:window
-	onkeydown={(e) => {
-		if (isOpen && e.key === "Escape") close();
-	}}
-/>
+	// ✅ disabled가 켜지면 강제로 닫기
+	$effect(() => {
+		if (isActuallyDisabled && isOpen) close();
+	});
+
+	// describedby는 content/tooltip이 있을 때만 제공(열렸을 때만 X)
+	let describedBy = $derived(
+		(content || tooltip) && !isActuallyDisabled ? tooltipId : undefined,
+	);
+</script>
 
 <span
 	{...rest}
 	class={`ds-tooltip-wrapper ${className}`.trim()}
 	onpointerenter={onPointerEnter}
 	onpointerleave={onPointerLeave}
-	onfocusin={onFocus}
-	onfocusout={onBlur}
+	onfocusin={onFocusIn}
+	onfocusout={onFocusOut}
 	onkeydown={onKeyDown}
 >
 	{#if children}
-		{@render children({ "aria-describedby": isOpen ? tooltipId : undefined })}
+		{@render children({ "aria-describedby": describedBy })}
 	{/if}
 
-	{#if isOpen && !disabled && (content || tooltip)}
+	{#if isOpen && !isActuallyDisabled && (content || tooltip)}
 		<div
 			role="tooltip"
 			id={tooltipId}

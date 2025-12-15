@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { DsIconButton } from "$lib/components/design-system";
 	import type { Snippet } from "svelte";
+	import { tick } from "svelte";
 	import type { HTMLInputAttributes } from "svelte/elements";
 
 	type Size = "sm" | "md" | "lg";
@@ -15,6 +16,8 @@
 		ref?: HTMLInputElement | null;
 		start?: Snippet;
 		end?: Snippet;
+		/** 지우기 버튼 레이블 (i18n) */
+		clearLabel?: string;
 	}
 
 	let {
@@ -24,15 +27,22 @@
 		clearable = false,
 		value = $bindable(""),
 		ref = $bindable(null),
+		clearLabel = "값 지우기",
 		class: className = "",
 		start,
 		end,
 		...rest
 	}: Props = $props();
 
-	function handleClear() {
+	async function handleClear() {
 		value = "";
-		ref?.focus();
+		await tick();
+
+		if (ref) {
+			// 폼/검증 라이브러리들이 input 이벤트를 기대하는 경우 대비
+			ref.dispatchEvent(new Event("input", { bubbles: true }));
+			ref.focus();
+		}
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
@@ -40,16 +50,30 @@
 			e.preventDefault();
 			e.stopPropagation();
 			handleClear();
+			return;
 		}
 		// onkeydown prop 전달 지원
 		// @ts-ignore - Svelte HTML attributes typing issue
-		rest.onkeydown?.(e);
+		if (!e.defaultPrevented) rest.onkeydown?.(e);
 	}
 
-	function onWrapperClick(e: MouseEvent) {
-		if (e.target !== ref) {
-			ref?.focus();
+	function triggerFocus(node: HTMLElement) {
+		function handler(e: MouseEvent) {
+			const t = e.target as HTMLElement | null;
+			if (!t || !ref) return;
+			if (t === ref) return;
+			const interactive = t.closest(
+				'button, a, input, select, textarea, [role="button"], [role="link"]',
+			);
+			if (interactive) return;
+			ref.focus();
 		}
+		node.addEventListener("click", handler);
+		return {
+			destroy() {
+				node.removeEventListener("click", handler);
+			},
+		};
 	}
 
 	let showClearBtn = $derived(
@@ -61,16 +85,13 @@
 	);
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
 	class={`ds-input-group ${className}`.trim()}
 	data-ds-size={size}
 	data-ds-variant={variant}
 	data-invalid={invalid ? "true" : undefined}
 	data-disabled={rest.disabled ? "true" : undefined}
-	onclick={onWrapperClick}
-	onkeydown={undefined}
-	role="presentation"
+	use:triggerFocus
 >
 	{#if start}
 		<div class="ds-input-adornment start">
@@ -94,13 +115,13 @@
 	{:else if showClearBtn}
 		<div class="ds-input-adornment end">
 			<DsIconButton
+				type="button"
 				icon="x"
 				size="sm"
 				variant="ghost"
 				intent="secondary"
-				label="Clear value"
+				label={clearLabel}
 				onclick={handleClear}
-				tabindex={-1}
 			/>
 		</div>
 	{/if}

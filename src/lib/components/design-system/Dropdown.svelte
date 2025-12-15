@@ -81,7 +81,9 @@
 
 	function toggle(): void {
 		if (disabled) return;
-		setOpen(!isOpen);
+		const next = !isOpen;
+		setOpen(next);
+		if (next) tick().then(focusFirstItem);
 	}
 
 	function close(options?: { focusButton?: boolean }): void {
@@ -143,19 +145,33 @@
 	function onTriggerKeyDown(e: KeyboardEvent): void {
 		if (disabled) return;
 
-		if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+		if (e.key === "Escape" && isOpen) {
 			e.preventDefault();
-			if (!isOpen) {
-				setOpen(true);
-				tick().then(focusFirstItem);
-			}
+			close({ focusButton: true });
+			return;
+		}
+
+		if (e.key === "ArrowDown") {
+			e.preventDefault();
+			if (!isOpen) setOpen(true);
+			tick().then(focusFirstItem);
+			return;
 		}
 
 		if (e.key === "ArrowUp") {
 			e.preventDefault();
-			if (!isOpen) {
+			if (!isOpen) setOpen(true);
+			tick().then(focusLastItem);
+			return;
+		}
+
+		if (e.key === "Enter" || e.key === " ") {
+			e.preventDefault();
+			if (isOpen) {
+				close({ focusButton: true });
+			} else {
 				setOpen(true);
-				tick().then(focusLastItem);
+				tick().then(focusFirstItem);
 			}
 		}
 	}
@@ -172,7 +188,8 @@
 		}
 
 		if (e.key === "Tab") {
-			close();
+			// 기본 Tab 이동 후 닫기 (자연스러운 포커스 이동)
+			queueMicrotask(() => close());
 			return;
 		}
 
@@ -182,14 +199,15 @@
 			return;
 		}
 
-		if (!target.closest(itemSelector)) return;
+		const item = target.closest<HTMLElement>('[role="menuitem"]');
+		if (!item) return;
 
 		if (e.key === "ArrowDown") {
 			e.preventDefault();
-			focusNext(target, 1);
+			focusNext(item, 1);
 		} else if (e.key === "ArrowUp") {
 			e.preventDefault();
-			focusNext(target, -1);
+			focusNext(item, -1);
 		} else if (e.key === "Home") {
 			e.preventDefault();
 			focusFirstItem();
@@ -197,9 +215,9 @@
 			e.preventDefault();
 			focusLastItem();
 		} else if (e.key === "Enter" || e.key === " ") {
-			if (target.tagName !== "BUTTON") {
+			if (item.tagName !== "BUTTON") {
 				e.preventDefault();
-				target.click();
+				item.click();
 			}
 		}
 	}
@@ -248,6 +266,17 @@
 					onDocumentPointerDown,
 					true,
 				);
+		}
+	});
+
+	// 닫힐 때 타입어헤드 버퍼 정리
+	$effect(() => {
+		if (!isOpen) {
+			typeaheadBuffer = "";
+			if (typeaheadTimer) {
+				window.clearTimeout(typeaheadTimer);
+				typeaheadTimer = null;
+			}
 		}
 	});
 </script>
