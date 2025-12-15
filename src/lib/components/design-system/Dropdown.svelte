@@ -44,7 +44,7 @@
 		/** 커스텀 트리거 슬롯 */
 		trigger?: Snippet<[TriggerProps]>;
 		/** 커스텀 메뉴 콘텐츠 */
-		children?: Snippet;
+		children?: Snippet<[{ close: () => void }]>;
 	}
 
 	let {
@@ -56,6 +56,8 @@
 		align = "start",
 		disabled = false,
 		class: className = "",
+		menuClass = "",
+		itemSelector = '[data-ds-dropdown-item="true"]',
 		trigger,
 		children,
 		...rest
@@ -96,7 +98,7 @@
 		const root = rootEl;
 		if (!root) return;
 		const itemsEls = Array.from(
-			root.querySelectorAll<HTMLElement>('[data-ds-dropdown-item="true"]'),
+			root.querySelectorAll<HTMLElement>(itemSelector),
 		);
 		const first = itemsEls.find((el) => !el.hasAttribute("data-disabled"));
 		first?.focus();
@@ -106,7 +108,7 @@
 		const root = rootEl;
 		if (!root) return;
 		const itemsEls = Array.from(
-			root.querySelectorAll<HTMLElement>('[data-ds-dropdown-item="true"]'),
+			root.querySelectorAll<HTMLElement>(itemSelector),
 		);
 		const enabled = itemsEls.filter((el) => !el.hasAttribute("data-disabled"));
 		enabled.at(-1)?.focus();
@@ -116,7 +118,7 @@
 		const root = rootEl;
 		if (!root) return;
 		const itemsEls = Array.from(
-			root.querySelectorAll<HTMLElement>('[data-ds-dropdown-item="true"]'),
+			root.querySelectorAll<HTMLElement>(itemSelector),
 		);
 		const enabled = itemsEls.filter((el) => !el.hasAttribute("data-disabled"));
 		const idx = enabled.indexOf(current);
@@ -151,11 +153,20 @@
 		const target = e.target as HTMLElement | null;
 		if (!target) return;
 
+		// 메뉴 컨테이너 자체에서 발생한 이벤트는 무시 (포커스가 아이템에 있지 않을 때)
+		// 단, children 모드에서 포커스 관리를 위해 필요할 수도 있으나,
+		// 보통 아이템에 포커스가 가 있는 상태에서 키 입력이 발생함.
+		
+		// Escape는 어디서든 동작해야 함
 		if (e.key === "Escape") {
 			e.preventDefault();
+			e.stopPropagation(); // 상위로 전파 방지
 			close({ focusButton: true });
 			return;
 		}
+
+		// 아이템 네비게이션은 아이템 위에서만 동작
+		if (!target.closest(itemSelector)) return;
 
 		if (e.key === "ArrowDown") {
 			e.preventDefault();
@@ -252,13 +263,14 @@
 	{#if isOpen}
 		<div
 			id={menuId}
-			class="ds-dropdown-menu ds-elevation-2"
+			class={`ds-dropdown-menu ds-elevation-2 ${menuClass}`.trim()}
 			role="menu"
 			aria-labelledby={triggerId}
 			tabindex="-1"
+			onkeydown={onMenuKeyDown}
 		>
 			{#if children}
-				{@render children()}
+				{@render children({ close: () => close({ focusButton: true }) })}
 			{:else}
 				{#each items as item (item.id)}
 					<button
@@ -273,7 +285,6 @@
 							onSelect?.(item.id);
 							close();
 						}}
-						onkeydown={onMenuKeyDown}
 					>
 						{item.label}
 					</button>

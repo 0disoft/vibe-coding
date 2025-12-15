@@ -23,43 +23,43 @@
  */
 
 type ControllableStateOptions<T> = {
-  /** 외부에서 제공하는 controlled value (undefined면 uncontrolled) */
-  value: () => T | undefined;
-  /** 값 변경 시 호출되는 콜백 */
-  onChange?: (value: T) => void;
-  /** uncontrolled 모드의 초기값 */
-  defaultValue: T;
+	/** 외부에서 제공하는 controlled value (undefined면 uncontrolled) */
+	value: () => T | undefined;
+	/** 값 변경 시 호출되는 콜백 */
+	onChange?: (value: T) => void;
+	/** uncontrolled 모드의 초기값 */
+	defaultValue: T;
 };
 
 type ControllableStateReturn<T> = {
-  /** 현재 값 (controlled면 외부값, uncontrolled면 내부값) */
-  value: T;
-  /** controlled 모드 여부 */
-  readonly isControlled: boolean;
+	/** 현재 값 (controlled면 외부값, uncontrolled면 내부값) */
+	value: T;
+	/** controlled 모드 여부 */
+	readonly isControlled: boolean;
 };
 
 /**
  * Controlled/Uncontrolled 상태를 통합 관리하는 객체 생성
  */
 export function createControllableState<T>(
-  options: ControllableStateOptions<T>
+	options: ControllableStateOptions<T>
 ): ControllableStateReturn<T> {
-  let internal = $state(options.defaultValue);
+	let internal = $state(options.defaultValue);
 
-  return {
-    get value(): T {
-      const external = options.value();
-      return external !== undefined ? external : internal;
-    },
-    set value(newValue: T) {
-      const external = options.value();
-      if (external === undefined) {
-        internal = newValue;
-      }
-      options.onChange?.(newValue);
-    },
-    get isControlled(): boolean {
-      return options.value() !== undefined;
-    }
-  };
+	return {
+		get value(): T {
+			const external = options.value();
+			return external !== undefined ? external : internal;
+		},
+		set value(newValue: T) {
+			const external = options.value();
+			if (external === undefined) {
+				internal = newValue;
+			}
+			options.onChange?.(newValue);
+		},
+		get isControlled(): boolean {
+			return options.value() !== undefined;
+		}
+	};
 }

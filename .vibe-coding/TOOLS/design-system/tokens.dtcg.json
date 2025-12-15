@@ -478,6 +478,16 @@
       "paddingY": {
         "$type": "dimension",
         "$value": "0.5rem"
+      },
+      "paddingStart": {
+        "$type": "dimension",
+        "$value": "2.5rem",
+        "$description": "Start 슬롯이 있을 때의 패딩"
+      },
+      "paddingEnd": {
+        "$type": "dimension",
+        "$value": "2.5rem",
+        "$description": "End 슬롯이나 Clear 버튼이 있을 때의 패딩"
       }
     },
     "field": {
@@ -496,6 +506,30 @@
       "errorColor": {
         "$type": "color",
         "$value": "{color.error}"
+      }
+    },
+    "card": {
+      "radius": {
+        "$type": "dimension",
+        "$value": "{radius.md}"
+      },
+      "padding": {
+        "none": {
+          "$type": "dimension",
+          "$value": "0"
+        },
+        "sm": {
+          "$type": "dimension",
+          "$value": "{spacing.3}"
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "{spacing.4}"
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": "{spacing.6}"
+        }
       }
     },
     "dialog": {
@@ -574,6 +608,10 @@
       "offset": {
         "$type": "dimension",
         "$value": "{spacing.2}"
+      },
+      "arrowSize": {
+        "$type": "dimension",
+        "$value": "8px"
       },
       "surface": {
         "$type": "color",

@@ -8,11 +8,11 @@ export { default as DsIconButton } from './IconButton.svelte';
 export { default as DsInlineIcon } from './InlineIcon.svelte';
 export { default as DsInput } from './Input.svelte';
 export { default as DsLinkButton } from './LinkButton.svelte';
+export { default as DsSelect } from './Select.svelte';
+export { default as DsSkeleton } from './Skeleton.svelte';
+export { default as DsTextarea } from './Textarea.svelte';
 export { default as DsToastRegion } from './ToastRegion.svelte';
 export { default as DsTooltip } from './Tooltip.svelte';
-
-// Types
-export { toIntentCss } from './types';
 export type {
 	ButtonVariant,
 	IconButtonVariant,
@@ -23,4 +23,5 @@ export type {
 	IntentWithNeutral,
 	Size
 } from './types';
-
+// Types
+export { toIntentCss } from './types';

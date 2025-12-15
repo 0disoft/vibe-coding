@@ -70,7 +70,6 @@ interface Manifest {
 
 const DEFAULT_SOURCES = [
 	"src/styles/design-system.tokens.css",
-	"src/styles/design-system-lab.tokens.css",
 ];
 
 function printHelp(): void {

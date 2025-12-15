@@ -137,6 +137,8 @@
   --button-radius: var(--radius-md);
 
   /* Component: Input */
+  --input-padding-end: 2.5rem;
+  --input-padding-start: 2.5rem;
   --input-padding-x: 0.75rem;
   --input-padding-y: 0.5rem;
   --input-radius: var(--radius-md);
@@ -166,6 +168,7 @@
   --dropdown-surface: var(--color-surface);
 
   /* Pattern: Tooltip */
+  --tooltip-arrow-size: 8px;
   --tooltip-max-width: min(320px, 80vw);
   --tooltip-offset: var(--spacing-2);
   --tooltip-padding-x: var(--spacing-3);
@@ -182,6 +185,13 @@
   --toast-radius: var(--radius-md);
   --toast-surface: var(--color-surface);
   --toast-width: min(420px, calc(100vw - (var(--spacing-4) * 2)));
+
+  /* Other */
+  --component-card-padding-lg: var(--spacing-6);
+  --component-card-padding-md: var(--spacing-4);
+  --component-card-padding-none: 0;
+  --component-card-padding-sm: var(--spacing-3);
+  --component-card-radius: var(--radius-md);
 
   /* Primitive (Raw) */
   --raw-color-accent: 90% 0.06 155;

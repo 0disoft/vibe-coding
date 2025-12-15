@@ -16,6 +16,20 @@
 		onkeydown: (e: KeyboardEvent) => void;
 	};
 
+	export type TooltipPlacement =
+		| "top"
+		| "top-start"
+		| "top-end"
+		| "bottom"
+		| "bottom-start"
+		| "bottom-end"
+		| "left"
+		| "left-start"
+		| "left-end"
+		| "right"
+		| "right-start"
+		| "right-end";
+
 	interface Props extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
 		content?: string;
 		disabled?: boolean;
@@ -23,7 +37,8 @@
 		onOpenChange?: (next: boolean) => void;
 		delayMs?: number;
 		closeDelayMs?: number;
-		placement?: "top" | "bottom";
+		placement?: TooltipPlacement;
+		arrow?: boolean;
 		children?: Snippet<[TriggerProps]>;
 		tooltip?: Snippet;
 	}
@@ -36,6 +51,7 @@
 		delayMs = 500,
 		closeDelayMs = 100,
 		placement = "top",
+		arrow = false,
 		class: className = "",
 		children,
 		tooltip,
@@ -61,6 +77,7 @@
 	// 뷰포트 경계 감지용
 	let tooltipEl = $state<HTMLSpanElement | null>(null);
 	let offsetX = $state(0);
+	let offsetY = $state(0);
 
 	function clearTimers(): void {
 		if (openTimer !== null) window.clearTimeout(openTimer);
@@ -72,7 +89,10 @@
 	function setOpen(next: boolean): void {
 		openState.value = next;
 		// 닫힐 때 오프셋 리셋
-		if (!next) offsetX = 0;
+		if (!next) {
+			offsetX = 0;
+			offsetY = 0;
+		}
 	}
 
 	function scheduleOpen(ms: number): void {
@@ -159,29 +179,48 @@
 		onkeydown: onKeyDown,
 	});
 
+	// 스타일 계산: transform을 사용하여 위치 미세 조정 및 중앙 정렬 처리
+	let transformStyle = $derived.by(() => {
+		// 중앙 정렬이 필요한 경우 (기본값)
+		if (placement === "top" || placement === "bottom") {
+			return `translateX(calc(-50% + ${offsetX}px))`;
+		}
+		if (placement === "left" || placement === "right") {
+			return `translateY(calc(-50% + ${offsetY}px))`;
+		}
+		// start/end 변형은 CSS에서 기본 위치를 잡으므로, 뷰포트 보정값(offsetX/Y)만 적용
+		// 단, 현재 start/end에 대한 뷰포트 보정 로직은 복잡하여 0으로 가정 (추후 고도화 가능)
+		return `translate(${offsetX}px, ${offsetY}px)`;
+	});
+
 	// 뷰포트 경계 감지 및 위치 조정
 	$effect(() => {
 		if (!isOpen || !tooltipEl) return;
 
-		// 렌더링 후 위치 측정
 		requestAnimationFrame(() => {
 			if (!tooltipEl) return;
 			const rect = tooltipEl.getBoundingClientRect();
 			const padding = 8; // 화면 가장자리 여백
 
-			let newOffset = 0;
-
-			// 왼쪽 오버플로우
-			if (rect.left < padding) {
-				newOffset = padding - rect.left;
+			// Top/Bottom 배치일 때 좌우 충돌 감지
+			if (placement.startsWith("top") || placement.startsWith("bottom")) {
+				let newOffset = 0;
+				if (rect.left < padding) {
+					newOffset = padding - rect.left;
+				} else if (rect.right > window.innerWidth - padding) {
+					newOffset = window.innerWidth - padding - rect.right;
+				}
+				if (newOffset !== offsetX) offsetX = newOffset;
 			}
-			// 오른쪽 오버플로우
-			else if (rect.right > window.innerWidth - padding) {
-				newOffset = window.innerWidth - padding - rect.right;
-			}
-
-			if (newOffset !== offsetX) {
-				offsetX = newOffset;
+			// Left/Right 배치일 때 상하 충돌 감지
+			else if (placement.startsWith("left") || placement.startsWith("right")) {
+				let newOffset = 0;
+				if (rect.top < padding) {
+					newOffset = padding - rect.top;
+				} else if (rect.bottom > window.innerHeight - padding) {
+					newOffset = window.innerHeight - padding - rect.bottom;
+				}
+				if (newOffset !== offsetY) offsetY = newOffset;
 			}
 		});
 	});
@@ -219,7 +258,8 @@
 			role="tooltip"
 			id={tooltipId}
 			data-placement={placement}
-			style:transform={`translateX(calc(-50% + ${offsetX}px))`}
+			data-arrow={arrow ? "true" : undefined}
+			style:transform={transformStyle}
 		>
 			{#if tooltip}
 				{@render tooltip()}

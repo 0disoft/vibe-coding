@@ -2,27 +2,23 @@ name: CI
 
 on:
   pull_request:
+    branches: [ main ]
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
-    inputs:
-      run_a11y:
-        description: Run Design System Lab a11y smoke test (A11Y=1)
-        type: boolean
-        default: false
-      run_visual:
-        description: Run Design System Lab visual regression test (VISUAL=1)
-        type: boolean
-        default: false
-      update_visual_snapshots:
-        description: Update visual snapshots (only when run_visual is true)
-        type: boolean
-        default: false
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,6 +27,14 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .bun-version
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('.bun-version', '**/bun.lock', '**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
 
       - name: Install
         run: bun install --frozen-lockfile
@@ -47,7 +51,24 @@ jobs:
       - name: Typecheck (Scripts)
         run: bun run check:scripts
 
-      - name: Install Playwright (Chromium) for Vitest Browser
+      - name: Get Playwright version
+        id: playwright-version
+        shell: bash
+        run: |
+          echo "VERSION=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright (Chromium)
+        # 캐시가 있어도 OS 의존성(--with-deps) 설치를 위해 실행해야 함.
+        # 브라우저 바이너리는 캐시에 있으면 다운로드를 건너뛰므로 빠름.
         run: bunx playwright install --with-deps chromium
 
       - name: Unit Tests
@@ -56,64 +77,5 @@ jobs:
       - name: Verify DTCG → CSS Tokens
         run: bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --verify
 
-      - name: Verify DTCG → CSS Tokens (Root)
-        run: bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root --verify
-
       - name: Verify Design Tokens Manifest
         run: bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts --stable --verify
-
-  e2e_a11y:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_a11y }}
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
-
-      - name: Install
-        run: bun install --frozen-lockfile
-
-      - name: Install Playwright (Chromium)
-        run: bunx playwright install --with-deps chromium
-
-      - name: Design System Lab A11y Smoke (Desktop)
-        env:
-          A11Y: "1"
-        run: bun run test:e2e -- e2e/design-system-lab.a11y.spec.ts --project=Desktop
-
-  e2e_visual:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_visual }}
-    runs-on: windows-latest
-    needs: test
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
-
-      - name: Install
-        run: bun install --frozen-lockfile
-
-      - name: Install Playwright (Chromium)
-        run: bunx playwright install chromium
-
-      - name: Design System Lab Visual Regression (Desktop)
-        env:
-          VISUAL: "1"
-        run: |
-          if [ "${{ inputs.update_visual_snapshots }}" = "true" ]; then
-            bun run test:e2e -- e2e/design-system-lab.visual.spec.ts --project=Desktop --update-snapshots
-          else
-            bun run test:e2e -- e2e/design-system-lab.visual.spec.ts --project=Desktop
-          fi

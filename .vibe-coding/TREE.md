@@ -39,17 +39,15 @@
     ├── styles/
     │   ├── typography.css          # CSS 변수 (폰트, 언어별 설정)
     │   ├── design-system.tokens.css # 디자인 시스템 전역 토큰(:root 스코프, generated)
-    │   ├── design-system-lab.tokens.css # 디자인 시스템 lab 토큰(lab layout import, generated)
-    │   ├── design-system-lab.css   # 디자인 시스템 lab 스타일(lab layout import)
+    │   ├── design-system.css       # 디자인 시스템 컴포넌트/패턴 스타일
     │   ├── base.css
     │   ├── scrollbar.css
     │   ├── prose.css
     │   └── transitions.css
     ├── routes/                    # SvelteKit 페이지 라우트
-    │   └── lab/                   # DEV 전용 lab 라우트(프로덕션 404)
-    │       ├── +layout.server.ts  # DEV 가드
-    │       ├── +layout.svelte     # Lab 전용 스타일 스코프
-    │       └── design-system/     # 디자인 시스템 검증 페이지
+    │   ├── +layout.server.ts
+    │   ├── +layout.svelte
+    │   └── +page.svelte
     └── lib/
         ├── index.ts
         ├── assets/                # 정적 에셋 (이미지, 아이콘 등)
@@ -92,8 +90,7 @@
         │   ├── CodeBlock.svelte
         │   ├── Footer.svelte
         │   ├── Header.svelte
-        │   ├── lab/                 # DEV 실험/검증용 컴포넌트
-        │   │   └── design-system/   # 디자인 시스템 lab UI 컴포넌트 (Button/Input/Card 등)
+        │   ├── design-system/     # 디자인 시스템 UI 컴포넌트 (Button/Input/Card 등)
         │   ├── typography/          # 스타일 가이드/타이포그래피 테스트 컴포넌트
         │   │   ├── TypographyCard.svelte
         │   │   ├── TypographySection.svelte
@@ -150,7 +147,7 @@
 | `TROUBLE/`             | 문제 해결 기록 (SOLVED.md 등)                              |
 | `SOS/`                 | 긴급 이슈 및 디버깅 로그                                   |
 | `TOOLS/README.md`      | 자동화 스크립트 사용법 문서 (개별 도구는 이 파일 참조)     |
-| `TOOLS/design-system/` | 디자인 시스템 lab 운영/검증 문서 (토큰 매니페스트/스펙 포함) |
+| `TOOLS/design-system/` | 디자인 시스템 운영/문서화 (토큰 매니페스트/스펙 포함)        |
 | `WEBNOVEL/`            | 웹소설 집필 템플릿 (캐릭터, 사물, 현상, 에피소드 관리)     |
 
 ### e2e/
@@ -158,8 +155,6 @@
 | 파일 | 역할 |
 | --- | --- |
 | `markdown-rendering.spec.ts` | 마크다운 렌더링 품질(볼드 표식 잔존) 회귀 테스트 |
-| `design-system-lab.visual.spec.ts` | 디자인 시스템 lab 시각 회귀(스냅샷) 테스트 (옵션, `VISUAL=1`) |
-| `design-system-lab.a11y.spec.ts` | 디자인 시스템 lab A11y 스모크 테스트 (옵션, `A11Y=1`) |
 
 ### messages/
 
@@ -192,8 +187,7 @@
 | ----------------- | --------------------------------------------------------- |
 | `typography.css`    | CSS 변수: 폰트 패밀리, 언어별 타이포그래피 설정           |
 | `design-system.tokens.css` | 디자인 시스템 전역 토큰(:root 스코프, generated) |
-| `design-system-lab.tokens.css` | 디자인 시스템 lab 토큰(lab layout에서 import) |
-| `design-system-lab.css` | 디자인 시스템 lab 컴포넌트/패턴 스타일(lab layout에서 import) |
+| `design-system.css` | 디자인 시스템 컴포넌트/패턴 스타일                        |
 | `base.css`        | 기본 HTML 요소 스타일 (body, h1-h3, code, pre)            |
 | `scrollbar.css`   | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일)          |
 | `prose.css`       | .prose 마크다운 콘텐츠 타이포그래피                       |
@@ -203,9 +197,6 @@
 
 | 파일/폴더 | 역할 |
 | --- | --- |
-| `routes/lab/+layout.server.ts` | DEV 전용 lab 가드 (프로덕션 404) |
-| `routes/lab/+layout.svelte` | Lab 전용 스타일 스코프(design-system-lab.* import) |
-| `routes/lab/design-system/+page.svelte` | 디자인 시스템 토큰/상태 UI 검증 페이지 |
 | `routes/offline/+page.svelte` | 오프라인 폴백 페이지 |
 | `routes/[[lang]]/` | i18n 로케일 파라미터 루트 (Optional) |
 | `routes/[[lang]]/terms/+page.svelte` | 이용약관 페이지 |
@@ -246,12 +237,12 @@
 | `stores/persisted-state.svelte.ts`                | 쿠키+DOM 동기화 퍼시스턴스 스토어 팩토리                       |
 | `stores/theme.svelte.ts`                          | 라이트/다크 테마 상태 관리, FOUC 방지                          |
 | `stores/font-size.svelte.ts`                      | 글자 크기 1~9단계 관리                                         |
-| `paraglide/`                                      | Paraglide 자동 생성 폴더 (messages, runtime, registry, server) |
+| `paraglide/`                                      | Paraglide 자동 생성 파일 (messages, runtime, registry, server) |
 | `components/CodeBlock.svelte`                     | Shiki 기반 코드 하이라이팅 + 복사 버튼 컴포넌트                |
 | `components/Header.svelte`                        | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯)         |
 | `components/Footer.svelte`                        | 공통 푸터 컴포넌트 (카피라이트, 약관 링크)                     |
 | `components/typography/`                          | 타이포그래피/유틸리티 테스트 섹션 컴포넌트                      |
-| `components/lab/design-system/`                   | 디자인 시스템 lab 전용 UI 컴포넌트 (Button/Input/Card)          |
+| `components/design-system/`                       | 디자인 시스템 UI 컴포넌트 (Button/Input/Card/Select 등)         |
 | `components/header-actions/ThemeToggle.svelte`    | 테마 토글 버튼                                                 |
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달                                         |
 | `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달                                    |

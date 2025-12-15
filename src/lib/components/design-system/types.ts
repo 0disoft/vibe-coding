@@ -40,7 +40,7 @@ export type IntentCssWithNeutral = IntentCss | 'neutral';
 export function toIntentCss(intent: Intent): IntentCss;
 export function toIntentCss(intent: IntentWithNeutral): IntentCssWithNeutral;
 export function toIntentCss(intent: Intent | IntentWithNeutral): IntentCss | IntentCssWithNeutral {
-  return intent === 'danger' ? 'error' : intent;
+	return intent === 'danger' ? 'error' : intent;
 }
 
 // ─────────────────────────────────────────────────────────────

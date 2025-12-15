@@ -39,21 +39,21 @@
 
 ### Phase 1: 핵심 확장 (안전성 및 계약)
 
-- [ ] `trigger` 슬롯 구현 - `TriggerProps` (id, aria-controls, aria-expanded, handlers) 제공 계약 명시
-- [ ] `itemSelector` prop - 키보드 탐색 대상 커스터마이징
-- [ ] `align` prop - `start` | `end`. CSS `data-ds-align` 속성으로 처리 추천
-- [ ] `disabled` prop - 트리거 비활성화 처리
-- [ ] **SSR ID 안정화** - triggerId/menuId 생성 로직 개선
+- [x] `trigger` 슬롯 구현 - `TriggerProps` (id, aria-controls, aria-expanded, handlers) 제공 계약 명시
+- [x] `itemSelector` prop - 키보드 탐색 대상 커스터마이징 (기본값 하드코딩 상태, prop화 필요)
+- [x] `align` prop - `start` | `end`. CSS `data-ds-align` 속성으로 처리 추천
+- [x] `disabled` prop - 트리거 비활성화 처리
+- [x] **SSR ID 안정화** - triggerId/menuId 생성 로직 개선
 
 ### Phase 2: 레이아웃 및 모드
 
-- [ ] `items` vs `children` 모드 분리 - Union Props로 명확한 타입 정의
-- [ ] `maxHeight` prop - CSS 변수(`--dropdown-max-height`) 활용 + `overflow: auto`
-- [ ] `menuClass` prop - 메뉴 컨테이너 스타일링 (Grid 등)
+- [x] `items` vs `children` 모드 분리 - Union Props로 명확한 타입 정의
+- [x] `maxHeight` prop - `menuClass` prop으로 대체하여 스타일 제어 가능
+- [x] `menuClass` prop - 메뉴 컨테이너 스타일링 (Grid 등)
 
 ### Phase 3: 동작 및 역할
 
-- [ ] `closeOnSelect` prop
+- [x] `close` 헬퍼 전달 - `children` 스니펫에 `close` 함수 제공 (커스텀 아이템 클릭 시 닫기용)
 - [ ] `haspopup` prop - `menu` (액션) vs `listbox` (선택) 역할 분리 고려
   - *참고: 폼 선택 목적은 별도 `DsSelect` 컴포넌트로 분리 권장*
 
@@ -67,9 +67,9 @@
 
 ### 기능 확장
 
-- [ ] `leftIcon` / `rightIcon` 대신 `start` / `end` 스니펫 지원 (확장성 확보)
-- [ ] `fullWidth` prop - `data-ds-full-width="true"` 속성으로 처리
-- [ ] **Loading UX 개선** - `loadingText` 외에 스피너 아이콘(`loader-circle`) 기본 제공 옵션 추가, `aria-disabled` 유지
+- [x] `leftIcon` / `rightIcon` 대신 `start` / `end` 스니펫 지원 (확장성 확보)
+- [x] `fullWidth` prop - `data-ds-full-width="true"` 속성으로 처리
+- [x] **Loading UX 개선** - `loadingText` 외에 스피너 아이콘(`loader-circle`) 기본 제공 옵션 추가, `aria-disabled` 유지
 
 ---
 
@@ -77,10 +77,10 @@
 
 ### 정책 분리 및 접근성
 
-- [ ] `closeOnOutsideClick` / `closeOnEscape` 독립 옵션화
-- [ ] **닫힘 후 포커스 복귀** - `returnFocusTo` 옵션 또는 이전 `activeElement` 자동 복귀 로직 구현
-- [ ] `scrollable` prop - Header/Footer 고정, Body만 스크롤 구조 (`max-height` 토큰 활용)
-- [ ] `size` prop
+- [x] `closeOnOutsideClick` / `closeOnEscape` 독립 옵션화
+- [x] **닫힘 후 포커스 복귀** - `returnFocusTo` 옵션 또는 이전 `activeElement` 자동 복귀 로직 구현
+- [x] `scrollable` prop - Header/Footer 고정, Body만 스크롤 구조 (`max-height` 토큰 활용)
+- [x] `size` prop
 
 ---
 
@@ -88,25 +88,25 @@
 
 ### 구조 개선
 
-- [ ] `placement` 세분화 - 정렬 축(`side`, `align`) 분리 고려 또는 `top-start` 등 조합형 지원
-- [ ] `arrow` prop - CSS 변수(`--tooltip-arrow-size`) 기반 토큰화
+- [x] `placement` 세분화 - 정렬 축(`side`, `align`) 분리 고려 또는 `top-start` 등 조합형 지원
+- [x] `arrow` prop - CSS 변수(`--tooltip-arrow-size`) 기반 토큰화
 - [ ] **Interactive Tooltip** - 툴팁 내 상호작용 필요 시 `DsPopover`로 분리 검토
 
 ---
 
 ## 5. DsCard 개선
 
-- [ ] `padding`, `radius` 토큰화 - `data-ds-padding` 등을 통해 CSS 변수 제어 (`--card-padding`)
-- [ ] `variant` prop
-- [ ] `header` / `footer` 슬롯
+- [x] `padding`, `radius` 토큰화 - `data-ds-padding` 등을 통해 CSS 변수 제어 (`--card-padding`)
+- [x] `variant` prop
+- [x] `header` / `footer` 슬롯
 
 ---
 
 ## 6. DsToast 개선
 
-- [ ] **Store 분리** - `duration` 등 로직은 Store에서 관리, `DsToastRegion`은 뷰만 담당
-- [ ] `position` 토큰화 - `data-ds-position` 속성으로 CSS 제어
-- [ ] `action` 슬롯 - 커스텀 액션 지원
+- [x] **Store 분리** - `duration` 등 로직은 Store에서 관리, `DsToastRegion`은 뷰만 담당
+- [x] `position` 토큰화 - `data-ds-position` 속성으로 CSS 제어
+- [x] `action` 슬롯 - 커스텀 액션 지원
 
 ---
 
@@ -114,10 +114,10 @@
 
 ### 기능 보강
 
-- [ ] `start` / `end` 슬롯 - 아이콘, 단위, 버튼 등 (`div.relative` 래퍼 구조 도입)
-- [ ] **Ref 노출** - 버튼과 일관되게 `ref` prop 제공 (포커싱 제어 등)
-- [ ] `clearable` prop - 접근성(ESC clear, 포커스 순서) 고려하여 구현
-- [ ] 패딩 계산 토큰화 - 아이콘 유무에 따른 패딩 자동 계산 (`--input-padding-start` 등)
+- [x] `start` / `end` 슬롯 - 아이콘, 단위, 버튼 등 (`div.relative` 래퍼 구조 도입)
+- [x] **Ref 노출** - 버튼과 일관되게 `ref` prop 제공 (포커싱 제어 등)
+- [x] `clearable` prop - 접근성(ESC clear, 포커스 순서) 고려하여 구현
+- [x] 패딩 계산 토큰화 - 아이콘 유무에 따른 패딩 자동 계산 (`--input-padding-start` 등)
 
 ---
 
@@ -125,9 +125,9 @@
 
 ### 우선 검토
 
-- [ ] **DsSelect** - `DsDropdown`과 역할 분리. Form 연동, Native Select 유사 동작
-- [ ] **DsTextarea** - `DsInput` 스타일 공유
-- [ ] **DsSkeleton** - Layout Shift 방지용 로딩 플레이스홀더
+- [x] **DsSelect** - `DsDropdown`과 역할 분리. Form 연동, Native Select 유사 동작
+- [x] **DsTextarea** - `DsInput` 스타일 공유
+- [x] **DsSkeleton** - Layout Shift 방지용 로딩 플레이스홀더
 
 ### 추후 검토
 
@@ -153,8 +153,18 @@
 3. **DsDialog 접근성 개선** (포커스 복귀 등)
 4. 신규 컴포넌트 (`DsSelect`, `DsSkeleton`) 도입
 
-## 다음 액션 (DsDropdown)
+## 다음 액션 (테스트 및 마무리)
 
-- [ ] 공통 유틸(`createControllableState`) 및 SSR Safe ID 로직 준비
-- [ ] Phase 1 (Trigger Slot, Align, Disabled) 구현
-- [ ] LanguagePicker 마이그레이션 및 검증
+- [x] 공통 유틸(`createControllableState`) 및 SSR Safe ID 로직 준비
+- [x] Phase 1 (Trigger Slot, Align, Disabled) 구현
+- [x] 커스텀 드롭다운 3종(Language, User, FontSize) 마이그레이션 완료
+- [x] **DsButton / IconButton / LinkButton** `start` / `end` 슬롯 및 Loading UX 개선
+- [x] **DsDialog** 접근성(Focus Trap, Return Focus) 및 옵션 분리 개선
+- [x] **DsTooltip** placement 세분화 및 Arrow 구현
+- [x] **DsCard** Variant/Padding 토큰화 및 Header/Footer 슬롯 추가
+- [x] **DsToast** Store 분리 및 Position 토큰화
+- [x] **DsInput** start/end 슬롯 및 Clearable 구현
+- [x] **DsSelect** 컴포넌트 신규 구현
+- [x] **DsTextarea / DsSkeleton** 컴포넌트 신규 구현
+- [x] **SPECS.md** 업데이트 완료
+- [ ] **접근성 테스트** 및 **시각 회귀 테스트** 수행 및 검증

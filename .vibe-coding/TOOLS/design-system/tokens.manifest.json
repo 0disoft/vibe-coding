@@ -1,8 +1,7 @@
 {
   "generatedAt": "stable",
   "sources": [
-    "src/styles/design-system.tokens.css",
-    "src/styles/design-system-lab.tokens.css"
+    "src/styles/design-system.tokens.css"
   ],
   "semanticColorsFromUno": [
     "background",
@@ -48,14 +47,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1px"
-        },
-        {
-          "name": "--border-width",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 26,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1px"
         }
       ]
     },
@@ -69,14 +60,6 @@
           "line": 126,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.25rem"
-        },
-        {
-          "name": "--button-padding-x-lg",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 124,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.25rem"
         }
       ]
@@ -92,14 +75,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1rem"
-        },
-        {
-          "name": "--button-padding-x-md",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 125,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1rem"
         }
       ]
     },
@@ -113,14 +88,6 @@
           "line": 128,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.75rem"
-        },
-        {
-          "name": "--button-padding-x-sm",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 126,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.75rem"
         }
       ]
@@ -136,14 +103,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.75rem"
-        },
-        {
-          "name": "--button-padding-y-lg",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 127,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.75rem"
         }
       ]
     },
@@ -157,14 +116,6 @@
           "line": 130,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.5rem"
-        },
-        {
-          "name": "--button-padding-y-md",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 128,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.5rem"
         }
       ]
@@ -180,14 +131,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.375rem"
-        },
-        {
-          "name": "--button-padding-y-sm",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 129,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.375rem"
         }
       ]
     },
@@ -202,14 +145,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--radius-md)"
-        },
-        {
-          "name": "--button-radius",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 130,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "var(--radius-md)"
         }
       ]
     },
@@ -220,7 +155,7 @@
         {
           "name": "--color-accent",
           "file": "src/styles/design-system.tokens.css",
-          "line": 227,
+          "line": 237,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-accent)"
@@ -228,24 +163,8 @@
         {
           "name": "--color-accent",
           "file": "src/styles/design-system.tokens.css",
-          "line": 323,
+          "line": 333,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-accent)"
-        },
-        {
-          "name": "--color-accent",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 230,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-accent)"
-        },
-        {
-          "name": "--color-accent",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 330,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-accent)"
         }
@@ -258,7 +177,7 @@
         {
           "name": "--color-background",
           "file": "src/styles/design-system.tokens.css",
-          "line": 228,
+          "line": 238,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-background)"
@@ -266,24 +185,8 @@
         {
           "name": "--color-background",
           "file": "src/styles/design-system.tokens.css",
-          "line": 324,
+          "line": 334,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-background)"
-        },
-        {
-          "name": "--color-background",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 231,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-background)"
-        },
-        {
-          "name": "--color-background",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 331,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-background)"
         }
@@ -296,7 +199,7 @@
         {
           "name": "--color-border",
           "file": "src/styles/design-system.tokens.css",
-          "line": 229,
+          "line": 239,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-border)"
@@ -304,24 +207,8 @@
         {
           "name": "--color-border",
           "file": "src/styles/design-system.tokens.css",
-          "line": 325,
+          "line": 335,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-border)"
-        },
-        {
-          "name": "--color-border",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 232,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-border)"
-        },
-        {
-          "name": "--color-border",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 332,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-border)"
         }
@@ -334,7 +221,7 @@
         {
           "name": "--color-code-card",
           "file": "src/styles/design-system.tokens.css",
-          "line": 230,
+          "line": 240,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-code-card)"
@@ -342,24 +229,8 @@
         {
           "name": "--color-code-card",
           "file": "src/styles/design-system.tokens.css",
-          "line": 326,
+          "line": 336,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-code-card)"
-        },
-        {
-          "name": "--color-code-card",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 233,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-code-card)"
-        },
-        {
-          "name": "--color-code-card",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 333,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-code-card)"
         }
@@ -372,7 +243,7 @@
         {
           "name": "--color-danger",
           "file": "src/styles/design-system.tokens.css",
-          "line": 231,
+          "line": 241,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-danger)"
@@ -380,24 +251,8 @@
         {
           "name": "--color-danger",
           "file": "src/styles/design-system.tokens.css",
-          "line": 327,
+          "line": 337,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-danger)"
-        },
-        {
-          "name": "--color-danger",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 234,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-danger)"
-        },
-        {
-          "name": "--color-danger",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 334,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-danger)"
         }
@@ -410,7 +265,7 @@
         {
           "name": "--color-error",
           "file": "src/styles/design-system.tokens.css",
-          "line": 232,
+          "line": 242,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-error)"
@@ -418,24 +273,8 @@
         {
           "name": "--color-error",
           "file": "src/styles/design-system.tokens.css",
-          "line": 328,
+          "line": 338,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-error)"
-        },
-        {
-          "name": "--color-error",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 235,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-error)"
-        },
-        {
-          "name": "--color-error",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 335,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-error)"
         }
@@ -448,7 +287,7 @@
         {
           "name": "--color-input",
           "file": "src/styles/design-system.tokens.css",
-          "line": 233,
+          "line": 243,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-input)"
@@ -456,24 +295,8 @@
         {
           "name": "--color-input",
           "file": "src/styles/design-system.tokens.css",
-          "line": 329,
+          "line": 339,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-input)"
-        },
-        {
-          "name": "--color-input",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 236,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-input)"
-        },
-        {
-          "name": "--color-input",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 336,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-input)"
         }
@@ -486,7 +309,7 @@
         {
           "name": "--color-link",
           "file": "src/styles/design-system.tokens.css",
-          "line": 234,
+          "line": 244,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-link)"
@@ -494,24 +317,8 @@
         {
           "name": "--color-link",
           "file": "src/styles/design-system.tokens.css",
-          "line": 330,
+          "line": 340,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-link)"
-        },
-        {
-          "name": "--color-link",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 237,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-link)"
-        },
-        {
-          "name": "--color-link",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 337,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-link)"
         }
@@ -524,7 +331,7 @@
         {
           "name": "--color-neutral-100",
           "file": "src/styles/design-system.tokens.css",
-          "line": 235,
+          "line": 245,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-100)"
@@ -532,24 +339,8 @@
         {
           "name": "--color-neutral-100",
           "file": "src/styles/design-system.tokens.css",
-          "line": 331,
+          "line": 341,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-100)"
-        },
-        {
-          "name": "--color-neutral-100",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 238,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-100)"
-        },
-        {
-          "name": "--color-neutral-100",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 338,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-100)"
         }
@@ -562,7 +353,7 @@
         {
           "name": "--color-neutral-200",
           "file": "src/styles/design-system.tokens.css",
-          "line": 236,
+          "line": 246,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-200)"
@@ -570,24 +361,8 @@
         {
           "name": "--color-neutral-200",
           "file": "src/styles/design-system.tokens.css",
-          "line": 332,
+          "line": 342,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-200)"
-        },
-        {
-          "name": "--color-neutral-200",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 239,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-200)"
-        },
-        {
-          "name": "--color-neutral-200",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 339,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-200)"
         }
@@ -600,7 +375,7 @@
         {
           "name": "--color-neutral-300",
           "file": "src/styles/design-system.tokens.css",
-          "line": 237,
+          "line": 247,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-300)"
@@ -608,24 +383,8 @@
         {
           "name": "--color-neutral-300",
           "file": "src/styles/design-system.tokens.css",
-          "line": 333,
+          "line": 343,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-300)"
-        },
-        {
-          "name": "--color-neutral-300",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 240,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-300)"
-        },
-        {
-          "name": "--color-neutral-300",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 340,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-300)"
         }
@@ -638,7 +397,7 @@
         {
           "name": "--color-neutral-400",
           "file": "src/styles/design-system.tokens.css",
-          "line": 238,
+          "line": 248,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-400)"
@@ -646,24 +405,8 @@
         {
           "name": "--color-neutral-400",
           "file": "src/styles/design-system.tokens.css",
-          "line": 334,
+          "line": 344,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-400)"
-        },
-        {
-          "name": "--color-neutral-400",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 241,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-400)"
-        },
-        {
-          "name": "--color-neutral-400",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 341,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-400)"
         }
@@ -676,7 +419,7 @@
         {
           "name": "--color-neutral-50",
           "file": "src/styles/design-system.tokens.css",
-          "line": 239,
+          "line": 249,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-50)"
@@ -684,24 +427,8 @@
         {
           "name": "--color-neutral-50",
           "file": "src/styles/design-system.tokens.css",
-          "line": 335,
+          "line": 345,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-50)"
-        },
-        {
-          "name": "--color-neutral-50",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 242,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-50)"
-        },
-        {
-          "name": "--color-neutral-50",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 342,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-50)"
         }
@@ -714,7 +441,7 @@
         {
           "name": "--color-neutral-500",
           "file": "src/styles/design-system.tokens.css",
-          "line": 240,
+          "line": 250,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-500)"
@@ -722,24 +449,8 @@
         {
           "name": "--color-neutral-500",
           "file": "src/styles/design-system.tokens.css",
-          "line": 336,
+          "line": 346,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-500)"
-        },
-        {
-          "name": "--color-neutral-500",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 243,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-500)"
-        },
-        {
-          "name": "--color-neutral-500",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 343,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-500)"
         }
@@ -752,7 +463,7 @@
         {
           "name": "--color-neutral-600",
           "file": "src/styles/design-system.tokens.css",
-          "line": 241,
+          "line": 251,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-600)"
@@ -760,24 +471,8 @@
         {
           "name": "--color-neutral-600",
           "file": "src/styles/design-system.tokens.css",
-          "line": 337,
+          "line": 347,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-600)"
-        },
-        {
-          "name": "--color-neutral-600",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 244,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-600)"
-        },
-        {
-          "name": "--color-neutral-600",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 344,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-600)"
         }
@@ -790,7 +485,7 @@
         {
           "name": "--color-neutral-700",
           "file": "src/styles/design-system.tokens.css",
-          "line": 242,
+          "line": 252,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-700)"
@@ -798,24 +493,8 @@
         {
           "name": "--color-neutral-700",
           "file": "src/styles/design-system.tokens.css",
-          "line": 338,
+          "line": 348,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-700)"
-        },
-        {
-          "name": "--color-neutral-700",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 245,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-700)"
-        },
-        {
-          "name": "--color-neutral-700",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 345,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-700)"
         }
@@ -828,7 +507,7 @@
         {
           "name": "--color-neutral-800",
           "file": "src/styles/design-system.tokens.css",
-          "line": 243,
+          "line": 253,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-800)"
@@ -836,24 +515,8 @@
         {
           "name": "--color-neutral-800",
           "file": "src/styles/design-system.tokens.css",
-          "line": 339,
+          "line": 349,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-800)"
-        },
-        {
-          "name": "--color-neutral-800",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 246,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-800)"
-        },
-        {
-          "name": "--color-neutral-800",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 346,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-800)"
         }
@@ -866,7 +529,7 @@
         {
           "name": "--color-neutral-900",
           "file": "src/styles/design-system.tokens.css",
-          "line": 244,
+          "line": 254,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-900)"
@@ -874,24 +537,8 @@
         {
           "name": "--color-neutral-900",
           "file": "src/styles/design-system.tokens.css",
-          "line": 340,
+          "line": 350,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-900)"
-        },
-        {
-          "name": "--color-neutral-900",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 247,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-900)"
-        },
-        {
-          "name": "--color-neutral-900",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 347,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-900)"
         }
@@ -904,7 +551,7 @@
         {
           "name": "--color-neutral-950",
           "file": "src/styles/design-system.tokens.css",
-          "line": 245,
+          "line": 255,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-950)"
@@ -912,24 +559,8 @@
         {
           "name": "--color-neutral-950",
           "file": "src/styles/design-system.tokens.css",
-          "line": 341,
+          "line": 351,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-neutral-950)"
-        },
-        {
-          "name": "--color-neutral-950",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 248,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-neutral-950)"
-        },
-        {
-          "name": "--color-neutral-950",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 348,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-950)"
         }
@@ -942,7 +573,7 @@
         {
           "name": "--color-on-accent",
           "file": "src/styles/design-system.tokens.css",
-          "line": 246,
+          "line": 256,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-accent)"
@@ -950,24 +581,8 @@
         {
           "name": "--color-on-accent",
           "file": "src/styles/design-system.tokens.css",
-          "line": 342,
+          "line": 352,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-accent)"
-        },
-        {
-          "name": "--color-on-accent",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 249,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-accent)"
-        },
-        {
-          "name": "--color-on-accent",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 349,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-accent)"
         }
@@ -980,7 +595,7 @@
         {
           "name": "--color-on-code-card",
           "file": "src/styles/design-system.tokens.css",
-          "line": 247,
+          "line": 257,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-code-card)"
@@ -988,24 +603,8 @@
         {
           "name": "--color-on-code-card",
           "file": "src/styles/design-system.tokens.css",
-          "line": 343,
+          "line": 353,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-code-card)"
-        },
-        {
-          "name": "--color-on-code-card",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 250,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-code-card)"
-        },
-        {
-          "name": "--color-on-code-card",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 350,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-code-card)"
         }
@@ -1018,7 +617,7 @@
         {
           "name": "--color-on-danger",
           "file": "src/styles/design-system.tokens.css",
-          "line": 248,
+          "line": 258,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-danger)"
@@ -1026,24 +625,8 @@
         {
           "name": "--color-on-danger",
           "file": "src/styles/design-system.tokens.css",
-          "line": 344,
+          "line": 354,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-danger)"
-        },
-        {
-          "name": "--color-on-danger",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 251,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-danger)"
-        },
-        {
-          "name": "--color-on-danger",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 351,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-danger)"
         }
@@ -1056,7 +639,7 @@
         {
           "name": "--color-on-error",
           "file": "src/styles/design-system.tokens.css",
-          "line": 249,
+          "line": 259,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-error)"
@@ -1064,24 +647,8 @@
         {
           "name": "--color-on-error",
           "file": "src/styles/design-system.tokens.css",
-          "line": 345,
+          "line": 355,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-error)"
-        },
-        {
-          "name": "--color-on-error",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 252,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-error)"
-        },
-        {
-          "name": "--color-on-error",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 352,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-error)"
         }
@@ -1094,7 +661,7 @@
         {
           "name": "--color-on-link",
           "file": "src/styles/design-system.tokens.css",
-          "line": 250,
+          "line": 260,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-link)"
@@ -1102,24 +669,8 @@
         {
           "name": "--color-on-link",
           "file": "src/styles/design-system.tokens.css",
-          "line": 346,
+          "line": 356,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-link)"
-        },
-        {
-          "name": "--color-on-link",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 253,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-link)"
-        },
-        {
-          "name": "--color-on-link",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 353,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-link)"
         }
@@ -1132,7 +683,7 @@
         {
           "name": "--color-on-primary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 251,
+          "line": 261,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-primary)"
@@ -1140,24 +691,8 @@
         {
           "name": "--color-on-primary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 347,
+          "line": 357,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-primary)"
-        },
-        {
-          "name": "--color-on-primary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 254,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-primary)"
-        },
-        {
-          "name": "--color-on-primary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 354,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-primary)"
         }
@@ -1170,7 +705,7 @@
         {
           "name": "--color-on-secondary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 252,
+          "line": 262,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-secondary)"
@@ -1178,24 +713,8 @@
         {
           "name": "--color-on-secondary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 348,
+          "line": 358,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-secondary)"
-        },
-        {
-          "name": "--color-on-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 255,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-secondary)"
-        },
-        {
-          "name": "--color-on-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 355,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-secondary)"
         }
@@ -1208,7 +727,7 @@
         {
           "name": "--color-on-selected",
           "file": "src/styles/design-system.tokens.css",
-          "line": 253,
+          "line": 263,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-selected)"
@@ -1216,24 +735,8 @@
         {
           "name": "--color-on-selected",
           "file": "src/styles/design-system.tokens.css",
-          "line": 349,
+          "line": 359,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-selected)"
-        },
-        {
-          "name": "--color-on-selected",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 256,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-selected)"
-        },
-        {
-          "name": "--color-on-selected",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 356,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-selected)"
         }
@@ -1246,7 +749,7 @@
         {
           "name": "--color-on-sidebar",
           "file": "src/styles/design-system.tokens.css",
-          "line": 254,
+          "line": 264,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-sidebar)"
@@ -1254,24 +757,8 @@
         {
           "name": "--color-on-sidebar",
           "file": "src/styles/design-system.tokens.css",
-          "line": 350,
+          "line": 360,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-sidebar)"
-        },
-        {
-          "name": "--color-on-sidebar",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 257,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-sidebar)"
-        },
-        {
-          "name": "--color-on-sidebar",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 357,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-sidebar)"
         }
@@ -1284,7 +771,7 @@
         {
           "name": "--color-on-success",
           "file": "src/styles/design-system.tokens.css",
-          "line": 255,
+          "line": 265,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-success)"
@@ -1292,24 +779,8 @@
         {
           "name": "--color-on-success",
           "file": "src/styles/design-system.tokens.css",
-          "line": 351,
+          "line": 361,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-success)"
-        },
-        {
-          "name": "--color-on-success",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 258,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-success)"
-        },
-        {
-          "name": "--color-on-success",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 358,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-success)"
         }
@@ -1322,7 +793,7 @@
         {
           "name": "--color-on-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 256,
+          "line": 266,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-text)"
@@ -1330,24 +801,8 @@
         {
           "name": "--color-on-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 352,
+          "line": 362,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-text)"
-        },
-        {
-          "name": "--color-on-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 259,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-text)"
-        },
-        {
-          "name": "--color-on-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 359,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text)"
         }
@@ -1360,7 +815,7 @@
         {
           "name": "--color-on-warning",
           "file": "src/styles/design-system.tokens.css",
-          "line": 257,
+          "line": 267,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-warning)"
@@ -1368,24 +823,8 @@
         {
           "name": "--color-on-warning",
           "file": "src/styles/design-system.tokens.css",
-          "line": 353,
+          "line": 363,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-on-warning)"
-        },
-        {
-          "name": "--color-on-warning",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 260,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-on-warning)"
-        },
-        {
-          "name": "--color-on-warning",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 360,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-warning)"
         }
@@ -1398,7 +837,7 @@
         {
           "name": "--color-overlay",
           "file": "src/styles/design-system.tokens.css",
-          "line": 258,
+          "line": 268,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-overlay)"
@@ -1406,24 +845,8 @@
         {
           "name": "--color-overlay",
           "file": "src/styles/design-system.tokens.css",
-          "line": 354,
+          "line": 364,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-overlay)"
-        },
-        {
-          "name": "--color-overlay",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 261,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-overlay)"
-        },
-        {
-          "name": "--color-overlay",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 361,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-overlay)"
         }
@@ -1436,7 +859,7 @@
         {
           "name": "--color-primary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 259,
+          "line": 269,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-primary)"
@@ -1444,24 +867,8 @@
         {
           "name": "--color-primary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 355,
+          "line": 365,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-primary)"
-        },
-        {
-          "name": "--color-primary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 262,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-primary)"
-        },
-        {
-          "name": "--color-primary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 362,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-primary)"
         }
@@ -1474,7 +881,7 @@
         {
           "name": "--color-primary-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 260,
+          "line": 270,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-primary-hover)"
@@ -1482,24 +889,8 @@
         {
           "name": "--color-primary-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 356,
+          "line": 366,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-primary-hover)"
-        },
-        {
-          "name": "--color-primary-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 263,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-primary-hover)"
-        },
-        {
-          "name": "--color-primary-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 363,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-primary-hover)"
         }
@@ -1512,7 +903,7 @@
         {
           "name": "--color-scrim",
           "file": "src/styles/design-system.tokens.css",
-          "line": 261,
+          "line": 271,
           "contextPath": ":root",
           "theme": "light",
           "value": "oklch(var(--raw-color-scrim) / 0.55)"
@@ -1520,24 +911,8 @@
         {
           "name": "--color-scrim",
           "file": "src/styles/design-system.tokens.css",
-          "line": 357,
+          "line": 367,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "oklch(var(--raw-color-scrim) / 0.6)"
-        },
-        {
-          "name": "--color-scrim",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 264,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "oklch(var(--raw-color-scrim) / 0.55)"
-        },
-        {
-          "name": "--color-scrim",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 364,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "oklch(var(--raw-color-scrim) / 0.6)"
         }
@@ -1550,7 +925,7 @@
         {
           "name": "--color-secondary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 262,
+          "line": 272,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-secondary)"
@@ -1558,24 +933,8 @@
         {
           "name": "--color-secondary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 358,
+          "line": 368,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-secondary)"
-        },
-        {
-          "name": "--color-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 265,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-secondary)"
-        },
-        {
-          "name": "--color-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 365,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-secondary)"
         }
@@ -1588,7 +947,7 @@
         {
           "name": "--color-selected",
           "file": "src/styles/design-system.tokens.css",
-          "line": 263,
+          "line": 273,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-selected)"
@@ -1596,24 +955,8 @@
         {
           "name": "--color-selected",
           "file": "src/styles/design-system.tokens.css",
-          "line": 359,
+          "line": 369,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-selected)"
-        },
-        {
-          "name": "--color-selected",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 266,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-selected)"
-        },
-        {
-          "name": "--color-selected",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 366,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-selected)"
         }
@@ -1626,7 +969,7 @@
         {
           "name": "--color-sidebar",
           "file": "src/styles/design-system.tokens.css",
-          "line": 264,
+          "line": 274,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-sidebar)"
@@ -1634,24 +977,8 @@
         {
           "name": "--color-sidebar",
           "file": "src/styles/design-system.tokens.css",
-          "line": 360,
+          "line": 370,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-sidebar)"
-        },
-        {
-          "name": "--color-sidebar",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 267,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-sidebar)"
-        },
-        {
-          "name": "--color-sidebar",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 367,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-sidebar)"
         }
@@ -1664,7 +991,7 @@
         {
           "name": "--color-success",
           "file": "src/styles/design-system.tokens.css",
-          "line": 265,
+          "line": 275,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-success)"
@@ -1672,24 +999,8 @@
         {
           "name": "--color-success",
           "file": "src/styles/design-system.tokens.css",
-          "line": 361,
+          "line": 371,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-success)"
-        },
-        {
-          "name": "--color-success",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 268,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-success)"
-        },
-        {
-          "name": "--color-success",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 368,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-success)"
         }
@@ -1702,7 +1013,7 @@
         {
           "name": "--color-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 266,
+          "line": 276,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-surface)"
@@ -1710,24 +1021,8 @@
         {
           "name": "--color-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 362,
+          "line": 372,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-surface)"
-        },
-        {
-          "name": "--color-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 269,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-surface)"
-        },
-        {
-          "name": "--color-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 369,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-surface)"
         }
@@ -1740,7 +1035,7 @@
         {
           "name": "--color-surface-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 267,
+          "line": 277,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-surface-hover)"
@@ -1748,24 +1043,8 @@
         {
           "name": "--color-surface-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 363,
+          "line": 373,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-surface-hover)"
-        },
-        {
-          "name": "--color-surface-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 270,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-surface-hover)"
-        },
-        {
-          "name": "--color-surface-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 370,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-surface-hover)"
         }
@@ -1778,7 +1057,7 @@
         {
           "name": "--color-text",
           "file": "src/styles/design-system.tokens.css",
-          "line": 268,
+          "line": 278,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-text)"
@@ -1786,24 +1065,8 @@
         {
           "name": "--color-text",
           "file": "src/styles/design-system.tokens.css",
-          "line": 364,
+          "line": 374,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-text)"
-        },
-        {
-          "name": "--color-text",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 271,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-text)"
-        },
-        {
-          "name": "--color-text",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 371,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text)"
         }
@@ -1816,7 +1079,7 @@
         {
           "name": "--color-text-muted",
           "file": "src/styles/design-system.tokens.css",
-          "line": 269,
+          "line": 279,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-text-muted)"
@@ -1824,24 +1087,8 @@
         {
           "name": "--color-text-muted",
           "file": "src/styles/design-system.tokens.css",
-          "line": 365,
+          "line": 375,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-text-muted)"
-        },
-        {
-          "name": "--color-text-muted",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 272,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--raw-color-text-muted)"
-        },
-        {
-          "name": "--color-text-muted",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 372,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text-muted)"
         }
@@ -1854,7 +1101,7 @@
         {
           "name": "--color-warning",
           "file": "src/styles/design-system.tokens.css",
-          "line": 270,
+          "line": 280,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-warning)"
@@ -1862,26 +1109,80 @@
         {
           "name": "--color-warning",
           "file": "src/styles/design-system.tokens.css",
-          "line": 366,
+          "line": 376,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-warning)"
-        },
+        }
+      ]
+    },
+    {
+      "name": "--component-card-padding-lg",
+      "category": "other",
+      "occurrences": [
         {
-          "name": "--color-warning",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 273,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
+          "name": "--component-card-padding-lg",
+          "file": "src/styles/design-system.tokens.css",
+          "line": 185,
+          "contextPath": ":root",
           "theme": "light",
-          "value": "var(--raw-color-warning)"
-        },
+          "value": "var(--spacing-6)"
+        }
+      ]
+    },
+    {
+      "name": "--component-card-padding-md",
+      "category": "other",
+      "occurrences": [
         {
-          "name": "--color-warning",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 373,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--raw-color-warning)"
+          "name": "--component-card-padding-md",
+          "file": "src/styles/design-system.tokens.css",
+          "line": 186,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "var(--spacing-4)"
+        }
+      ]
+    },
+    {
+      "name": "--component-card-padding-none",
+      "category": "other",
+      "occurrences": [
+        {
+          "name": "--component-card-padding-none",
+          "file": "src/styles/design-system.tokens.css",
+          "line": 187,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "--component-card-padding-sm",
+      "category": "other",
+      "occurrences": [
+        {
+          "name": "--component-card-padding-sm",
+          "file": "src/styles/design-system.tokens.css",
+          "line": 188,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "var(--spacing-3)"
+        }
+      ]
+    },
+    {
+      "name": "--component-card-radius",
+      "category": "other",
+      "occurrences": [
+        {
+          "name": "--component-card-radius",
+          "file": "src/styles/design-system.tokens.css",
+          "line": 189,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "var(--radius-md)"
         }
       ]
     },
@@ -1892,17 +1193,9 @@
         {
           "name": "--dialog-border",
           "file": "src/styles/design-system.tokens.css",
-          "line": 146,
+          "line": 148,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-border)"
-        },
-        {
-          "name": "--dialog-border",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 144,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-border)"
         }
       ]
@@ -1914,17 +1207,9 @@
         {
           "name": "--dialog-gap",
           "file": "src/styles/design-system.tokens.css",
-          "line": 147,
+          "line": 149,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-4)"
-        },
-        {
-          "name": "--dialog-gap",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 145,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-4)"
         }
       ]
@@ -1936,17 +1221,9 @@
         {
           "name": "--dialog-padding",
           "file": "src/styles/design-system.tokens.css",
-          "line": 148,
+          "line": 150,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-4)"
-        },
-        {
-          "name": "--dialog-padding",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 146,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-4)"
         }
       ]
@@ -1958,17 +1235,9 @@
         {
           "name": "--dialog-radius",
           "file": "src/styles/design-system.tokens.css",
-          "line": 149,
+          "line": 151,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--radius-lg)"
-        },
-        {
-          "name": "--dialog-radius",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 147,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--radius-lg)"
         }
       ]
@@ -1980,17 +1249,9 @@
         {
           "name": "--dialog-shadow",
           "file": "src/styles/design-system.tokens.css",
-          "line": 150,
+          "line": 152,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--elevation-3)"
-        },
-        {
-          "name": "--dialog-shadow",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 148,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--elevation-3)"
         }
       ]
@@ -2002,17 +1263,9 @@
         {
           "name": "--dialog-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 151,
+          "line": 153,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-surface)"
-        },
-        {
-          "name": "--dialog-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 149,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-surface)"
         }
       ]
@@ -2024,17 +1277,9 @@
         {
           "name": "--dropdown-border",
           "file": "src/styles/design-system.tokens.css",
-          "line": 154,
+          "line": 156,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-border)"
-        },
-        {
-          "name": "--dropdown-border",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 152,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-border)"
         }
       ]
@@ -2046,17 +1291,9 @@
         {
           "name": "--dropdown-item-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 155,
+          "line": 157,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-surface-hover)"
-        },
-        {
-          "name": "--dropdown-item-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 153,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-surface-hover)"
         }
       ]
@@ -2068,17 +1305,9 @@
         {
           "name": "--dropdown-item-padding-x",
           "file": "src/styles/design-system.tokens.css",
-          "line": 156,
+          "line": 158,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-3)"
-        },
-        {
-          "name": "--dropdown-item-padding-x",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 154,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-3)"
         }
       ]
@@ -2090,17 +1319,9 @@
         {
           "name": "--dropdown-item-padding-y",
           "file": "src/styles/design-system.tokens.css",
-          "line": 157,
+          "line": 159,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-2)"
-        },
-        {
-          "name": "--dropdown-item-padding-y",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 155,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-2)"
         }
       ]
@@ -2112,17 +1333,9 @@
         {
           "name": "--dropdown-padding-x",
           "file": "src/styles/design-system.tokens.css",
-          "line": 158,
+          "line": 160,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-2)"
-        },
-        {
-          "name": "--dropdown-padding-x",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 156,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-2)"
         }
       ]
@@ -2134,17 +1347,9 @@
         {
           "name": "--dropdown-padding-y",
           "file": "src/styles/design-system.tokens.css",
-          "line": 159,
+          "line": 161,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-2)"
-        },
-        {
-          "name": "--dropdown-padding-y",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 157,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-2)"
         }
       ]
@@ -2156,17 +1361,9 @@
         {
           "name": "--dropdown-radius",
           "file": "src/styles/design-system.tokens.css",
-          "line": 160,
+          "line": 162,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--radius-md)"
-        },
-        {
-          "name": "--dropdown-radius",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 158,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--radius-md)"
         }
       ]
@@ -2178,17 +1375,9 @@
         {
           "name": "--dropdown-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 161,
+          "line": 163,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-surface)"
-        },
-        {
-          "name": "--dropdown-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 159,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-surface)"
         }
       ]
@@ -2204,14 +1393,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--shadow-sm)"
-        },
-        {
-          "name": "--elevation-1",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 39,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "var(--shadow-sm)"
         }
       ]
     },
@@ -2225,14 +1406,6 @@
           "line": 40,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--shadow-md)"
-        },
-        {
-          "name": "--elevation-2",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 40,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--shadow-md)"
         }
       ]
@@ -2248,14 +1421,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--shadow-lg)"
-        },
-        {
-          "name": "--elevation-3",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 41,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "var(--shadow-lg)"
         }
       ]
     },
@@ -2266,17 +1431,9 @@
         {
           "name": "--field-error-color",
           "file": "src/styles/design-system.tokens.css",
-          "line": 140,
+          "line": 142,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-error)"
-        },
-        {
-          "name": "--field-error-color",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 138,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-error)"
         }
       ]
@@ -2288,17 +1445,9 @@
         {
           "name": "--field-gap",
           "file": "src/styles/design-system.tokens.css",
-          "line": 141,
+          "line": 143,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-2)"
-        },
-        {
-          "name": "--field-gap",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 139,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-2)"
         }
       ]
@@ -2310,17 +1459,9 @@
         {
           "name": "--field-help-color",
           "file": "src/styles/design-system.tokens.css",
-          "line": 142,
+          "line": 144,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-text-muted)"
-        },
-        {
-          "name": "--field-help-color",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 140,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-text-muted)"
         }
       ]
@@ -2332,17 +1473,9 @@
         {
           "name": "--field-label-color",
           "file": "src/styles/design-system.tokens.css",
-          "line": 143,
+          "line": 145,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-text)"
-        },
-        {
-          "name": "--field-label-color",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 141,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-text)"
         }
       ]
@@ -2362,24 +1495,8 @@
         {
           "name": "--focus-ring-color",
           "file": "src/styles/design-system.tokens.css",
-          "line": 369,
+          "line": 379,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--color-primary)"
-        },
-        {
-          "name": "--focus-ring-color",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 276,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--color-primary)"
-        },
-        {
-          "name": "--focus-ring-color",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 376,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--color-primary)"
         }
@@ -2395,14 +1512,6 @@
           "line": 60,
           "contextPath": ":root",
           "theme": "light",
-          "value": "2px"
-        },
-        {
-          "name": "--focus-ring-offset",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 59,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "2px"
         }
       ]
@@ -2422,24 +1531,8 @@
         {
           "name": "--focus-ring-offset-color",
           "file": "src/styles/design-system.tokens.css",
-          "line": 370,
+          "line": 380,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "var(--color-background)"
-        },
-        {
-          "name": "--focus-ring-offset-color",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 277,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "var(--color-background)"
-        },
-        {
-          "name": "--focus-ring-offset-color",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 377,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--color-background)"
         }
@@ -2456,14 +1549,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "2px"
-        },
-        {
-          "name": "--focus-ring-width",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 60,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "2px"
         }
       ]
     },
@@ -2477,14 +1562,6 @@
           "line": 69,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--font-sans)"
-        },
-        {
-          "name": "--font-family-base",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 67,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--font-sans)"
         }
       ]
@@ -2500,14 +1577,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--font-sans)"
-        },
-        {
-          "name": "--font-family-heading",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 68,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "var(--font-sans)"
         }
       ]
     },
@@ -2521,14 +1590,6 @@
           "line": 71,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--font-mono)"
-        },
-        {
-          "name": "--font-family-mono",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 69,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--font-mono)"
         }
       ]
@@ -2544,14 +1605,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1.728rem"
-        },
-        {
-          "name": "--font-size-2xl",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 70,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1.728rem"
         }
       ]
     },
@@ -2565,14 +1618,6 @@
           "line": 73,
           "contextPath": ":root",
           "theme": "light",
-          "value": "2.074rem"
-        },
-        {
-          "name": "--font-size-3xl",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 71,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "2.074rem"
         }
       ]
@@ -2588,14 +1633,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "2.488rem"
-        },
-        {
-          "name": "--font-size-4xl",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 72,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "2.488rem"
         }
       ]
     },
@@ -2609,14 +1646,6 @@
           "line": 75,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.75rem"
-        },
-        {
-          "name": "--font-size-badge",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 73,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.75rem"
         }
       ]
@@ -2632,14 +1661,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1rem"
-        },
-        {
-          "name": "--font-size-base",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 74,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1rem"
         }
       ]
     },
@@ -2653,14 +1674,6 @@
           "line": 77,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.1rem"
-        },
-        {
-          "name": "--font-size-body",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 75,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.1rem"
         }
       ]
@@ -2676,14 +1689,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.95rem"
-        },
-        {
-          "name": "--font-size-body-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 76,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.95rem"
         }
       ]
     },
@@ -2697,14 +1702,6 @@
           "line": 79,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.05rem"
-        },
-        {
-          "name": "--font-size-brand",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 77,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.05rem"
         }
       ]
@@ -2720,14 +1717,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.8rem"
-        },
-        {
-          "name": "--font-size-breadcrumb",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 78,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.8rem"
         }
       ]
     },
@@ -2741,14 +1730,6 @@
           "line": 81,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.9rem"
-        },
-        {
-          "name": "--font-size-btn",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 79,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.9rem"
         }
       ]
@@ -2764,14 +1745,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1.0rem"
-        },
-        {
-          "name": "--font-size-btn-lg",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 80,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1.0rem"
         }
       ]
     },
@@ -2785,14 +1758,6 @@
           "line": 83,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.8rem"
-        },
-        {
-          "name": "--font-size-btn-sm",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 81,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.8rem"
         }
       ]
@@ -2808,14 +1773,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.85rem"
-        },
-        {
-          "name": "--font-size-caption",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 82,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.85rem"
         }
       ]
     },
@@ -2829,14 +1786,6 @@
           "line": 85,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.8rem"
-        },
-        {
-          "name": "--font-size-code",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 83,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.8rem"
         }
       ]
@@ -2852,14 +1801,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.95rem"
-        },
-        {
-          "name": "--font-size-comment",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 84,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.95rem"
         }
       ]
     },
@@ -2873,14 +1814,6 @@
           "line": 87,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.8rem"
-        },
-        {
-          "name": "--font-size-h1",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 85,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.8rem"
         }
       ]
@@ -2896,14 +1829,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1.6rem"
-        },
-        {
-          "name": "--font-size-h2",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 86,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1.6rem"
         }
       ]
     },
@@ -2917,14 +1842,6 @@
           "line": 89,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.4rem"
-        },
-        {
-          "name": "--font-size-h3",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 87,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.4rem"
         }
       ]
@@ -2940,14 +1857,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.75rem"
-        },
-        {
-          "name": "--font-size-helper",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 88,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.75rem"
         }
       ]
     },
@@ -2961,14 +1870,6 @@
           "line": 91,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.85rem"
-        },
-        {
-          "name": "--font-size-inline-code",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 89,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.85rem"
         }
       ]
@@ -2984,14 +1885,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.85rem"
-        },
-        {
-          "name": "--font-size-label",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 90,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.85rem"
         }
       ]
     },
@@ -3005,14 +1898,6 @@
           "line": 93,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.2rem"
-        },
-        {
-          "name": "--font-size-lg",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 91,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.2rem"
         }
       ]
@@ -3028,14 +1913,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1.15rem"
-        },
-        {
-          "name": "--font-size-logo",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 92,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1.15rem"
         }
       ]
     },
@@ -3049,14 +1926,6 @@
           "line": 95,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.85rem"
-        },
-        {
-          "name": "--font-size-menu",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 93,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.85rem"
         }
       ]
@@ -3072,14 +1941,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.9rem"
-        },
-        {
-          "name": "--font-size-menu-lg",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 94,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.9rem"
         }
       ]
     },
@@ -3093,14 +1954,6 @@
           "line": 97,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.8rem"
-        },
-        {
-          "name": "--font-size-menu-sm",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 95,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.8rem"
         }
       ]
@@ -3116,14 +1969,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.9rem"
-        },
-        {
-          "name": "--font-size-placeholder",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 96,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.9rem"
         }
       ]
     },
@@ -3137,14 +1982,6 @@
           "line": 99,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.15rem"
-        },
-        {
-          "name": "--font-size-price",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 97,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.15rem"
         }
       ]
@@ -3160,14 +1997,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.875rem"
-        },
-        {
-          "name": "--font-size-prose",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 98,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.875rem"
         }
       ]
     },
@@ -3181,14 +2010,6 @@
           "line": 101,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.833rem"
-        },
-        {
-          "name": "--font-size-sm",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 99,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.833rem"
         }
       ]
@@ -3204,14 +2025,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1.4rem"
-        },
-        {
-          "name": "--font-size-stat",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 100,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1.4rem"
         }
       ]
     },
@@ -3225,14 +2038,6 @@
           "line": 103,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.75rem"
-        },
-        {
-          "name": "--font-size-tag",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 101,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.75rem"
         }
       ]
@@ -3248,14 +2053,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.7rem"
-        },
-        {
-          "name": "--font-size-timestamp",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 102,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.7rem"
         }
       ]
     },
@@ -3269,14 +2066,6 @@
           "line": 105,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.85rem"
-        },
-        {
-          "name": "--font-size-toast",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 103,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.85rem"
         }
       ]
@@ -3292,14 +2081,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.75rem"
-        },
-        {
-          "name": "--font-size-tooltip",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 104,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.75rem"
         }
       ]
     },
@@ -3313,14 +2094,6 @@
           "line": 107,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.44rem"
-        },
-        {
-          "name": "--font-size-xl",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 105,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.44rem"
         }
       ]
@@ -3336,14 +2109,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.694rem"
-        },
-        {
-          "name": "--font-size-xs",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 106,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.694rem"
         }
       ]
     },
@@ -3357,14 +2122,6 @@
           "line": 109,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.7rem"
-        },
-        {
-          "name": "--font-size-xs-resp",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 107,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.7rem"
         }
       ]
@@ -3380,14 +2137,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "700"
-        },
-        {
-          "name": "--font-weight-bold",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 108,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "700"
         }
       ]
     },
@@ -3401,14 +2150,6 @@
           "line": 111,
           "contextPath": ":root",
           "theme": "light",
-          "value": "500"
-        },
-        {
-          "name": "--font-weight-medium",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 109,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "500"
         }
       ]
@@ -3424,14 +2165,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "400"
-        },
-        {
-          "name": "--font-weight-regular",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 110,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "400"
         }
       ]
     },
@@ -3445,14 +2178,6 @@
           "line": 113,
           "contextPath": ":root",
           "theme": "light",
-          "value": "600"
-        },
-        {
-          "name": "--font-weight-semibold",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 111,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "600"
         }
       ]
@@ -3468,14 +2193,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-2)"
-        },
-        {
-          "name": "--icon-gap",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 49,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "var(--spacing-2)"
         }
       ]
     },
@@ -3490,14 +2207,34 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "2px"
-        },
+        }
+      ]
+    },
+    {
+      "name": "--input-padding-end",
+      "category": "component",
+      "occurrences": [
         {
-          "name": "--icon-stroke-width",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 50,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "2px"
+          "name": "--input-padding-end",
+          "file": "src/styles/design-system.tokens.css",
+          "line": 135,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "2.5rem"
+        }
+      ]
+    },
+    {
+      "name": "--input-padding-start",
+      "category": "component",
+      "occurrences": [
+        {
+          "name": "--input-padding-start",
+          "file": "src/styles/design-system.tokens.css",
+          "line": 136,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "2.5rem"
         }
       ]
     },
@@ -3508,17 +2245,9 @@
         {
           "name": "--input-padding-x",
           "file": "src/styles/design-system.tokens.css",
-          "line": 135,
+          "line": 137,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.75rem"
-        },
-        {
-          "name": "--input-padding-x",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 133,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.75rem"
         }
       ]
@@ -3530,17 +2259,9 @@
         {
           "name": "--input-padding-y",
           "file": "src/styles/design-system.tokens.css",
-          "line": 136,
+          "line": 138,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.5rem"
-        },
-        {
-          "name": "--input-padding-y",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 134,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.5rem"
         }
       ]
@@ -3552,17 +2273,9 @@
         {
           "name": "--input-radius",
           "file": "src/styles/design-system.tokens.css",
-          "line": 137,
+          "line": 139,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--radius-md)"
-        },
-        {
-          "name": "--input-radius",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 135,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--radius-md)"
         }
       ]
@@ -3578,14 +2291,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0"
-        },
-        {
-          "name": "--letter-spacing-normal",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 112,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0"
         }
       ]
     },
@@ -3599,14 +2304,6 @@
           "line": 115,
           "contextPath": ":root",
           "theme": "light",
-          "value": "-0.02em"
-        },
-        {
-          "name": "--letter-spacing-tight",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 113,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "-0.02em"
         }
       ]
@@ -3622,14 +2319,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.05em"
-        },
-        {
-          "name": "--letter-spacing-wide",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 114,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.05em"
         }
       ]
     },
@@ -3643,14 +2332,6 @@
           "line": 117,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.6"
-        },
-        {
-          "name": "--line-height-body",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 115,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.6"
         }
       ]
@@ -3666,14 +2347,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1.3"
-        },
-        {
-          "name": "--line-height-heading",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 116,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1.3"
         }
       ]
     },
@@ -3687,14 +2360,6 @@
           "line": 119,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.5"
-        },
-        {
-          "name": "--line-height-normal",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 117,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.5"
         }
       ]
@@ -3710,14 +2375,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1.625"
-        },
-        {
-          "name": "--line-height-prose",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 118,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1.625"
         }
       ]
     },
@@ -3731,14 +2388,6 @@
           "line": 121,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.7"
-        },
-        {
-          "name": "--line-height-relaxed",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 119,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.7"
         }
       ]
@@ -3754,14 +2403,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1.2"
-        },
-        {
-          "name": "--line-height-tight",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 120,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1.2"
         }
       ]
     },
@@ -3775,14 +2416,6 @@
           "line": 65,
           "contextPath": ":root",
           "theme": "light",
-          "value": "180ms"
-        },
-        {
-          "name": "--motion-duration-fast",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 63,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "180ms"
         }
       ]
@@ -3798,14 +2431,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "ease"
-        },
-        {
-          "name": "--motion-ease",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 64,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "ease"
         }
       ]
     },
@@ -3819,14 +2444,6 @@
           "line": 29,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.6"
-        },
-        {
-          "name": "--opacity-disabled",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 29,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.6"
         }
       ]
@@ -3842,14 +2459,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.9"
-        },
-        {
-          "name": "--opacity-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 30,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.9"
         }
       ]
     },
@@ -3863,14 +2472,6 @@
           "line": 123,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.25em"
-        },
-        {
-          "name": "--paragraph-spacing",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 121,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.25em"
         }
       ]
@@ -3886,14 +2487,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1rem"
-        },
-        {
-          "name": "--radius-lg",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 21,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1rem"
         }
       ]
     },
@@ -3907,14 +2500,6 @@
           "line": 22,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.75rem"
-        },
-        {
-          "name": "--radius-md",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 22,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.75rem"
         }
       ]
@@ -3930,14 +2515,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.5rem"
-        },
-        {
-          "name": "--radius-sm",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 23,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.5rem"
         }
       ]
     },
@@ -3948,7 +2525,7 @@
         {
           "name": "--raw-color-accent",
           "file": "src/styles/design-system.tokens.css",
-          "line": 182,
+          "line": 192,
           "contextPath": ":root",
           "theme": "light",
           "value": "90% 0.06 155"
@@ -3956,24 +2533,8 @@
         {
           "name": "--raw-color-accent",
           "file": "src/styles/design-system.tokens.css",
-          "line": 278,
+          "line": 288,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "35% 0.06 155"
-        },
-        {
-          "name": "--raw-color-accent",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 185,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "90% 0.06 155"
-        },
-        {
-          "name": "--raw-color-accent",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 285,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "35% 0.06 155"
         }
@@ -3986,7 +2547,7 @@
         {
           "name": "--raw-color-background",
           "file": "src/styles/design-system.tokens.css",
-          "line": 183,
+          "line": 193,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.004 255"
@@ -3994,24 +2555,8 @@
         {
           "name": "--raw-color-background",
           "file": "src/styles/design-system.tokens.css",
-          "line": 279,
+          "line": 289,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "18% 0.02 255"
-        },
-        {
-          "name": "--raw-color-background",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 186,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "99% 0.004 255"
-        },
-        {
-          "name": "--raw-color-background",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 286,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "18% 0.02 255"
         }
@@ -4024,7 +2569,7 @@
         {
           "name": "--raw-color-border",
           "file": "src/styles/design-system.tokens.css",
-          "line": 184,
+          "line": 194,
           "contextPath": ":root",
           "theme": "light",
           "value": "90% 0.012 255"
@@ -4032,24 +2577,8 @@
         {
           "name": "--raw-color-border",
           "file": "src/styles/design-system.tokens.css",
-          "line": 280,
+          "line": 290,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "30% 0.01 255"
-        },
-        {
-          "name": "--raw-color-border",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 187,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "90% 0.012 255"
-        },
-        {
-          "name": "--raw-color-border",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 287,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "30% 0.01 255"
         }
@@ -4062,7 +2591,7 @@
         {
           "name": "--raw-color-code-card",
           "file": "src/styles/design-system.tokens.css",
-          "line": 185,
+          "line": 195,
           "contextPath": ":root",
           "theme": "light",
           "value": "95% 0.02 102"
@@ -4070,24 +2599,8 @@
         {
           "name": "--raw-color-code-card",
           "file": "src/styles/design-system.tokens.css",
-          "line": 281,
+          "line": 291,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "27% 0.0314 274"
-        },
-        {
-          "name": "--raw-color-code-card",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 188,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "95% 0.02 102"
-        },
-        {
-          "name": "--raw-color-code-card",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 288,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "27% 0.0314 274"
         }
@@ -4100,7 +2613,7 @@
         {
           "name": "--raw-color-danger",
           "file": "src/styles/design-system.tokens.css",
-          "line": 186,
+          "line": 196,
           "contextPath": ":root",
           "theme": "light",
           "value": "62% 0.2 25"
@@ -4108,24 +2621,8 @@
         {
           "name": "--raw-color-danger",
           "file": "src/styles/design-system.tokens.css",
-          "line": 282,
+          "line": 292,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "72% 0.18 25"
-        },
-        {
-          "name": "--raw-color-danger",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 189,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "62% 0.2 25"
-        },
-        {
-          "name": "--raw-color-danger",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 289,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.18 25"
         }
@@ -4138,7 +2635,7 @@
         {
           "name": "--raw-color-error",
           "file": "src/styles/design-system.tokens.css",
-          "line": 187,
+          "line": 197,
           "contextPath": ":root",
           "theme": "light",
           "value": "62% 0.2 25"
@@ -4146,24 +2643,8 @@
         {
           "name": "--raw-color-error",
           "file": "src/styles/design-system.tokens.css",
-          "line": 283,
+          "line": 293,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "72% 0.18 25"
-        },
-        {
-          "name": "--raw-color-error",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 190,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "62% 0.2 25"
-        },
-        {
-          "name": "--raw-color-error",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 290,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.18 25"
         }
@@ -4176,7 +2657,7 @@
         {
           "name": "--raw-color-input",
           "file": "src/styles/design-system.tokens.css",
-          "line": 188,
+          "line": 198,
           "contextPath": ":root",
           "theme": "light",
           "value": "92% 0.012 255"
@@ -4184,24 +2665,8 @@
         {
           "name": "--raw-color-input",
           "file": "src/styles/design-system.tokens.css",
-          "line": 284,
+          "line": 294,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "32% 0.01 255"
-        },
-        {
-          "name": "--raw-color-input",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 191,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "92% 0.012 255"
-        },
-        {
-          "name": "--raw-color-input",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 291,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "32% 0.01 255"
         }
@@ -4214,7 +2679,7 @@
         {
           "name": "--raw-color-link",
           "file": "src/styles/design-system.tokens.css",
-          "line": 189,
+          "line": 199,
           "contextPath": ":root",
           "theme": "light",
           "value": "60% 0.16 250"
@@ -4222,24 +2687,8 @@
         {
           "name": "--raw-color-link",
           "file": "src/styles/design-system.tokens.css",
-          "line": 285,
+          "line": 295,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "80% 0.12 250"
-        },
-        {
-          "name": "--raw-color-link",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 192,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "60% 0.16 250"
-        },
-        {
-          "name": "--raw-color-link",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 292,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "80% 0.12 250"
         }
@@ -4252,7 +2701,7 @@
         {
           "name": "--raw-color-neutral-100",
           "file": "src/styles/design-system.tokens.css",
-          "line": 190,
+          "line": 200,
           "contextPath": ":root",
           "theme": "light",
           "value": "97% 0.004 255"
@@ -4260,24 +2709,8 @@
         {
           "name": "--raw-color-neutral-100",
           "file": "src/styles/design-system.tokens.css",
-          "line": 286,
+          "line": 296,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "85% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-100",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 193,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "97% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-100",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 293,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "85% 0.004 255"
         }
@@ -4290,7 +2723,7 @@
         {
           "name": "--raw-color-neutral-200",
           "file": "src/styles/design-system.tokens.css",
-          "line": 191,
+          "line": 201,
           "contextPath": ":root",
           "theme": "light",
           "value": "93% 0.004 255"
@@ -4298,24 +2731,8 @@
         {
           "name": "--raw-color-neutral-200",
           "file": "src/styles/design-system.tokens.css",
-          "line": 287,
+          "line": 297,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "72% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-200",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 194,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "93% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-200",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 294,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.004 255"
         }
@@ -4328,7 +2745,7 @@
         {
           "name": "--raw-color-neutral-300",
           "file": "src/styles/design-system.tokens.css",
-          "line": 192,
+          "line": 202,
           "contextPath": ":root",
           "theme": "light",
           "value": "88% 0.004 255"
@@ -4336,24 +2753,8 @@
         {
           "name": "--raw-color-neutral-300",
           "file": "src/styles/design-system.tokens.css",
-          "line": 288,
+          "line": 298,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "60% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-300",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 195,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "88% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-300",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 295,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "60% 0.004 255"
         }
@@ -4366,7 +2767,7 @@
         {
           "name": "--raw-color-neutral-400",
           "file": "src/styles/design-system.tokens.css",
-          "line": 193,
+          "line": 203,
           "contextPath": ":root",
           "theme": "light",
           "value": "72% 0.004 255"
@@ -4374,24 +2775,8 @@
         {
           "name": "--raw-color-neutral-400",
           "file": "src/styles/design-system.tokens.css",
-          "line": 289,
+          "line": 299,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "50% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-400",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 196,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "72% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-400",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 296,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "50% 0.004 255"
         }
@@ -4404,7 +2789,7 @@
         {
           "name": "--raw-color-neutral-50",
           "file": "src/styles/design-system.tokens.css",
-          "line": 194,
+          "line": 204,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.004 255"
@@ -4412,24 +2797,8 @@
         {
           "name": "--raw-color-neutral-50",
           "file": "src/styles/design-system.tokens.css",
-          "line": 290,
+          "line": 300,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "95% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-50",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 197,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "99% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-50",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 297,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "95% 0.004 255"
         }
@@ -4442,7 +2811,7 @@
         {
           "name": "--raw-color-neutral-500",
           "file": "src/styles/design-system.tokens.css",
-          "line": 195,
+          "line": 205,
           "contextPath": ":root",
           "theme": "light",
           "value": "56% 0.004 255"
@@ -4450,24 +2819,8 @@
         {
           "name": "--raw-color-neutral-500",
           "file": "src/styles/design-system.tokens.css",
-          "line": 291,
+          "line": 301,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "40% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-500",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 198,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "56% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-500",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 298,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "40% 0.004 255"
         }
@@ -4480,7 +2833,7 @@
         {
           "name": "--raw-color-neutral-600",
           "file": "src/styles/design-system.tokens.css",
-          "line": 196,
+          "line": 206,
           "contextPath": ":root",
           "theme": "light",
           "value": "46% 0.004 255"
@@ -4488,24 +2841,8 @@
         {
           "name": "--raw-color-neutral-600",
           "file": "src/styles/design-system.tokens.css",
-          "line": 292,
+          "line": 302,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "30% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-600",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 199,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "46% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-600",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 299,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "30% 0.004 255"
         }
@@ -4518,7 +2855,7 @@
         {
           "name": "--raw-color-neutral-700",
           "file": "src/styles/design-system.tokens.css",
-          "line": 197,
+          "line": 207,
           "contextPath": ":root",
           "theme": "light",
           "value": "35% 0.004 255"
@@ -4526,24 +2863,8 @@
         {
           "name": "--raw-color-neutral-700",
           "file": "src/styles/design-system.tokens.css",
-          "line": 293,
+          "line": 303,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "22% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-700",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 200,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "35% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-700",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 300,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "22% 0.004 255"
         }
@@ -4556,7 +2877,7 @@
         {
           "name": "--raw-color-neutral-800",
           "file": "src/styles/design-system.tokens.css",
-          "line": 198,
+          "line": 208,
           "contextPath": ":root",
           "theme": "light",
           "value": "26% 0.004 255"
@@ -4564,24 +2885,8 @@
         {
           "name": "--raw-color-neutral-800",
           "file": "src/styles/design-system.tokens.css",
-          "line": 294,
+          "line": 304,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "16% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-800",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 201,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "26% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-800",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 301,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "16% 0.004 255"
         }
@@ -4594,7 +2899,7 @@
         {
           "name": "--raw-color-neutral-900",
           "file": "src/styles/design-system.tokens.css",
-          "line": 199,
+          "line": 209,
           "contextPath": ":root",
           "theme": "light",
           "value": "18% 0.004 255"
@@ -4602,24 +2907,8 @@
         {
           "name": "--raw-color-neutral-900",
           "file": "src/styles/design-system.tokens.css",
-          "line": 295,
+          "line": 305,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "12% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-900",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 202,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "18% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-900",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 302,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "12% 0.004 255"
         }
@@ -4632,7 +2921,7 @@
         {
           "name": "--raw-color-neutral-950",
           "file": "src/styles/design-system.tokens.css",
-          "line": 200,
+          "line": 210,
           "contextPath": ":root",
           "theme": "light",
           "value": "12% 0.004 255"
@@ -4640,24 +2929,8 @@
         {
           "name": "--raw-color-neutral-950",
           "file": "src/styles/design-system.tokens.css",
-          "line": 296,
+          "line": 306,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "8% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-950",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 203,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "12% 0.004 255"
-        },
-        {
-          "name": "--raw-color-neutral-950",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 303,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "8% 0.004 255"
         }
@@ -4670,7 +2943,7 @@
         {
           "name": "--raw-color-on-accent",
           "file": "src/styles/design-system.tokens.css",
-          "line": 201,
+          "line": 211,
           "contextPath": ":root",
           "theme": "light",
           "value": "22% 0.03 155"
@@ -4678,24 +2951,8 @@
         {
           "name": "--raw-color-on-accent",
           "file": "src/styles/design-system.tokens.css",
-          "line": 297,
+          "line": 307,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "92% 0.01 155"
-        },
-        {
-          "name": "--raw-color-on-accent",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 204,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "22% 0.03 155"
-        },
-        {
-          "name": "--raw-color-on-accent",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 304,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "92% 0.01 155"
         }
@@ -4708,7 +2965,7 @@
         {
           "name": "--raw-color-on-code-card",
           "file": "src/styles/design-system.tokens.css",
-          "line": 202,
+          "line": 212,
           "contextPath": ":root",
           "theme": "light",
           "value": "35% 0.04 331"
@@ -4716,24 +2973,8 @@
         {
           "name": "--raw-color-on-code-card",
           "file": "src/styles/design-system.tokens.css",
-          "line": 298,
+          "line": 308,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "96% 0.01 106"
-        },
-        {
-          "name": "--raw-color-on-code-card",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 205,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "35% 0.04 331"
-        },
-        {
-          "name": "--raw-color-on-code-card",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 305,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "96% 0.01 106"
         }
@@ -4746,7 +2987,7 @@
         {
           "name": "--raw-color-on-danger",
           "file": "src/styles/design-system.tokens.css",
-          "line": 203,
+          "line": 213,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.002 25"
@@ -4754,24 +2995,8 @@
         {
           "name": "--raw-color-on-danger",
           "file": "src/styles/design-system.tokens.css",
-          "line": 299,
+          "line": 309,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "14% 0.02 25"
-        },
-        {
-          "name": "--raw-color-on-danger",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 206,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "99% 0.002 25"
-        },
-        {
-          "name": "--raw-color-on-danger",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 306,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 25"
         }
@@ -4784,7 +3009,7 @@
         {
           "name": "--raw-color-on-error",
           "file": "src/styles/design-system.tokens.css",
-          "line": 204,
+          "line": 214,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.002 25"
@@ -4792,24 +3017,8 @@
         {
           "name": "--raw-color-on-error",
           "file": "src/styles/design-system.tokens.css",
-          "line": 300,
+          "line": 310,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "14% 0.02 25"
-        },
-        {
-          "name": "--raw-color-on-error",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 207,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "99% 0.002 25"
-        },
-        {
-          "name": "--raw-color-on-error",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 307,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 25"
         }
@@ -4822,7 +3031,7 @@
         {
           "name": "--raw-color-on-link",
           "file": "src/styles/design-system.tokens.css",
-          "line": 205,
+          "line": 215,
           "contextPath": ":root",
           "theme": "light",
           "value": "18% 0.02 250"
@@ -4830,24 +3039,8 @@
         {
           "name": "--raw-color-on-link",
           "file": "src/styles/design-system.tokens.css",
-          "line": 301,
+          "line": 311,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "92% 0.01 250"
-        },
-        {
-          "name": "--raw-color-on-link",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 208,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "18% 0.02 250"
-        },
-        {
-          "name": "--raw-color-on-link",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 308,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "92% 0.01 250"
         }
@@ -4860,7 +3053,7 @@
         {
           "name": "--raw-color-on-primary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 206,
+          "line": 216,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.002 255"
@@ -4868,24 +3061,8 @@
         {
           "name": "--raw-color-on-primary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 302,
+          "line": 312,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "14% 0.02 250"
-        },
-        {
-          "name": "--raw-color-on-primary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 209,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "99% 0.002 255"
-        },
-        {
-          "name": "--raw-color-on-primary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 309,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 250"
         }
@@ -4898,7 +3075,7 @@
         {
           "name": "--raw-color-on-secondary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 207,
+          "line": 217,
           "contextPath": ":root",
           "theme": "light",
           "value": "24% 0.03 250"
@@ -4906,26 +3083,10 @@
         {
           "name": "--raw-color-on-secondary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 303,
+          "line": 313,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
-          "value": "92% 0.01 250"
-        },
-        {
-          "name": "--raw-color-on-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 210,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "24% 0.03 250"
-        },
-        {
-          "name": "--raw-color-on-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 310,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "92% 0.01 250"
+          "value": "20% 0.01 250"
         }
       ]
     },
@@ -4936,7 +3097,7 @@
         {
           "name": "--raw-color-on-selected",
           "file": "src/styles/design-system.tokens.css",
-          "line": 208,
+          "line": 218,
           "contextPath": ":root",
           "theme": "light",
           "value": "22% 0.03 150"
@@ -4944,24 +3105,8 @@
         {
           "name": "--raw-color-on-selected",
           "file": "src/styles/design-system.tokens.css",
-          "line": 304,
+          "line": 314,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "95% 0.02 150"
-        },
-        {
-          "name": "--raw-color-on-selected",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 211,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "22% 0.03 150"
-        },
-        {
-          "name": "--raw-color-on-selected",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 311,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "95% 0.02 150"
         }
@@ -4974,7 +3119,7 @@
         {
           "name": "--raw-color-on-sidebar",
           "file": "src/styles/design-system.tokens.css",
-          "line": 209,
+          "line": 219,
           "contextPath": ":root",
           "theme": "light",
           "value": "26% 0.02 255"
@@ -4982,24 +3127,8 @@
         {
           "name": "--raw-color-on-sidebar",
           "file": "src/styles/design-system.tokens.css",
-          "line": 305,
+          "line": 315,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "85% 0.01 255"
-        },
-        {
-          "name": "--raw-color-on-sidebar",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 212,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "26% 0.02 255"
-        },
-        {
-          "name": "--raw-color-on-sidebar",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 312,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "85% 0.01 255"
         }
@@ -5012,7 +3141,7 @@
         {
           "name": "--raw-color-on-success",
           "file": "src/styles/design-system.tokens.css",
-          "line": 210,
+          "line": 220,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.002 150"
@@ -5020,24 +3149,8 @@
         {
           "name": "--raw-color-on-success",
           "file": "src/styles/design-system.tokens.css",
-          "line": 306,
+          "line": 316,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "14% 0.02 150"
-        },
-        {
-          "name": "--raw-color-on-success",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 213,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "99% 0.002 150"
-        },
-        {
-          "name": "--raw-color-on-success",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 313,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 150"
         }
@@ -5050,7 +3163,7 @@
         {
           "name": "--raw-color-on-warning",
           "file": "src/styles/design-system.tokens.css",
-          "line": 211,
+          "line": 221,
           "contextPath": ":root",
           "theme": "light",
           "value": "20% 0.02 70"
@@ -5058,24 +3171,8 @@
         {
           "name": "--raw-color-on-warning",
           "file": "src/styles/design-system.tokens.css",
-          "line": 307,
+          "line": 317,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "14% 0.02 70"
-        },
-        {
-          "name": "--raw-color-on-warning",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 214,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "20% 0.02 70"
-        },
-        {
-          "name": "--raw-color-on-warning",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 314,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 70"
         }
@@ -5088,7 +3185,7 @@
         {
           "name": "--raw-color-overlay",
           "file": "src/styles/design-system.tokens.css",
-          "line": 212,
+          "line": 222,
           "contextPath": ":root",
           "theme": "light",
           "value": "20% 0.01 255"
@@ -5096,24 +3193,8 @@
         {
           "name": "--raw-color-overlay",
           "file": "src/styles/design-system.tokens.css",
-          "line": 308,
+          "line": 318,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "10% 0.01 255"
-        },
-        {
-          "name": "--raw-color-overlay",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 215,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "20% 0.01 255"
-        },
-        {
-          "name": "--raw-color-overlay",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 315,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "10% 0.01 255"
         }
@@ -5126,7 +3207,7 @@
         {
           "name": "--raw-color-primary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 213,
+          "line": 223,
           "contextPath": ":root",
           "theme": "light",
           "value": "62% 0.15 250"
@@ -5134,24 +3215,8 @@
         {
           "name": "--raw-color-primary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 309,
+          "line": 319,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "78% 0.12 250"
-        },
-        {
-          "name": "--raw-color-primary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 216,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "62% 0.15 250"
-        },
-        {
-          "name": "--raw-color-primary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 316,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "78% 0.12 250"
         }
@@ -5164,7 +3229,7 @@
         {
           "name": "--raw-color-primary-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 214,
+          "line": 224,
           "contextPath": ":root",
           "theme": "light",
           "value": "56% 0.15 250"
@@ -5172,24 +3237,8 @@
         {
           "name": "--raw-color-primary-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 310,
+          "line": 320,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "82% 0.12 250"
-        },
-        {
-          "name": "--raw-color-primary-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 217,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "56% 0.15 250"
-        },
-        {
-          "name": "--raw-color-primary-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 317,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "82% 0.12 250"
         }
@@ -5202,7 +3251,7 @@
         {
           "name": "--raw-color-scrim",
           "file": "src/styles/design-system.tokens.css",
-          "line": 215,
+          "line": 225,
           "contextPath": ":root",
           "theme": "light",
           "value": "20% 0.01 255"
@@ -5210,24 +3259,8 @@
         {
           "name": "--raw-color-scrim",
           "file": "src/styles/design-system.tokens.css",
-          "line": 311,
+          "line": 321,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "10% 0.01 255"
-        },
-        {
-          "name": "--raw-color-scrim",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 218,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "20% 0.01 255"
-        },
-        {
-          "name": "--raw-color-scrim",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 318,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "10% 0.01 255"
         }
@@ -5240,7 +3273,7 @@
         {
           "name": "--raw-color-secondary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 216,
+          "line": 226,
           "contextPath": ":root",
           "theme": "light",
           "value": "92% 0.04 250"
@@ -5248,26 +3281,10 @@
         {
           "name": "--raw-color-secondary",
           "file": "src/styles/design-system.tokens.css",
-          "line": 312,
+          "line": 322,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
-          "value": "32% 0.04 250"
-        },
-        {
-          "name": "--raw-color-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 219,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "92% 0.04 250"
-        },
-        {
-          "name": "--raw-color-secondary",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 319,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "32% 0.04 250"
+          "value": "85% 0.04 250"
         }
       ]
     },
@@ -5278,7 +3295,7 @@
         {
           "name": "--raw-color-selected",
           "file": "src/styles/design-system.tokens.css",
-          "line": 217,
+          "line": 227,
           "contextPath": ":root",
           "theme": "light",
           "value": "90% 0.06 150"
@@ -5286,24 +3303,8 @@
         {
           "name": "--raw-color-selected",
           "file": "src/styles/design-system.tokens.css",
-          "line": 313,
+          "line": 323,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "45% 0.09 150"
-        },
-        {
-          "name": "--raw-color-selected",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 220,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "90% 0.06 150"
-        },
-        {
-          "name": "--raw-color-selected",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 320,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "45% 0.09 150"
         }
@@ -5316,7 +3317,7 @@
         {
           "name": "--raw-color-sidebar",
           "file": "src/styles/design-system.tokens.css",
-          "line": 218,
+          "line": 228,
           "contextPath": ":root",
           "theme": "light",
           "value": "97% 0.01 255"
@@ -5324,24 +3325,8 @@
         {
           "name": "--raw-color-sidebar",
           "file": "src/styles/design-system.tokens.css",
-          "line": 314,
+          "line": 324,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "15% 0.02 255"
-        },
-        {
-          "name": "--raw-color-sidebar",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 221,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "97% 0.01 255"
-        },
-        {
-          "name": "--raw-color-sidebar",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 321,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "15% 0.02 255"
         }
@@ -5354,7 +3339,7 @@
         {
           "name": "--raw-color-success",
           "file": "src/styles/design-system.tokens.css",
-          "line": 219,
+          "line": 229,
           "contextPath": ":root",
           "theme": "light",
           "value": "62% 0.14 150"
@@ -5362,24 +3347,8 @@
         {
           "name": "--raw-color-success",
           "file": "src/styles/design-system.tokens.css",
-          "line": 315,
+          "line": 325,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "75% 0.1 150"
-        },
-        {
-          "name": "--raw-color-success",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 222,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "62% 0.14 150"
-        },
-        {
-          "name": "--raw-color-success",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 322,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "75% 0.1 150"
         }
@@ -5392,7 +3361,7 @@
         {
           "name": "--raw-color-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 220,
+          "line": 230,
           "contextPath": ":root",
           "theme": "light",
           "value": "98% 0.008 255"
@@ -5400,24 +3369,8 @@
         {
           "name": "--raw-color-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 316,
+          "line": 326,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "22% 0.02 255"
-        },
-        {
-          "name": "--raw-color-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 223,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "98% 0.008 255"
-        },
-        {
-          "name": "--raw-color-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 323,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "22% 0.02 255"
         }
@@ -5430,7 +3383,7 @@
         {
           "name": "--raw-color-surface-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 221,
+          "line": 231,
           "contextPath": ":root",
           "theme": "light",
           "value": "96.5% 0.008 255"
@@ -5438,24 +3391,8 @@
         {
           "name": "--raw-color-surface-hover",
           "file": "src/styles/design-system.tokens.css",
-          "line": 317,
+          "line": 327,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "26% 0.02 255"
-        },
-        {
-          "name": "--raw-color-surface-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 224,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "96.5% 0.008 255"
-        },
-        {
-          "name": "--raw-color-surface-hover",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 324,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "26% 0.02 255"
         }
@@ -5468,7 +3405,7 @@
         {
           "name": "--raw-color-text",
           "file": "src/styles/design-system.tokens.css",
-          "line": 222,
+          "line": 232,
           "contextPath": ":root",
           "theme": "light",
           "value": "21% 0.02 255"
@@ -5476,24 +3413,8 @@
         {
           "name": "--raw-color-text",
           "file": "src/styles/design-system.tokens.css",
-          "line": 318,
+          "line": 328,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "96% 0.01 255"
-        },
-        {
-          "name": "--raw-color-text",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 225,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "21% 0.02 255"
-        },
-        {
-          "name": "--raw-color-text",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 325,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "96% 0.01 255"
         }
@@ -5506,7 +3427,7 @@
         {
           "name": "--raw-color-text-muted",
           "file": "src/styles/design-system.tokens.css",
-          "line": 223,
+          "line": 233,
           "contextPath": ":root",
           "theme": "light",
           "value": "46% 0.02 255"
@@ -5514,26 +3435,10 @@
         {
           "name": "--raw-color-text-muted",
           "file": "src/styles/design-system.tokens.css",
-          "line": 319,
+          "line": 329,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
-          "value": "72% 0.01 255"
-        },
-        {
-          "name": "--raw-color-text-muted",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 226,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "46% 0.02 255"
-        },
-        {
-          "name": "--raw-color-text-muted",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 326,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "72% 0.01 255"
+          "value": "82% 0.01 255"
         }
       ]
     },
@@ -5544,7 +3449,7 @@
         {
           "name": "--raw-color-warning",
           "file": "src/styles/design-system.tokens.css",
-          "line": 224,
+          "line": 234,
           "contextPath": ":root",
           "theme": "light",
           "value": "75% 0.16 70"
@@ -5552,24 +3457,8 @@
         {
           "name": "--raw-color-warning",
           "file": "src/styles/design-system.tokens.css",
-          "line": 320,
+          "line": 330,
           "contextPath": ":root[data-theme=\"dark\"]",
-          "theme": "dark",
-          "value": "80% 0.12 70"
-        },
-        {
-          "name": "--raw-color-warning",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 227,
-          "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
-          "theme": "light",
-          "value": "75% 0.16 70"
-        },
-        {
-          "name": "--raw-color-warning",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 327,
-          "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "80% 0.12 70"
         }
@@ -5586,14 +3475,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-neutral-950)"
-        },
-        {
-          "name": "--shadow-color",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 33,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "var(--color-neutral-950)"
         }
       ]
     },
@@ -5607,14 +3488,6 @@
           "line": 34,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0 14px 30px oklch(var(--shadow-color) / 0.18)"
-        },
-        {
-          "name": "--shadow-lg",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 34,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0 14px 30px oklch(var(--shadow-color) / 0.18)"
         }
       ]
@@ -5630,14 +3503,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0 6px 14px oklch(var(--shadow-color) / 0.16)"
-        },
-        {
-          "name": "--shadow-md",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 35,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0 6px 14px oklch(var(--shadow-color) / 0.16)"
         }
       ]
     },
@@ -5651,14 +3516,6 @@
           "line": 36,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0 1px 2px oklch(var(--shadow-color) / 0.14)"
-        },
-        {
-          "name": "--shadow-sm",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 36,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0 1px 2px oklch(var(--shadow-color) / 0.14)"
         }
       ]
@@ -5674,14 +3531,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "24px"
-        },
-        {
-          "name": "--size-icon-lg",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 44,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "24px"
         }
       ]
     },
@@ -5695,14 +3544,6 @@
           "line": 45,
           "contextPath": ":root",
           "theme": "light",
-          "value": "20px"
-        },
-        {
-          "name": "--size-icon-md",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 45,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "20px"
         }
       ]
@@ -5718,14 +3559,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "16px"
-        },
-        {
-          "name": "--size-icon-sm",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 46,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "16px"
         }
       ]
     },
@@ -5739,14 +3572,6 @@
           "line": 11,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.25rem"
-        },
-        {
-          "name": "--spacing-1",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 11,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.25rem"
         }
       ]
@@ -5762,14 +3587,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "3rem"
-        },
-        {
-          "name": "--spacing-12",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 12,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "3rem"
         }
       ]
     },
@@ -5783,14 +3600,6 @@
           "line": 13,
           "contextPath": ":root",
           "theme": "light",
-          "value": "4rem"
-        },
-        {
-          "name": "--spacing-16",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 13,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "4rem"
         }
       ]
@@ -5806,14 +3615,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "0.5rem"
-        },
-        {
-          "name": "--spacing-2",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 14,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "0.5rem"
         }
       ]
     },
@@ -5827,14 +3628,6 @@
           "line": 15,
           "contextPath": ":root",
           "theme": "light",
-          "value": "0.75rem"
-        },
-        {
-          "name": "--spacing-3",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 15,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "0.75rem"
         }
       ]
@@ -5850,14 +3643,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1rem"
-        },
-        {
-          "name": "--spacing-4",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 16,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1rem"
         }
       ]
     },
@@ -5871,14 +3656,6 @@
           "line": 17,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1.5rem"
-        },
-        {
-          "name": "--spacing-6",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 17,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1.5rem"
         }
       ]
@@ -5894,14 +3671,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "2rem"
-        },
-        {
-          "name": "--spacing-8",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 18,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "2rem"
         }
       ]
     },
@@ -5912,17 +3681,9 @@
         {
           "name": "--toast-border",
           "file": "src/styles/design-system.tokens.css",
-          "line": 173,
+          "line": 176,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-border)"
-        },
-        {
-          "name": "--toast-border",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 171,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-border)"
         }
       ]
@@ -5934,17 +3695,9 @@
         {
           "name": "--toast-gap",
           "file": "src/styles/design-system.tokens.css",
-          "line": 174,
+          "line": 177,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-3)"
-        },
-        {
-          "name": "--toast-gap",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 172,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-3)"
         }
       ]
@@ -5956,17 +3709,9 @@
         {
           "name": "--toast-padding-x",
           "file": "src/styles/design-system.tokens.css",
-          "line": 175,
+          "line": 178,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-4)"
-        },
-        {
-          "name": "--toast-padding-x",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 173,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-4)"
         }
       ]
@@ -5978,17 +3723,9 @@
         {
           "name": "--toast-padding-y",
           "file": "src/styles/design-system.tokens.css",
-          "line": 176,
+          "line": 179,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-3)"
-        },
-        {
-          "name": "--toast-padding-y",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 174,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-3)"
         }
       ]
@@ -6000,17 +3737,9 @@
         {
           "name": "--toast-radius",
           "file": "src/styles/design-system.tokens.css",
-          "line": 177,
+          "line": 180,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--radius-md)"
-        },
-        {
-          "name": "--toast-radius",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 175,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--radius-md)"
         }
       ]
@@ -6022,17 +3751,9 @@
         {
           "name": "--toast-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 178,
+          "line": 181,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-surface)"
-        },
-        {
-          "name": "--toast-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 176,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-surface)"
         }
       ]
@@ -6044,18 +3765,24 @@
         {
           "name": "--toast-width",
           "file": "src/styles/design-system.tokens.css",
-          "line": 179,
+          "line": 182,
           "contextPath": ":root",
           "theme": "light",
           "value": "min(420px, calc(100vw - (var(--spacing-4) * 2)))"
-        },
+        }
+      ]
+    },
+    {
+      "name": "--tooltip-arrow-size",
+      "category": "component",
+      "occurrences": [
         {
-          "name": "--toast-width",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 177,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "min(420px, calc(100vw - (var(--spacing-4) * 2)))"
+          "name": "--tooltip-arrow-size",
+          "file": "src/styles/design-system.tokens.css",
+          "line": 166,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "8px"
         }
       ]
     },
@@ -6066,17 +3793,9 @@
         {
           "name": "--tooltip-max-width",
           "file": "src/styles/design-system.tokens.css",
-          "line": 164,
+          "line": 167,
           "contextPath": ":root",
           "theme": "light",
-          "value": "min(320px, 80vw)"
-        },
-        {
-          "name": "--tooltip-max-width",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 162,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "min(320px, 80vw)"
         }
       ]
@@ -6088,17 +3807,9 @@
         {
           "name": "--tooltip-offset",
           "file": "src/styles/design-system.tokens.css",
-          "line": 165,
+          "line": 168,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-2)"
-        },
-        {
-          "name": "--tooltip-offset",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 163,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-2)"
         }
       ]
@@ -6110,17 +3821,9 @@
         {
           "name": "--tooltip-padding-x",
           "file": "src/styles/design-system.tokens.css",
-          "line": 166,
+          "line": 169,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-3)"
-        },
-        {
-          "name": "--tooltip-padding-x",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 164,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-3)"
         }
       ]
@@ -6132,17 +3835,9 @@
         {
           "name": "--tooltip-padding-y",
           "file": "src/styles/design-system.tokens.css",
-          "line": 167,
+          "line": 170,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--spacing-2)"
-        },
-        {
-          "name": "--tooltip-padding-y",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 165,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--spacing-2)"
         }
       ]
@@ -6154,17 +3849,9 @@
         {
           "name": "--tooltip-radius",
           "file": "src/styles/design-system.tokens.css",
-          "line": 168,
+          "line": 171,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--radius-sm)"
-        },
-        {
-          "name": "--tooltip-radius",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 166,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--radius-sm)"
         }
       ]
@@ -6176,17 +3863,9 @@
         {
           "name": "--tooltip-surface",
           "file": "src/styles/design-system.tokens.css",
-          "line": 169,
+          "line": 172,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-overlay)"
-        },
-        {
-          "name": "--tooltip-surface",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 167,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-overlay)"
         }
       ]
@@ -6198,17 +3877,9 @@
         {
           "name": "--tooltip-text",
           "file": "src/styles/design-system.tokens.css",
-          "line": 170,
+          "line": 173,
           "contextPath": ":root",
           "theme": "light",
-          "value": "var(--color-neutral-50)"
-        },
-        {
-          "name": "--tooltip-text",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 168,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "var(--color-neutral-50)"
         }
       ]
@@ -6224,14 +3895,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "44px"
-        },
-        {
-          "name": "--touch-target-min",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 8,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "44px"
         }
       ]
     },
@@ -6245,14 +3908,6 @@
           "line": 53,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1000"
-        },
-        {
-          "name": "--z-dropdown",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 53,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1000"
         }
       ]
@@ -6268,14 +3923,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1100"
-        },
-        {
-          "name": "--z-modal",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 54,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1100"
         }
       ]
     },
@@ -6290,14 +3937,6 @@
           "contextPath": ":root",
           "theme": "light",
           "value": "1200"
-        },
-        {
-          "name": "--z-toast",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 55,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
-          "value": "1200"
         }
       ]
     },
@@ -6311,14 +3950,6 @@
           "line": 56,
           "contextPath": ":root",
           "theme": "light",
-          "value": "1050"
-        },
-        {
-          "name": "--z-tooltip",
-          "file": "src/styles/design-system-lab.tokens.css",
-          "line": 56,
-          "contextPath": ".ds-lab",
-          "theme": "shared",
           "value": "1050"
         }
       ]

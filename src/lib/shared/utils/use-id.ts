@@ -18,8 +18,8 @@ let counter = 0;
  * 컴포넌트 인스턴스당 한 번만 호출해야 합니다.
  */
 export function useId(prefix = 'ds'): string {
-  counter += 1;
-  return `${prefix}-${counter}`;
+	counter += 1;
+	return `${prefix}-${counter}`;
 }
 
 /**
@@ -27,5 +27,5 @@ export function useId(prefix = 'ds'): string {
  * @internal
  */
 export function resetIdCounter(): void {
-  counter = 0;
+	counter = 0;
 }

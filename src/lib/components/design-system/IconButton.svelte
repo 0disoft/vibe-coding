@@ -56,10 +56,14 @@
 	data-ds-variant={variant}
 	data-ds-intent={intentCss}
 >
-	{#if icon}
-		<DsIcon name={icon} size={iconSize} />
-	{/if}
-	{#if children}
-		{@render children()}
+	{#if loading}
+		<DsIcon name="loader-circle" size={iconSize} class="animate-spin" />
+	{:else}
+		{#if icon}
+			<DsIcon name={icon} size={iconSize} />
+		{/if}
+		{#if children}
+			{@render children()}
+		{/if}
 	{/if}
 </button>

@@ -148,7 +148,7 @@ function collectTokens(node: unknown, prefix: string[] = []): FlatToken[] {
   return out;
 }
 
-type Preset = "lab" | "root";
+type Preset = "root";
 
 type SectionId =
   | "touch"
@@ -171,6 +171,7 @@ type SectionId =
   | "component.dropdown"
   | "component.tooltip"
   | "component.toast"
+  | "component.card"
   | "raw.color"
   | "color"
   | "other";
@@ -201,6 +202,7 @@ function sectionOf(path: string): SectionId {
   if (startsWith("component.dropdown")) return "component.dropdown";
   if (startsWith("component.tooltip")) return "component.tooltip";
   if (startsWith("component.toast")) return "component.toast";
+  if (startsWith("component.card")) return "component.card";
 
   return "other";
 }
@@ -256,6 +258,8 @@ function sectionTitle(id: SectionId): string {
       return "Pattern: Tooltip";
     case "component.toast":
       return "Pattern: Toast";
+    case "component.card":
+      return "Pattern: Card";
     case "raw.color":
       return "Primitive (Raw)";
     case "color":
@@ -323,6 +327,7 @@ function buildCss(dtcg: unknown, options: BuildOptions): string {
     "component.dropdown",
     "component.tooltip",
     "component.toast",
+    "component.card",
     "other",
   ];
 
@@ -360,23 +365,17 @@ function buildCss(dtcg: unknown, options: BuildOptions): string {
     lines.push("");
   };
 
-  if (options.preset === "lab") {
-    renderBlock(".ds-lab", "light dark", shared, sharedOrder);
-    renderBlock('.ds-lab[data-ds-theme="light"]', "light", light, themeOrder);
-    renderBlock('.ds-lab[data-ds-theme="dark"]', "dark", dark, themeOrder);
-  } else {
-    // root preset: light는 기본 :root에 포함, dark만 별도 블록으로 분리
-    const mergedLight = new Map<SectionId, Array<{ name: string; value: string }>>();
-    for (const [k, v] of shared.entries()) mergedLight.set(k, [...v]);
-    for (const [k, v] of light.entries()) mergedLight.set(k, [...(mergedLight.get(k) ?? []), ...v]);
+  // root preset: light는 기본 :root에 포함, dark만 별도 블록으로 분리
+  const mergedLight = new Map<SectionId, Array<{ name: string; value: string }>>();
+  for (const [k, v] of shared.entries()) mergedLight.set(k, [...v]);
+  for (const [k, v] of light.entries()) mergedLight.set(k, [...(mergedLight.get(k) ?? []), ...v]);
 
-    const rootOrder = Array.from(
-      new Set<SectionId>([...sharedOrder, ...themeOrder.filter((x) => x !== "other")])
-    );
+  const rootOrder = Array.from(
+    new Set<SectionId>([...sharedOrder, ...themeOrder.filter((x) => x !== "other")])
+  );
 
-    renderBlock(":root", "light dark", mergedLight, rootOrder);
-    renderBlock(':root[data-theme="dark"]', "dark", dark, themeOrder);
-  }
+  renderBlock(":root", "light dark", mergedLight, rootOrder);
+  renderBlock(':root[data-theme="dark"]', "dark", dark, themeOrder);
 
   if (lines.at(-1) === "") lines.pop();
   lines.push("");
@@ -396,20 +395,14 @@ function main(): void {
   const printOnly = args.includes("--print");
 
   const presetIdx = args.indexOf("--preset");
-  const preset = (presetIdx !== -1 ? args[presetIdx + 1] : "lab") as Preset;
-  if (preset !== "lab" && preset !== "root") {
-    console.error(`❌ 알 수 없는 preset: ${String(preset)}`);
-    console.error("지원 preset: lab | root");
-    process.exit(1);
-  }
+  const preset = "root"; // 항상 root
 
   const inIdx = args.indexOf("--in");
   const outIdx = args.indexOf("--out");
 
   const root = resolve(join(dirname(fileURLToPath(import.meta.url)), "../../.."));
   const inPath = resolve(root, inIdx !== -1 ? args[inIdx + 1] : ".vibe-coding/TOOLS/design-system/tokens.dtcg.json");
-  const defaultOut =
-    preset === "root" ? "src/styles/design-system.tokens.css" : "src/styles/design-system-lab.tokens.css";
+  const defaultOut = "src/styles/design-system.tokens.css";
   const outPath = resolve(root, outIdx !== -1 ? args[outIdx + 1] : defaultOut);
 
   const dtcgRaw = readFileSync(inPath, "utf-8");

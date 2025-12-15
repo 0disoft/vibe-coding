@@ -254,7 +254,30 @@
   border-radius: var(--dialog-radius);
   box-shadow: var(--dialog-shadow);
   padding: var(--dialog-padding);
-  width: min(680px, calc(100vw - (var(--spacing-8) * 2)));
+  /* 기본 너비는 md 사이즈 기준 */
+  width: min(600px, calc(100vw - (var(--spacing-4) * 2)));
+}
+
+/* Dialog Sizes */
+.ds-dialog[data-ds-size="sm"] .ds-dialog-surface {
+  width: min(400px, calc(100vw - (var(--spacing-4) * 2)));
+}
+
+.ds-dialog[data-ds-size="md"] .ds-dialog-surface {
+  width: min(600px, calc(100vw - (var(--spacing-4) * 2)));
+}
+
+.ds-dialog[data-ds-size="lg"] .ds-dialog-surface {
+  width: min(800px, calc(100vw - (var(--spacing-4) * 2)));
+}
+
+.ds-dialog[data-ds-size="xl"] .ds-dialog-surface {
+  width: min(1000px, calc(100vw - (var(--spacing-4) * 2)));
+}
+
+.ds-dialog[data-ds-size="full"] .ds-dialog-surface {
+  width: calc(100vw - (var(--spacing-4) * 2));
+  height: calc(100vh - (var(--spacing-4) * 2));
 }
 
 .ds-dialog-header {
@@ -347,7 +370,6 @@
 
 .ds-tooltip {
   position: absolute;
-  left: 50%;
   width: auto;
   min-width: min(280px, calc(100vw - 2rem));
   max-width: min(var(--tooltip-max-width), calc(100vw - 2rem));
@@ -365,12 +387,224 @@
   overflow-wrap: break-word;
   text-wrap: pretty;
   z-index: var(--z-tooltip);
+
+  --tooltip-arrow-size: var(--tooltip-arrow-size);
 }
 
-.ds-tooltip[data-placement="top"] {
+/* Placement: Top */
+.ds-tooltip[data-placement^="top"] {
   bottom: calc(100% + var(--tooltip-offset));
 }
+.ds-tooltip[data-placement="top"] { left: 50%; }
+.ds-tooltip[data-placement="top-start"] { left: 0; }
+.ds-tooltip[data-placement="top-end"] { right: 0; }
 
-.ds-tooltip[data-placement="bottom"] {
+/* Placement: Bottom */
+.ds-tooltip[data-placement^="bottom"] {
   top: calc(100% + var(--tooltip-offset));
 }
+.ds-tooltip[data-placement="bottom"] { left: 50%; }
+.ds-tooltip[data-placement="bottom-start"] { left: 0; }
+.ds-tooltip[data-placement="bottom-end"] { right: 0; }
+
+/* Placement: Left */
+.ds-tooltip[data-placement^="left"] {
+  right: calc(100% + var(--tooltip-offset));
+}
+.ds-tooltip[data-placement="left"] { top: 50%; }
+.ds-tooltip[data-placement="left-start"] { top: 0; }
+.ds-tooltip[data-placement="left-end"] { bottom: 0; }
+
+/* Placement: Right */
+.ds-tooltip[data-placement^="right"] {
+  left: calc(100% + var(--tooltip-offset));
+}
+.ds-tooltip[data-placement="right"] { top: 50%; }
+.ds-tooltip[data-placement="right-start"] { top: 0; }
+.ds-tooltip[data-placement="right-end"] { bottom: 0; }
+
+/* Arrow */
+.ds-tooltip[data-arrow="true"]::after {
+  content: "";
+  position: absolute;
+  width: var(--tooltip-arrow-size);
+  height: var(--tooltip-arrow-size);
+  background: oklch(var(--tooltip-surface));
+  transform: rotate(45deg);
+}
+
+/* Arrow Positioning */
+.ds-tooltip[data-placement^="top"][data-arrow="true"]::after {
+  top: calc(100% - (var(--tooltip-arrow-size) / 2));
+}
+.ds-tooltip[data-placement="top"][data-arrow="true"]::after { left: 50%; margin-left: calc(var(--tooltip-arrow-size) / -2); }
+.ds-tooltip[data-placement="top-start"][data-arrow="true"]::after { left: var(--spacing-4); }
+.ds-tooltip[data-placement="top-end"][data-arrow="true"]::after { right: var(--spacing-4); }
+
+.ds-tooltip[data-placement^="bottom"][data-arrow="true"]::after {
+  bottom: calc(100% - (var(--tooltip-arrow-size) / 2));
+}
+.ds-tooltip[data-placement="bottom"][data-arrow="true"]::after { left: 50%; margin-left: calc(var(--tooltip-arrow-size) / -2); }
+.ds-tooltip[data-placement="bottom-start"][data-arrow="true"]::after { left: var(--spacing-4); }
+.ds-tooltip[data-placement="bottom-end"][data-arrow="true"]::after { right: var(--spacing-4); }
+
+.ds-tooltip[data-placement^="left"][data-arrow="true"]::after {
+  left: calc(100% - (var(--tooltip-arrow-size) / 2));
+}
+.ds-tooltip[data-placement="left"][data-arrow="true"]::after { top: 50%; margin-top: calc(var(--tooltip-arrow-size) / -2); }
+.ds-tooltip[data-placement="left-start"][data-arrow="true"]::after { top: var(--spacing-2); }
+.ds-tooltip[data-placement="left-end"][data-arrow="true"]::after { bottom: var(--spacing-2); }
+
+.ds-tooltip[data-placement^="right"][data-arrow="true"]::after {
+  right: calc(100% - (var(--tooltip-arrow-size) / 2));
+}
+.ds-tooltip[data-placement="right"][data-arrow="true"]::after { top: 50%; margin-top: calc(var(--tooltip-arrow-size) / -2); }
+.ds-tooltip[data-placement="right-start"][data-arrow="true"]::after { top: var(--spacing-2); }
+.ds-tooltip[data-placement="right-end"][data-arrow="true"]::after { bottom: var(--spacing-2); }
+
+/* ───────────────────────────────────────────────────────────
+   Pattern: Card
+   ─────────────────────────────────────────────────────────── */
+
+.ds-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--card-radius, var(--radius-md));
+  overflow: hidden;
+  background: oklch(var(--card-bg));
+  color: oklch(var(--card-fg));
+}
+
+/* Variants */
+.ds-card[data-ds-variant="outline"] {
+  background: oklch(var(--color-surface));
+  border: var(--border-width) solid oklch(var(--color-border));
+  --card-bg: var(--color-surface);
+  --card-fg: var(--color-text);
+}
+
+.ds-card[data-ds-variant="filled"] {
+  /* TODO: 다크모드 대응을 위한 시맨틱 토큰(muted 등)으로 교체 권장 */
+  background: oklch(var(--color-neutral-100));
+  border: none;
+  --card-bg: var(--color-neutral-100);
+  --card-fg: var(--color-text);
+}
+
+.ds-card[data-ds-variant="elevated"] {
+  background: oklch(var(--color-surface));
+  border: none;
+  box-shadow: var(--elevation-1);
+  --card-bg: var(--color-surface);
+  --card-fg: var(--color-text);
+}
+
+.ds-card[data-ds-variant="ghost"] {
+  background: transparent;
+  border: none;
+  --card-bg: transparent;
+  --card-fg: var(--color-text);
+}
+
+/* Padding Sizes */
+.ds-card[data-ds-padding="none"] { --card-padding: var(--card-padding-none, 0); }
+.ds-card[data-ds-padding="sm"] { --card-padding: var(--card-padding-sm, var(--spacing-3)); }
+.ds-card[data-ds-padding="md"] { --card-padding: var(--card-padding-md, var(--spacing-4)); }
+.ds-card[data-ds-padding="lg"] { --card-padding: var(--card-padding-lg, var(--spacing-6)); }
+
+/* Child Layout */
+.ds-card-header {
+  padding: var(--card-padding);
+  padding-bottom: 0;
+}
+
+.ds-card-body {
+  padding: var(--card-padding);
+  flex: 1;
+}
+
+.ds-card-footer {
+  padding: var(--card-padding);
+  padding-top: 0;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Pattern: Toast
+   ─────────────────────────────────────────────────────────── */
+
+.ds-toast-region {
+  position: fixed;
+  z-index: var(--z-toast, 100);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4);
+  width: 100%;
+  max-width: 400px;
+  pointer-events: none;
+}
+
+.ds-toast-region > * {
+  pointer-events: auto;
+}
+
+/* Positions */
+.ds-toast-region[data-ds-position="top-right"] {
+  top: 0;
+  right: 0;
+}
+
+.ds-toast-region[data-ds-position="top-left"] {
+  top: 0;
+  left: 0;
+}
+
+.ds-toast-region[data-ds-position="bottom-right"] {
+  bottom: 0;
+  right: 0;
+  flex-direction: column-reverse;
+}
+
+.ds-toast-region[data-ds-position="bottom-left"] {
+  bottom: 0;
+  left: 0;
+  flex-direction: column-reverse;
+}
+
+.ds-toast-region[data-ds-position="top-center"] {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.ds-toast-region[data-ds-position="bottom-center"] {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+/* Toast Item */
+.ds-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: oklch(var(--color-surface));
+  color: oklch(var(--color-text));
+  border: var(--border-width) solid oklch(var(--color-border));
+  width: 100%;
+}
+
+.ds-toast-icon {
+  flex-shrink: 0;
+  color: oklch(var(--color-text-muted));
+}
+
+.ds-toast[data-intent="success"] .ds-toast-icon { color: oklch(var(--color-success)); }
+.ds-toast[data-intent="warning"] .ds-toast-icon { color: oklch(var(--color-warning)); }
+.ds-toast[data-intent="error"] .ds-toast-icon { color: oklch(var(--color-error)); }
+

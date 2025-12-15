@@ -10,8 +10,11 @@
 		variant?: ButtonVariant;
 		intent?: Intent;
 		loading?: boolean;
+		fullWidth?: boolean;
 		ref?: HTMLButtonElement | null;
 		children?: Snippet;
+		start?: Snippet;
+		end?: Snippet;
 	}
 
 	let {
@@ -19,11 +22,14 @@
 		variant = "solid",
 		intent = "primary",
 		loading = false,
+		fullWidth = false,
 		disabled = false,
 		type = "button",
 		ref = $bindable<HTMLButtonElement | null>(null),
 		class: className = "",
 		children,
+		start,
+		end,
 		...rest
 	}: Props = $props();
 
@@ -41,6 +47,8 @@
 	let stateClass = $derived(
 		disabled || loading ? "cursor-not-allowed" : "cursor-pointer",
 	);
+	let widthClass = $derived(fullWidth ? "w-full flex justify-center" : "");
+	
 	let style = $derived(
 		`padding: ${padding}; border-radius: var(--button-radius);`,
 	);
@@ -50,15 +58,26 @@
 	{...rest}
 	bind:this={ref}
 	{type}
-	class={`${baseClass} ${stateClass} ${className}`.trim()}
+	class={`${baseClass} ${stateClass} ${widthClass} ${className}`.trim()}
 	style={`${style}${disabled || loading ? ` opacity: var(--opacity-disabled);` : ""}`}
 	disabled={disabled || loading}
 	aria-busy={loading || undefined}
 	data-ds-size={size}
 	data-ds-variant={variant}
 	data-ds-intent={intentCss}
+	data-ds-full-width={fullWidth ? "true" : undefined}
 >
+	{#if loading}
+		<span class="ds-icon i-lucide-loader-circle animate-spin" aria-hidden="true" style:width="var(--size-icon-{size})" style:height="var(--size-icon-{size})"></span>
+	{:else if start}
+		{@render start()}
+	{/if}
+
 	{#if children}
 		{@render children()}
+	{/if}
+
+	{#if end}
+		{@render end()}
 	{/if}
 </button>
