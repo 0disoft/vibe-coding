@@ -245,6 +245,18 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
 
 ---
 
+## [CI / GitHub Actions]
+
+### 1. Paraglide 생성 산출물 미생성으로 typecheck 실패
+
+- **증상:** GitHub Actions에서 `bun run check` 실행 시 `Cannot find module '$lib/paraglide/...` 오류가 다수 발생하며 `svelte-check`가 실패함.
+- **원인:** `src/lib/paraglide/`는 Vite 플러그인(`@inlang/paraglide-js`)이 생성하는 **자동 생성 디렉터리**이고 Git에 커밋되지 않음. 로컬에서는 `vite dev/build` 등으로 생성된 상태였지만, CI에서는 `svelte-check` 전에 생성이 되어 있지 않아 모듈 해석이 실패함.
+- **해결:** typecheck 전에 `paraglide-js compile`을 실행해 `src/lib/paraglide/`를 생성한 뒤 `svelte-check`를 수행함.
+  - 예: `bunx paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide --strategy url cookie preferredLanguage baseLocale`
+- **적용 시점:** Paraglide 산출물을 Git에 커밋하지 않고, CI에서 타입체크를 돌릴 때.
+
+---
+
 ## [UI / UX / RTL]
 
 ### 1. 모바일 메뉴 RTL(아랍어) 호환성 및 유령 레이어 버그

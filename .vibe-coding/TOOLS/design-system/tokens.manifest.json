@@ -66,7 +66,7 @@
         {
           "name": "--button-padding-x-lg",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 124,
+          "line": 126,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.25rem"
@@ -74,7 +74,7 @@
         {
           "name": "--button-padding-x-lg",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 122,
+          "line": 124,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.25rem"
@@ -88,7 +88,7 @@
         {
           "name": "--button-padding-x-md",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 125,
+          "line": 127,
           "contextPath": ":root",
           "theme": "light",
           "value": "1rem"
@@ -96,7 +96,7 @@
         {
           "name": "--button-padding-x-md",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 123,
+          "line": 125,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1rem"
@@ -110,7 +110,7 @@
         {
           "name": "--button-padding-x-sm",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 126,
+          "line": 128,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.75rem"
@@ -118,7 +118,7 @@
         {
           "name": "--button-padding-x-sm",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 124,
+          "line": 126,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.75rem"
@@ -132,7 +132,7 @@
         {
           "name": "--button-padding-y-lg",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 127,
+          "line": 129,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.75rem"
@@ -140,7 +140,7 @@
         {
           "name": "--button-padding-y-lg",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 125,
+          "line": 127,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.75rem"
@@ -154,7 +154,7 @@
         {
           "name": "--button-padding-y-md",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 128,
+          "line": 130,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.5rem"
@@ -162,7 +162,7 @@
         {
           "name": "--button-padding-y-md",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 126,
+          "line": 128,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.5rem"
@@ -176,7 +176,7 @@
         {
           "name": "--button-padding-y-sm",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 129,
+          "line": 131,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.375rem"
@@ -184,7 +184,7 @@
         {
           "name": "--button-padding-y-sm",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 127,
+          "line": 129,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.375rem"
@@ -198,7 +198,7 @@
         {
           "name": "--button-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 130,
+          "line": 132,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--radius-md)"
@@ -206,7 +206,7 @@
         {
           "name": "--button-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 128,
+          "line": 130,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--radius-md)"
@@ -220,7 +220,7 @@
         {
           "name": "--color-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 225,
+          "line": 227,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-accent)"
@@ -228,7 +228,7 @@
         {
           "name": "--color-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 321,
+          "line": 323,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-accent)"
@@ -236,7 +236,7 @@
         {
           "name": "--color-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 228,
+          "line": 230,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-accent)"
@@ -244,7 +244,7 @@
         {
           "name": "--color-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 328,
+          "line": 330,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-accent)"
@@ -258,7 +258,7 @@
         {
           "name": "--color-background",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 226,
+          "line": 228,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-background)"
@@ -266,7 +266,7 @@
         {
           "name": "--color-background",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 322,
+          "line": 324,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-background)"
@@ -274,7 +274,7 @@
         {
           "name": "--color-background",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 229,
+          "line": 231,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-background)"
@@ -282,7 +282,7 @@
         {
           "name": "--color-background",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 329,
+          "line": 331,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-background)"
@@ -296,7 +296,7 @@
         {
           "name": "--color-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 227,
+          "line": 229,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-border)"
@@ -304,7 +304,7 @@
         {
           "name": "--color-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 323,
+          "line": 325,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-border)"
@@ -312,7 +312,7 @@
         {
           "name": "--color-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 230,
+          "line": 232,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-border)"
@@ -320,7 +320,7 @@
         {
           "name": "--color-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 330,
+          "line": 332,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-border)"
@@ -334,7 +334,7 @@
         {
           "name": "--color-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 228,
+          "line": 230,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-code-card)"
@@ -342,7 +342,7 @@
         {
           "name": "--color-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 324,
+          "line": 326,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-code-card)"
@@ -350,7 +350,7 @@
         {
           "name": "--color-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 231,
+          "line": 233,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-code-card)"
@@ -358,7 +358,7 @@
         {
           "name": "--color-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 331,
+          "line": 333,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-code-card)"
@@ -372,7 +372,7 @@
         {
           "name": "--color-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 229,
+          "line": 231,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-danger)"
@@ -380,7 +380,7 @@
         {
           "name": "--color-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 325,
+          "line": 327,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-danger)"
@@ -388,7 +388,7 @@
         {
           "name": "--color-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 232,
+          "line": 234,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-danger)"
@@ -396,7 +396,7 @@
         {
           "name": "--color-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 332,
+          "line": 334,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-danger)"
@@ -410,7 +410,7 @@
         {
           "name": "--color-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 230,
+          "line": 232,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-error)"
@@ -418,7 +418,7 @@
         {
           "name": "--color-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 326,
+          "line": 328,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-error)"
@@ -426,7 +426,7 @@
         {
           "name": "--color-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 233,
+          "line": 235,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-error)"
@@ -434,7 +434,7 @@
         {
           "name": "--color-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 333,
+          "line": 335,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-error)"
@@ -448,7 +448,7 @@
         {
           "name": "--color-input",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 231,
+          "line": 233,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-input)"
@@ -456,7 +456,7 @@
         {
           "name": "--color-input",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 327,
+          "line": 329,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-input)"
@@ -464,7 +464,7 @@
         {
           "name": "--color-input",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 234,
+          "line": 236,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-input)"
@@ -472,7 +472,7 @@
         {
           "name": "--color-input",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 334,
+          "line": 336,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-input)"
@@ -486,7 +486,7 @@
         {
           "name": "--color-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 232,
+          "line": 234,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-link)"
@@ -494,7 +494,7 @@
         {
           "name": "--color-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 328,
+          "line": 330,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-link)"
@@ -502,7 +502,7 @@
         {
           "name": "--color-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 235,
+          "line": 237,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-link)"
@@ -510,7 +510,7 @@
         {
           "name": "--color-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 335,
+          "line": 337,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-link)"
@@ -524,7 +524,7 @@
         {
           "name": "--color-neutral-100",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 233,
+          "line": 235,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-100)"
@@ -532,7 +532,7 @@
         {
           "name": "--color-neutral-100",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 329,
+          "line": 331,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-100)"
@@ -540,7 +540,7 @@
         {
           "name": "--color-neutral-100",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 236,
+          "line": 238,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-100)"
@@ -548,7 +548,7 @@
         {
           "name": "--color-neutral-100",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 336,
+          "line": 338,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-100)"
@@ -562,7 +562,7 @@
         {
           "name": "--color-neutral-200",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 234,
+          "line": 236,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-200)"
@@ -570,7 +570,7 @@
         {
           "name": "--color-neutral-200",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 330,
+          "line": 332,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-200)"
@@ -578,7 +578,7 @@
         {
           "name": "--color-neutral-200",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 237,
+          "line": 239,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-200)"
@@ -586,7 +586,7 @@
         {
           "name": "--color-neutral-200",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 337,
+          "line": 339,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-200)"
@@ -600,7 +600,7 @@
         {
           "name": "--color-neutral-300",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 235,
+          "line": 237,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-300)"
@@ -608,7 +608,7 @@
         {
           "name": "--color-neutral-300",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 331,
+          "line": 333,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-300)"
@@ -616,7 +616,7 @@
         {
           "name": "--color-neutral-300",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 238,
+          "line": 240,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-300)"
@@ -624,7 +624,7 @@
         {
           "name": "--color-neutral-300",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 338,
+          "line": 340,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-300)"
@@ -638,7 +638,7 @@
         {
           "name": "--color-neutral-400",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 236,
+          "line": 238,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-400)"
@@ -646,7 +646,7 @@
         {
           "name": "--color-neutral-400",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 332,
+          "line": 334,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-400)"
@@ -654,7 +654,7 @@
         {
           "name": "--color-neutral-400",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 239,
+          "line": 241,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-400)"
@@ -662,7 +662,7 @@
         {
           "name": "--color-neutral-400",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 339,
+          "line": 341,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-400)"
@@ -676,7 +676,7 @@
         {
           "name": "--color-neutral-50",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 237,
+          "line": 239,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-50)"
@@ -684,7 +684,7 @@
         {
           "name": "--color-neutral-50",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 333,
+          "line": 335,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-50)"
@@ -692,7 +692,7 @@
         {
           "name": "--color-neutral-50",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 240,
+          "line": 242,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-50)"
@@ -700,7 +700,7 @@
         {
           "name": "--color-neutral-50",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 340,
+          "line": 342,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-50)"
@@ -714,7 +714,7 @@
         {
           "name": "--color-neutral-500",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 238,
+          "line": 240,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-500)"
@@ -722,7 +722,7 @@
         {
           "name": "--color-neutral-500",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 334,
+          "line": 336,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-500)"
@@ -730,7 +730,7 @@
         {
           "name": "--color-neutral-500",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 241,
+          "line": 243,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-500)"
@@ -738,7 +738,7 @@
         {
           "name": "--color-neutral-500",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 341,
+          "line": 343,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-500)"
@@ -752,7 +752,7 @@
         {
           "name": "--color-neutral-600",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 239,
+          "line": 241,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-600)"
@@ -760,7 +760,7 @@
         {
           "name": "--color-neutral-600",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 335,
+          "line": 337,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-600)"
@@ -768,7 +768,7 @@
         {
           "name": "--color-neutral-600",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 242,
+          "line": 244,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-600)"
@@ -776,7 +776,7 @@
         {
           "name": "--color-neutral-600",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 342,
+          "line": 344,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-600)"
@@ -790,7 +790,7 @@
         {
           "name": "--color-neutral-700",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 240,
+          "line": 242,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-700)"
@@ -798,7 +798,7 @@
         {
           "name": "--color-neutral-700",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 336,
+          "line": 338,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-700)"
@@ -806,7 +806,7 @@
         {
           "name": "--color-neutral-700",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 243,
+          "line": 245,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-700)"
@@ -814,7 +814,7 @@
         {
           "name": "--color-neutral-700",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 343,
+          "line": 345,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-700)"
@@ -828,7 +828,7 @@
         {
           "name": "--color-neutral-800",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 241,
+          "line": 243,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-800)"
@@ -836,7 +836,7 @@
         {
           "name": "--color-neutral-800",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 337,
+          "line": 339,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-800)"
@@ -844,7 +844,7 @@
         {
           "name": "--color-neutral-800",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 244,
+          "line": 246,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-800)"
@@ -852,7 +852,7 @@
         {
           "name": "--color-neutral-800",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 344,
+          "line": 346,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-800)"
@@ -866,7 +866,7 @@
         {
           "name": "--color-neutral-900",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 242,
+          "line": 244,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-900)"
@@ -874,7 +874,7 @@
         {
           "name": "--color-neutral-900",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 338,
+          "line": 340,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-900)"
@@ -882,7 +882,7 @@
         {
           "name": "--color-neutral-900",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 245,
+          "line": 247,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-900)"
@@ -890,7 +890,7 @@
         {
           "name": "--color-neutral-900",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 345,
+          "line": 347,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-900)"
@@ -904,7 +904,7 @@
         {
           "name": "--color-neutral-950",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 243,
+          "line": 245,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-neutral-950)"
@@ -912,7 +912,7 @@
         {
           "name": "--color-neutral-950",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 339,
+          "line": 341,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-950)"
@@ -920,7 +920,7 @@
         {
           "name": "--color-neutral-950",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 246,
+          "line": 248,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-neutral-950)"
@@ -928,7 +928,7 @@
         {
           "name": "--color-neutral-950",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 346,
+          "line": 348,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-neutral-950)"
@@ -942,7 +942,7 @@
         {
           "name": "--color-on-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 244,
+          "line": 246,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-accent)"
@@ -950,7 +950,7 @@
         {
           "name": "--color-on-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 340,
+          "line": 342,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-accent)"
@@ -958,7 +958,7 @@
         {
           "name": "--color-on-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 247,
+          "line": 249,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-accent)"
@@ -966,7 +966,7 @@
         {
           "name": "--color-on-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 347,
+          "line": 349,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-accent)"
@@ -980,7 +980,7 @@
         {
           "name": "--color-on-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 245,
+          "line": 247,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-code-card)"
@@ -988,7 +988,7 @@
         {
           "name": "--color-on-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 341,
+          "line": 343,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-code-card)"
@@ -996,7 +996,7 @@
         {
           "name": "--color-on-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 248,
+          "line": 250,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-code-card)"
@@ -1004,7 +1004,7 @@
         {
           "name": "--color-on-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 348,
+          "line": 350,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-code-card)"
@@ -1018,7 +1018,7 @@
         {
           "name": "--color-on-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 246,
+          "line": 248,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-danger)"
@@ -1026,7 +1026,7 @@
         {
           "name": "--color-on-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 342,
+          "line": 344,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-danger)"
@@ -1034,7 +1034,7 @@
         {
           "name": "--color-on-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 249,
+          "line": 251,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-danger)"
@@ -1042,7 +1042,7 @@
         {
           "name": "--color-on-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 349,
+          "line": 351,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-danger)"
@@ -1056,7 +1056,7 @@
         {
           "name": "--color-on-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 247,
+          "line": 249,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-error)"
@@ -1064,7 +1064,7 @@
         {
           "name": "--color-on-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 343,
+          "line": 345,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-error)"
@@ -1072,7 +1072,7 @@
         {
           "name": "--color-on-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 250,
+          "line": 252,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-error)"
@@ -1080,7 +1080,7 @@
         {
           "name": "--color-on-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 350,
+          "line": 352,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-error)"
@@ -1094,7 +1094,7 @@
         {
           "name": "--color-on-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 248,
+          "line": 250,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-link)"
@@ -1102,7 +1102,7 @@
         {
           "name": "--color-on-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 344,
+          "line": 346,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-link)"
@@ -1110,7 +1110,7 @@
         {
           "name": "--color-on-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 251,
+          "line": 253,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-link)"
@@ -1118,7 +1118,7 @@
         {
           "name": "--color-on-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 351,
+          "line": 353,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-link)"
@@ -1132,7 +1132,7 @@
         {
           "name": "--color-on-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 249,
+          "line": 251,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-primary)"
@@ -1140,7 +1140,7 @@
         {
           "name": "--color-on-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 345,
+          "line": 347,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-primary)"
@@ -1148,7 +1148,7 @@
         {
           "name": "--color-on-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 252,
+          "line": 254,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-primary)"
@@ -1156,7 +1156,7 @@
         {
           "name": "--color-on-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 352,
+          "line": 354,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-primary)"
@@ -1170,7 +1170,7 @@
         {
           "name": "--color-on-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 250,
+          "line": 252,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-secondary)"
@@ -1178,7 +1178,7 @@
         {
           "name": "--color-on-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 346,
+          "line": 348,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-secondary)"
@@ -1186,7 +1186,7 @@
         {
           "name": "--color-on-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 253,
+          "line": 255,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-secondary)"
@@ -1194,7 +1194,7 @@
         {
           "name": "--color-on-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 353,
+          "line": 355,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-secondary)"
@@ -1208,7 +1208,7 @@
         {
           "name": "--color-on-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 251,
+          "line": 253,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-selected)"
@@ -1216,7 +1216,7 @@
         {
           "name": "--color-on-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 347,
+          "line": 349,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-selected)"
@@ -1224,7 +1224,7 @@
         {
           "name": "--color-on-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 254,
+          "line": 256,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-selected)"
@@ -1232,7 +1232,7 @@
         {
           "name": "--color-on-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 354,
+          "line": 356,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-selected)"
@@ -1246,7 +1246,7 @@
         {
           "name": "--color-on-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 252,
+          "line": 254,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-sidebar)"
@@ -1254,7 +1254,7 @@
         {
           "name": "--color-on-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 348,
+          "line": 350,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-sidebar)"
@@ -1262,7 +1262,7 @@
         {
           "name": "--color-on-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 255,
+          "line": 257,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-sidebar)"
@@ -1270,7 +1270,7 @@
         {
           "name": "--color-on-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 355,
+          "line": 357,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-sidebar)"
@@ -1284,7 +1284,7 @@
         {
           "name": "--color-on-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 253,
+          "line": 255,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-success)"
@@ -1292,7 +1292,7 @@
         {
           "name": "--color-on-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 349,
+          "line": 351,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-success)"
@@ -1300,7 +1300,7 @@
         {
           "name": "--color-on-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 256,
+          "line": 258,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-success)"
@@ -1308,7 +1308,7 @@
         {
           "name": "--color-on-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 356,
+          "line": 358,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-success)"
@@ -1322,7 +1322,7 @@
         {
           "name": "--color-on-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 254,
+          "line": 256,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-text)"
@@ -1330,7 +1330,7 @@
         {
           "name": "--color-on-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 350,
+          "line": 352,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text)"
@@ -1338,7 +1338,7 @@
         {
           "name": "--color-on-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 257,
+          "line": 259,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-text)"
@@ -1346,7 +1346,7 @@
         {
           "name": "--color-on-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 357,
+          "line": 359,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text)"
@@ -1360,7 +1360,7 @@
         {
           "name": "--color-on-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 255,
+          "line": 257,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-on-warning)"
@@ -1368,7 +1368,7 @@
         {
           "name": "--color-on-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 351,
+          "line": 353,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-warning)"
@@ -1376,7 +1376,7 @@
         {
           "name": "--color-on-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 258,
+          "line": 260,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-on-warning)"
@@ -1384,7 +1384,7 @@
         {
           "name": "--color-on-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 358,
+          "line": 360,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-on-warning)"
@@ -1398,7 +1398,7 @@
         {
           "name": "--color-overlay",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 256,
+          "line": 258,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-overlay)"
@@ -1406,7 +1406,7 @@
         {
           "name": "--color-overlay",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 352,
+          "line": 354,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-overlay)"
@@ -1414,7 +1414,7 @@
         {
           "name": "--color-overlay",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 259,
+          "line": 261,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-overlay)"
@@ -1422,7 +1422,7 @@
         {
           "name": "--color-overlay",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 359,
+          "line": 361,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-overlay)"
@@ -1436,7 +1436,7 @@
         {
           "name": "--color-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 257,
+          "line": 259,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-primary)"
@@ -1444,7 +1444,7 @@
         {
           "name": "--color-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 353,
+          "line": 355,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-primary)"
@@ -1452,7 +1452,7 @@
         {
           "name": "--color-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 260,
+          "line": 262,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-primary)"
@@ -1460,7 +1460,7 @@
         {
           "name": "--color-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 360,
+          "line": 362,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-primary)"
@@ -1474,7 +1474,7 @@
         {
           "name": "--color-primary-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 258,
+          "line": 260,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-primary-hover)"
@@ -1482,7 +1482,7 @@
         {
           "name": "--color-primary-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 354,
+          "line": 356,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-primary-hover)"
@@ -1490,7 +1490,7 @@
         {
           "name": "--color-primary-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 261,
+          "line": 263,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-primary-hover)"
@@ -1498,7 +1498,7 @@
         {
           "name": "--color-primary-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 361,
+          "line": 363,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-primary-hover)"
@@ -1512,7 +1512,7 @@
         {
           "name": "--color-scrim",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 259,
+          "line": 261,
           "contextPath": ":root",
           "theme": "light",
           "value": "oklch(var(--raw-color-scrim) / 0.55)"
@@ -1520,7 +1520,7 @@
         {
           "name": "--color-scrim",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 355,
+          "line": 357,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "oklch(var(--raw-color-scrim) / 0.6)"
@@ -1528,7 +1528,7 @@
         {
           "name": "--color-scrim",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 262,
+          "line": 264,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "oklch(var(--raw-color-scrim) / 0.55)"
@@ -1536,7 +1536,7 @@
         {
           "name": "--color-scrim",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 362,
+          "line": 364,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "oklch(var(--raw-color-scrim) / 0.6)"
@@ -1550,7 +1550,7 @@
         {
           "name": "--color-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 260,
+          "line": 262,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-secondary)"
@@ -1558,7 +1558,7 @@
         {
           "name": "--color-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 356,
+          "line": 358,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-secondary)"
@@ -1566,7 +1566,7 @@
         {
           "name": "--color-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 263,
+          "line": 265,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-secondary)"
@@ -1574,7 +1574,7 @@
         {
           "name": "--color-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 363,
+          "line": 365,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-secondary)"
@@ -1588,7 +1588,7 @@
         {
           "name": "--color-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 261,
+          "line": 263,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-selected)"
@@ -1596,7 +1596,7 @@
         {
           "name": "--color-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 357,
+          "line": 359,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-selected)"
@@ -1604,7 +1604,7 @@
         {
           "name": "--color-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 264,
+          "line": 266,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-selected)"
@@ -1612,7 +1612,7 @@
         {
           "name": "--color-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 364,
+          "line": 366,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-selected)"
@@ -1626,7 +1626,7 @@
         {
           "name": "--color-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 262,
+          "line": 264,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-sidebar)"
@@ -1634,7 +1634,7 @@
         {
           "name": "--color-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 358,
+          "line": 360,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-sidebar)"
@@ -1642,7 +1642,7 @@
         {
           "name": "--color-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 265,
+          "line": 267,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-sidebar)"
@@ -1650,7 +1650,7 @@
         {
           "name": "--color-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 365,
+          "line": 367,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-sidebar)"
@@ -1664,7 +1664,7 @@
         {
           "name": "--color-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 263,
+          "line": 265,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-success)"
@@ -1672,7 +1672,7 @@
         {
           "name": "--color-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 359,
+          "line": 361,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-success)"
@@ -1680,7 +1680,7 @@
         {
           "name": "--color-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 266,
+          "line": 268,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-success)"
@@ -1688,7 +1688,7 @@
         {
           "name": "--color-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 366,
+          "line": 368,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-success)"
@@ -1702,7 +1702,7 @@
         {
           "name": "--color-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 264,
+          "line": 266,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-surface)"
@@ -1710,7 +1710,7 @@
         {
           "name": "--color-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 360,
+          "line": 362,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-surface)"
@@ -1718,7 +1718,7 @@
         {
           "name": "--color-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 267,
+          "line": 269,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-surface)"
@@ -1726,7 +1726,7 @@
         {
           "name": "--color-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 367,
+          "line": 369,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-surface)"
@@ -1740,7 +1740,7 @@
         {
           "name": "--color-surface-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 265,
+          "line": 267,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-surface-hover)"
@@ -1748,7 +1748,7 @@
         {
           "name": "--color-surface-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 361,
+          "line": 363,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-surface-hover)"
@@ -1756,7 +1756,7 @@
         {
           "name": "--color-surface-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 268,
+          "line": 270,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-surface-hover)"
@@ -1764,7 +1764,7 @@
         {
           "name": "--color-surface-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 368,
+          "line": 370,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-surface-hover)"
@@ -1778,7 +1778,7 @@
         {
           "name": "--color-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 266,
+          "line": 268,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-text)"
@@ -1786,7 +1786,7 @@
         {
           "name": "--color-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 362,
+          "line": 364,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text)"
@@ -1794,7 +1794,7 @@
         {
           "name": "--color-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 269,
+          "line": 271,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-text)"
@@ -1802,7 +1802,7 @@
         {
           "name": "--color-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 369,
+          "line": 371,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text)"
@@ -1816,7 +1816,7 @@
         {
           "name": "--color-text-muted",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 267,
+          "line": 269,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-text-muted)"
@@ -1824,7 +1824,7 @@
         {
           "name": "--color-text-muted",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 363,
+          "line": 365,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text-muted)"
@@ -1832,7 +1832,7 @@
         {
           "name": "--color-text-muted",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 270,
+          "line": 272,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-text-muted)"
@@ -1840,7 +1840,7 @@
         {
           "name": "--color-text-muted",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 370,
+          "line": 372,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-text-muted)"
@@ -1854,7 +1854,7 @@
         {
           "name": "--color-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 268,
+          "line": 270,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--raw-color-warning)"
@@ -1862,7 +1862,7 @@
         {
           "name": "--color-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 364,
+          "line": 366,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-warning)"
@@ -1870,7 +1870,7 @@
         {
           "name": "--color-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 271,
+          "line": 273,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--raw-color-warning)"
@@ -1878,7 +1878,7 @@
         {
           "name": "--color-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 371,
+          "line": 373,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--raw-color-warning)"
@@ -1892,7 +1892,7 @@
         {
           "name": "--dialog-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 144,
+          "line": 146,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-border)"
@@ -1900,7 +1900,7 @@
         {
           "name": "--dialog-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 142,
+          "line": 144,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-border)"
@@ -1914,7 +1914,7 @@
         {
           "name": "--dialog-gap",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 145,
+          "line": 147,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-4)"
@@ -1922,7 +1922,7 @@
         {
           "name": "--dialog-gap",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 143,
+          "line": 145,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-4)"
@@ -1936,7 +1936,7 @@
         {
           "name": "--dialog-padding",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 146,
+          "line": 148,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-4)"
@@ -1944,7 +1944,7 @@
         {
           "name": "--dialog-padding",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 144,
+          "line": 146,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-4)"
@@ -1958,7 +1958,7 @@
         {
           "name": "--dialog-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 147,
+          "line": 149,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--radius-lg)"
@@ -1966,7 +1966,7 @@
         {
           "name": "--dialog-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 145,
+          "line": 147,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--radius-lg)"
@@ -1980,7 +1980,7 @@
         {
           "name": "--dialog-shadow",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 148,
+          "line": 150,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--elevation-3)"
@@ -1988,7 +1988,7 @@
         {
           "name": "--dialog-shadow",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 146,
+          "line": 148,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--elevation-3)"
@@ -2002,7 +2002,7 @@
         {
           "name": "--dialog-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 149,
+          "line": 151,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-surface)"
@@ -2010,7 +2010,7 @@
         {
           "name": "--dialog-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 147,
+          "line": 149,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-surface)"
@@ -2024,7 +2024,7 @@
         {
           "name": "--dropdown-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 152,
+          "line": 154,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-border)"
@@ -2032,7 +2032,7 @@
         {
           "name": "--dropdown-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 150,
+          "line": 152,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-border)"
@@ -2046,7 +2046,7 @@
         {
           "name": "--dropdown-item-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 153,
+          "line": 155,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-surface-hover)"
@@ -2054,7 +2054,7 @@
         {
           "name": "--dropdown-item-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 151,
+          "line": 153,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-surface-hover)"
@@ -2068,7 +2068,7 @@
         {
           "name": "--dropdown-item-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 154,
+          "line": 156,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-3)"
@@ -2076,7 +2076,7 @@
         {
           "name": "--dropdown-item-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 152,
+          "line": 154,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-3)"
@@ -2090,7 +2090,7 @@
         {
           "name": "--dropdown-item-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 155,
+          "line": 157,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-2)"
@@ -2098,7 +2098,7 @@
         {
           "name": "--dropdown-item-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 153,
+          "line": 155,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-2)"
@@ -2112,7 +2112,7 @@
         {
           "name": "--dropdown-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 156,
+          "line": 158,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-2)"
@@ -2120,7 +2120,7 @@
         {
           "name": "--dropdown-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 154,
+          "line": 156,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-2)"
@@ -2134,7 +2134,7 @@
         {
           "name": "--dropdown-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 157,
+          "line": 159,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-2)"
@@ -2142,7 +2142,7 @@
         {
           "name": "--dropdown-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 155,
+          "line": 157,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-2)"
@@ -2156,7 +2156,7 @@
         {
           "name": "--dropdown-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 158,
+          "line": 160,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--radius-md)"
@@ -2164,7 +2164,7 @@
         {
           "name": "--dropdown-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 156,
+          "line": 158,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--radius-md)"
@@ -2178,7 +2178,7 @@
         {
           "name": "--dropdown-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 159,
+          "line": 161,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-surface)"
@@ -2186,7 +2186,7 @@
         {
           "name": "--dropdown-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 157,
+          "line": 159,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-surface)"
@@ -2266,7 +2266,7 @@
         {
           "name": "--field-error-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 138,
+          "line": 140,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-error)"
@@ -2274,7 +2274,7 @@
         {
           "name": "--field-error-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 136,
+          "line": 138,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-error)"
@@ -2288,7 +2288,7 @@
         {
           "name": "--field-gap",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 139,
+          "line": 141,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-2)"
@@ -2296,7 +2296,7 @@
         {
           "name": "--field-gap",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 137,
+          "line": 139,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-2)"
@@ -2310,7 +2310,7 @@
         {
           "name": "--field-help-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 140,
+          "line": 142,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-text-muted)"
@@ -2318,7 +2318,7 @@
         {
           "name": "--field-help-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 138,
+          "line": 140,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-text-muted)"
@@ -2332,7 +2332,7 @@
         {
           "name": "--field-label-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 141,
+          "line": 143,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-text)"
@@ -2340,7 +2340,7 @@
         {
           "name": "--field-label-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 139,
+          "line": 141,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-text)"
@@ -2362,7 +2362,7 @@
         {
           "name": "--focus-ring-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 367,
+          "line": 369,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--color-primary)"
@@ -2370,7 +2370,7 @@
         {
           "name": "--focus-ring-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 274,
+          "line": 276,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--color-primary)"
@@ -2378,7 +2378,7 @@
         {
           "name": "--focus-ring-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 374,
+          "line": 376,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--color-primary)"
@@ -2422,7 +2422,7 @@
         {
           "name": "--focus-ring-offset-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 368,
+          "line": 370,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--color-background)"
@@ -2430,7 +2430,7 @@
         {
           "name": "--focus-ring-offset-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 275,
+          "line": 277,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "var(--color-background)"
@@ -2438,7 +2438,7 @@
         {
           "name": "--focus-ring-offset-color",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 375,
+          "line": 377,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "var(--color-background)"
@@ -3150,13 +3150,35 @@
       ]
     },
     {
+      "name": "--font-size-prose",
+      "category": "typography",
+      "occurrences": [
+        {
+          "name": "--font-size-prose",
+          "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
+          "line": 100,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "0.875rem"
+        },
+        {
+          "name": "--font-size-prose",
+          "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
+          "line": 98,
+          "contextPath": ".ds-lab",
+          "theme": "shared",
+          "value": "0.875rem"
+        }
+      ]
+    },
+    {
       "name": "--font-size-sm",
       "category": "typography",
       "occurrences": [
         {
           "name": "--font-size-sm",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 100,
+          "line": 101,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.833rem"
@@ -3164,7 +3186,7 @@
         {
           "name": "--font-size-sm",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 98,
+          "line": 99,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.833rem"
@@ -3178,7 +3200,7 @@
         {
           "name": "--font-size-stat",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 101,
+          "line": 102,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.4rem"
@@ -3186,7 +3208,7 @@
         {
           "name": "--font-size-stat",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 99,
+          "line": 100,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.4rem"
@@ -3200,7 +3222,7 @@
         {
           "name": "--font-size-tag",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 102,
+          "line": 103,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.75rem"
@@ -3208,7 +3230,7 @@
         {
           "name": "--font-size-tag",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 100,
+          "line": 101,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.75rem"
@@ -3222,7 +3244,7 @@
         {
           "name": "--font-size-timestamp",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 103,
+          "line": 104,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.7rem"
@@ -3230,7 +3252,7 @@
         {
           "name": "--font-size-timestamp",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 101,
+          "line": 102,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.7rem"
@@ -3244,7 +3266,7 @@
         {
           "name": "--font-size-toast",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 104,
+          "line": 105,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.85rem"
@@ -3252,7 +3274,7 @@
         {
           "name": "--font-size-toast",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 102,
+          "line": 103,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.85rem"
@@ -3266,7 +3288,7 @@
         {
           "name": "--font-size-tooltip",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 105,
+          "line": 106,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.75rem"
@@ -3274,7 +3296,7 @@
         {
           "name": "--font-size-tooltip",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 103,
+          "line": 104,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.75rem"
@@ -3288,7 +3310,7 @@
         {
           "name": "--font-size-xl",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 106,
+          "line": 107,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.44rem"
@@ -3296,7 +3318,7 @@
         {
           "name": "--font-size-xl",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 104,
+          "line": 105,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.44rem"
@@ -3310,7 +3332,7 @@
         {
           "name": "--font-size-xs",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 107,
+          "line": 108,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.694rem"
@@ -3318,7 +3340,7 @@
         {
           "name": "--font-size-xs",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 105,
+          "line": 106,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.694rem"
@@ -3332,7 +3354,7 @@
         {
           "name": "--font-size-xs-resp",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 108,
+          "line": 109,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.7rem"
@@ -3340,7 +3362,7 @@
         {
           "name": "--font-size-xs-resp",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 106,
+          "line": 107,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.7rem"
@@ -3354,7 +3376,7 @@
         {
           "name": "--font-weight-bold",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 109,
+          "line": 110,
           "contextPath": ":root",
           "theme": "light",
           "value": "700"
@@ -3362,7 +3384,7 @@
         {
           "name": "--font-weight-bold",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 107,
+          "line": 108,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "700"
@@ -3376,7 +3398,7 @@
         {
           "name": "--font-weight-medium",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 110,
+          "line": 111,
           "contextPath": ":root",
           "theme": "light",
           "value": "500"
@@ -3384,7 +3406,7 @@
         {
           "name": "--font-weight-medium",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 108,
+          "line": 109,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "500"
@@ -3398,7 +3420,7 @@
         {
           "name": "--font-weight-regular",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 111,
+          "line": 112,
           "contextPath": ":root",
           "theme": "light",
           "value": "400"
@@ -3406,7 +3428,7 @@
         {
           "name": "--font-weight-regular",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 109,
+          "line": 110,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "400"
@@ -3420,7 +3442,7 @@
         {
           "name": "--font-weight-semibold",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 112,
+          "line": 113,
           "contextPath": ":root",
           "theme": "light",
           "value": "600"
@@ -3428,7 +3450,7 @@
         {
           "name": "--font-weight-semibold",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 110,
+          "line": 111,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "600"
@@ -3486,7 +3508,7 @@
         {
           "name": "--input-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 133,
+          "line": 135,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.75rem"
@@ -3494,7 +3516,7 @@
         {
           "name": "--input-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 131,
+          "line": 133,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.75rem"
@@ -3508,7 +3530,7 @@
         {
           "name": "--input-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 134,
+          "line": 136,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.5rem"
@@ -3516,7 +3538,7 @@
         {
           "name": "--input-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 132,
+          "line": 134,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.5rem"
@@ -3530,7 +3552,7 @@
         {
           "name": "--input-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 135,
+          "line": 137,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--radius-md)"
@@ -3538,7 +3560,7 @@
         {
           "name": "--input-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 133,
+          "line": 135,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--radius-md)"
@@ -3552,7 +3574,7 @@
         {
           "name": "--letter-spacing-normal",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 113,
+          "line": 114,
           "contextPath": ":root",
           "theme": "light",
           "value": "0"
@@ -3560,7 +3582,7 @@
         {
           "name": "--letter-spacing-normal",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 111,
+          "line": 112,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0"
@@ -3574,7 +3596,7 @@
         {
           "name": "--letter-spacing-tight",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 114,
+          "line": 115,
           "contextPath": ":root",
           "theme": "light",
           "value": "-0.02em"
@@ -3582,7 +3604,7 @@
         {
           "name": "--letter-spacing-tight",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 112,
+          "line": 113,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "-0.02em"
@@ -3596,7 +3618,7 @@
         {
           "name": "--letter-spacing-wide",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 115,
+          "line": 116,
           "contextPath": ":root",
           "theme": "light",
           "value": "0.05em"
@@ -3604,7 +3626,7 @@
         {
           "name": "--letter-spacing-wide",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 113,
+          "line": 114,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "0.05em"
@@ -3618,7 +3640,7 @@
         {
           "name": "--line-height-body",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 116,
+          "line": 117,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.6"
@@ -3626,7 +3648,7 @@
         {
           "name": "--line-height-body",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 114,
+          "line": 115,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.6"
@@ -3640,7 +3662,7 @@
         {
           "name": "--line-height-heading",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 117,
+          "line": 118,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.3"
@@ -3648,7 +3670,7 @@
         {
           "name": "--line-height-heading",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 115,
+          "line": 116,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.3"
@@ -3662,7 +3684,7 @@
         {
           "name": "--line-height-normal",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 118,
+          "line": 119,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.5"
@@ -3670,10 +3692,32 @@
         {
           "name": "--line-height-normal",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 116,
+          "line": 117,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.5"
+        }
+      ]
+    },
+    {
+      "name": "--line-height-prose",
+      "category": "typography",
+      "occurrences": [
+        {
+          "name": "--line-height-prose",
+          "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
+          "line": 120,
+          "contextPath": ":root",
+          "theme": "light",
+          "value": "1.625"
+        },
+        {
+          "name": "--line-height-prose",
+          "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
+          "line": 118,
+          "contextPath": ".ds-lab",
+          "theme": "shared",
+          "value": "1.625"
         }
       ]
     },
@@ -3684,7 +3728,7 @@
         {
           "name": "--line-height-relaxed",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 119,
+          "line": 121,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.7"
@@ -3692,7 +3736,7 @@
         {
           "name": "--line-height-relaxed",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 117,
+          "line": 119,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.7"
@@ -3706,7 +3750,7 @@
         {
           "name": "--line-height-tight",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 120,
+          "line": 122,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.2"
@@ -3714,7 +3758,7 @@
         {
           "name": "--line-height-tight",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 118,
+          "line": 120,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.2"
@@ -3816,7 +3860,7 @@
         {
           "name": "--paragraph-spacing",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 121,
+          "line": 123,
           "contextPath": ":root",
           "theme": "light",
           "value": "1.25em"
@@ -3824,7 +3868,7 @@
         {
           "name": "--paragraph-spacing",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 119,
+          "line": 121,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "1.25em"
@@ -3904,7 +3948,7 @@
         {
           "name": "--raw-color-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 180,
+          "line": 182,
           "contextPath": ":root",
           "theme": "light",
           "value": "90% 0.06 155"
@@ -3912,7 +3956,7 @@
         {
           "name": "--raw-color-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 276,
+          "line": 278,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "35% 0.06 155"
@@ -3920,7 +3964,7 @@
         {
           "name": "--raw-color-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 183,
+          "line": 185,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "90% 0.06 155"
@@ -3928,7 +3972,7 @@
         {
           "name": "--raw-color-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 283,
+          "line": 285,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "35% 0.06 155"
@@ -3942,7 +3986,7 @@
         {
           "name": "--raw-color-background",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 181,
+          "line": 183,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.004 255"
@@ -3950,7 +3994,7 @@
         {
           "name": "--raw-color-background",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 277,
+          "line": 279,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "18% 0.02 255"
@@ -3958,7 +4002,7 @@
         {
           "name": "--raw-color-background",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 184,
+          "line": 186,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "99% 0.004 255"
@@ -3966,7 +4010,7 @@
         {
           "name": "--raw-color-background",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 284,
+          "line": 286,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "18% 0.02 255"
@@ -3980,7 +4024,7 @@
         {
           "name": "--raw-color-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 182,
+          "line": 184,
           "contextPath": ":root",
           "theme": "light",
           "value": "90% 0.012 255"
@@ -3988,7 +4032,7 @@
         {
           "name": "--raw-color-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 278,
+          "line": 280,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "30% 0.01 255"
@@ -3996,7 +4040,7 @@
         {
           "name": "--raw-color-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 185,
+          "line": 187,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "90% 0.012 255"
@@ -4004,7 +4048,7 @@
         {
           "name": "--raw-color-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 285,
+          "line": 287,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "30% 0.01 255"
@@ -4018,7 +4062,7 @@
         {
           "name": "--raw-color-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 183,
+          "line": 185,
           "contextPath": ":root",
           "theme": "light",
           "value": "95% 0.02 102"
@@ -4026,7 +4070,7 @@
         {
           "name": "--raw-color-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 279,
+          "line": 281,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "27% 0.0314 274"
@@ -4034,7 +4078,7 @@
         {
           "name": "--raw-color-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 186,
+          "line": 188,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "95% 0.02 102"
@@ -4042,7 +4086,7 @@
         {
           "name": "--raw-color-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 286,
+          "line": 288,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "27% 0.0314 274"
@@ -4056,7 +4100,7 @@
         {
           "name": "--raw-color-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 184,
+          "line": 186,
           "contextPath": ":root",
           "theme": "light",
           "value": "62% 0.2 25"
@@ -4064,7 +4108,7 @@
         {
           "name": "--raw-color-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 280,
+          "line": 282,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.18 25"
@@ -4072,7 +4116,7 @@
         {
           "name": "--raw-color-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 187,
+          "line": 189,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "62% 0.2 25"
@@ -4080,7 +4124,7 @@
         {
           "name": "--raw-color-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 287,
+          "line": 289,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.18 25"
@@ -4094,7 +4138,7 @@
         {
           "name": "--raw-color-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 185,
+          "line": 187,
           "contextPath": ":root",
           "theme": "light",
           "value": "62% 0.2 25"
@@ -4102,7 +4146,7 @@
         {
           "name": "--raw-color-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 281,
+          "line": 283,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.18 25"
@@ -4110,7 +4154,7 @@
         {
           "name": "--raw-color-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 188,
+          "line": 190,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "62% 0.2 25"
@@ -4118,7 +4162,7 @@
         {
           "name": "--raw-color-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 288,
+          "line": 290,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.18 25"
@@ -4132,7 +4176,7 @@
         {
           "name": "--raw-color-input",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 186,
+          "line": 188,
           "contextPath": ":root",
           "theme": "light",
           "value": "92% 0.012 255"
@@ -4140,7 +4184,7 @@
         {
           "name": "--raw-color-input",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 282,
+          "line": 284,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "32% 0.01 255"
@@ -4148,7 +4192,7 @@
         {
           "name": "--raw-color-input",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 189,
+          "line": 191,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "92% 0.012 255"
@@ -4156,7 +4200,7 @@
         {
           "name": "--raw-color-input",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 289,
+          "line": 291,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "32% 0.01 255"
@@ -4170,7 +4214,7 @@
         {
           "name": "--raw-color-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 187,
+          "line": 189,
           "contextPath": ":root",
           "theme": "light",
           "value": "60% 0.16 250"
@@ -4178,7 +4222,7 @@
         {
           "name": "--raw-color-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 283,
+          "line": 285,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "80% 0.12 250"
@@ -4186,7 +4230,7 @@
         {
           "name": "--raw-color-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 190,
+          "line": 192,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "60% 0.16 250"
@@ -4194,7 +4238,7 @@
         {
           "name": "--raw-color-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 290,
+          "line": 292,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "80% 0.12 250"
@@ -4208,7 +4252,7 @@
         {
           "name": "--raw-color-neutral-100",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 188,
+          "line": 190,
           "contextPath": ":root",
           "theme": "light",
           "value": "97% 0.004 255"
@@ -4216,7 +4260,7 @@
         {
           "name": "--raw-color-neutral-100",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 284,
+          "line": 286,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "85% 0.004 255"
@@ -4224,7 +4268,7 @@
         {
           "name": "--raw-color-neutral-100",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 191,
+          "line": 193,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "97% 0.004 255"
@@ -4232,7 +4276,7 @@
         {
           "name": "--raw-color-neutral-100",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 291,
+          "line": 293,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "85% 0.004 255"
@@ -4246,7 +4290,7 @@
         {
           "name": "--raw-color-neutral-200",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 189,
+          "line": 191,
           "contextPath": ":root",
           "theme": "light",
           "value": "93% 0.004 255"
@@ -4254,7 +4298,7 @@
         {
           "name": "--raw-color-neutral-200",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 285,
+          "line": 287,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.004 255"
@@ -4262,7 +4306,7 @@
         {
           "name": "--raw-color-neutral-200",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 192,
+          "line": 194,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "93% 0.004 255"
@@ -4270,7 +4314,7 @@
         {
           "name": "--raw-color-neutral-200",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 292,
+          "line": 294,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.004 255"
@@ -4284,7 +4328,7 @@
         {
           "name": "--raw-color-neutral-300",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 190,
+          "line": 192,
           "contextPath": ":root",
           "theme": "light",
           "value": "88% 0.004 255"
@@ -4292,7 +4336,7 @@
         {
           "name": "--raw-color-neutral-300",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 286,
+          "line": 288,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "60% 0.004 255"
@@ -4300,7 +4344,7 @@
         {
           "name": "--raw-color-neutral-300",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 193,
+          "line": 195,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "88% 0.004 255"
@@ -4308,7 +4352,7 @@
         {
           "name": "--raw-color-neutral-300",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 293,
+          "line": 295,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "60% 0.004 255"
@@ -4322,7 +4366,7 @@
         {
           "name": "--raw-color-neutral-400",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 191,
+          "line": 193,
           "contextPath": ":root",
           "theme": "light",
           "value": "72% 0.004 255"
@@ -4330,7 +4374,7 @@
         {
           "name": "--raw-color-neutral-400",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 287,
+          "line": 289,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "50% 0.004 255"
@@ -4338,7 +4382,7 @@
         {
           "name": "--raw-color-neutral-400",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 194,
+          "line": 196,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "72% 0.004 255"
@@ -4346,7 +4390,7 @@
         {
           "name": "--raw-color-neutral-400",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 294,
+          "line": 296,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "50% 0.004 255"
@@ -4360,7 +4404,7 @@
         {
           "name": "--raw-color-neutral-50",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 192,
+          "line": 194,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.004 255"
@@ -4368,7 +4412,7 @@
         {
           "name": "--raw-color-neutral-50",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 288,
+          "line": 290,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "95% 0.004 255"
@@ -4376,7 +4420,7 @@
         {
           "name": "--raw-color-neutral-50",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 195,
+          "line": 197,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "99% 0.004 255"
@@ -4384,7 +4428,7 @@
         {
           "name": "--raw-color-neutral-50",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 295,
+          "line": 297,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "95% 0.004 255"
@@ -4398,7 +4442,7 @@
         {
           "name": "--raw-color-neutral-500",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 193,
+          "line": 195,
           "contextPath": ":root",
           "theme": "light",
           "value": "56% 0.004 255"
@@ -4406,7 +4450,7 @@
         {
           "name": "--raw-color-neutral-500",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 289,
+          "line": 291,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "40% 0.004 255"
@@ -4414,7 +4458,7 @@
         {
           "name": "--raw-color-neutral-500",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 196,
+          "line": 198,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "56% 0.004 255"
@@ -4422,7 +4466,7 @@
         {
           "name": "--raw-color-neutral-500",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 296,
+          "line": 298,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "40% 0.004 255"
@@ -4436,7 +4480,7 @@
         {
           "name": "--raw-color-neutral-600",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 194,
+          "line": 196,
           "contextPath": ":root",
           "theme": "light",
           "value": "46% 0.004 255"
@@ -4444,7 +4488,7 @@
         {
           "name": "--raw-color-neutral-600",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 290,
+          "line": 292,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "30% 0.004 255"
@@ -4452,7 +4496,7 @@
         {
           "name": "--raw-color-neutral-600",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 197,
+          "line": 199,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "46% 0.004 255"
@@ -4460,7 +4504,7 @@
         {
           "name": "--raw-color-neutral-600",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 297,
+          "line": 299,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "30% 0.004 255"
@@ -4474,7 +4518,7 @@
         {
           "name": "--raw-color-neutral-700",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 195,
+          "line": 197,
           "contextPath": ":root",
           "theme": "light",
           "value": "35% 0.004 255"
@@ -4482,7 +4526,7 @@
         {
           "name": "--raw-color-neutral-700",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 291,
+          "line": 293,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "22% 0.004 255"
@@ -4490,7 +4534,7 @@
         {
           "name": "--raw-color-neutral-700",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 198,
+          "line": 200,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "35% 0.004 255"
@@ -4498,7 +4542,7 @@
         {
           "name": "--raw-color-neutral-700",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 298,
+          "line": 300,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "22% 0.004 255"
@@ -4512,7 +4556,7 @@
         {
           "name": "--raw-color-neutral-800",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 196,
+          "line": 198,
           "contextPath": ":root",
           "theme": "light",
           "value": "26% 0.004 255"
@@ -4520,7 +4564,7 @@
         {
           "name": "--raw-color-neutral-800",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 292,
+          "line": 294,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "16% 0.004 255"
@@ -4528,7 +4572,7 @@
         {
           "name": "--raw-color-neutral-800",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 199,
+          "line": 201,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "26% 0.004 255"
@@ -4536,7 +4580,7 @@
         {
           "name": "--raw-color-neutral-800",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 299,
+          "line": 301,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "16% 0.004 255"
@@ -4550,7 +4594,7 @@
         {
           "name": "--raw-color-neutral-900",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 197,
+          "line": 199,
           "contextPath": ":root",
           "theme": "light",
           "value": "18% 0.004 255"
@@ -4558,7 +4602,7 @@
         {
           "name": "--raw-color-neutral-900",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 293,
+          "line": 295,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "12% 0.004 255"
@@ -4566,7 +4610,7 @@
         {
           "name": "--raw-color-neutral-900",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 200,
+          "line": 202,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "18% 0.004 255"
@@ -4574,7 +4618,7 @@
         {
           "name": "--raw-color-neutral-900",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 300,
+          "line": 302,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "12% 0.004 255"
@@ -4588,7 +4632,7 @@
         {
           "name": "--raw-color-neutral-950",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 198,
+          "line": 200,
           "contextPath": ":root",
           "theme": "light",
           "value": "12% 0.004 255"
@@ -4596,7 +4640,7 @@
         {
           "name": "--raw-color-neutral-950",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 294,
+          "line": 296,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "8% 0.004 255"
@@ -4604,7 +4648,7 @@
         {
           "name": "--raw-color-neutral-950",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 201,
+          "line": 203,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "12% 0.004 255"
@@ -4612,7 +4656,7 @@
         {
           "name": "--raw-color-neutral-950",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 301,
+          "line": 303,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "8% 0.004 255"
@@ -4626,7 +4670,7 @@
         {
           "name": "--raw-color-on-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 199,
+          "line": 201,
           "contextPath": ":root",
           "theme": "light",
           "value": "22% 0.03 155"
@@ -4634,7 +4678,7 @@
         {
           "name": "--raw-color-on-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 295,
+          "line": 297,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "92% 0.01 155"
@@ -4642,7 +4686,7 @@
         {
           "name": "--raw-color-on-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 202,
+          "line": 204,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "22% 0.03 155"
@@ -4650,7 +4694,7 @@
         {
           "name": "--raw-color-on-accent",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 302,
+          "line": 304,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "92% 0.01 155"
@@ -4664,7 +4708,7 @@
         {
           "name": "--raw-color-on-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 200,
+          "line": 202,
           "contextPath": ":root",
           "theme": "light",
           "value": "35% 0.04 331"
@@ -4672,7 +4716,7 @@
         {
           "name": "--raw-color-on-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 296,
+          "line": 298,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "96% 0.01 106"
@@ -4680,7 +4724,7 @@
         {
           "name": "--raw-color-on-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 203,
+          "line": 205,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "35% 0.04 331"
@@ -4688,7 +4732,7 @@
         {
           "name": "--raw-color-on-code-card",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 303,
+          "line": 305,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "96% 0.01 106"
@@ -4702,7 +4746,7 @@
         {
           "name": "--raw-color-on-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 201,
+          "line": 203,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.002 25"
@@ -4710,7 +4754,7 @@
         {
           "name": "--raw-color-on-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 297,
+          "line": 299,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 25"
@@ -4718,7 +4762,7 @@
         {
           "name": "--raw-color-on-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 204,
+          "line": 206,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "99% 0.002 25"
@@ -4726,7 +4770,7 @@
         {
           "name": "--raw-color-on-danger",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 304,
+          "line": 306,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 25"
@@ -4740,7 +4784,7 @@
         {
           "name": "--raw-color-on-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 202,
+          "line": 204,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.002 25"
@@ -4748,7 +4792,7 @@
         {
           "name": "--raw-color-on-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 298,
+          "line": 300,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 25"
@@ -4756,7 +4800,7 @@
         {
           "name": "--raw-color-on-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 205,
+          "line": 207,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "99% 0.002 25"
@@ -4764,7 +4808,7 @@
         {
           "name": "--raw-color-on-error",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 305,
+          "line": 307,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 25"
@@ -4778,7 +4822,7 @@
         {
           "name": "--raw-color-on-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 203,
+          "line": 205,
           "contextPath": ":root",
           "theme": "light",
           "value": "18% 0.02 250"
@@ -4786,7 +4830,7 @@
         {
           "name": "--raw-color-on-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 299,
+          "line": 301,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "92% 0.01 250"
@@ -4794,7 +4838,7 @@
         {
           "name": "--raw-color-on-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 206,
+          "line": 208,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "18% 0.02 250"
@@ -4802,7 +4846,7 @@
         {
           "name": "--raw-color-on-link",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 306,
+          "line": 308,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "92% 0.01 250"
@@ -4816,7 +4860,7 @@
         {
           "name": "--raw-color-on-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 204,
+          "line": 206,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.002 255"
@@ -4824,7 +4868,7 @@
         {
           "name": "--raw-color-on-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 300,
+          "line": 302,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 250"
@@ -4832,7 +4876,7 @@
         {
           "name": "--raw-color-on-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 207,
+          "line": 209,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "99% 0.002 255"
@@ -4840,7 +4884,7 @@
         {
           "name": "--raw-color-on-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 307,
+          "line": 309,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 250"
@@ -4854,7 +4898,7 @@
         {
           "name": "--raw-color-on-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 205,
+          "line": 207,
           "contextPath": ":root",
           "theme": "light",
           "value": "24% 0.03 250"
@@ -4862,7 +4906,7 @@
         {
           "name": "--raw-color-on-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 301,
+          "line": 303,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "92% 0.01 250"
@@ -4870,7 +4914,7 @@
         {
           "name": "--raw-color-on-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 208,
+          "line": 210,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "24% 0.03 250"
@@ -4878,7 +4922,7 @@
         {
           "name": "--raw-color-on-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 308,
+          "line": 310,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "92% 0.01 250"
@@ -4892,7 +4936,7 @@
         {
           "name": "--raw-color-on-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 206,
+          "line": 208,
           "contextPath": ":root",
           "theme": "light",
           "value": "22% 0.03 150"
@@ -4900,7 +4944,7 @@
         {
           "name": "--raw-color-on-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 302,
+          "line": 304,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "95% 0.02 150"
@@ -4908,7 +4952,7 @@
         {
           "name": "--raw-color-on-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 209,
+          "line": 211,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "22% 0.03 150"
@@ -4916,7 +4960,7 @@
         {
           "name": "--raw-color-on-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 309,
+          "line": 311,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "95% 0.02 150"
@@ -4930,7 +4974,7 @@
         {
           "name": "--raw-color-on-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 207,
+          "line": 209,
           "contextPath": ":root",
           "theme": "light",
           "value": "26% 0.02 255"
@@ -4938,7 +4982,7 @@
         {
           "name": "--raw-color-on-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 303,
+          "line": 305,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "85% 0.01 255"
@@ -4946,7 +4990,7 @@
         {
           "name": "--raw-color-on-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 210,
+          "line": 212,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "26% 0.02 255"
@@ -4954,7 +4998,7 @@
         {
           "name": "--raw-color-on-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 310,
+          "line": 312,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "85% 0.01 255"
@@ -4968,7 +5012,7 @@
         {
           "name": "--raw-color-on-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 208,
+          "line": 210,
           "contextPath": ":root",
           "theme": "light",
           "value": "99% 0.002 150"
@@ -4976,7 +5020,7 @@
         {
           "name": "--raw-color-on-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 304,
+          "line": 306,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 150"
@@ -4984,7 +5028,7 @@
         {
           "name": "--raw-color-on-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 211,
+          "line": 213,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "99% 0.002 150"
@@ -4992,7 +5036,7 @@
         {
           "name": "--raw-color-on-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 311,
+          "line": 313,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 150"
@@ -5006,7 +5050,7 @@
         {
           "name": "--raw-color-on-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 209,
+          "line": 211,
           "contextPath": ":root",
           "theme": "light",
           "value": "20% 0.02 70"
@@ -5014,7 +5058,7 @@
         {
           "name": "--raw-color-on-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 305,
+          "line": 307,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 70"
@@ -5022,7 +5066,7 @@
         {
           "name": "--raw-color-on-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 212,
+          "line": 214,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "20% 0.02 70"
@@ -5030,7 +5074,7 @@
         {
           "name": "--raw-color-on-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 312,
+          "line": 314,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "14% 0.02 70"
@@ -5044,7 +5088,7 @@
         {
           "name": "--raw-color-overlay",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 210,
+          "line": 212,
           "contextPath": ":root",
           "theme": "light",
           "value": "20% 0.01 255"
@@ -5052,7 +5096,7 @@
         {
           "name": "--raw-color-overlay",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 306,
+          "line": 308,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "10% 0.01 255"
@@ -5060,7 +5104,7 @@
         {
           "name": "--raw-color-overlay",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 213,
+          "line": 215,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "20% 0.01 255"
@@ -5068,7 +5112,7 @@
         {
           "name": "--raw-color-overlay",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 313,
+          "line": 315,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "10% 0.01 255"
@@ -5082,7 +5126,7 @@
         {
           "name": "--raw-color-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 211,
+          "line": 213,
           "contextPath": ":root",
           "theme": "light",
           "value": "62% 0.15 250"
@@ -5090,7 +5134,7 @@
         {
           "name": "--raw-color-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 307,
+          "line": 309,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "78% 0.12 250"
@@ -5098,7 +5142,7 @@
         {
           "name": "--raw-color-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 214,
+          "line": 216,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "62% 0.15 250"
@@ -5106,7 +5150,7 @@
         {
           "name": "--raw-color-primary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 314,
+          "line": 316,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "78% 0.12 250"
@@ -5120,7 +5164,7 @@
         {
           "name": "--raw-color-primary-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 212,
+          "line": 214,
           "contextPath": ":root",
           "theme": "light",
           "value": "56% 0.15 250"
@@ -5128,7 +5172,7 @@
         {
           "name": "--raw-color-primary-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 308,
+          "line": 310,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "82% 0.12 250"
@@ -5136,7 +5180,7 @@
         {
           "name": "--raw-color-primary-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 215,
+          "line": 217,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "56% 0.15 250"
@@ -5144,7 +5188,7 @@
         {
           "name": "--raw-color-primary-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 315,
+          "line": 317,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "82% 0.12 250"
@@ -5158,7 +5202,7 @@
         {
           "name": "--raw-color-scrim",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 213,
+          "line": 215,
           "contextPath": ":root",
           "theme": "light",
           "value": "20% 0.01 255"
@@ -5166,7 +5210,7 @@
         {
           "name": "--raw-color-scrim",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 309,
+          "line": 311,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "10% 0.01 255"
@@ -5174,7 +5218,7 @@
         {
           "name": "--raw-color-scrim",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 216,
+          "line": 218,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "20% 0.01 255"
@@ -5182,7 +5226,7 @@
         {
           "name": "--raw-color-scrim",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 316,
+          "line": 318,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "10% 0.01 255"
@@ -5196,7 +5240,7 @@
         {
           "name": "--raw-color-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 214,
+          "line": 216,
           "contextPath": ":root",
           "theme": "light",
           "value": "92% 0.04 250"
@@ -5204,7 +5248,7 @@
         {
           "name": "--raw-color-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 310,
+          "line": 312,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "32% 0.04 250"
@@ -5212,7 +5256,7 @@
         {
           "name": "--raw-color-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 217,
+          "line": 219,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "92% 0.04 250"
@@ -5220,7 +5264,7 @@
         {
           "name": "--raw-color-secondary",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 317,
+          "line": 319,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "32% 0.04 250"
@@ -5234,7 +5278,7 @@
         {
           "name": "--raw-color-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 215,
+          "line": 217,
           "contextPath": ":root",
           "theme": "light",
           "value": "90% 0.06 150"
@@ -5242,7 +5286,7 @@
         {
           "name": "--raw-color-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 311,
+          "line": 313,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "45% 0.09 150"
@@ -5250,7 +5294,7 @@
         {
           "name": "--raw-color-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 218,
+          "line": 220,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "90% 0.06 150"
@@ -5258,7 +5302,7 @@
         {
           "name": "--raw-color-selected",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 318,
+          "line": 320,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "45% 0.09 150"
@@ -5272,7 +5316,7 @@
         {
           "name": "--raw-color-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 216,
+          "line": 218,
           "contextPath": ":root",
           "theme": "light",
           "value": "97% 0.01 255"
@@ -5280,7 +5324,7 @@
         {
           "name": "--raw-color-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 312,
+          "line": 314,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "15% 0.02 255"
@@ -5288,7 +5332,7 @@
         {
           "name": "--raw-color-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 219,
+          "line": 221,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "97% 0.01 255"
@@ -5296,7 +5340,7 @@
         {
           "name": "--raw-color-sidebar",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 319,
+          "line": 321,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "15% 0.02 255"
@@ -5310,7 +5354,7 @@
         {
           "name": "--raw-color-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 217,
+          "line": 219,
           "contextPath": ":root",
           "theme": "light",
           "value": "62% 0.14 150"
@@ -5318,7 +5362,7 @@
         {
           "name": "--raw-color-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 313,
+          "line": 315,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "75% 0.1 150"
@@ -5326,7 +5370,7 @@
         {
           "name": "--raw-color-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 220,
+          "line": 222,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "62% 0.14 150"
@@ -5334,7 +5378,7 @@
         {
           "name": "--raw-color-success",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 320,
+          "line": 322,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "75% 0.1 150"
@@ -5348,7 +5392,7 @@
         {
           "name": "--raw-color-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 218,
+          "line": 220,
           "contextPath": ":root",
           "theme": "light",
           "value": "98% 0.008 255"
@@ -5356,7 +5400,7 @@
         {
           "name": "--raw-color-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 314,
+          "line": 316,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "22% 0.02 255"
@@ -5364,7 +5408,7 @@
         {
           "name": "--raw-color-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 221,
+          "line": 223,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "98% 0.008 255"
@@ -5372,7 +5416,7 @@
         {
           "name": "--raw-color-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 321,
+          "line": 323,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "22% 0.02 255"
@@ -5386,7 +5430,7 @@
         {
           "name": "--raw-color-surface-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 219,
+          "line": 221,
           "contextPath": ":root",
           "theme": "light",
           "value": "96.5% 0.008 255"
@@ -5394,7 +5438,7 @@
         {
           "name": "--raw-color-surface-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 315,
+          "line": 317,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "26% 0.02 255"
@@ -5402,7 +5446,7 @@
         {
           "name": "--raw-color-surface-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 222,
+          "line": 224,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "96.5% 0.008 255"
@@ -5410,7 +5454,7 @@
         {
           "name": "--raw-color-surface-hover",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 322,
+          "line": 324,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "26% 0.02 255"
@@ -5424,7 +5468,7 @@
         {
           "name": "--raw-color-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 220,
+          "line": 222,
           "contextPath": ":root",
           "theme": "light",
           "value": "21% 0.02 255"
@@ -5432,7 +5476,7 @@
         {
           "name": "--raw-color-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 316,
+          "line": 318,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "96% 0.01 255"
@@ -5440,7 +5484,7 @@
         {
           "name": "--raw-color-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 223,
+          "line": 225,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "21% 0.02 255"
@@ -5448,7 +5492,7 @@
         {
           "name": "--raw-color-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 323,
+          "line": 325,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "96% 0.01 255"
@@ -5462,7 +5506,7 @@
         {
           "name": "--raw-color-text-muted",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 221,
+          "line": 223,
           "contextPath": ":root",
           "theme": "light",
           "value": "46% 0.02 255"
@@ -5470,7 +5514,7 @@
         {
           "name": "--raw-color-text-muted",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 317,
+          "line": 319,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.01 255"
@@ -5478,7 +5522,7 @@
         {
           "name": "--raw-color-text-muted",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 224,
+          "line": 226,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "46% 0.02 255"
@@ -5486,7 +5530,7 @@
         {
           "name": "--raw-color-text-muted",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 324,
+          "line": 326,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "72% 0.01 255"
@@ -5500,7 +5544,7 @@
         {
           "name": "--raw-color-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 222,
+          "line": 224,
           "contextPath": ":root",
           "theme": "light",
           "value": "75% 0.16 70"
@@ -5508,7 +5552,7 @@
         {
           "name": "--raw-color-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 318,
+          "line": 320,
           "contextPath": ":root[data-theme=\"dark\"]",
           "theme": "dark",
           "value": "80% 0.12 70"
@@ -5516,7 +5560,7 @@
         {
           "name": "--raw-color-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 225,
+          "line": 227,
           "contextPath": ".ds-lab[data-ds-theme=\"light\"]",
           "theme": "light",
           "value": "75% 0.16 70"
@@ -5524,7 +5568,7 @@
         {
           "name": "--raw-color-warning",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 325,
+          "line": 327,
           "contextPath": ".ds-lab[data-ds-theme=\"dark\"]",
           "theme": "dark",
           "value": "80% 0.12 70"
@@ -5868,7 +5912,7 @@
         {
           "name": "--toast-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 171,
+          "line": 173,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-border)"
@@ -5876,7 +5920,7 @@
         {
           "name": "--toast-border",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 169,
+          "line": 171,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-border)"
@@ -5890,7 +5934,7 @@
         {
           "name": "--toast-gap",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 172,
+          "line": 174,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-3)"
@@ -5898,7 +5942,7 @@
         {
           "name": "--toast-gap",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 170,
+          "line": 172,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-3)"
@@ -5912,7 +5956,7 @@
         {
           "name": "--toast-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 173,
+          "line": 175,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-4)"
@@ -5920,7 +5964,7 @@
         {
           "name": "--toast-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 171,
+          "line": 173,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-4)"
@@ -5934,7 +5978,7 @@
         {
           "name": "--toast-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 174,
+          "line": 176,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-3)"
@@ -5942,7 +5986,7 @@
         {
           "name": "--toast-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 172,
+          "line": 174,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-3)"
@@ -5956,7 +6000,7 @@
         {
           "name": "--toast-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 175,
+          "line": 177,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--radius-md)"
@@ -5964,7 +6008,7 @@
         {
           "name": "--toast-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 173,
+          "line": 175,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--radius-md)"
@@ -5978,7 +6022,7 @@
         {
           "name": "--toast-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 176,
+          "line": 178,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-surface)"
@@ -5986,7 +6030,7 @@
         {
           "name": "--toast-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 174,
+          "line": 176,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-surface)"
@@ -6000,7 +6044,7 @@
         {
           "name": "--toast-width",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 177,
+          "line": 179,
           "contextPath": ":root",
           "theme": "light",
           "value": "min(420px, calc(100vw - (var(--spacing-4) * 2)))"
@@ -6008,7 +6052,7 @@
         {
           "name": "--toast-width",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 175,
+          "line": 177,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "min(420px, calc(100vw - (var(--spacing-4) * 2)))"
@@ -6022,7 +6066,7 @@
         {
           "name": "--tooltip-max-width",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 162,
+          "line": 164,
           "contextPath": ":root",
           "theme": "light",
           "value": "min(320px, 80vw)"
@@ -6030,7 +6074,7 @@
         {
           "name": "--tooltip-max-width",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 160,
+          "line": 162,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "min(320px, 80vw)"
@@ -6044,7 +6088,7 @@
         {
           "name": "--tooltip-offset",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 163,
+          "line": 165,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-2)"
@@ -6052,7 +6096,7 @@
         {
           "name": "--tooltip-offset",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 161,
+          "line": 163,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-2)"
@@ -6066,7 +6110,7 @@
         {
           "name": "--tooltip-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 164,
+          "line": 166,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-3)"
@@ -6074,7 +6118,7 @@
         {
           "name": "--tooltip-padding-x",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 162,
+          "line": 164,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-3)"
@@ -6088,7 +6132,7 @@
         {
           "name": "--tooltip-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 165,
+          "line": 167,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--spacing-2)"
@@ -6096,7 +6140,7 @@
         {
           "name": "--tooltip-padding-y",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 163,
+          "line": 165,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--spacing-2)"
@@ -6110,7 +6154,7 @@
         {
           "name": "--tooltip-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 166,
+          "line": 168,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--radius-sm)"
@@ -6118,7 +6162,7 @@
         {
           "name": "--tooltip-radius",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 164,
+          "line": 166,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--radius-sm)"
@@ -6132,7 +6176,7 @@
         {
           "name": "--tooltip-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 167,
+          "line": 169,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-overlay)"
@@ -6140,7 +6184,7 @@
         {
           "name": "--tooltip-surface",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 165,
+          "line": 167,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-overlay)"
@@ -6154,7 +6198,7 @@
         {
           "name": "--tooltip-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system.tokens.css",
-          "line": 168,
+          "line": 170,
           "contextPath": ":root",
           "theme": "light",
           "value": "var(--color-neutral-50)"
@@ -6162,7 +6206,7 @@
         {
           "name": "--tooltip-text",
           "file": "C:/Users/zerodi4/Documents/workspace/vibe-coding/src/styles/design-system-lab.tokens.css",
-          "line": 166,
+          "line": 168,
           "contextPath": ".ds-lab",
           "theme": "shared",
           "value": "var(--color-neutral-50)"

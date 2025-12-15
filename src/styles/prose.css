@@ -5,9 +5,8 @@
 
 .prose {
 	color: oklch(var(--color-text-muted));
-	/* 약관/정책 페이지용 작은 폰트 사이즈 (FOUC 방지) */
-	font-size: 0.875rem;
-	line-height: 1.625;
+	font-size: var(--font-size-prose);
+	line-height: var(--line-height-prose);
 }
 
 .prose :where(p, ul, ol, li) {

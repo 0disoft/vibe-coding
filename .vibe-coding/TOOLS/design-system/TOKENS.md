@@ -265,6 +265,7 @@
 | `--font-size-menu-sm` | `0.8rem` | `` | `0.8rem` | 2 |
 | `--font-size-placeholder` | `0.9rem` | `` | `0.9rem` | 2 |
 | `--font-size-price` | `1.15rem` | `` | `1.15rem` | 2 |
+| `--font-size-prose` | `0.875rem` | `` | `0.875rem` | 2 |
 | `--font-size-sm` | `0.833rem` | `` | `0.833rem` | 2 |
 | `--font-size-stat` | `1.4rem` | `` | `1.4rem` | 2 |
 | `--font-size-tag` | `0.75rem` | `` | `0.75rem` | 2 |
@@ -284,6 +285,7 @@
 | `--line-height-body` | `1.6` | `` | `1.6` | 2 |
 | `--line-height-heading` | `1.3` | `` | `1.3` | 2 |
 | `--line-height-normal` | `1.5` | `` | `1.5` | 2 |
+| `--line-height-prose` | `1.625` | `` | `1.625` | 2 |
 | `--line-height-relaxed` | `1.7` | `` | `1.7` | 2 |
 | `--line-height-tight` | `1.2` | `` | `1.2` | 2 |
 | `--paragraph-spacing` | `1.25em` | `` | `1.25em` | 2 |
