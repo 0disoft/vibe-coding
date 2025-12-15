@@ -690,7 +690,7 @@ async function main() {
 			const scriptDir = dirname(fileURLToPath(import.meta.url));
 			const reportsDir = join(scriptDir, 'reports');
 			await mkdir(reportsDir, { recursive: true });
-			const reportPath = join(reportsDir, 'a11y-ux-report.txt');
+			const reportPath = join(reportsDir, '04-a11y-ux-report.txt');
 			const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 			const header = `A11y/UX Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(40)}\n`;
 			await writeFile(reportPath, header + report, 'utf-8');

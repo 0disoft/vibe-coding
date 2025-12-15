@@ -28,13 +28,13 @@
 
 예시:
 
-- `a11y-ux-report.txt`
-- `file-size-report.txt`
+- `01-security-report.txt`
+- `02-lint-report.txt`
+- `03-route-audit-report.txt`
+- `04-a11y-ux-report.txt`
+- `05-file-size-report.txt`
+- `06-fix-bold-report.txt`
 - `find-word-report.txt`
-- `fix-bold-report.txt`
-- `lint-report.txt`
-- `route-audit-report.txt`
-- `security-report.txt`
 
 ---
 

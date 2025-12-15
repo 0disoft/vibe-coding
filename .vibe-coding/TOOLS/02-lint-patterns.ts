@@ -783,7 +783,7 @@ async function main() {
 			await mkdir(reportsDir, { recursive: true });
 
 			const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-			const reportPath = join(reportsDir, 'lint-report.txt');
+			const reportPath = join(reportsDir, '02-lint-report.txt');
 
 			const header = `Lint Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(40)}\n`;
 			await writeFile(reportPath, header + report, 'utf-8');

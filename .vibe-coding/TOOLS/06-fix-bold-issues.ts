@@ -479,7 +479,7 @@ async function main() {
 			const scriptDir = dirname(fileURLToPath(import.meta.url));
 			const reportsDir = join(scriptDir, 'reports');
 			await mkdir(reportsDir, { recursive: true });
-			const reportPath = join(reportsDir, 'fix-bold-report.txt');
+			const reportPath = join(reportsDir, '06-fix-bold-report.txt');
 			await writeFile(reportPath, report, 'utf-8');
 			console.log(`📝 리포트 저장됨: ${reportPath}`);
 		}

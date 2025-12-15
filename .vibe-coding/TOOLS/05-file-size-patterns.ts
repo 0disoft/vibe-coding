@@ -470,7 +470,7 @@ function main(): void {
       const reportsDir = join(scriptDir, "reports");
       mkdirSync(reportsDir, { recursive: true });
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
-      const reportPath = join(reportsDir, "file-size-report.txt");
+      const reportPath = join(reportsDir, "05-file-size-report.txt");
       const header = `File Size Report - ${timestamp}\nTarget: ${targetPath}\nElapsed: ${elapsedStr}\n${'='.repeat(50)}\n\n`;
       writeFileSync(reportPath, header + output, "utf-8");
       console.log(`📝 리포트 저장됨: ${reportPath}`);

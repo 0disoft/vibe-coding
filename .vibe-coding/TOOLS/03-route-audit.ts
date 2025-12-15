@@ -14,10 +14,10 @@
  *   bun .vibe-coding/TOOLS/03-route-audit.ts --no-report
  */
 
+import type { Dirent } from 'node:fs';
 import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { Dirent } from 'node:fs';
 
 type Severity = 'error' | 'warning' | 'info';
 
@@ -46,7 +46,7 @@ type RouteDef = {
 };
 
 const ROUTES_DIR = join('src', 'routes');
-const REPORT_PREFIX = 'route-audit-report';
+const REPORT_PREFIX = '03-route-audit-report';
 
 const DEFAULT_SCAN_DIRS = ['src', 'e2e'];
 const DEFAULT_IGNORE_PREFIXES = ['/__', '/@', '/_app/'];
@@ -161,7 +161,7 @@ function isRouteGroup(segment: string): boolean {
   return segment.startsWith('(') && segment.endsWith(')');
 }
 
-function parseRouteSegmentToRegex(segment: string): { source: string; isDynamic: boolean; isOptional: boolean } {
+function parseRouteSegmentToRegex(segment: string): { source: string; isDynamic: boolean; isOptional: boolean; } {
   // route group은 URL에 포함되지 않음
   if (isRouteGroup(segment)) return { source: '', isDynamic: false, isOptional: true };
 
@@ -189,7 +189,7 @@ function parseRouteSegmentToRegex(segment: string): { source: string; isDynamic:
   return { source: escaped, isDynamic: false, isOptional: false };
 }
 
-function buildRouteRegex(segments: string[]): { pattern: string; regex: RegExp; isDynamic: boolean } {
+function buildRouteRegex(segments: string[]): { pattern: string; regex: RegExp; isDynamic: boolean; } {
   // segments는 routes/ 아래 상대경로의 디렉토리 세그먼트
   const visibleSegments = segments.filter((s) => !isRouteGroup(s));
   const pattern = `/${visibleSegments.join('/')}`.replace(/\/+$/, '') || '/';
@@ -222,7 +222,7 @@ function buildRouteRegex(segments: string[]): { pattern: string; regex: RegExp; 
   return { pattern, regex: new RegExp(src), isDynamic };
 }
 
-async function collectRoutes(): Promise<{ routes: RouteDef[]; findings: AuditFinding[] }> {
+async function collectRoutes(): Promise<{ routes: RouteDef[]; findings: AuditFinding[]; }> {
   const findings: AuditFinding[] = [];
 
   const st = await stat(ROUTES_DIR).catch(() => null);
@@ -339,7 +339,7 @@ type LinkHit = {
   kind: LinkKind;
 };
 
-const LINK_PATTERNS: Array<{ kind: LinkKind; re: RegExp }> = [
+const LINK_PATTERNS: Array<{ kind: LinkKind; re: RegExp; }> = [
   { kind: 'href', re: /\b(?:href|action)\s*=\s*["'](\/[^"'\s>]+)["']/g },
   { kind: 'href', re: /\b(?:href|action)\s*=\s*["']((?:\.\.\/|\.\/)[^"'\s>]+)["']/g },
   { kind: 'md', re: /\]\((\/[^)\s]+)\)/g },
@@ -361,7 +361,7 @@ type Options = {
   base: string;
 };
 
-function parseArgs(argv: string[]): Options | { help: true } {
+function parseArgs(argv: string[]): Options | { help: true; } {
   if (argv.includes('--help') || argv.includes('-h')) return { help: true };
 
   const takeMany = (name: string): string[] => {
@@ -459,7 +459,7 @@ function buildLineStarts(content: string): number[] {
   return starts;
 }
 
-function indexToLineCol(lineStarts: number[], index: number): { line: number; column: number } {
+function indexToLineCol(lineStarts: number[], index: number): { line: number; column: number; } {
   // upper_bound(lineStarts, index) - 1
   let lo = 0;
   let hi = lineStarts.length;
@@ -529,9 +529,9 @@ function extractLinks(content: string, filePath: string): LinkHit[] {
   const hits: LinkHit[] = [];
   const normalizedContent = filePath.endsWith('.md')
     ? stripMdCodeFences(content)
-        .split('\n')
-        .map(maskMdInlineCode)
-        .join('\n')
+      .split('\n')
+      .map(maskMdInlineCode)
+      .join('\n')
     : content;
   const lineStarts = buildLineStarts(normalizedContent);
 
@@ -861,19 +861,19 @@ async function main() {
   const basePath = process.cwd();
   const reportText = options.jsonOutput
     ? JSON.stringify(
-        {
-          routes: routes.map((r) => ({
-            kind: r.kind,
-            pattern: r.pattern,
-            file: normalizeSlashes(relative(basePath, r.file)),
-            isDynamic: r.isDynamic
-          })),
-          findings: outFindings,
-          elapsed: elapsedStr
-        },
-        null,
-        2
-      )
+      {
+        routes: routes.map((r) => ({
+          kind: r.kind,
+          pattern: r.pattern,
+          file: normalizeSlashes(relative(basePath, r.file)),
+          isDynamic: r.isDynamic
+        })),
+        findings: outFindings,
+        elapsed: elapsedStr
+      },
+      null,
+      2
+    )
     : formatFindings(outFindings, basePath);
 
   console.log(reportText);
