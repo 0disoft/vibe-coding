@@ -7,7 +7,7 @@ import { locales } from '$lib/paraglide/runtime';
 
 // import.meta.url 기반 경로 (CI/모노레포 환경에서 안정적)
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const messagesDir = join(__dirname, '../../../../messages');
+const messagesDir = join(__dirname, '../../../messages');
 
 // Paraglide의 locales를 단일 소스로 사용 (string[]로 캐스팅하여 타입 호환성 확보)
 const SUPPORTED_LOCALES: string[] = [...locales];
