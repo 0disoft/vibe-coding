@@ -4,8 +4,8 @@
  * 디자인 시스템 토큰을 CSS에서 추출해 사람이 보기 좋은 MD/JSON으로 정리합니다.
  *
  * 기본 소스:
- * - src/styles/tokens.css
- * - src/styles/design-system-lab.css
+ * - src/styles/design-system.tokens.css
+ * - src/styles/design-system-lab.tokens.css
  *
  * 사용법:
  *   bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts [옵션]
@@ -69,8 +69,8 @@ interface Manifest {
 }
 
 const DEFAULT_SOURCES = [
-  "src/styles/tokens.css",
-  "src/styles/design-system-lab.css",
+  "src/styles/design-system.tokens.css",
+  "src/styles/design-system-lab.tokens.css",
 ];
 
 function printHelp(): void {
@@ -149,6 +149,7 @@ function classifyToken(name: string, semanticColorsFromUno: string[]): Category 
     name.startsWith("--size-icon-") ||
     name.startsWith("--dialog-") ||
     name.startsWith("--dropdown-") ||
+    name.startsWith("--tooltip-") ||
     name.startsWith("--toast-") ||
     name.startsWith("--shadow-") ||
     name.startsWith("--elevation-") ||
@@ -160,7 +161,15 @@ function classifyToken(name: string, semanticColorsFromUno: string[]): Category 
   )
     return "component";
 
-  if (name.startsWith("--fs-") || name.startsWith("--lh-") || name.startsWith("--font-") || name.startsWith("--text-"))
+  if (
+    name.startsWith("--fs-") ||
+    name.startsWith("--lh-") ||
+    name.startsWith("--font-") ||
+    name.startsWith("--text-") ||
+    name.startsWith("--line-height-") ||
+    name.startsWith("--letter-spacing-") ||
+    name.startsWith("--paragraph-spacing")
+  )
     return "typography";
 
   const maybeLegacy = name.slice(2);
@@ -321,7 +330,7 @@ function toMarkdown(manifest: Manifest): string {
   lines.push("");
   lines.push("## Semantic Colors (UnoCSS)");
   lines.push("");
-  lines.push("`uno.config.ts`의 시맨틱 컬러 목록(= `bg-*`, `text-*` 유틸이 기대하는 변수)입니다.");
+  lines.push("`uno.config.ts`에서 지원하는 시맨틱 컬러 이름들입니다. (예: `bg-*`, `text-*` 유틸에서 사용)");
   lines.push("");
   lines.push(manifest.semanticColorsFromUno.map((c) => `- \`${c}\``).join("\n"));
   lines.push("");

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { HTMLAttributes } from 'svelte/elements';
 
-  import { DsIcon } from '$lib/components/lab/design-system';
+  import { DsIcon } from '$lib/components/design-system';
 
   type Size = 'sm' | 'md' | 'lg';
 

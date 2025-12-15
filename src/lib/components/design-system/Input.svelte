@@ -14,6 +14,7 @@
     size = 'md',
     variant = 'outline',
     invalid = false,
+    value = $bindable(''),
     class: className = '',
     ...rest
   }: Props = $props();
@@ -22,7 +23,9 @@
 
   let bgClass = $derived(variant === 'filled' ? 'bg-muted' : 'bg-background');
   let borderClass = $derived(invalid ? 'border-destructive' : 'border-input');
-  let variantClass = $derived(`ds-focus-ring w-full border ${borderClass} ${bgClass} text-body placeholder:text-muted-foreground/60`);
+  let variantClass = $derived(
+    `ds-focus-ring w-full border ${borderClass} ${bgClass} text-body placeholder:text-muted-foreground/60`
+  );
 
   let style = $derived(
     `padding: var(--input-padding-y) var(--input-padding-x); border-radius: var(--input-radius); min-height: ${minHeight};`
@@ -31,7 +34,9 @@
 
 <input
   {...rest}
+  bind:value
   class={`${variantClass} ${className}`.trim()}
   style={style}
   aria-invalid={invalid ? 'true' : undefined}
 />
+

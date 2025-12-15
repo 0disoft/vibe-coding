@@ -1,7 +1,7 @@
 <script lang="ts">
   // 전역 CSS 및 UnoCSS 유틸리티
 
-  import { onNavigate } from '$app/navigation';
+  import { afterNavigate, onNavigate } from '$app/navigation';
   import { onMount } from 'svelte';
   // Decorative Logo Fonts
   import '@fontsource/pacifico';
@@ -39,6 +39,11 @@
   });
 
   let isOfflinePage = $derived(page.url.pathname === '/offline' || page.url.pathname.endsWith('/offline'));
+
+  // SPA 페이지 이동 시 스크린 리더/키보드 사용자가 변경을 인지할 수 있도록 main에 포커스 이동
+  afterNavigate(() => {
+    document.getElementById('main-content')?.focus();
+  });
 </script>
 
 <svelte:head>
@@ -53,8 +58,18 @@
 -->
 <div class="flex min-h-screen flex-col bg-background font-sans antialiased text-foreground">
   {#if !isOfflinePage}
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-foreground focus:shadow-lg focus:ring-2 focus:ring-ring"
+    >
+      본문으로 바로가기
+    </a>
     <Header siteName={site.name} />
-    <main class="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10">
+    <main
+      id="main-content"
+      tabindex="-1"
+      class="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10"
+    >
       {@render children()}
     </main>
     <Footer siteName={site.name} />

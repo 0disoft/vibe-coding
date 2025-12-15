@@ -9,7 +9,7 @@ import {
 } from 'unocss';
 
 // 시맨틱 색상 이름들
-// semanticColors에 이름을 추가/삭제할 때는 src/app.css의 대응 CSS 변수(--{color})도 함께 유지보수할 것.
+// semanticColors에 이름을 추가/삭제할 때는 아래 semanticColorVarMap도 함께 유지보수할 것.
 const semanticColors = [
 	'background',
 	'foreground',
@@ -43,6 +43,41 @@ const semanticColors = [
 	'overlay'
 ] as const;
 
+// UnoCSS 유틸(bg-*, text-* 등)은 이 맵을 통해 canonical 디자인 시스템 토큰(--color-*)을 참조합니다.
+// 목적: "클래스 이름은 유지"하면서 "내부 참조 변수는 --color-*로 통일".
+const semanticColorVarMap: Record<(typeof semanticColors)[number], string> = {
+	background: '--color-background',
+	foreground: '--color-text',
+	card: '--color-surface',
+	'card-foreground': '--color-on-surface',
+	popover: '--color-surface',
+	'popover-foreground': '--color-on-surface',
+	primary: '--color-primary',
+	'primary-foreground': '--color-on-primary',
+	secondary: '--color-secondary',
+	'secondary-foreground': '--color-on-secondary',
+	muted: '--color-surface',
+	'muted-foreground': '--color-text-muted',
+	accent: '--color-accent',
+	'accent-foreground': '--color-on-accent',
+	link: '--color-link',
+	'link-foreground': '--color-on-link',
+	destructive: '--color-error',
+	'destructive-foreground': '--color-on-error',
+	success: '--color-success',
+	'success-foreground': '--color-on-success',
+	warning: '--color-warning',
+	'warning-foreground': '--color-on-warning',
+	selected: '--color-selected',
+	'selected-foreground': '--color-on-selected',
+	border: '--color-border',
+	input: '--color-input',
+	ring: '--focus-ring-color',
+	sidebar: '--color-sidebar',
+	'sidebar-foreground': '--color-on-sidebar',
+	overlay: '--color-overlay'
+};
+
 // 커스텀 룰 생성: bg-primary, text-primary 등
 // preset-wind4의 기본 색상 시스템을 우회하여 직접 OKLCH CSS 변수 사용
 const colorRules: Rule<object>[] = [];
@@ -58,7 +93,8 @@ const toAlpha = (opacity?: string) => {
 for (const color of semanticColors) {
 	const gradientColor = (opacity?: string) => {
 		const alpha = toAlpha(opacity);
-		return alpha ? `oklch(var(--${color}) / ${alpha})` : `oklch(var(--${color}))`;
+		const cssVar = semanticColorVarMap[color];
+		return alpha ? `oklch(var(${cssVar}) / ${alpha})` : `oklch(var(${cssVar}))`;
 	};
 
 	// bg-{color}, bg-{color}/50 형태 지원
@@ -146,56 +182,56 @@ const typographyRules: Rule<object>[] = [
 	[
 		'text-body',
 		{
-			'font-size': 'var(--fs-body)',
-			'line-height': 'var(--lh-body)'
+			'font-size': 'var(--font-size-body)',
+			'line-height': 'var(--line-height-body)'
 		}
 	],
 	[
 		'text-body-secondary',
 		{
-			'font-size': 'var(--fs-body-secondary)',
-			'line-height': 'var(--lh-body)'
+			'font-size': 'var(--font-size-body-secondary)',
+			'line-height': 'var(--line-height-body)'
 		}
 	],
 	[
 		'text-comment',
 		{
-			'font-size': 'var(--fs-comment)',
-			'line-height': 'var(--lh-body)'
+			'font-size': 'var(--font-size-comment)',
+			'line-height': 'var(--line-height-body)'
 		}
 	],
 	[
 		'text-code',
 		{
-			'font-size': 'var(--fs-code)',
+			'font-size': 'var(--font-size-code)',
 			'line-height': '1.5'
 		}
 	],
 	[
 		'text-h1',
 		{
-			'font-size': 'var(--fs-h1)',
-			'line-height': 'var(--lh-heading)'
+			'font-size': 'var(--font-size-h1)',
+			'line-height': 'var(--line-height-heading)'
 		}
 	],
 	[
 		'text-h2',
 		{
-			'font-size': 'var(--fs-h2)',
-			'line-height': 'var(--lh-heading)'
+			'font-size': 'var(--font-size-h2)',
+			'line-height': 'var(--line-height-heading)'
 		}
 	],
 	[
 		'text-h3',
 		{
-			'font-size': 'var(--fs-h3)',
-			'line-height': 'var(--lh-heading)'
+			'font-size': 'var(--font-size-h3)',
+			'line-height': 'var(--line-height-heading)'
 		}
 	],
 	[
 		'text-caption',
 		{
-			'font-size': 'var(--fs-caption)',
+			'font-size': 'var(--font-size-caption)',
 			'line-height': '1.4'
 		}
 	],
@@ -203,21 +239,21 @@ const typographyRules: Rule<object>[] = [
 	[
 		'text-menu-lg',
 		{
-			'font-size': 'var(--fs-menu-lg)',
+			'font-size': 'var(--font-size-menu-lg)',
 			'line-height': '1.4'
 		}
 	],
 	[
 		'text-menu',
 		{
-			'font-size': 'var(--fs-menu)',
+			'font-size': 'var(--font-size-menu)',
 			'line-height': '1.4'
 		}
 	],
 	[
 		'text-menu-sm',
 		{
-			'font-size': 'var(--fs-menu-sm)',
+			'font-size': 'var(--font-size-menu-sm)',
 			'line-height': '1.4'
 		}
 	],
@@ -225,21 +261,21 @@ const typographyRules: Rule<object>[] = [
 	[
 		'text-logo',
 		{
-			'font-size': 'var(--fs-logo-base)',
+			'font-size': 'var(--font-size-logo)',
 			'line-height': '1.2'
 		}
 	],
 	[
 		'text-brand',
 		{
-			'font-size': 'var(--fs-brand-base)',
+			'font-size': 'var(--font-size-brand)',
 			'line-height': '1.3'
 		}
 	],
 	[
 		'text-xs-resp',
 		{
-			'font-size': 'var(--fs-xs)',
+			'font-size': 'var(--font-size-xs-resp)',
 			'line-height': '1.4'
 		}
 	],
@@ -247,21 +283,21 @@ const typographyRules: Rule<object>[] = [
 	[
 		'text-btn',
 		{
-			'font-size': 'var(--fs-btn-base)',
+			'font-size': 'var(--font-size-btn)',
 			'line-height': '1.4'
 		}
 	],
 	[
 		'text-btn-sm',
 		{
-			'font-size': 'var(--fs-btn-sm-base)',
+			'font-size': 'var(--font-size-btn-sm)',
 			'line-height': '1.4'
 		}
 	],
 	[
 		'text-btn-lg',
 		{
-			'font-size': 'var(--fs-btn-lg-base)',
+			'font-size': 'var(--font-size-btn-lg)',
 			'line-height': '1.4'
 		}
 	],
@@ -269,21 +305,21 @@ const typographyRules: Rule<object>[] = [
 	[
 		'text-label',
 		{
-			'font-size': 'var(--fs-label-base)',
+			'font-size': 'var(--font-size-label)',
 			'line-height': '1.4'
 		}
 	],
 	[
 		'text-helper',
 		{
-			'font-size': 'var(--fs-helper-base)',
+			'font-size': 'var(--font-size-helper)',
 			'line-height': '1.4'
 		}
 	],
 	[
 		'text-placeholder',
 		{
-			'font-size': 'var(--fs-placeholder-base)',
+			'font-size': 'var(--font-size-placeholder)',
 			'line-height': '1.4'
 		}
 	],
@@ -291,14 +327,14 @@ const typographyRules: Rule<object>[] = [
 	[
 		'text-badge',
 		{
-			'font-size': 'var(--fs-badge-base)',
+			'font-size': 'var(--font-size-badge)',
 			'line-height': '1.2'
 		}
 	],
 	[
 		'text-tag',
 		{
-			'font-size': 'var(--fs-tag-base)',
+			'font-size': 'var(--font-size-tag)',
 			'line-height': '1.3'
 		}
 	],
@@ -306,21 +342,21 @@ const typographyRules: Rule<object>[] = [
 	[
 		'text-tooltip',
 		{
-			'font-size': 'var(--fs-tooltip-base)',
+			'font-size': 'var(--font-size-tooltip)',
 			'line-height': '1.2'
 		}
 	],
 	[
 		'text-toast',
 		{
-			'font-size': 'var(--fs-toast-base)',
+			'font-size': 'var(--font-size-toast)',
 			'line-height': '1.4'
 		}
 	],
 	[
 		'text-breadcrumb',
 		{
-			'font-size': 'var(--fs-breadcrumb-base)',
+			'font-size': 'var(--font-size-breadcrumb)',
 			'line-height': '1.4'
 		}
 	],
@@ -328,28 +364,28 @@ const typographyRules: Rule<object>[] = [
 	[
 		'text-inline-code',
 		{
-			'font-size': 'var(--fs-inline-code-base)',
+			'font-size': 'var(--font-size-inline-code)',
 			'line-height': '1.5'
 		}
 	],
 	[
 		'text-stat',
 		{
-			'font-size': 'var(--fs-stat-base)',
+			'font-size': 'var(--font-size-stat)',
 			'line-height': '1.2'
 		}
 	],
 	[
 		'text-price',
 		{
-			'font-size': 'var(--fs-price-base)',
+			'font-size': 'var(--font-size-price)',
 			'line-height': '1.3'
 		}
 	],
 	[
 		'text-timestamp',
 		{
-			'font-size': 'var(--fs-timestamp-base)',
+			'font-size': 'var(--font-size-timestamp)',
 			'line-height': '1.4'
 		}
 	]
@@ -376,8 +412,8 @@ export default defineConfig({
 	],
 	theme: {
 		fontFamily: {
-			sans: 'var(--font-sans)',
-			mono: 'var(--font-mono)'
+			sans: 'var(--font-family-base)',
+			mono: 'var(--font-family-mono)'
 		}
 	},
 	// 커스텀 룰로 시맨틱 색상 유틸리티 직접 정의

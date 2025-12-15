@@ -4,6 +4,8 @@
   import { getLocale, locales, localizeUrl } from '$lib/paraglide/runtime';
   import { tick } from 'svelte';
 
+  import { DsIconButton } from '$lib/components/design-system';
+
   // 언어 코드 → 사람이 읽기 쉬운 이름 맵
   const languageNames: Record<string, string> = {
     en: 'English', // 영어
@@ -124,20 +126,18 @@
 <svelte:window onclick={handleOutsideClick} onkeydown={handleKeyDown} />
 
 <div class="relative">
-  <button
-    type="button"
+  <DsIconButton
     id="language-menu-button"
-    bind:this={buttonRef}
+    bind:ref={buttonRef}
     onclick={toggleLanguageModal}
-    class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-    aria-label={m.language_picker_label()}
+    label={m.language_picker_label()}
     aria-haspopup="dialog"
     aria-expanded={showLanguageModal}
     aria-controls="language-menu"
     data-testid="header-language-picker"
   >
     <span class="i-lucide-languages h-4 w-4"></span>
-  </button>
+  </DsIconButton>
 
   <!-- 언어 선택 모달 -->
   {#if showLanguageModal}

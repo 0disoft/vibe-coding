@@ -1,77 +1,169 @@
 <script lang="ts">
-  import TypographyPageBasics from '$lib/components/typography/TypographyPageBasics.svelte';
-  import TypographyPageInline from '$lib/components/typography/TypographyPageInline.svelte';
-  import TypographyPageUi from '$lib/components/typography/TypographyPageUi.svelte';
-  import { onMount } from 'svelte';
+  import { dev } from '$app/environment';
+  import { goto } from '$app/navigation';
 
-  // CSS 변수에서 폰트 크기 읽기 (Single Source of Truth)
-  let fontSizes = $state<Record<string, string>>({});
+  import { DsButton, DsCard, DsDropdown, DsField, DsInput, DsTooltip } from '$lib/components/design-system';
 
-  // CSS 변수명 → 표시용 라벨 매핑
-  const cssVarMap: Record<string, string> = {
-    // 본문용
-    'text-body': '--fs-body-base',
-    'text-body-secondary': '--fs-body-secondary-base',
-    'text-comment': '--fs-comment-base',
-    'text-code': '--fs-code-base',
-    // 제목용
-    'text-h1': '--fs-h1-base',
-    'text-h2': '--fs-h2-base',
-    'text-h3': '--fs-h3-base',
-    'text-caption': '--fs-caption-base',
-    // 메뉴/UI용
-    'text-menu-lg': '--fs-menu-lg',
-    'text-menu': '--fs-menu',
-    'text-menu-sm': '--fs-menu-sm',
-    'text-xs-resp': '--fs-xs-base',
-    // 로고/브랜드용
-    'text-logo': '--fs-logo-base',
-    'text-brand': '--fs-brand-base',
-    // 버튼용
-    'text-btn': '--fs-btn-base',
-    'text-btn-sm': '--fs-btn-sm-base',
-    'text-btn-lg': '--fs-btn-lg-base',
-    // 라벨/폼 요소용
-    'text-label': '--fs-label-base',
-    'text-helper': '--fs-helper-base',
-    'text-placeholder': '--fs-placeholder-base',
-    // 배지/태그용
-    'text-badge': '--fs-badge-base',
-    'text-tag': '--fs-tag-base',
-    // 기타 UI
-    'text-tooltip': '--fs-tooltip-base',
-    'text-toast': '--fs-toast-base',
-    'text-breadcrumb': '--fs-breadcrumb-base',
-    // 인라인 코드/숫자/타임스탬프
-    'text-inline-code': '--fs-inline-code-base',
-    'text-stat': '--fs-stat-base',
-    'text-price': '--fs-price-base',
-    'text-timestamp': '--fs-timestamp-base',
-    // UnoCSS 기본
-    'text-xs': '--text-xs-fontSize',
-  };
+  import { theme } from '$lib/stores';
 
-  onMount(() => {
-    const styles = getComputedStyle(document.documentElement);
-    const result: Record<string, string> = {};
+  // ─────────────────────────────────────────────────────────────
+  // Design System Pilot (DEV only)
+  // ─────────────────────────────────────────────────────────────
 
-    for (const [key, cssVar] of Object.entries(cssVarMap)) {
-      result[key] = styles.getPropertyValue(cssVar).trim() || '?';
-    }
-    fontSizes = result;
-  });
+  let pilotEmail = $state('');
+  let pilotEmailInvalid = $derived(pilotEmail.length > 0 && !pilotEmail.includes('@'));
 
-  // 폰트 크기 가져오기 헬퍼
-  function fs(key: string): string {
-    return fontSizes[key] || '...';
-  }
+  let lastDropdown = $state<string | null>(null);
 </script>
 
 <div class="container py-12">
-  <h1 class="mb-8 text-center text-3xl font-bold">타이포그래피 유틸리티 테스트</h1>
+  <section class="space-y-8">
+    <div class="space-y-4">
+      <p class="text-label text-muted-foreground">Design System 적용 진행 중</p>
+      <h1 class="text-h1 font-semibold">
+        토큰 기반으로 UI를 통일하고, 빠르게 확장 가능한 템플릿을 만든다
+      </h1>
+      <p class="text-body-secondary text-muted-foreground max-w-2xl">
+        색상/타이포/간격을 토큰으로 고정하고, 컴포넌트 패턴을 문서화+검증(lab)한 뒤 실제 화면에 점진 적용합니다.
+      </p>
+    </div>
 
-  <TypographyPageBasics fs={fs} />
-  <TypographyPageUi fs={fs} />
-  <TypographyPageInline fs={fs} />
+    <div class="flex flex-wrap items-center gap-2">
+      {#if dev}
+        <DsButton intent="primary" onclick={() => goto('/lab/design-system')}>디자인 시스템 lab 보기</DsButton>
+      {/if}
+      <DsButton intent="secondary" variant="outline" onclick={() => goto('/terms')}>문서/약관 보기</DsButton>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <DsCard class="space-y-2">
+        <div class="text-label font-medium">Tokens</div>
+        <p class="text-body-secondary text-muted-foreground">
+          `--color-*`, `--font-size-*` 같은 시맨틱 토큰을 SSOT(DTCG)에서 생성합니다.
+        </p>
+      </DsCard>
+      <DsCard class="space-y-2">
+        <div class="text-label font-medium">Patterns</div>
+        <p class="text-body-secondary text-muted-foreground">
+          Field/Dialog/Dropdown/Tooltip 같은 패턴을 스펙으로 고정하고 접근성 계약을 지킵니다.
+        </p>
+      </DsCard>
+      <DsCard class="space-y-2">
+        <div class="text-label font-medium">CI Guard</div>
+        <p class="text-body-secondary text-muted-foreground">
+          토큰/매니페스트/문서 드리프트를 CI에서 조기에 잡습니다.
+        </p>
+      </DsCard>
+    </div>
+
+    <DsCard class="space-y-3">
+      <h2 class="text-h3 font-semibold">간단한 폼 예시</h2>
+      <p class="text-body-secondary text-muted-foreground">
+        실제 템플릿 UI에서 DS 컴포넌트를 사용하는 최소 예시입니다.
+      </p>
+
+      <form class="space-y-3" onsubmit={(e) => e.preventDefault()}>
+        <DsField id="email" label="Email" helpText="예시 입력입니다." required invalid={pilotEmailInvalid} errorText="이메일 형식이 아닙니다.">
+          {#snippet children(p)}
+            <DsInput
+              id={p.id}
+              type="email"
+              placeholder="you@example.com"
+              required={p.required}
+              aria-describedby={p.describedBy}
+              invalid={p.invalid}
+              bind:value={pilotEmail}
+            />
+          {/snippet}
+        </DsField>
+
+        <div class="flex flex-wrap gap-2">
+          <DsButton intent="primary" type="submit">Submit</DsButton>
+          <DsButton intent="secondary" variant="outline" type="button" onclick={() => (pilotEmail = '')}>Reset</DsButton>
+        </div>
+      </form>
+    </DsCard>
+  </section>
+
+  {#if dev}
+    <section class="mt-16 space-y-4">
+      <h2 class="text-2xl font-bold">Design System Pilot (DEV only)</h2>
+      <p class="text-body-secondary text-muted-foreground">
+        실제 템플릿 페이지 안에서 토큰/컴포넌트를 점진 적용하기 위한 파일럿 섹션입니다. (프로덕션에는 노출되지 않음)
+      </p>
+
+      <div class="ds-lab" data-ds-theme={theme.current}>
+        <DsCard class="space-y-4" motion>
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div class="text-label font-medium">Theme</div>
+              <div class="text-helper text-muted-foreground font-mono">data-ds-theme="{theme.current}"</div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <DsTooltip content="hover 또는 키보드 포커스에서 열리고, ESC로 닫힙니다.">
+                {#snippet children(p)}
+                  <button
+                    type="button"
+                    class="ds-button ds-focus-ring"
+                    data-ds-intent="secondary"
+                    data-ds-variant="outline"
+                    aria-describedby={p.describedBy}
+                    onpointerover={p.onpointerover}
+                    onpointerout={p.onpointerout}
+                    onfocus={p.onfocus}
+                    onblur={p.onblur}
+                    onkeydown={p.onkeydown}
+                  >
+                    Tooltip
+                  </button>
+                {/snippet}
+              </DsTooltip>
+
+              <DsDropdown
+                label="Menu"
+                items={[
+                  { id: 'profile', label: 'Profile' },
+                  { id: 'settings', label: 'Settings' },
+                  { id: 'logout', label: 'Logout' }
+                ]}
+                onSelect={(id) => (lastDropdown = id)}
+              />
+            </div>
+          </div>
+
+          {#if lastDropdown}
+            <div class="text-helper text-muted-foreground font-mono">Selected: {lastDropdown}</div>
+          {/if}
+
+          <DsField
+            id="pilot-email"
+            label="Email"
+            helpText="required + error + describedby 연결을 확인합니다."
+            errorText="이메일 형식이 아닙니다."
+            required
+            invalid={pilotEmailInvalid}
+          >
+            {#snippet children(p)}
+              <DsInput
+                id={p.id}
+                type="email"
+                placeholder="you@example.com"
+                required={p.required}
+                aria-describedby={p.describedBy}
+                invalid={p.invalid}
+                bind:value={pilotEmail}
+              />
+            {/snippet}
+          </DsField>
+
+          <div class="flex flex-wrap gap-2">
+            <DsButton intent="primary">Primary</DsButton>
+            <DsButton intent="secondary" variant="outline">Secondary</DsButton>
+            <DsButton intent="danger" variant="ghost">Danger</DsButton>
+          </div>
+        </DsCard>
+      </div>
+    </section>
+  {/if}
 </div>
-

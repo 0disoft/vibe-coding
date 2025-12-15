@@ -15,7 +15,7 @@ export default defineConfig({
 		)}`,
 		port: PORT,
 		reuseExistingServer: !process.env.CI,
-		timeout: 120_000
+		timeout: 300_000
 	},
 	testDir: 'e2e',
 	fullyParallel: true,

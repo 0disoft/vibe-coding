@@ -1,0 +1,368 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Design System (Global)
+   - 이 파일은 토큰을 소비하는 전역 유틸/컴포넌트/패턴 스타일만 포함합니다.
+   - 토큰 선언은 src/styles/design-system.tokens.css (generated)에서 관리합니다.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.ds-focus-ring:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
+    0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
+}
+
+@media (forced-colors: active) {
+
+  .ds-focus-ring:focus-visible {
+    box-shadow: none;
+    outline: var(--focus-ring-width) solid Highlight;
+    outline-offset: var(--focus-ring-offset);
+  }
+}
+
+.ds-motion {
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease),
+    opacity var(--motion-duration-fast) var(--motion-ease);
+}
+
+.ds-motion:hover {
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .ds-motion {
+    transition: opacity var(--motion-duration-fast) var(--motion-ease);
+  }
+
+  .ds-motion:hover {
+    transform: none;
+    opacity: 0.9;
+  }
+}
+
+.ds-touch-target {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+}
+
+/* ───────────────────────────────────────────────────────────
+   Component: DsButton
+   - 상태 스토리(hover/focus/active)는 data-ds-state로 고정 표시 가능
+   ─────────────────────────────────────────────────────────── */
+
+.ds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  font-size: var(--font-size-btn);
+  line-height: 1.4;
+  font-weight: 600;
+
+  border-width: 1px;
+  border-style: solid;
+
+  transition:
+    background-color var(--motion-duration-fast) var(--motion-ease),
+    color var(--motion-duration-fast) var(--motion-ease),
+    border-color var(--motion-duration-fast) var(--motion-ease),
+    box-shadow var(--motion-duration-fast) var(--motion-ease);
+}
+
+.ds-button[data-ds-size="sm"] {
+  font-size: var(--font-size-btn-sm);
+}
+
+.ds-button[data-ds-size="lg"] {
+  font-size: var(--font-size-btn-lg);
+}
+
+.ds-button[data-ds-intent="primary"] {
+  --ds-btn-bg: var(--color-primary);
+  --ds-btn-bg-hover: var(--color-primary-hover);
+  --ds-btn-fg: var(--color-on-primary);
+  --ds-btn-border: var(--color-primary);
+  --ds-btn-text: var(--color-primary);
+  --ds-btn-hover-alpha: 1;
+  --ds-btn-active-alpha: 0.92;
+}
+
+.ds-button[data-ds-intent="neutral"] {
+  --ds-btn-bg: var(--color-surface);
+  --ds-btn-bg-hover: var(--color-surface-hover);
+  --ds-btn-fg: var(--color-text);
+  --ds-btn-border: var(--color-border);
+  --ds-btn-text: var(--color-text);
+  --ds-btn-hover-alpha: 1;
+  --ds-btn-active-alpha: 1;
+}
+
+.ds-button[data-ds-intent="secondary"] {
+  --ds-btn-bg: var(--color-secondary);
+  --ds-btn-bg-hover: var(--color-secondary);
+  --ds-btn-fg: var(--color-on-secondary);
+  --ds-btn-border: var(--color-secondary);
+  --ds-btn-text: var(--color-secondary);
+  --ds-btn-hover-alpha: 0.92;
+  --ds-btn-active-alpha: 0.85;
+}
+
+.ds-button[data-ds-intent="success"] {
+  --ds-btn-bg: var(--color-success);
+  --ds-btn-bg-hover: var(--color-success);
+  --ds-btn-fg: var(--color-on-success);
+  --ds-btn-border: var(--color-success);
+  --ds-btn-text: var(--color-success);
+  --ds-btn-hover-alpha: 0.92;
+  --ds-btn-active-alpha: 0.85;
+}
+
+.ds-button[data-ds-intent="warning"] {
+  --ds-btn-bg: var(--color-warning);
+  --ds-btn-bg-hover: var(--color-warning);
+  --ds-btn-fg: var(--color-on-warning);
+  --ds-btn-border: var(--color-warning);
+  --ds-btn-text: var(--color-warning);
+  --ds-btn-hover-alpha: 0.92;
+  --ds-btn-active-alpha: 0.85;
+}
+
+.ds-button[data-ds-intent="error"] {
+  --ds-btn-bg: var(--color-error);
+  --ds-btn-bg-hover: var(--color-error);
+  --ds-btn-fg: var(--color-on-error);
+  --ds-btn-border: var(--color-error);
+  --ds-btn-text: var(--color-error);
+  --ds-btn-hover-alpha: 0.92;
+  --ds-btn-active-alpha: 0.85;
+}
+
+.ds-button[data-ds-variant="solid"] {
+  background-color: oklch(var(--ds-btn-bg));
+  color: oklch(var(--ds-btn-fg));
+  border-color: transparent;
+}
+
+.ds-button[data-ds-variant="solid"]:is(:hover, [data-ds-state="hover"]) {
+  background-color: oklch(var(--ds-btn-bg-hover, var(--ds-btn-bg)) / var(--ds-btn-hover-alpha, 1));
+}
+
+.ds-button[data-ds-variant="solid"]:is(:active, [data-ds-state="active"]) {
+  background-color: oklch(var(--ds-btn-bg-hover, var(--ds-btn-bg)) / var(--ds-btn-active-alpha, 0.9));
+}
+
+.ds-button[data-ds-variant="outline"] {
+  background-color: transparent;
+  color: oklch(var(--ds-btn-text));
+  border-color: oklch(var(--ds-btn-border));
+}
+
+.ds-button[data-ds-variant="outline"]:is(:hover, [data-ds-state="hover"]) {
+  background-color: oklch(var(--ds-btn-bg) / 0.12);
+}
+
+.ds-button[data-ds-variant="outline"]:is(:active, [data-ds-state="active"]) {
+  background-color: oklch(var(--ds-btn-bg) / 0.18);
+}
+
+.ds-button[data-ds-variant="ghost"] {
+  background-color: transparent;
+  color: oklch(var(--ds-btn-text));
+  border-color: transparent;
+}
+
+.ds-button[data-ds-variant="ghost"]:is(:hover, [data-ds-state="hover"]) {
+  background-color: oklch(var(--ds-btn-bg) / 0.12);
+}
+
+.ds-button[data-ds-variant="ghost"]:is(:active, [data-ds-state="active"]) {
+  background-color: oklch(var(--ds-btn-bg) / 0.18);
+}
+
+.ds-button[data-ds-variant="link"] {
+  background-color: transparent;
+  color: oklch(var(--color-link));
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ds-button[data-ds-variant="link"]:is(:hover, [data-ds-state="hover"]) {
+  color: oklch(var(--color-link) / 0.9);
+}
+
+.ds-button[data-ds-state="focus"] {
+  outline: none;
+  box-shadow:
+    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
+    0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
+}
+
+/* ───────────────────────────────────────────────────────────
+   Pattern: Field
+   ─────────────────────────────────────────────────────────── */
+
+.ds-field {
+  display: grid;
+  gap: var(--field-gap);
+}
+
+.ds-field-label {
+  color: oklch(var(--field-label-color));
+  font-size: var(--font-size-label);
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.ds-field-help {
+  color: oklch(var(--field-help-color));
+  font-size: var(--font-size-helper);
+  line-height: 1.4;
+}
+
+.ds-field-error {
+  color: oklch(var(--field-error-color));
+  font-size: var(--font-size-helper);
+  line-height: 1.4;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Pattern: Dialog
+   ─────────────────────────────────────────────────────────── */
+
+.ds-dialog {
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.ds-dialog::backdrop {
+  background: var(--color-scrim);
+}
+
+.ds-dialog-surface {
+  background: oklch(var(--dialog-surface));
+  border: var(--border-width) solid oklch(var(--dialog-border));
+  border-radius: var(--dialog-radius);
+  box-shadow: var(--dialog-shadow);
+  padding: var(--dialog-padding);
+  width: min(680px, calc(100vw - (var(--spacing-8) * 2)));
+}
+
+.ds-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--dialog-gap);
+}
+
+.ds-dialog-body {
+  margin-top: var(--spacing-4);
+}
+
+.ds-dialog-footer {
+  margin-top: var(--spacing-4);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-2);
+}
+
+/* ───────────────────────────────────────────────────────────
+   Utilities: Elevation
+   ─────────────────────────────────────────────────────────── */
+
+.ds-elevation-1 {
+  box-shadow: var(--elevation-1);
+}
+
+.ds-elevation-2 {
+  box-shadow: var(--elevation-2);
+}
+
+.ds-elevation-3 {
+  box-shadow: var(--elevation-3);
+}
+
+/* ───────────────────────────────────────────────────────────
+   Pattern: Dropdown
+   ─────────────────────────────────────────────────────────── */
+
+.ds-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.ds-dropdown-menu {
+  position: absolute;
+  top: calc(100% + var(--spacing-2));
+  inset-inline-start: 0;
+  min-width: 220px;
+  background: oklch(var(--dropdown-surface));
+  border: var(--border-width) solid oklch(var(--dropdown-border));
+  border-radius: var(--dropdown-radius);
+  padding: var(--dropdown-padding-y) var(--dropdown-padding-x);
+  z-index: var(--z-dropdown);
+  display: grid;
+  gap: var(--spacing-1);
+}
+
+.ds-dropdown-item {
+  text-align: start;
+  padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: oklch(var(--color-text));
+  cursor: pointer;
+}
+
+.ds-dropdown-item:hover:not(:disabled) {
+  background: oklch(var(--dropdown-item-hover));
+}
+
+.ds-dropdown-item:disabled,
+.ds-dropdown-item[data-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
+/* ───────────────────────────────────────────────────────────
+   Pattern: Tooltip
+   ─────────────────────────────────────────────────────────── */
+
+.ds-tooltip-root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ds-tooltip {
+  position: absolute;
+  inset-inline-start: 50%;
+  max-width: var(--tooltip-max-width);
+  padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
+  border-radius: var(--tooltip-radius);
+  background: oklch(var(--tooltip-surface));
+  color: oklch(var(--tooltip-text));
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+  pointer-events: none;
+  white-space: normal;
+  text-wrap: pretty;
+  transform: translateX(-50%);
+  z-index: var(--z-tooltip);
+}
+
+.ds-tooltip[data-placement="top"] {
+  bottom: calc(100% + var(--tooltip-offset));
+}
+
+.ds-tooltip[data-placement="bottom"] {
+  top: calc(100% + var(--tooltip-offset));
+}

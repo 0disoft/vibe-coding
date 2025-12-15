@@ -1,1 +1,9 @@
-root = true\n\n[*]\ncharset = utf-8\nend_of_line = lf\ninsert_final_newline = true\n\n[*.{ts,tsx,js,jsx,mjs,cjs,mts,cts,svelte,css,scss,sass,json,md,mdx,yml,yaml,toml}]\nindent_style = tab\n\n
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[*.{ts,tsx,js,jsx,mjs,cjs,mts,cts,svelte,css,scss,sass,json,md,mdx,yml,yaml,toml}]
+indent_style = tab

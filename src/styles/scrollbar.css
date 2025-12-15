@@ -6,7 +6,7 @@
 html {
 	scrollbar-width: thin;
 	/* Firefox */
-	scrollbar-color: oklch(var(--muted-foreground) / 0.4) transparent;
+	scrollbar-color: oklch(var(--color-text-muted) / 0.4) transparent;
 }
 
 /* Webkit (Chrome, Safari, Edge) */
@@ -20,12 +20,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-	background: oklch(var(--muted-foreground) / 0.4);
+	background: oklch(var(--color-text-muted) / 0.4);
 	border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: oklch(var(--muted-foreground) / 0.6);
+	background: oklch(var(--color-text-muted) / 0.6);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -35,7 +35,7 @@ html {
 
 .thin-scrollbar {
 	scrollbar-width: thin;
-	scrollbar-color: oklch(var(--muted-foreground) / 0.3) transparent;
+	scrollbar-color: oklch(var(--color-text-muted) / 0.3) transparent;
 }
 
 .thin-scrollbar::-webkit-scrollbar {
@@ -47,10 +47,10 @@ html {
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb {
-	background: oklch(var(--muted-foreground) / 0.3);
+	background: oklch(var(--color-text-muted) / 0.3);
 	border-radius: 2px;
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
-	background: oklch(var(--muted-foreground) / 0.5);
+	background: oklch(var(--color-text-muted) / 0.5);
 }

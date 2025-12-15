@@ -4,10 +4,13 @@
 
 ## 어디에 무엇이 있나
 
-- 토큰(스코프): `src/styles/design-system-lab.css`
+- 토큰(스코프, generated): `src/styles/design-system-lab.tokens.css`
+- 토큰 SSOT(DTCG-ish): `.vibe-coding/TOOLS/design-system/tokens.dtcg.json`
+- 토큰 동기화 도구: `.vibe-coding/TOOLS/design-system/dtcg-sync.ts`
 - 검증 페이지: `src/routes/lab/design-system/+page.svelte`
 - DEV 전용 가드: `src/routes/lab/+layout.server.ts`
 - lab UI 컴포넌트: `src/lib/components/lab/design-system/*`
+- lab 컴포넌트/패턴 스타일: `src/styles/design-system-lab.css`
 - 토큰 매니페스트 생성기: `.vibe-coding/TOOLS/design-system/tokens-manifest.ts`
 - 생성 산출물: `.vibe-coding/TOOLS/design-system/TOKENS.md`, `.vibe-coding/TOOLS/design-system/tokens.manifest.json`
 - 컴포넌트 스펙: `.vibe-coding/TOOLS/design-system/SPECS.md`
@@ -34,7 +37,7 @@
 
 > 기본 `bun run test:e2e`에서는 실행되지 않으며, `VISUAL=1`일 때만 활성화됩니다.
 
-### Git Bash 예시
+### 시각 테스트 실행
 
 ```bash
 # 1) 최초 1회: 스냅샷 생성/갱신
@@ -50,7 +53,7 @@ VISUAL=1 bun run test:e2e -- e2e/design-system-lab.visual.spec.ts --project=Desk
 
 > 기본 `bun run test:e2e`에서는 실행되지 않으며, `A11Y=1`일 때만 활성화됩니다.
 
-### Git Bash 예시
+### A11y 테스트 실행
 
 ```bash
 A11Y=1 bun run test:e2e -- e2e/design-system-lab.a11y.spec.ts --project=Desktop
@@ -60,8 +63,7 @@ A11Y=1 bun run test:e2e -- e2e/design-system-lab.a11y.spec.ts --project=Desktop
 
 - lab 토큰은 **`.ds-lab` 컨테이너 내부에서만** 적용합니다.
 - 값(OKLCH)은 실험용입니다. 합의/검증이 끝난 뒤에만 `src/styles/tokens.css`로 승격합니다.
-- 가이드 네이밍을 우선으로 **`--color-*`를 canonical**로 두고, 기존 프로젝트/UnoCSS 호환을 위해 **`--primary` 같은 변수는 alias**로 유지합니다.
-- 시맨틱 컬러 유틸(예: `bg-primary`)이 기대하는 변수는 현재 `uno.config.ts` 기준 `--primary` 형태입니다. 전역 네이밍을 바꿀 때는 `uno.config.ts`와 함께 변경하거나, alias 레이어를 유지해야 합니다.
+- 시맨틱 컬러 유틸(예: `bg-primary`)은 `uno.config.ts`의 매핑을 통해 **canonical(`--color-*`)** 을 참조합니다. (클래스 이름은 유지, 내부 참조 변수만 통일)
 
 ## 체크리스트 (최소)
 
@@ -80,6 +82,32 @@ A11Y=1 bun run test:e2e -- e2e/design-system-lab.a11y.spec.ts --project=Desktop
 ## 토큰 매니페스트 생성
 
 CSS 토큰을 추출해 사람이 읽기 좋은 `TOKENS.md`와 기계가 읽기 좋은 `tokens.manifest.json`을 생성합니다.
+
+## DTCG(SSOT) → CSS 토큰 동기화
+
+`tokens.dtcg.json`을 **단일 진실원천(SSOT)** 으로 두고, `src/styles/design-system-lab.tokens.css`를 생성/검증합니다.
+
+### 실행
+
+```bash
+# 생성/갱신
+bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts
+
+# 검증(불일치 시 exit 1)
+bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --verify
+```
+
+### 전역(:root) 토큰 생성
+
+실제 템플릿 UI에 토큰을 “전체 적용”할 때는 `:root` 프리셋을 사용합니다.
+
+```bash
+# 생성/갱신
+bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root
+
+# 검증
+bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root --verify
+```
 
 ### 실행
 
@@ -104,3 +132,97 @@ bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts --stable --verify
 ```bash
 bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts --print
 ```
+
+## 동기화 규칙 (언제/무엇/명령)
+
+디자인 시스템은 “코드가 자동으로 만드는 산출물”이 많아서, 변경을 하면 함께 갱신해야 하는 파일들이 있습니다.
+아래 규칙을 기준으로 동기화를 유지합니다.
+
+### 1) 토큰(SSOT) 변경 시
+
+대상 변경:
+
+- `.vibe-coding/TOOLS/design-system/tokens.dtcg.json`
+
+해야 할 일:
+
+1. 토큰 CSS 재생성
+
+   ```bash
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root
+   ```
+
+2. 토큰 매니페스트 재생성(문서/리뷰용)
+
+   ```bash
+   bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts --stable
+   ```
+
+3. 검증(권장)
+
+   ```bash
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --verify
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root --verify
+   bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts --stable --verify
+   ```
+
+### 2) 토큰 생성기/동기화 로직 변경 시
+
+대상 변경:
+
+- `.vibe-coding/TOOLS/design-system/dtcg-sync.ts`
+- `.vibe-coding/TOOLS/design-system/tokens-manifest.ts`
+
+해야 할 일:
+
+1. 관련 산출물 재생성(출력 형식이 바뀔 수 있음)
+
+   ```bash
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root
+   bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts --stable
+   ```
+
+2. 검증(권장)
+
+   ```bash
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --verify
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root --verify
+   bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts --stable --verify
+   ```
+
+### 3) lab UI/패턴 변경 시
+
+대상 변경:
+
+- `src/lib/components/lab/design-system/*`
+- `src/styles/design-system-lab.css`
+- `src/routes/lab/design-system/+page.svelte`
+- `.vibe-coding/TOOLS/design-system/SPECS.md`
+
+해야 할 일:
+
+1. 스펙(`SPECS.md`)이 변경을 따라가는지 확인
+2. 시각 회귀/접근성 테스트는 필요 시 opt-in으로 실행
+
+   ```bash
+   VISUAL=1 bun run test:e2e -- e2e/design-system-lab.visual.spec.ts --project=Desktop
+   A11Y=1 bun run test:e2e -- e2e/design-system-lab.a11y.spec.ts --project=Desktop
+   ```
+
+### 4) 템플릿(전역 UI)까지 토큰을 “전체 적용”할 때
+
+대상 변경:
+
+- `src/styles/design-system.tokens.css` (generated)
+- `src/app.css` import 순서
+
+해야 할 일:
+
+1. 전역 토큰 생성/검증을 항상 포함
+
+   ```bash
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root
+   bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root --verify
+   ```

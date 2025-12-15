@@ -44,7 +44,7 @@ Severity may be adjusted based on actual impact.
 ### Reporting Channels
 
 - **Email**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Subject**: `[Security Report] Vulnerability Summary`
+- **Subject**: [Security Report] Vulnerability Summary
 - **Language**: Please write in Korean or English.
 
 ### Reporting Format

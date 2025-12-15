@@ -5,6 +5,7 @@ test.describe('Design System Lab (A11y smoke)', () => {
 
 	test('DsField label/description 연결', async ({ page }) => {
 		await page.goto('/lab/design-system', { waitUntil: 'domcontentloaded' });
+		await expect(page.locator('html')).toHaveAttribute('data-ds-lab-ready', '1');
 
 		const inputRequired = page.locator('#lab-light-email');
 		await expect(inputRequired).toBeVisible();
@@ -33,9 +34,13 @@ test.describe('Design System Lab (A11y smoke)', () => {
 
 	test('Dialog a11y 연결', async ({ page }) => {
 		await page.goto('/lab/design-system', { waitUntil: 'domcontentloaded' });
-		await page.getByRole('button', { name: 'Open dialog' }).first().click();
+		await expect(page.locator('html')).toHaveAttribute('data-ds-lab-ready', '1');
+		await page
+			.locator('[data-ds-theme="light"]')
+			.getByRole('button', { name: 'Open dialog' })
+			.click();
 
-		const dialog = page.locator('dialog[open]').first();
+		const dialog = page.locator('dialog#lab-light-dialog[open]').first();
 		await expect(dialog).toBeVisible();
 		await expect(dialog).toHaveAttribute('aria-modal', 'true');
 		await expect(dialog).toHaveAttribute('aria-labelledby', 'lab-light-dialog-title');
@@ -47,13 +52,35 @@ test.describe('Design System Lab (A11y smoke)', () => {
 
 	test('Dropdown aria-expanded 토글', async ({ page }) => {
 		await page.goto('/lab/design-system', { waitUntil: 'domcontentloaded' });
+		await expect(page.locator('html')).toHaveAttribute('data-ds-lab-ready', '1');
 
-		const trigger = page.getByRole('button', { name: 'Open menu' }).first();
+		const trigger = page
+			.locator('[data-ds-theme="light"]')
+			.getByRole('button', { name: 'Open menu' });
 		await expect(trigger).toHaveAttribute('aria-haspopup', 'menu');
 		await expect(trigger).toHaveAttribute('aria-expanded', 'false');
 		await trigger.click();
 		await expect(trigger).toHaveAttribute('aria-expanded', 'true');
 		await page.keyboard.press('Escape');
 		await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+	});
+
+	test('Tooltip aria-describedby 연결 및 ESC 닫기', async ({ page }) => {
+		await page.goto('/lab/design-system', { waitUntil: 'domcontentloaded' });
+		await expect(page.locator('html')).toHaveAttribute('data-ds-lab-ready', '1');
+
+		const trigger = page.locator('#lab-light-tooltip-trigger');
+		await expect(trigger).toBeVisible();
+
+		await trigger.hover();
+		await expect(trigger).toHaveAttribute('aria-describedby', /ds-tooltip-/);
+
+		const tooltipId = await trigger.getAttribute('aria-describedby');
+		expect(tooltipId).toBeTruthy();
+		await expect(page.locator(`#${tooltipId}`)).toHaveAttribute('role', 'tooltip');
+
+		await trigger.click();
+		await page.keyboard.press('Escape');
+		await expect(trigger).not.toHaveAttribute('aria-describedby', /ds-tooltip-/);
 	});
 });

@@ -16,6 +16,7 @@
 | [security-patterns](#security-patterns) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/security-patterns.ts` |
 | [route-audit](#route-audit) | 라우트/내부 링크 정적 점검 | `bun .vibe-coding/TOOLS/route-audit.ts` |
 | [design-system](design-system/README.md) | 디자인 시스템 lab 운영/검증 가이드 | `bun dev` 후 `/lab/design-system` |
+| [design-system dtcg](design-system/README.md#dtcgssot--css-토큰-동기화) | DTCG(SSOT) → CSS 토큰 동기화/검증 | `bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --verify` |
 | [design-system tokens](design-system/README.md#토큰-매니페스트-생성) | 디자인 시스템 토큰 매니페스트 생성 | `bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts` |
 
 ---

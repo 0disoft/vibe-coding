@@ -14,7 +14,7 @@
 
 - 구현: `src/lib/components/lab/design-system/Button.svelte`
 
-### Props
+### DsButton Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -27,14 +27,14 @@
 | `children` | `Snippet` | - | 버튼 내용 |
 | `...rest` | HTML button attrs | - | `type`, `name`, `value`, `aria-*` 등 전달 |
 
-### 토큰 의존성
+### DsButton 토큰 의존성
 
 - 터치 타깃: `--touch-target-min`
 - 라운드: `--button-radius`
 - 패딩: `--button-padding-*`
 - 포커스 링: `--focus-ring-*` (CSS 유틸 `.ds-focus-ring`)
 
-### 접근성 체크
+### DsButton 접근성 체크
 
 - `loading`일 때 `aria-busy="true"`가 적용되는가
 - 키보드 포커스가 항상 보이는가 (forced-colors에서도)
@@ -49,7 +49,7 @@ lab 페이지에서는 `data-ds-state="hover|focus|active"` 속성으로 의사 
 
 - 구현: `src/lib/components/lab/design-system/Input.svelte`
 
-### Props
+### DsInput Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -59,13 +59,13 @@ lab 페이지에서는 `data-ds-state="hover|focus|active"` 속성으로 의사 
 | `class` | `string` | `''` | 추가 클래스 |
 | `...rest` | HTML input attrs | - | `type`, `placeholder`, `name`, `autocomplete`, `aria-*` 등 전달 |
 
-### 토큰 의존성
+### DsInput 토큰 의존성
 
 - 라운드: `--input-radius`
 - 패딩: `--input-padding-*`
 - 포커스 링: `--focus-ring-*` (CSS 유틸 `.ds-focus-ring`)
 
-### 접근성 체크
+### DsInput 접근성 체크
 
 - `invalid`일 때 `aria-invalid="true"`가 적용되는가
 - 라벨은 컴포넌트 외부에서 제공되는가 (label 연결 책임은 상위)
@@ -77,7 +77,7 @@ lab 페이지에서는 `data-ds-state="hover|focus|active"` 속성으로 의사 
 `Label + Control + Help/Error`를 합친 “폼 패턴” 컴포넌트입니다.
 컨트롤(Input 등)은 `children` 스니펫으로 주입하며, Field가 생성한 `id/aria-describedby/required/invalid`를 전달받아 적용합니다.
 
-### Props
+### DsField Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -101,12 +101,12 @@ Field는 아래 값을 스니펫 인자로 전달합니다.
 | `invalid` | `boolean` | 컨트롤에 적용할 invalid |
 | `required` | `boolean` | 컨트롤에 적용할 required |
 
-### 토큰 의존성
+### DsField 토큰 의존성
 
 - 간격: `--field-gap` (기본 `--spacing-2`)
 - 라벨/메시지 색상: `--field-label-color`, `--field-help-color`, `--field-error-color`
 
-### 접근성 체크
+### DsField 접근성 체크
 
 - label이 `for={id}`로 컨트롤과 연결되는가
 - `helpText`/`errorText`가 있을 때 `aria-describedby`가 올바른 id를 포함하는가
@@ -116,7 +116,7 @@ Field는 아래 값을 스니펫 인자로 전달합니다.
 
 - 구현: `src/lib/components/lab/design-system/Card.svelte`
 
-### Props
+### DsCard Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -137,7 +137,7 @@ Field는 아래 값을 스니펫 인자로 전달합니다.
 Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하는 lab용 래퍼입니다.
 기본은 장식용(aria-hidden)이며, `label`을 주면 의미 있는 아이콘으로 취급합니다.
 
-### Props
+### DsIcon Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -147,12 +147,12 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 | `class` | `string` | `''` | 추가 클래스 |
 | `style` | `string` | `''` | 추가 스타일 |
 
-### 토큰 의존성
+### DsIcon 토큰 의존성
 
 - 크기: `--size-icon-sm`, `--size-icon-md`, `--size-icon-lg`
 - 스트로크: `--icon-stroke-width`
 
-### 접근성 체크
+### DsIcon 접근성 체크
 
 - 장식용일 때 `aria-hidden="true"`가 적용되는가
 - 의미 아이콘일 때 `role="img"` + `aria-label`이 적용되는가
@@ -163,7 +163,7 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 
 아이콘 버튼 패턴입니다. `aria-label`을 필수로 받아 접근성 계약을 고정합니다.
 
-### Props
+### DsIconButton Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -175,7 +175,7 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 | `disabled` | `boolean` | `false` | 비활성 상태 |
 | `loading` | `boolean` | `false` | 로딩 상태 (`aria-busy`) |
 
-### 토큰 의존성
+### DsIconButton 토큰 의존성
 
 - 버튼: `--button-radius`, `--button-padding-*`, `--opacity-disabled`
 - 아이콘: `--size-icon-*`, `--icon-stroke-width`
@@ -187,7 +187,7 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 
 텍스트 라인 안에서 아이콘을 자연스럽게 배치하는 패턴입니다.
 
-### Props
+### DsInlineIcon Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -195,7 +195,7 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 | `size` | `sm \| md \| lg` | `sm` | 아이콘 크기 |
 | `label` | `string` | - | 의미 아이콘일 때만 사용(선택) |
 
-### 토큰 의존성
+### DsInlineIcon 토큰 의존성
 
 - 간격: `--icon-gap`
 
@@ -205,7 +205,7 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 
 `<dialog>` 기반 모달 패턴입니다. `open` 상태를 상위에서 제어하고, 내부 이벤트(ESC/닫기/바깥 클릭)로 `onOpenChange(false)`를 호출합니다.
 
-### Props
+### DsDialog Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -217,14 +217,14 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 | `children` | `Snippet` | - | 본문 내용 |
 | `footer` | `Snippet` | - | 하단 액션 영역(선택) |
 
-### 토큰 의존성
+### DsDialog 토큰 의존성
 
 - 스크림: `--color-scrim`
 - 표면/경계/그림자: `--dialog-surface`, `--dialog-border`, `--dialog-shadow`
 - 간격/라운드: `--dialog-padding`, `--dialog-gap`, `--dialog-radius`
 - z-index: `<dialog>` 자체가 top-layer지만, 내부 레이어 토큰도 유지 권장
 
-### 접근성 체크
+### DsDialog 접근성 체크
 
 - `aria-labelledby`, `aria-describedby`가 올바르게 연결되는가
 - ESC로 닫히는가(취소 이벤트) / 닫힐 때 상태가 동기화되는가
@@ -235,7 +235,7 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 
 트리거 버튼 + 메뉴 리스트 패턴입니다. 기본 제공 items 렌더링 또는 `children`으로 커스터마이즈할 수 있습니다.
 
-### Props
+### DsDropdown Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
@@ -250,7 +250,7 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 - 트리거에서 `Enter`/`Space`/`ArrowDown`으로 열기
 - 메뉴에서 `ArrowUp/Down`으로 이동, `Escape`로 닫기
 
-### 토큰 의존성
+### DsDropdown 토큰 의존성
 
 - 표면/경계: `--dropdown-surface`, `--dropdown-border`
 - 간격/라운드: `--dropdown-padding-*`, `--dropdown-radius`, `--dropdown-item-padding-*`
@@ -263,15 +263,47 @@ Lucide 아이콘을 UnoCSS `presetIcons` 기반(`i-lucide-*`)으로 렌더링하
 
 우측 하단에 쌓이는 토스트 영역 패턴입니다. 포커스를 훔치지 않고, `aria-live`로 알림을 전달합니다.
 
-### Props
+### DsToastRegion Props
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
 | `toasts` | `{ id; title; message?; intent? }[]` | - | 토스트 목록 |
 | `onDismiss` | `(id: string) => void` | - | 닫기 콜백 |
 
-### 토큰 의존성
+### DsToastRegion 토큰 의존성
 
 - 표면/경계: `--toast-surface`, `--toast-border`
 - 간격/라운드/폭: `--toast-padding-*`, `--toast-radius`, `--toast-width`
 - z-index: `--z-toast`
+
+## DsTooltip (Pattern)
+
+- 구현: `src/lib/components/lab/design-system/Tooltip.svelte`
+
+짧은 힌트/보조 설명을 **hover + focus** 컨텍스트에서 제공하고, 접근성 연결(`aria-describedby`)을 명확히 하는 패턴입니다.
+
+### DsTooltip 접근성 계약 (필수)
+
+- Trigger가 focus되면 tooltip이 열리고, trigger에 `aria-describedby`가 연결됩니다.
+- 마우스 hover에서도 동일하게 열립니다.
+- `Escape` 키로 닫힙니다.
+- Tooltip 본문은 `role="tooltip"`을 가져야 합니다.
+
+### DsTooltip Props
+
+| Prop | 타입 | 기본값 | 설명 |
+| --- | --- | --- | --- |
+| `content` | `string \| undefined` | - | 간단 tooltip 텍스트 |
+| `tooltip` | `Snippet \| undefined` | - | 복잡 tooltip 콘텐츠(선택) |
+| `disabled` | `boolean` | `false` | 비활성화 |
+| `delayMs` | `number` | `500` | hover open 지연 |
+| `closeDelayMs` | `number` | `100` | hover close 지연 |
+| `placement` | `top \| bottom` | `top` | 툴팁 위치 |
+| `open` | `boolean \| undefined` | - | (선택) 제어형 오픈 상태 |
+| `onOpenChange` | `(next: boolean) => void \| undefined` | - | (선택) 오픈 상태 콜백 |
+
+### DsTooltip 토큰 의존성
+
+- 표면/텍스트: `--tooltip-surface`, `--tooltip-text`
+- 간격/라운드/오프셋: `--tooltip-padding-*`, `--tooltip-radius`, `--tooltip-offset`, `--tooltip-max-width`
+- z-index: `--z-tooltip`

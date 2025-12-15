@@ -1,5 +1,7 @@
 <script lang="ts">
   import * as m from '$lib/paraglide/messages.js';
+
+  import { DsButton } from '$lib/components/design-system';
 </script>
 
 <svelte:head>
@@ -15,11 +17,7 @@
 >
   <h1 id="offline-title" class="text-5xl font-bold tracking-tight">{m.offline_title()}</h1>
   <p class="text-xl text-muted-foreground">{m.offline_message()}</p>
-  <button
-    type="button"
-    class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold transition-all rounded-md shadow-lg bg-primary text-primary-foreground hover:opacity-90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-    onclick={() => window.location.reload()}
-  >
+  <DsButton intent="primary" onclick={() => window.location.reload()}>
     {m.offline_retry()}
-  </button>
+  </DsButton>
 </div>

@@ -4,11 +4,11 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 body {
-	background-color: oklch(var(--background));
-	color: oklch(var(--foreground));
-	font-size: var(--fs-body);
-	line-height: var(--lh-body);
-	font-family: var(--font-sans);
+	background-color: oklch(var(--color-background));
+	color: oklch(var(--color-text));
+	font-size: var(--font-size-body);
+	line-height: var(--line-height-body);
+	font-family: var(--font-family-base);
 	/* 폰트 렌더링 최적화 */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -44,35 +44,35 @@ h3 {
 }
 
 h1 {
-	font-size: var(--fs-h1);
-	line-height: var(--lh-heading);
+	font-size: var(--font-size-h1);
+	line-height: var(--line-height-heading);
 }
 
 h2 {
-	font-size: var(--fs-h2);
-	line-height: var(--lh-heading);
+	font-size: var(--font-size-h2);
+	line-height: var(--line-height-heading);
 }
 
 h3 {
-	font-size: var(--fs-h3);
-	line-height: var(--lh-heading);
+	font-size: var(--font-size-h3);
+	line-height: var(--line-height-heading);
 }
 
 p {
-	font-size: var(--fs-body);
-	line-height: var(--lh-body);
+	font-size: var(--font-size-body);
+	line-height: var(--line-height-body);
 }
 
 small,
 .text-caption {
-	font-size: var(--fs-caption);
+	font-size: var(--font-size-caption);
 }
 
 code,
 pre {
-	font-size: var(--fs-code);
+	font-size: var(--font-size-code);
 	line-height: 1.5;
-	font-family: var(--font-mono);
+	font-family: var(--font-family-mono);
 	/* 코드 가독성: 합자 끄기, 0에 사선 긋기, 숫자 등폭 */
 	font-variant-ligatures: none;
 	font-variant-numeric: tabular-nums slashed-zero;
@@ -105,7 +105,7 @@ pre.shiki {
 
 /* Shiki 외 일반 코드블록 */
 pre:not(.shiki) {
-	background-color: oklch(var(--card));
+	background-color: oklch(var(--color-surface));
 	border: none;
 	border-radius: 0.75rem;
 	padding: 1rem;
@@ -113,14 +113,14 @@ pre:not(.shiki) {
 }
 
 .code-card {
-	background-color: oklch(var(--code-card));
-	color: oklch(var(--code-card-foreground));
+	background-color: oklch(var(--color-code-card));
+	color: oklch(var(--color-on-code-card));
 }
 
 .code-card pre,
 .code-card pre code {
-	background-color: oklch(var(--code-card));
-	color: oklch(var(--code-card-foreground));
+	background-color: oklch(var(--color-code-card));
+	color: oklch(var(--color-on-code-card));
 	border: none;
 }
 

@@ -2,7 +2,7 @@
   import type { HTMLAttributes } from 'svelte/elements';
   import type { Snippet } from 'svelte';
 
-  import { DsIconButton } from '$lib/components/lab/design-system';
+  import { DsIconButton } from '$lib/components/design-system';
 
   interface Props extends Omit<HTMLAttributes<HTMLDialogElement>, 'children'> {
     id: string;
@@ -69,6 +69,7 @@
 
 <dialog
   bind:this={dialogEl}
+  id={id}
   {...rest}
   class={`ds-dialog ds-focus-ring ${className}`.trim()}
   aria-modal="true"
@@ -102,4 +103,3 @@
     {/if}
   </div>
 </dialog>
-

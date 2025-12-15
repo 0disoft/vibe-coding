@@ -11,36 +11,36 @@
     DsIconButton,
     DsInlineIcon,
     DsInput,
+    DsTooltip,
     DsToastRegion
   } from '$lib/components/lab/design-system';
 
   type TokenRow = {
     name: string;
     cssVar: string;
-    aliasVar?: string;
     sampleBgClass?: string;
     sampleTextClass?: string;
     swatchMode?: 'oklch' | 'direct';
   };
 
   const tokens: TokenRow[] = [
-    { name: 'Background', cssVar: '--color-background', aliasVar: '--background', sampleBgClass: 'bg-background', sampleTextClass: 'text-foreground' },
-    { name: 'Text', cssVar: '--color-text', aliasVar: '--foreground', sampleBgClass: 'bg-foreground', sampleTextClass: 'text-background' },
-    { name: 'Surface', cssVar: '--color-surface', aliasVar: '--card', sampleBgClass: 'bg-card', sampleTextClass: 'text-card-foreground' },
-    { name: 'Primary', cssVar: '--color-primary', aliasVar: '--primary', sampleBgClass: 'bg-primary', sampleTextClass: 'text-primary-foreground' },
+    { name: 'Background', cssVar: '--color-background', sampleBgClass: 'bg-background', sampleTextClass: 'text-foreground' },
+    { name: 'Text', cssVar: '--color-text', sampleBgClass: 'bg-foreground', sampleTextClass: 'text-background' },
+    { name: 'Surface', cssVar: '--color-surface', sampleBgClass: 'bg-card', sampleTextClass: 'text-card-foreground' },
+    { name: 'Primary', cssVar: '--color-primary', sampleBgClass: 'bg-primary', sampleTextClass: 'text-primary-foreground' },
     { name: 'Primary Hover', cssVar: '--color-primary-hover', swatchMode: 'oklch' },
-    { name: 'Secondary', cssVar: '--color-secondary', aliasVar: '--secondary', sampleBgClass: 'bg-secondary', sampleTextClass: 'text-secondary-foreground' },
-    { name: 'Muted Text', cssVar: '--color-text-muted', aliasVar: '--muted-foreground', sampleBgClass: 'bg-muted', sampleTextClass: 'text-muted-foreground' },
-    { name: 'Accent', cssVar: '--color-accent', aliasVar: '--accent', sampleBgClass: 'bg-accent', sampleTextClass: 'text-accent-foreground' },
-    { name: 'Link', cssVar: '--color-link', aliasVar: '--link', sampleBgClass: 'bg-link', sampleTextClass: 'text-link-foreground' },
-    { name: 'Border', cssVar: '--color-border', aliasVar: '--border', sampleBgClass: 'bg-border', sampleTextClass: 'text-background' },
-    { name: 'Input', cssVar: '--color-input', aliasVar: '--input', sampleBgClass: 'bg-input', sampleTextClass: 'text-background' },
-    { name: 'Error', cssVar: '--color-error', aliasVar: '--destructive', sampleBgClass: 'bg-destructive', sampleTextClass: 'text-destructive-foreground' },
-    { name: 'Success', cssVar: '--color-success', aliasVar: '--success', sampleBgClass: 'bg-success', sampleTextClass: 'text-success-foreground' },
-    { name: 'Warning', cssVar: '--color-warning', aliasVar: '--warning', sampleBgClass: 'bg-warning', sampleTextClass: 'text-warning-foreground' },
-    { name: 'Selected', cssVar: '--color-selected', aliasVar: '--selected', sampleBgClass: 'bg-selected', sampleTextClass: 'text-selected-foreground' },
-    { name: 'Sidebar', cssVar: '--color-sidebar', aliasVar: '--sidebar', sampleBgClass: 'bg-sidebar', sampleTextClass: 'text-sidebar-foreground' },
-    { name: 'Overlay', cssVar: '--color-overlay', aliasVar: '--overlay', sampleBgClass: 'bg-overlay', sampleTextClass: 'text-foreground' },
+    { name: 'Secondary', cssVar: '--color-secondary', sampleBgClass: 'bg-secondary', sampleTextClass: 'text-secondary-foreground' },
+    { name: 'Muted Text', cssVar: '--color-text-muted', sampleBgClass: 'bg-muted', sampleTextClass: 'text-muted-foreground' },
+    { name: 'Accent', cssVar: '--color-accent', sampleBgClass: 'bg-accent', sampleTextClass: 'text-accent-foreground' },
+    { name: 'Link', cssVar: '--color-link', sampleBgClass: 'bg-link', sampleTextClass: 'text-link-foreground' },
+    { name: 'Border', cssVar: '--color-border', sampleBgClass: 'bg-border', sampleTextClass: 'text-background' },
+    { name: 'Input', cssVar: '--color-input', sampleBgClass: 'bg-input', sampleTextClass: 'text-background' },
+    { name: 'Error', cssVar: '--color-error', sampleBgClass: 'bg-destructive', sampleTextClass: 'text-destructive-foreground' },
+    { name: 'Success', cssVar: '--color-success', sampleBgClass: 'bg-success', sampleTextClass: 'text-success-foreground' },
+    { name: 'Warning', cssVar: '--color-warning', sampleBgClass: 'bg-warning', sampleTextClass: 'text-warning-foreground' },
+    { name: 'Selected', cssVar: '--color-selected', sampleBgClass: 'bg-selected', sampleTextClass: 'text-selected-foreground' },
+    { name: 'Sidebar', cssVar: '--color-sidebar', sampleBgClass: 'bg-sidebar', sampleTextClass: 'text-sidebar-foreground' },
+    { name: 'Overlay', cssVar: '--color-overlay', sampleBgClass: 'bg-overlay', sampleTextClass: 'text-foreground' },
     { name: 'Surface Hover', cssVar: '--color-surface-hover', swatchMode: 'oklch' },
     { name: 'Scrim', cssVar: '--color-scrim', swatchMode: 'direct' },
     { name: 'Neutral 50', cssVar: '--color-neutral-50', swatchMode: 'oklch' },
@@ -92,6 +92,7 @@
 
   const zIndexVars = [
     '--z-dropdown',
+    '--z-tooltip',
     '--z-modal',
     '--z-toast',
   ] as const;
@@ -131,9 +132,6 @@
 
     for (const row of rows) {
       result[row.cssVar] = styles.getPropertyValue(row.cssVar).trim() || '?';
-      if (row.aliasVar) {
-        result[row.aliasVar] = styles.getPropertyValue(row.aliasVar).trim() || '?';
-      }
     }
 
     for (const name of a11yVars) {
@@ -168,6 +166,7 @@
   }
 
   onMount(() => {
+    document.documentElement.dataset.dsLabReady = '1';
     if (lightEl) lightVars = readVars(lightEl, tokens);
     if (darkEl) darkVars = readVars(darkEl, tokens);
   });
@@ -202,7 +201,7 @@
                 <div class="min-w-0">
                   <div class="text-label font-medium">{t.name}</div>
                   <div class="text-helper text-muted-foreground font-mono">
-                    {t.cssVar}{t.aliasVar ? `  (alias: ${t.aliasVar})` : ''}
+                    {t.cssVar}
                   </div>
                 </div>
                 {#if t.sampleBgClass && t.sampleTextClass}
@@ -641,7 +640,7 @@
                 <div class="min-w-0">
                   <div class="text-label font-medium">{t.name}</div>
                   <div class="text-helper text-muted-foreground font-mono">
-                    {t.cssVar}{t.aliasVar ? `  (alias: ${t.aliasVar})` : ''}
+                    {t.cssVar}
                   </div>
                 </div>
                 {#if t.sampleBgClass && t.sampleTextClass}
@@ -1004,6 +1003,31 @@
                         경고
                         <DsInlineIcon name="triangle-alert" />
                       </div>
+                    </div>
+                  </div>
+                  <div class="rounded-lg border border-border bg-card p-3">
+                    <div class="text-helper text-muted-foreground">Tooltip</div>
+                    <div class="mt-2 flex flex-wrap items-center gap-2">
+                      <DsTooltip content="키보드 포커스/호버에서 열리는 툴팁입니다." placement="top">
+                        {#snippet children(p)}
+                          <button
+                            id="lab-light-tooltip-trigger"
+                            type="button"
+                            class="ds-button ds-focus-ring"
+                            data-ds-intent="secondary"
+                            data-ds-variant="outline"
+                            aria-describedby={p.describedBy}
+                            onpointerover={p.onpointerover}
+                            onpointerout={p.onpointerout}
+                            onfocus={p.onfocus}
+                            onblur={p.onblur}
+                            onkeydown={p.onkeydown}
+                          >
+                            Tooltip trigger
+                          </button>
+                        {/snippet}
+                      </DsTooltip>
+                      <span class="text-helper text-muted-foreground">(hover 또는 tab focus)</span>
                     </div>
                   </div>
                 </div>

@@ -2,7 +2,7 @@
   import type { HTMLAttributes } from 'svelte/elements';
   import type { Snippet } from 'svelte';
 
-  import { DsButton } from '$lib/components/lab/design-system';
+  import { DsButton } from '$lib/components/design-system';
 
   type Item = {
     id: string;
@@ -31,10 +31,16 @@
   }: Props = $props();
 
   let rootEl = $state<HTMLDivElement | null>(null);
+  let buttonEl = $state<HTMLButtonElement | null>(null);
   let internalOpen = $state(false);
 
   let isControlled = $derived(open !== undefined);
   let isOpen = $derived(isControlled ? (open as boolean) : internalOpen);
+
+  let triggerId = $derived(
+    `ds-dropdown-trigger-${(globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`).toString()}`
+  );
+  let menuId = $derived(`${triggerId}-menu`);
 
   function setOpen(next: boolean): void {
     if (!isControlled) internalOpen = next;
@@ -45,8 +51,9 @@
     setOpen(!isOpen);
   }
 
-  function close(): void {
+  function close(options?: { focusButton?: boolean }): void {
     setOpen(false);
+    if (options?.focusButton) queueMicrotask(() => buttonEl?.focus());
   }
 
   function focusFirstItem(): void {
@@ -55,6 +62,14 @@
     const itemsEls = Array.from(root.querySelectorAll<HTMLElement>('[data-ds-dropdown-item="true"]'));
     const first = itemsEls.find((el) => !el.hasAttribute('data-disabled'));
     first?.focus();
+  }
+
+  function focusLastItem(): void {
+    const root = rootEl;
+    if (!root) return;
+    const itemsEls = Array.from(root.querySelectorAll<HTMLElement>('[data-ds-dropdown-item="true"]'));
+    const enabled = itemsEls.filter((el) => !el.hasAttribute('data-disabled'));
+    enabled.at(-1)?.focus();
   }
 
   function focusNext(current: HTMLElement, dir: 1 | -1): void {
@@ -69,10 +84,22 @@
   }
 
   function onTriggerKeyDown(e: KeyboardEvent): void {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      close();
+      return;
+    }
+
     if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (!isOpen) setOpen(true);
       queueMicrotask(focusFirstItem);
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!isOpen) setOpen(true);
+      queueMicrotask(focusLastItem);
     }
   }
 
@@ -82,7 +109,7 @@
 
     if (e.key === 'Escape') {
       e.preventDefault();
-      close();
+      close({ focusButton: true });
       return;
     }
 
@@ -97,6 +124,33 @@
       focusNext(target, -1);
       return;
     }
+
+    if (e.key === 'Home') {
+      e.preventDefault();
+      focusFirstItem();
+      return;
+    }
+
+    if (e.key === 'End') {
+      e.preventDefault();
+      focusLastItem();
+      return;
+    }
+  }
+
+  function onRootFocusOut(e: FocusEvent): void {
+    const root = rootEl;
+    if (!root) return;
+    if (!isOpen) return;
+
+    const next = e.relatedTarget;
+    if (!(next instanceof Node)) {
+      close();
+      return;
+    }
+
+    if (root.contains(next)) return;
+    close();
   }
 
   function onDocumentPointerDown(e: PointerEvent): void {
@@ -113,11 +167,14 @@
   });
 </script>
 
-<div {...rest} bind:this={rootEl} class={`ds-dropdown ${className}`.trim()}>
+<div {...rest} bind:this={rootEl} class={`ds-dropdown ${className}`.trim()} onfocusout={onRootFocusOut}>
   <DsButton
+    bind:ref={buttonEl}
     type="button"
     intent="secondary"
     variant="outline"
+    id={triggerId}
+    aria-controls={menuId}
     aria-haspopup="menu"
     aria-expanded={isOpen}
     onclick={toggle}
@@ -127,7 +184,13 @@
   </DsButton>
 
   {#if isOpen}
-    <div class="ds-dropdown-menu ds-elevation-2" role="menu" aria-label={label}>
+    <div
+      id={menuId}
+      class="ds-dropdown-menu ds-elevation-2"
+      role="menu"
+      aria-labelledby={triggerId}
+      tabindex="-1"
+    >
       {#if children}
         {@render children()}
       {:else}
@@ -153,3 +216,4 @@
     </div>
   {/if}
 </div>
+

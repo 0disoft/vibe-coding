@@ -2,6 +2,8 @@
   import { page } from '$app/state';
   import * as m from '$lib/paraglide/messages.js';
   import { localizeUrl } from '$lib/paraglide/runtime.js';
+
+  import { DsLinkButton } from '$lib/components/design-system';
 </script>
 
 <svelte:head>
@@ -25,10 +27,7 @@
       {page.error?.message ?? m.error_unexpected()}
     {/if}
   </p>
-  <a
-    href={localizeUrl('/').href}
-    class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold transition-all rounded-md shadow-lg bg-primary text-primary-foreground hover:opacity-90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-  >
+  <DsLinkButton href={localizeUrl('/').href} intent="primary">
     {m.error_go_home()}
-  </a>
+  </DsLinkButton>
 </div>

@@ -197,6 +197,27 @@ pnpm dlx sv create ./
   - `bunx biome check --write <파일경로>`로 자동 수정 가능
 - **적용 시점:** Biome을 린터로 사용하고 `organizeImports` 규칙이 활성화된 프로젝트에서.
 
+### 3. Biome formatter 규칙: 파일 끝의 불필요한 빈 줄(추가 개행)로 인한 포맷 실패
+
+- **증상:** `bun run lint`(= `biome check .`) 실행 시 아래와 유사한 에러가 발생하며 실패함.
+
+```plaintext
+format ━━━━━━━━━━━━━━━━━━━━━━━
+× Formatter would have printed the following content:
+```
+
+- **원인:** 파일이 **마지막에 빈 줄이 2개 이상** 들어간 상태(“추가 개행”)여서 Biome 포매터 결과와 불일치함.
+- **해결:** 파일 끝의 불필요한 빈 줄을 제거하고, **마지막은 개행 1개로만** 종료되도록 정리.
+  - 예: `src/lib/components/design-system/index.ts`의 마지막 “빈 줄 1개”를 삭제하여 포매터 일치시킴.
+- **검증:** `bun run lint` 재실행 시 통과.
+
+### 4. Biome formatter 규칙: export 블록 들여쓰기(탭) 불일치로 인한 포맷 실패
+
+- **증상:** `bun run lint` 실행 시 `format` 섹션에서 `Formatter would have printed the following content` 에러가 발생하며 실패함.
+- **원인:** 프로젝트의 포매팅 규칙상 `.ts` 파일의 멀티라인 `export { ... }` 블록 들여쓰기는 **탭**을 사용해야 하는데, 공백(스페이스)으로 작성되어 Biome 출력과 불일치함.
+- **해결:** 멀티라인 export 블록의 들여쓰기를 탭으로 맞추고, 포매터가 제안한 형태로 수정.
+- **검증:** `bun run lint` 재실행 시 통과.
+
 ---
 
 ## [UI / UX / RTL]

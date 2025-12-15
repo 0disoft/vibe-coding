@@ -110,6 +110,7 @@ bun lint          # Biome 린트 + 포맷팅
 ## 문서
 
 - `.vibe-coding/TREE.md` - 프로젝트 구조 상세
+- `.vibe-coding/TOOLS/design-system/README.md` - 디자인 시스템 운영(토큰 SSOT, 동기화 규칙, lab 검증)
 - `.vibe-coding/SPEC.md` - 프로젝트 스펙
 - `.vibe-coding/KNOWLEDGE/` - 기술 지식 베이스
 - `.vibe-coding/TROUBLE/SOLVED.md` - 문제 해결 기록

@@ -17,7 +17,7 @@
 ├── .bun-version
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                 # CI: lint/check/unit + 토큰 매니페스트 검증
+│       └── ci.yml                 # CI: lint/check/unit + DTCG→CSS/토큰 매니페스트 검증
 ├── .vibe-coding/
 │   └── PUBLIC_APIS/
 │       └── README.md               # Public API 카탈로그 (하위 구조는 이 파일 참조)
@@ -38,7 +38,9 @@
     ├── scripts/                   # 빌드 스크립트
     ├── styles/
     │   ├── tokens.css
-    │   ├── design-system-lab.css   # 디자인 시스템 lab 토큰(.ds-lab 스코프)
+    │   ├── design-system.tokens.css # 디자인 시스템 전역 토큰(:root 스코프, generated)
+    │   ├── design-system-lab.tokens.css # 디자인 시스템 lab 토큰(.ds-lab 스코프, generated)
+    │   ├── design-system-lab.css   # 디자인 시스템 lab 컴포넌트/패턴 스타일
     │   ├── base.css
     │   ├── scrollbar.css
     │   ├── prose.css
@@ -156,6 +158,7 @@
 | --- | --- |
 | `markdown-rendering.spec.ts` | 마크다운 렌더링 품질(볼드 표식 잔존) 회귀 테스트 |
 | `design-system-lab.visual.spec.ts` | 디자인 시스템 lab 시각 회귀(스냅샷) 테스트 (옵션, `VISUAL=1`) |
+| `design-system-lab.a11y.spec.ts` | 디자인 시스템 lab A11y 스모크 테스트 (옵션, `A11Y=1`) |
 
 ### messages/
 
@@ -187,7 +190,9 @@
 | 파일              | 역할                                                      |
 | ----------------- | --------------------------------------------------------- |
 | `tokens.css`      | CSS 변수: 색상 팔레트, 폰트 스택, 사이즈 스케일, 다크모드 |
-| `design-system-lab.css` | 디자인 시스템 lab 토큰(.ds-lab 스코프, `--color-*` canonical + 기존 변수 alias) |
+| `design-system.tokens.css` | 디자인 시스템 전역 토큰(:root 스코프, generated) |
+| `design-system-lab.tokens.css` | 디자인 시스템 lab 토큰(.ds-lab 스코프, generated) |
+| `design-system-lab.css` | 디자인 시스템 lab 컴포넌트/패턴 스타일 |
 | `base.css`        | 기본 HTML 요소 스타일 (body, h1-h3, code, pre)            |
 | `scrollbar.css`   | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일)          |
 | `prose.css`       | .prose 마크다운 콘텐츠 타이포그래피                       |

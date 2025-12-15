@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { HTMLAttributes } from 'svelte/elements';
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
 
-  import { DsIconButton } from '$lib/components/lab/design-system';
+  import { DsIcon, DsIconButton } from '$lib/components/design-system';
 
   export type ToastIntent = 'neutral' | 'success' | 'warning' | 'error';
 
@@ -42,9 +42,9 @@
   {/if}
 
   {#each toasts as t (t.id)}
-    <div class={`ds-toast ds-elevation-2`} data-intent={t.intent ?? 'neutral'}>
+    <div class="ds-toast ds-elevation-2" data-intent={t.intent ?? 'neutral'}>
       <div class="ds-toast-icon" aria-hidden="true">
-        <span class={`i-lucide-${intentIcon[t.intent ?? 'neutral']} ds-icon`} style="width:var(--size-icon-md);height:var(--size-icon-md)"></span>
+        <DsIcon name={intentIcon[t.intent ?? 'neutral']} size="md" />
       </div>
       <div class="min-w-0">
         <div class="text-label font-semibold">{t.title}</div>

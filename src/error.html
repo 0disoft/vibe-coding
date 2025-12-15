@@ -7,24 +7,24 @@
   <meta name="robots" content="noindex" />
   <title>%sveltekit.status% | Error</title>
   <style>
-    /* OKLCH 색상 시스템 (tokens.css와 동일) */
+    /* OKLCH 색상 시스템 (디자인 시스템 canonical: --color-*) */
     :root {
-      --background: 98.2% 0.008 102;
-      --foreground: 35% 0.04 331;
-      --muted-foreground: 45% 0.02 106;
-      --primary: 90% 0.1265 332;
-      --primary-foreground: 19% 0.015 332;
-      --ring: 85.14% 0.1265 332;
+      --color-background: 98.2% 0.008 102;
+      --color-text: 35% 0.04 331;
+      --color-text-muted: 45% 0.02 106;
+      --color-primary: 90% 0.1265 332;
+      --color-on-primary: 19% 0.015 332;
+      --focus-ring-color: 85.14% 0.1265 332;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --background: 30.09% 0.0314 274;
-        --foreground: 96% 0.01 106;
-        --muted-foreground: 88% 0.015 106;
-        --primary: 86% 0.1265 332;
-        --primary-foreground: 14% 0.02 332;
-        --ring: 82% 0.1265 332;
+        --color-background: 30.09% 0.0314 274;
+        --color-text: 96% 0.01 106;
+        --color-text-muted: 88% 0.015 106;
+        --color-primary: 86% 0.1265 332;
+        --color-on-primary: 14% 0.02 332;
+        --focus-ring-color: 82% 0.1265 332;
       }
     }
 
@@ -38,8 +38,8 @@
       font-family:
         -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
         sans-serif;
-      background-color: oklch(var(--background));
-      color: oklch(var(--foreground));
+      background-color: oklch(var(--color-background));
+      color: oklch(var(--color-text));
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -61,7 +61,7 @@
 
     p {
       font-size: 1.25rem;
-      color: oklch(var(--muted-foreground));
+      color: oklch(var(--color-text-muted));
       max-width: 28rem;
     }
 
@@ -74,8 +74,8 @@
       font-weight: 600;
       border-radius: 0.375rem;
       box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-      background-color: oklch(var(--primary));
-      color: oklch(var(--primary-foreground));
+      background-color: oklch(var(--color-primary));
+      color: oklch(var(--color-on-primary));
       text-decoration: none;
       transition: opacity 0.15s ease;
     }
@@ -91,8 +91,8 @@
     a:focus-visible {
       outline: none;
       box-shadow:
-        0 0 0 2px oklch(var(--background)),
-        0 0 0 4px oklch(var(--ring));
+        0 0 0 2px oklch(var(--color-background)),
+        0 0 0 4px oklch(var(--focus-ring-color));
     }
   </style>
 </head>

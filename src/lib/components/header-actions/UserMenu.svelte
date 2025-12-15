@@ -3,6 +3,8 @@
   import { localizeUrl } from '$lib/paraglide/runtime.js';
   import { tick } from 'svelte';
 
+  import { DsIconButton } from '$lib/components/design-system';
+
   // TODO: Better-Auth 연동 시 실제 인증 상태로 교체
   // 현재는 UI 확인용 mock 상태
   let isLoggedIn = $state(false);
@@ -113,22 +115,19 @@
 <svelte:window onclick={handleOutsideClick} onkeydown={handleKeyDown} />
 
 <div class="relative">
-  <button
-    type="button"
+  <DsIconButton
     id="user-menu-button"
-    bind:this={buttonRef}
+    bind:ref={buttonRef}
     onclick={toggleUserMenu}
-    class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-accent {isLoggedIn
-      ? 'text-success'
-      : 'text-warning'}"
-    aria-label={m.user_menu()}
+    class={isLoggedIn ? 'text-success' : 'text-warning'}
+    label={m.user_menu()}
     aria-haspopup="menu"
     aria-expanded={showUserMenu}
     aria-controls="user-menu"
     data-testid="header-user-menu"
   >
     <span class="i-lucide-user h-4 w-4"></span>
-  </button>
+  </DsIconButton>
 
   <!-- 사용자 메뉴 드롭다운 -->
   {#if showUserMenu}

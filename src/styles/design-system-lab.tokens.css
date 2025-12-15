@@ -1,0 +1,381 @@
+/*
+  GENERATED FILE — DO NOT EDIT
+  Source: .vibe-coding/TOOLS/design-system/tokens.dtcg.json
+  Generator: .vibe-coding/TOOLS/design-system/dtcg-sync.ts
+  Preset: lab
+*/
+
+.ds-lab {
+  /* 폼 컨트롤 렌더링 힌트 (테마별로 재정의) */
+  color-scheme: light dark;
+
+  /* A11y / Touch */
+  --touch-target-min: 44px;
+
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+
+  /* Radius */
+  --radius-lg: 1rem;
+  --radius-md: 0.75rem;
+  --radius-sm: 0.5rem;
+
+  /* Border */
+  --border-width: 1px;
+
+  /* Opacity */
+  --opacity-disabled: 0.6;
+  --opacity-hover: 0.9;
+
+  /* Shadow */
+  --shadow-color: var(--color-neutral-950);
+  --shadow-lg: 0 14px 30px oklch(var(--shadow-color) / 0.18);
+  --shadow-md: 0 6px 14px oklch(var(--shadow-color) / 0.16);
+  --shadow-sm: 0 1px 2px oklch(var(--shadow-color) / 0.14);
+
+  /* Elevation */
+  --elevation-1: var(--shadow-sm);
+  --elevation-2: var(--shadow-md);
+  --elevation-3: var(--shadow-lg);
+
+  /* Icon Size */
+  --size-icon-lg: 24px;
+  --size-icon-md: 20px;
+  --size-icon-sm: 16px;
+
+  /* Icon */
+  --icon-gap: var(--spacing-2);
+  --icon-stroke-width: 2px;
+
+  /* Z-Index */
+  --z-dropdown: 1000;
+  --z-modal: 1100;
+  --z-toast: 1200;
+  --z-tooltip: 1050;
+
+  /* Focus Ring */
+  --focus-ring-offset: 2px;
+  --focus-ring-width: 2px;
+
+  /* Motion */
+  --motion-duration-fast: 180ms;
+  --motion-ease: ease;
+
+  /* Typography */
+  --font-family-base: var(--font-sans);
+  --font-family-heading: var(--font-sans);
+  --font-family-mono: var(--font-mono);
+  --font-size-2xl: 1.728rem;
+  --font-size-3xl: 2.074rem;
+  --font-size-4xl: 2.488rem;
+  --font-size-badge: 0.75rem;
+  --font-size-base: 1rem;
+  --font-size-body: 1.1rem;
+  --font-size-body-secondary: 0.95rem;
+  --font-size-brand: 1.05rem;
+  --font-size-breadcrumb: 0.8rem;
+  --font-size-btn: 0.9rem;
+  --font-size-btn-lg: 1.0rem;
+  --font-size-btn-sm: 0.8rem;
+  --font-size-caption: 0.85rem;
+  --font-size-code: 0.8rem;
+  --font-size-comment: 0.95rem;
+  --font-size-h1: 1.8rem;
+  --font-size-h2: 1.6rem;
+  --font-size-h3: 1.4rem;
+  --font-size-helper: 0.75rem;
+  --font-size-inline-code: 0.85rem;
+  --font-size-label: 0.85rem;
+  --font-size-lg: 1.2rem;
+  --font-size-logo: 1.15rem;
+  --font-size-menu: 0.85rem;
+  --font-size-menu-lg: 0.9rem;
+  --font-size-menu-sm: 0.8rem;
+  --font-size-placeholder: 0.9rem;
+  --font-size-price: 1.15rem;
+  --font-size-sm: 0.833rem;
+  --font-size-stat: 1.4rem;
+  --font-size-tag: 0.75rem;
+  --font-size-timestamp: 0.7rem;
+  --font-size-toast: 0.85rem;
+  --font-size-tooltip: 0.75rem;
+  --font-size-xl: 1.44rem;
+  --font-size-xs: 0.694rem;
+  --font-size-xs-resp: 0.7rem;
+  --font-weight-bold: 700;
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --letter-spacing-normal: 0;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-wide: 0.05em;
+  --line-height-body: 1.6;
+  --line-height-heading: 1.3;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+  --line-height-tight: 1.2;
+  --paragraph-spacing: 1.25em;
+
+  /* Component: Button */
+  --button-padding-x-lg: 1.25rem;
+  --button-padding-x-md: 1rem;
+  --button-padding-x-sm: 0.75rem;
+  --button-padding-y-lg: 0.75rem;
+  --button-padding-y-md: 0.5rem;
+  --button-padding-y-sm: 0.375rem;
+  --button-radius: var(--radius-md);
+
+  /* Component: Input */
+  --input-padding-x: 0.75rem;
+  --input-padding-y: 0.5rem;
+  --input-radius: var(--radius-md);
+
+  /* Pattern: Field */
+  --field-error-color: var(--color-error);
+  --field-gap: var(--spacing-2);
+  --field-help-color: var(--color-text-muted);
+  --field-label-color: var(--color-text);
+
+  /* Pattern: Dialog */
+  --dialog-border: var(--color-border);
+  --dialog-gap: var(--spacing-4);
+  --dialog-padding: var(--spacing-4);
+  --dialog-radius: var(--radius-lg);
+  --dialog-shadow: var(--elevation-3);
+  --dialog-surface: var(--color-surface);
+
+  /* Pattern: Dropdown */
+  --dropdown-border: var(--color-border);
+  --dropdown-item-hover: var(--color-surface-hover);
+  --dropdown-item-padding-x: var(--spacing-3);
+  --dropdown-item-padding-y: var(--spacing-2);
+  --dropdown-padding-x: var(--spacing-2);
+  --dropdown-padding-y: var(--spacing-2);
+  --dropdown-radius: var(--radius-md);
+  --dropdown-surface: var(--color-surface);
+
+  /* Pattern: Tooltip */
+  --tooltip-max-width: min(320px, 80vw);
+  --tooltip-offset: var(--spacing-2);
+  --tooltip-padding-x: var(--spacing-3);
+  --tooltip-padding-y: var(--spacing-2);
+  --tooltip-radius: var(--radius-sm);
+  --tooltip-surface: var(--color-overlay);
+  --tooltip-text: var(--color-neutral-50);
+
+  /* Pattern: Toast */
+  --toast-border: var(--color-border);
+  --toast-gap: var(--spacing-3);
+  --toast-padding-x: var(--spacing-4);
+  --toast-padding-y: var(--spacing-3);
+  --toast-radius: var(--radius-md);
+  --toast-surface: var(--color-surface);
+  --toast-width: min(420px, calc(100vw - (var(--spacing-4) * 2)));
+}
+
+.ds-lab[data-ds-theme="light"] {
+  /* 폼 컨트롤 렌더링 힌트 (테마별로 재정의) */
+  color-scheme: light;
+
+  /* Primitive (Raw) */
+  --raw-color-accent: 90% 0.06 155;
+  --raw-color-background: 99% 0.004 255;
+  --raw-color-border: 90% 0.012 255;
+  --raw-color-code-card: 95% 0.02 102;
+  --raw-color-danger: 62% 0.2 25;
+  --raw-color-error: 62% 0.2 25;
+  --raw-color-input: 92% 0.012 255;
+  --raw-color-link: 60% 0.16 250;
+  --raw-color-neutral-100: 97% 0.004 255;
+  --raw-color-neutral-200: 93% 0.004 255;
+  --raw-color-neutral-300: 88% 0.004 255;
+  --raw-color-neutral-400: 72% 0.004 255;
+  --raw-color-neutral-50: 99% 0.004 255;
+  --raw-color-neutral-500: 56% 0.004 255;
+  --raw-color-neutral-600: 46% 0.004 255;
+  --raw-color-neutral-700: 35% 0.004 255;
+  --raw-color-neutral-800: 26% 0.004 255;
+  --raw-color-neutral-900: 18% 0.004 255;
+  --raw-color-neutral-950: 12% 0.004 255;
+  --raw-color-on-accent: 22% 0.03 155;
+  --raw-color-on-code-card: 35% 0.04 331;
+  --raw-color-on-danger: 99% 0.002 25;
+  --raw-color-on-error: 99% 0.002 25;
+  --raw-color-on-link: 18% 0.02 250;
+  --raw-color-on-primary: 99% 0.002 255;
+  --raw-color-on-secondary: 24% 0.03 250;
+  --raw-color-on-selected: 22% 0.03 150;
+  --raw-color-on-sidebar: 26% 0.02 255;
+  --raw-color-on-success: 99% 0.002 150;
+  --raw-color-on-warning: 20% 0.02 70;
+  --raw-color-overlay: 20% 0.01 255;
+  --raw-color-primary: 62% 0.15 250;
+  --raw-color-primary-hover: 56% 0.15 250;
+  --raw-color-scrim: 20% 0.01 255;
+  --raw-color-secondary: 92% 0.04 250;
+  --raw-color-selected: 90% 0.06 150;
+  --raw-color-sidebar: 97% 0.01 255;
+  --raw-color-success: 62% 0.14 150;
+  --raw-color-surface: 98% 0.008 255;
+  --raw-color-surface-hover: 96.5% 0.008 255;
+  --raw-color-text: 21% 0.02 255;
+  --raw-color-text-muted: 46% 0.02 255;
+  --raw-color-warning: 75% 0.16 70;
+
+  /* Semantic (Canonical) */
+  --color-accent: var(--raw-color-accent);
+  --color-background: var(--raw-color-background);
+  --color-border: var(--raw-color-border);
+  --color-code-card: var(--raw-color-code-card);
+  --color-danger: var(--raw-color-danger);
+  --color-error: var(--raw-color-error);
+  --color-input: var(--raw-color-input);
+  --color-link: var(--raw-color-link);
+  --color-neutral-100: var(--raw-color-neutral-100);
+  --color-neutral-200: var(--raw-color-neutral-200);
+  --color-neutral-300: var(--raw-color-neutral-300);
+  --color-neutral-400: var(--raw-color-neutral-400);
+  --color-neutral-50: var(--raw-color-neutral-50);
+  --color-neutral-500: var(--raw-color-neutral-500);
+  --color-neutral-600: var(--raw-color-neutral-600);
+  --color-neutral-700: var(--raw-color-neutral-700);
+  --color-neutral-800: var(--raw-color-neutral-800);
+  --color-neutral-900: var(--raw-color-neutral-900);
+  --color-neutral-950: var(--raw-color-neutral-950);
+  --color-on-accent: var(--raw-color-on-accent);
+  --color-on-code-card: var(--raw-color-on-code-card);
+  --color-on-danger: var(--raw-color-on-danger);
+  --color-on-error: var(--raw-color-on-error);
+  --color-on-link: var(--raw-color-on-link);
+  --color-on-primary: var(--raw-color-on-primary);
+  --color-on-secondary: var(--raw-color-on-secondary);
+  --color-on-selected: var(--raw-color-on-selected);
+  --color-on-sidebar: var(--raw-color-on-sidebar);
+  --color-on-success: var(--raw-color-on-success);
+  --color-on-surface: var(--raw-color-text);
+  --color-on-warning: var(--raw-color-on-warning);
+  --color-overlay: var(--raw-color-overlay);
+  --color-primary: var(--raw-color-primary);
+  --color-primary-hover: var(--raw-color-primary-hover);
+  --color-scrim: oklch(var(--raw-color-scrim) / 0.55);
+  --color-secondary: var(--raw-color-secondary);
+  --color-selected: var(--raw-color-selected);
+  --color-sidebar: var(--raw-color-sidebar);
+  --color-success: var(--raw-color-success);
+  --color-surface: var(--raw-color-surface);
+  --color-surface-hover: var(--raw-color-surface-hover);
+  --color-text: var(--raw-color-text);
+  --color-text-muted: var(--raw-color-text-muted);
+  --color-warning: var(--raw-color-warning);
+
+  /* Focus Ring */
+  --focus-ring-color: var(--color-primary);
+  --focus-ring-offset-color: var(--color-background);
+}
+
+.ds-lab[data-ds-theme="dark"] {
+  /* 폼 컨트롤 렌더링 힌트 (테마별로 재정의) */
+  color-scheme: dark;
+
+  /* Primitive (Raw) */
+  --raw-color-accent: 35% 0.06 155;
+  --raw-color-background: 18% 0.02 255;
+  --raw-color-border: 30% 0.01 255;
+  --raw-color-code-card: 27% 0.0314 274;
+  --raw-color-danger: 72% 0.18 25;
+  --raw-color-error: 72% 0.18 25;
+  --raw-color-input: 32% 0.01 255;
+  --raw-color-link: 80% 0.12 250;
+  --raw-color-neutral-100: 85% 0.004 255;
+  --raw-color-neutral-200: 72% 0.004 255;
+  --raw-color-neutral-300: 60% 0.004 255;
+  --raw-color-neutral-400: 50% 0.004 255;
+  --raw-color-neutral-50: 95% 0.004 255;
+  --raw-color-neutral-500: 40% 0.004 255;
+  --raw-color-neutral-600: 30% 0.004 255;
+  --raw-color-neutral-700: 22% 0.004 255;
+  --raw-color-neutral-800: 16% 0.004 255;
+  --raw-color-neutral-900: 12% 0.004 255;
+  --raw-color-neutral-950: 8% 0.004 255;
+  --raw-color-on-accent: 92% 0.01 155;
+  --raw-color-on-code-card: 96% 0.01 106;
+  --raw-color-on-danger: 14% 0.02 25;
+  --raw-color-on-error: 14% 0.02 25;
+  --raw-color-on-link: 92% 0.01 250;
+  --raw-color-on-primary: 14% 0.02 250;
+  --raw-color-on-secondary: 92% 0.01 250;
+  --raw-color-on-selected: 95% 0.02 150;
+  --raw-color-on-sidebar: 85% 0.01 255;
+  --raw-color-on-success: 14% 0.02 150;
+  --raw-color-on-warning: 14% 0.02 70;
+  --raw-color-overlay: 10% 0.01 255;
+  --raw-color-primary: 78% 0.12 250;
+  --raw-color-primary-hover: 82% 0.12 250;
+  --raw-color-scrim: 10% 0.01 255;
+  --raw-color-secondary: 32% 0.04 250;
+  --raw-color-selected: 45% 0.09 150;
+  --raw-color-sidebar: 15% 0.02 255;
+  --raw-color-success: 75% 0.1 150;
+  --raw-color-surface: 22% 0.02 255;
+  --raw-color-surface-hover: 26% 0.02 255;
+  --raw-color-text: 96% 0.01 255;
+  --raw-color-text-muted: 72% 0.01 255;
+  --raw-color-warning: 80% 0.12 70;
+
+  /* Semantic (Canonical) */
+  --color-accent: var(--raw-color-accent);
+  --color-background: var(--raw-color-background);
+  --color-border: var(--raw-color-border);
+  --color-code-card: var(--raw-color-code-card);
+  --color-danger: var(--raw-color-danger);
+  --color-error: var(--raw-color-error);
+  --color-input: var(--raw-color-input);
+  --color-link: var(--raw-color-link);
+  --color-neutral-100: var(--raw-color-neutral-100);
+  --color-neutral-200: var(--raw-color-neutral-200);
+  --color-neutral-300: var(--raw-color-neutral-300);
+  --color-neutral-400: var(--raw-color-neutral-400);
+  --color-neutral-50: var(--raw-color-neutral-50);
+  --color-neutral-500: var(--raw-color-neutral-500);
+  --color-neutral-600: var(--raw-color-neutral-600);
+  --color-neutral-700: var(--raw-color-neutral-700);
+  --color-neutral-800: var(--raw-color-neutral-800);
+  --color-neutral-900: var(--raw-color-neutral-900);
+  --color-neutral-950: var(--raw-color-neutral-950);
+  --color-on-accent: var(--raw-color-on-accent);
+  --color-on-code-card: var(--raw-color-on-code-card);
+  --color-on-danger: var(--raw-color-on-danger);
+  --color-on-error: var(--raw-color-on-error);
+  --color-on-link: var(--raw-color-on-link);
+  --color-on-primary: var(--raw-color-on-primary);
+  --color-on-secondary: var(--raw-color-on-secondary);
+  --color-on-selected: var(--raw-color-on-selected);
+  --color-on-sidebar: var(--raw-color-on-sidebar);
+  --color-on-success: var(--raw-color-on-success);
+  --color-on-surface: var(--raw-color-text);
+  --color-on-warning: var(--raw-color-on-warning);
+  --color-overlay: var(--raw-color-overlay);
+  --color-primary: var(--raw-color-primary);
+  --color-primary-hover: var(--raw-color-primary-hover);
+  --color-scrim: oklch(var(--raw-color-scrim) / 0.6);
+  --color-secondary: var(--raw-color-secondary);
+  --color-selected: var(--raw-color-selected);
+  --color-sidebar: var(--raw-color-sidebar);
+  --color-success: var(--raw-color-success);
+  --color-surface: var(--raw-color-surface);
+  --color-surface-hover: var(--raw-color-surface-hover);
+  --color-text: var(--raw-color-text);
+  --color-text-muted: var(--raw-color-text-muted);
+  --color-warning: var(--raw-color-warning);
+
+  /* Focus Ring */
+  --focus-ring-color: var(--color-primary);
+  --focus-ring-offset-color: var(--color-background);
+}

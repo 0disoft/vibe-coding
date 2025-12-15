@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { HTMLButtonAttributes } from 'svelte/elements';
+  import type { HTMLAnchorAttributes } from 'svelte/elements';
   import type { Snippet } from 'svelte';
 
   type Size = 'sm' | 'md' | 'lg';
@@ -7,11 +7,11 @@
   type Intent = 'primary' | 'secondary' | 'danger' | 'success' | 'warning';
   type IntentCss = 'primary' | 'secondary' | 'error' | 'success' | 'warning';
 
-  interface Props extends HTMLButtonAttributes {
+  interface Props extends HTMLAnchorAttributes {
     size?: Size;
     variant?: Variant;
     intent?: Intent;
-    loading?: boolean;
+    disabled?: boolean;
     children?: Snippet;
   }
 
@@ -19,9 +19,8 @@
     size = 'md',
     variant = 'solid',
     intent = 'primary',
-    loading = false,
     disabled = false,
-    type = 'button',
+    href,
     class: className = '',
     children,
     ...rest
@@ -38,19 +37,19 @@
   );
 
   const baseClass = 'ds-button ds-focus-ring ds-touch-target';
-  let stateClass = $derived(
-    (disabled || loading) ? 'cursor-not-allowed' : 'cursor-pointer'
+  let stateClass = $derived(disabled ? 'cursor-not-allowed' : 'cursor-pointer');
+  let style = $derived(
+    `padding: ${padding}; border-radius: var(--button-radius);${disabled ? ' opacity: var(--opacity-disabled);' : ''}`
   );
-  let style = $derived(`padding: ${padding}; border-radius: var(--button-radius);`);
 </script>
 
-<button
+<a
   {...rest}
-  type={type}
+  href={disabled ? undefined : href}
   class={`${baseClass} ${stateClass} ${className}`.trim()}
-  style={`${style}${disabled || loading ? ` opacity: var(--opacity-disabled);` : ''}`}
-  disabled={disabled || loading}
-  aria-busy={loading || undefined}
+  style={style}
+  aria-disabled={disabled ? 'true' : undefined}
+  tabindex={disabled ? -1 : undefined}
   data-ds-size={size}
   data-ds-variant={variant}
   data-ds-intent={intentCss}
@@ -58,4 +57,5 @@
   {#if children}
     {@render children()}
   {/if}
-</button>
+</a>
+

@@ -33,5 +33,11 @@ jobs:
       - name: Unit Tests
         run: bun run test:unit -- --run
 
+      - name: Verify DTCG → CSS Tokens
+        run: bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --verify
+
+      - name: Verify DTCG → CSS Tokens (Root)
+        run: bun .vibe-coding/TOOLS/design-system/dtcg-sync.ts --preset root --verify
+
       - name: Verify Design Tokens Manifest
         run: bun .vibe-coding/TOOLS/design-system/tokens-manifest.ts --stable --verify

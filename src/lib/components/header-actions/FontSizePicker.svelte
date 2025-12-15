@@ -3,6 +3,8 @@
   import { type FontSize, fontSize } from '$lib/stores';
   import { tick } from 'svelte';
 
+  import { DsIconButton } from '$lib/components/design-system';
+
   let showFontSizeModal = $state(false);
   let modalRef = $state<HTMLDivElement | null>(null);
   let buttonRef = $state<HTMLButtonElement | null>(null);
@@ -96,20 +98,18 @@
 <svelte:window onclick={handleOutsideClick} onkeydown={handleKeyDown} />
 
 <div class="relative">
-  <button
-    type="button"
+  <DsIconButton
     id="font-size-menu-button"
-    bind:this={buttonRef}
+    bind:ref={buttonRef}
     onclick={toggleFontSizeModal}
-    class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-    aria-label={m.font_size_change()}
+    label={m.font_size_change()}
     aria-haspopup="dialog"
     aria-expanded={showFontSizeModal}
     aria-controls="font-size-menu"
     data-testid="header-font-size-picker"
   >
     <span class="i-lucide-type h-4 w-4"></span>
-  </button>
+  </DsIconButton>
 
   <!-- 폰트 크기 모달 -->
   {#if showFontSizeModal}

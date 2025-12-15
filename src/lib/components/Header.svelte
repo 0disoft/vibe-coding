@@ -4,6 +4,8 @@
   import LanguagePicker from '$lib/components/header-actions/LanguagePicker.svelte';
   import ThemeToggle from '$lib/components/header-actions/ThemeToggle.svelte';
   import UserMenu from '$lib/components/header-actions/UserMenu.svelte';
+
+  import { DsIconButton } from '$lib/components/design-system';
   import * as m from '$lib/paraglide/messages.js';
   import { localizeUrl } from '$lib/paraglide/runtime.js';
   import type { Snippet } from 'svelte';
@@ -85,39 +87,6 @@
     }
   }
 
-  // 모바일 메뉴 키보드 탐색
-  function handleMobileMenuKeyDown(event: KeyboardEvent) {
-    if (!mobileMenuRef) return;
-
-    const items = Array.from(mobileMenuRef.querySelectorAll<HTMLElement>('a'));
-    if (items.length === 0) return; // 빈 배열 가드
-
-    const active = document.activeElement;
-    const currentIndex = active ? items.indexOf(active as HTMLElement) : -1;
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        items[(currentIndex + 1) % items.length]?.focus();
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        items[(currentIndex - 1 + items.length) % items.length]?.focus();
-        break;
-      case 'Home':
-        event.preventDefault();
-        items[0]?.focus();
-        break;
-      case 'End':
-        event.preventDefault();
-        items[items.length - 1]?.focus();
-        break;
-      case 'Escape':
-        event.preventDefault();
-        closeMobileMenu({ focusButton: true });
-        break;
-    }
-  }
 </script>
 
 <header
@@ -158,20 +127,19 @@
       {/if}
 
       <!-- 모바일: 햄버거 버튼 (가장 왼쪽) -->
-      <button
-        type="button"
-        bind:this={mobileMenuButtonRef}
+      <DsIconButton
+        bind:ref={mobileMenuButtonRef}
         onclick={toggleMobileMenu}
-        aria-label={mobileMenuOpen ? m.header_menu_close() : m.header_menu_open()}
+        label={mobileMenuOpen ? m.header_menu_close() : m.header_menu_open()}
         aria-expanded={mobileMenuOpen}
-        class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground md:hidden"
+        class="md:hidden"
       >
         {#if mobileMenuOpen}
           <span class="i-lucide-x h-4 w-4"></span>
         {:else}
           <span class="i-lucide-menu h-4 w-4"></span>
         {/if}
-      </button>
+      </DsIconButton>
 
       <!-- 공통 액션 버튼들 (모바일/데스크톱 모두 표시) -->
       <ThemeToggle />
@@ -200,40 +168,33 @@
   >
     <div class="flex h-12 items-center justify-between border-b border-border px-4">
       <span class="font-semibold">Menu</span>
-      <button
-        type="button"
+      <DsIconButton
         onclick={() => closeMobileMenu({ focusButton: true })}
-        aria-label={m.header_menu_close()}
-        class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        label={m.header_menu_close()}
       >
         <span class="i-lucide-x h-4 w-4"></span>
-      </button>
+      </DsIconButton>
     </div>
 
     <!-- 모바일 네비게이션 링크 -->
     <nav aria-label={m.header_mobile_nav_label()} class="flex flex-col p-4">
-      <div
-        role="menu"
-        tabindex="-1"
-        bind:this={mobileMenuRef}
-        onkeydown={handleMobileMenuKeyDown}
-        class="flex flex-col gap-1"
-      >
+      <ul bind:this={mobileMenuRef} class="flex flex-col gap-1">
         {#each navItems as item (item.href)}
           {@const active = isActive(item.href)}
-          <a
-            href={localizeUrl(item.href).href}
-            onclick={() => closeMobileMenu()}
-            aria-current={active ? 'page' : undefined}
-            role="menuitem"
-            class="rounded-md px-3 py-2 text-menu outline-none transition-colors hover:bg-accent focus:bg-accent {active
-              ? 'bg-accent text-foreground font-medium'
-              : 'text-muted-foreground'}"
-          >
-            {item.label()}
-          </a>
+          <li>
+            <a
+              href={localizeUrl(item.href).href}
+              onclick={() => closeMobileMenu()}
+              aria-current={active ? 'page' : undefined}
+              class="block rounded-md px-3 py-2 text-menu outline-none transition-colors hover:bg-accent focus:bg-accent {active
+                ? 'bg-accent text-foreground font-medium'
+                : 'text-muted-foreground'}"
+            >
+              {item.label()}
+            </a>
+          </li>
         {/each}
-      </div>
+      </ul>
     </nav>
   </div>
 {/if}
