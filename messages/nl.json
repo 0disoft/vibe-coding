@@ -211,5 +211,7 @@
 	"header_menu_close": "Menu sluiten",
 	"theme_toggle_label": "Thema wijzigen",
 	"language_picker_label": "Taal wijzigen",
-	"footer_nav_label": "Voettekstnavigatie"
+	"footer_nav_label": "Voettekstnavigatie",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

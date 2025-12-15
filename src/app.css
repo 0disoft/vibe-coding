@@ -4,14 +4,11 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* CSS 변수: 색상, 폰트, 사이즈 */
-@import "./styles/tokens.css";
+@import "./styles/typography.css";
 /* 디자인 시스템 전역 토큰(DTCG→CSS, :root 스코프) */
 @import "./styles/design-system.tokens.css";
 /* 디자인 시스템 전역 스타일(토큰 소비, 프로덕션에서도 사용) */
 @import "./styles/design-system.css";
-/* 디자인 시스템 lab (DEV 검증용, .ds-lab 스코프) */
-@import "./styles/design-system-lab.tokens.css";
-@import "./styles/design-system-lab.css";
 /* 기본 요소: body, h1-h3, code, pre */
 @import "./styles/base.css";
 /* 얇은 스크롤바 */

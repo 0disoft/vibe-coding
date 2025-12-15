@@ -37,10 +37,10 @@
     ├── content/                   # 콘텐츠 디렉토리 (Markdown 등)
     ├── scripts/                   # 빌드 스크립트
     ├── styles/
-    │   ├── tokens.css
+    │   ├── typography.css          # CSS 변수 (폰트, 언어별 설정)
     │   ├── design-system.tokens.css # 디자인 시스템 전역 토큰(:root 스코프, generated)
-    │   ├── design-system-lab.tokens.css # 디자인 시스템 lab 토큰(.ds-lab 스코프, generated)
-    │   ├── design-system-lab.css   # 디자인 시스템 lab 컴포넌트/패턴 스타일
+    │   ├── design-system-lab.tokens.css # 디자인 시스템 lab 토큰(lab layout import, generated)
+    │   ├── design-system-lab.css   # 디자인 시스템 lab 스타일(lab layout import)
     │   ├── base.css
     │   ├── scrollbar.css
     │   ├── prose.css
@@ -48,6 +48,7 @@
     ├── routes/                    # SvelteKit 페이지 라우트
     │   └── lab/                   # DEV 전용 lab 라우트(프로덕션 404)
     │       ├── +layout.server.ts  # DEV 가드
+    │       ├── +layout.svelte     # Lab 전용 스타일 스코프
     │       └── design-system/     # 디자인 시스템 검증 페이지
     └── lib/
         ├── index.ts
@@ -189,10 +190,10 @@
 
 | 파일              | 역할                                                      |
 | ----------------- | --------------------------------------------------------- |
-| `tokens.css`      | CSS 변수: 색상 팔레트, 폰트 스택, 사이즈 스케일, 다크모드 |
+| `typography.css`    | CSS 변수: 폰트 패밀리, 언어별 타이포그래피 설정           |
 | `design-system.tokens.css` | 디자인 시스템 전역 토큰(:root 스코프, generated) |
-| `design-system-lab.tokens.css` | 디자인 시스템 lab 토큰(.ds-lab 스코프, generated) |
-| `design-system-lab.css` | 디자인 시스템 lab 컴포넌트/패턴 스타일 |
+| `design-system-lab.tokens.css` | 디자인 시스템 lab 토큰(lab layout에서 import) |
+| `design-system-lab.css` | 디자인 시스템 lab 컴포넌트/패턴 스타일(lab layout에서 import) |
 | `base.css`        | 기본 HTML 요소 스타일 (body, h1-h3, code, pre)            |
 | `scrollbar.css`   | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일)          |
 | `prose.css`       | .prose 마크다운 콘텐츠 타이포그래피                       |
@@ -203,7 +204,16 @@
 | 파일/폴더 | 역할 |
 | --- | --- |
 | `routes/lab/+layout.server.ts` | DEV 전용 lab 가드 (프로덕션 404) |
+| `routes/lab/+layout.svelte` | Lab 전용 스타일 스코프(design-system-lab.* import) |
 | `routes/lab/design-system/+page.svelte` | 디자인 시스템 토큰/상태 UI 검증 페이지 |
+| `routes/offline/+page.svelte` | 오프라인 폴백 페이지 |
+| `routes/[[lang]]/` | i18n 로케일 파라미터 루트 (Optional) |
+| `routes/[[lang]]/terms/+page.svelte` | 이용약관 페이지 |
+| `routes/[[lang]]/privacy/+page.svelte` | 개인정보 처리방침 페이지 |
+| `routes/[[lang]]/cookie/+page.svelte` | 쿠키 정책 페이지 |
+| `routes/[[lang]]/gdpr/+page.svelte` | GDPR 및 개인정보 권리 페이지 |
+| `routes/[[lang]]/security/+page.svelte` | 보안 정책 페이지 |
+| `routes/[[lang]]/bug-bounty/+page.svelte` | 버그 바운티 프로그램 안내 페이지 |
 
 ### src/scripts/
 

@@ -211,5 +211,7 @@
 	"header_menu_close": "إغلاق القائمة",
 	"theme_toggle_label": "تغيير السمة",
 	"language_picker_label": "تغيير اللغة",
-	"footer_nav_label": "تنقل التذييل"
+	"footer_nav_label": "تنقل التذييل",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

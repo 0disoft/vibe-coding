@@ -36,6 +36,14 @@ a {
 	text-decoration: none;
 }
 
+/* 
+  접근성: 프로그램적으로 포커스를 받는 컨테이너(tabindex="-1")는 
+  포커스 링을 숨깁니다. (예: 페이지 이동 후 main 태그)
+*/
+[tabindex="-1"]:focus {
+	outline: none !important;
+}
+
 h1,
 h2,
 h3 {

@@ -211,5 +211,7 @@
 	"header_menu_close": "मेनू बंद करें",
 	"theme_toggle_label": "थीम बदलें",
 	"language_picker_label": "भाषा बदलें",
-	"footer_nav_label": "फुटर नेविगेशन"
+	"footer_nav_label": "फुटर नेविगेशन",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

@@ -58,12 +58,14 @@
   justify-content: center;
   gap: 0.5rem;
 
+  padding: var(--button-padding-y-md) var(--button-padding-x-md);
   font-size: var(--font-size-btn);
   line-height: 1.4;
   font-weight: 600;
 
   border-width: 1px;
   border-style: solid;
+  border-radius: var(--button-radius);
 
   transition:
     background-color var(--motion-duration-fast) var(--motion-ease),
@@ -73,10 +75,12 @@
 }
 
 .ds-button[data-ds-size="sm"] {
+  padding: var(--button-padding-y-sm) var(--button-padding-x-sm);
   font-size: var(--font-size-btn-sm);
 }
 
 .ds-button[data-ds-size="lg"] {
+  padding: var(--button-padding-y-lg) var(--button-padding-x-lg);
   font-size: var(--font-size-btn-lg);
 }
 
@@ -343,6 +347,7 @@
 .ds-tooltip {
   position: absolute;
   inset-inline-start: 50%;
+  width: max-content;
   max-width: var(--tooltip-max-width);
   padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
   border-radius: var(--tooltip-radius);

@@ -211,5 +211,7 @@
 	"header_menu_close": "Menüyü kapat",
 	"theme_toggle_label": "Temayı değiştir",
 	"language_picker_label": "Dili değiştir",
-	"footer_nav_label": "Alt bilgi gezintisi"
+	"footer_nav_label": "Alt bilgi gezintisi",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

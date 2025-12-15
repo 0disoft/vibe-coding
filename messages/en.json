@@ -211,5 +211,7 @@
 	"header_menu_close": "Close menu",
 	"theme_toggle_label": "Toggle theme",
 	"language_picker_label": "Change language",
-	"footer_nav_label": "Footer navigation"
+	"footer_nav_label": "Footer navigation",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

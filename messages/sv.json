@@ -211,5 +211,7 @@
 	"header_menu_close": "Stäng meny",
 	"theme_toggle_label": "Ändra tema",
 	"language_picker_label": "Ändra språk",
-	"footer_nav_label": "Sidfotsnavigering"
+	"footer_nav_label": "Sidfotsnavigering",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

@@ -211,5 +211,7 @@
 	"header_menu_close": "Закрыть меню",
 	"theme_toggle_label": "Сменить тему",
 	"language_picker_label": "Сменить язык",
-	"footer_nav_label": "Навигация в футере"
+	"footer_nav_label": "Навигация в футере",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

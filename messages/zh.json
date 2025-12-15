@@ -211,5 +211,7 @@
 	"header_menu_close": "关闭菜单",
 	"theme_toggle_label": "切换主题",
 	"language_picker_label": "更改语言",
-	"footer_nav_label": "底部导航"
+	"footer_nav_label": "底部导航",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

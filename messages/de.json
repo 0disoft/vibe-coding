@@ -211,5 +211,7 @@
 	"header_menu_close": "Menü schließen",
 	"theme_toggle_label": "Design wechseln",
 	"language_picker_label": "Sprache ändern",
-	"footer_nav_label": "Fußzeilennavigation"
+	"footer_nav_label": "Fußzeilennavigation",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

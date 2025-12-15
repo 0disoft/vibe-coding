@@ -211,5 +211,7 @@
 	"header_menu_close": "Fechar menu",
 	"theme_toggle_label": "Alterar tema",
 	"language_picker_label": "Alterar idioma",
-	"footer_nav_label": "Navegação de rodapé"
+	"footer_nav_label": "Navegação de rodapé",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

@@ -211,5 +211,7 @@
 	"header_menu_close": "Đóng menu",
 	"theme_toggle_label": "Thay đổi giao diện",
 	"language_picker_label": "Thay đổi ngôn ngữ",
-	"footer_nav_label": "Điều hướng chân trang"
+	"footer_nav_label": "Điều hướng chân trang",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

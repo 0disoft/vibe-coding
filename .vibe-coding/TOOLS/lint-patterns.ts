@@ -204,11 +204,39 @@ const RULES: LintRule[] = [
 		suggestion: '서버에서 실행 불가. browser 가드로 감싸거나 클라이언트로 이동',
 		severity: 'error',
 		scope: 'server-only'
+	},
+	// Design System Violations (Legacy/Raw Token Usage)
+	{
+		id: 'ds-legacy-token',
+		name: '구 버전 토큰 사용',
+		description: '레거시 css 변수(--color-gray-*) 감지',
+		pattern: /--color-(?:gray|red|blue|green|yellow|indigo|purple|pink)-(?:[1-9]00|50)/g,
+		suggestion: '디자인 시스템 Semantic 토큰(--neutral-*, --primary-*)을 사용하세요. (참고: .vibe-coding/TOOLS/design-system/tokens.dtcg.json)',
+		severity: 'warning',
+		scope: 'markup' // style 블록이나 클래스 내 사용 감지
+	},
+	{
+		id: 'ds-raw-tailwind-color',
+		name: 'Raw Tailwind/UnoCSS 색상 사용',
+		description: '기본 팔레트 색상(bg-blue-500 등) 직접 사용 감지',
+		pattern: /\b(?:text|bg|border|ring|divide|shadow|from|to|via)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|[1-9]00|950)\b/g,
+		suggestion: 'Semantic 클래스(bg-primary, text-muted-foreground)를 사용하세요. (참고: .vibe-coding/TOOLS/design-system/tokens.dtcg.json)',
+		severity: 'warning',
+		scope: 'markup'
+	},
+	{
+		id: 'ds-raw-font-family',
+		name: '기본 폰트 유틸리티 사용',
+		description: 'font-sans, font-mono 등 직접 사용 감지',
+		pattern: /\bfont-(?:sans|serif|mono)\b/g,
+		suggestion: '디자인 시스템 타이포그래피 클래스(.text-h1, .text-body 등)를 사용하세요. (참고: .vibe-coding/TOOLS/design-system/tokens.dtcg.json)',
+		severity: 'info', // 정보성으로 낮춤 (필요시 쓸 수도 있으므로)
+		scope: 'markup'
 	}
 ];
 
 // 파일 확장자 필터 (css, html은 js 모드로 처리하면 오탐 발생하여 제외)
-const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte'];
+const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte', '.css'];
 
 // 무시할 경로 패턴 (정규화된 경로 / 기준 매칭)
 const IGNORE_PATTERNS = [
@@ -596,6 +624,11 @@ function lintContent(content: string, filePath: string): LintResult[] {
 		];
 		const fullLines = content.split('\n');
 		results.push(...lintLines(fullLines, filePath, markupRules, 0, skipRanges, 'markup')); // markup mode
+	} else if (filePath.endsWith('.css')) {
+		// CSS 파일
+		const lines = content.split('\n');
+		// CSS는 Markup Scope 규칙(토큰 등)만 체크 + CSS 주석 모드
+		results.push(...lintLines(lines, filePath, markupRules, 0, [], 'css'));
 	} else {
 		// 일반 TS/JS 파일
 		const lines = content.split('\n');

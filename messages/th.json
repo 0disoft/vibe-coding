@@ -211,5 +211,7 @@
 	"header_menu_close": "ปิดเมนู",
 	"theme_toggle_label": "เปลี่ยนธีม",
 	"language_picker_label": "เปลี่ยนภาษา",
-	"footer_nav_label": "การนำทางส่วนท้าย"
+	"footer_nav_label": "การนำทางส่วนท้าย",
+	"meta_site_title": "{siteName}",
+	"meta_site_description": "{siteDescription}"
 }

@@ -64,7 +64,7 @@ src/
 │   ├── constants/                  # 상수 (쿠키 키, 사이트 정보)
 │   └── paraglide/                  # i18n 자동 생성 파일
 ├── styles/
-│   ├── tokens.css                  # CSS 변수 (색상, 폰트)
+│   ├── typography.css              # CSS 변수 (폰트, 언어별 설정)
 │   ├── base.css                    # 기본 HTML 스타일
 │   ├── scrollbar.css               # 스크롤바 스타일
 │   ├── prose.css                   # 마크다운 타이포그래피
