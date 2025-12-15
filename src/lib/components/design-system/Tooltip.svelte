@@ -50,6 +50,10 @@
 	let openTimer = $state<number | null>(null);
 	let closeTimer = $state<number | null>(null);
 
+	// 뷰포트 경계 감지용
+	let tooltipEl = $state<HTMLSpanElement | null>(null);
+	let offsetX = $state(0);
+
 	function clearTimers(): void {
 		if (openTimer !== null) window.clearTimeout(openTimer);
 		if (closeTimer !== null) window.clearTimeout(closeTimer);
@@ -60,6 +64,8 @@
 	function setOpen(next: boolean): void {
 		if (!isControlled) internalOpen = next;
 		onOpenChange?.(next);
+		// 닫힐 때 오프셋 리셋
+		if (!next) offsetX = 0;
 	}
 
 	function scheduleOpen(ms: number): void {
@@ -145,6 +151,33 @@
 		onfocusout: onFocusOut,
 		onkeydown: onKeyDown,
 	});
+
+	// 뷰포트 경계 감지 및 위치 조정
+	$effect(() => {
+		if (!isOpen || !tooltipEl) return;
+
+		// 렌더링 후 위치 측정
+		requestAnimationFrame(() => {
+			if (!tooltipEl) return;
+			const rect = tooltipEl.getBoundingClientRect();
+			const padding = 8; // 화면 가장자리 여백
+
+			let newOffset = 0;
+
+			// 왼쪽 오버플로우
+			if (rect.left < padding) {
+				newOffset = padding - rect.left;
+			}
+			// 오른쪽 오버플로우
+			else if (rect.right > window.innerWidth - padding) {
+				newOffset = window.innerWidth - padding - rect.right;
+			}
+
+			if (newOffset !== offsetX) {
+				offsetX = newOffset;
+			}
+		});
+	});
 </script>
 
 <svelte:window
@@ -174,10 +207,12 @@
 
 	{#if isOpen && !disabled && (tooltip || content)}
 		<span
+			bind:this={tooltipEl}
 			class="ds-tooltip ds-elevation-2"
 			role="tooltip"
 			id={tooltipId}
 			data-placement={placement}
+			style:transform={`translateX(calc(-50% + ${offsetX}px))`}
 		>
 			{#if tooltip}
 				{@render tooltip()}

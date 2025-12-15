@@ -154,7 +154,7 @@
         {#each availableLanguageTags as lang (lang)}
           <a
             href={localizeUrl(page.url.pathname + page.url.search, { locale: lang }).href}
-            class="inline-flex h-8 w-full items-center justify-start px-2 rounded-md text-menu-sm outline-none transition-colors {lang ===
+            class="inline-flex h-8 w-full items-center justify-start px-3 rounded-md text-menu-sm outline-none transition-colors {lang ===
             currentLang
               ? 'bg-selected text-selected-foreground'
               : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'}"

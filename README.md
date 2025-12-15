@@ -4,7 +4,8 @@ SvelteKit 2 + Svelte 5 기반 현대적 웹 스타터입니다.
 
 ## 주요 특징
 
-- **스타일링**: UnoCSS (Wind4) + OKLCH 시맨틱 색상 (`bg-primary`, `text-link` 등)
+- **디자인 시스템**: DTCG 기반 토큰 SSOT + OKLCH 시맨틱 색상, UnoCSS 통합
+- **컴포넌트**: Button, Dialog, Dropdown, Tooltip 등 13종 재사용 가능 UI
 - **테마/폰트**: 라이트/다크 테마 + 9단계 폰트 스케일, 쿠키 + SSR 동기화로 FOUC 방지
 - **i18n**: Paraglide JS로 20개 언어 지원 (한국어 기본)
 - **코드 하이라이팅**: Shiki v3 기반 VS Code급 구문 강조

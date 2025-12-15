@@ -108,8 +108,8 @@
   --ds-btn-bg: var(--color-secondary);
   --ds-btn-bg-hover: var(--color-secondary);
   --ds-btn-fg: var(--color-on-secondary);
-  --ds-btn-border: var(--color-secondary);
-  --ds-btn-text: var(--color-secondary);
+  --ds-btn-border: var(--color-border);
+  --ds-btn-text: var(--color-text);
   --ds-btn-hover-alpha: 0.92;
   --ds-btn-active-alpha: 0.85;
 }
@@ -303,7 +303,8 @@
 .ds-dropdown-menu {
   position: absolute;
   top: calc(100% + var(--spacing-2));
-  inset-inline-start: 0;
+  inset-inline-start: auto;
+  inset-inline-end: 0;
   min-width: 220px;
   background: oklch(var(--dropdown-surface));
   border: var(--border-width) solid oklch(var(--dropdown-border));
@@ -346,9 +347,10 @@
 
 .ds-tooltip {
   position: absolute;
-  inset-inline-start: 50%;
-  width: max-content;
-  max-width: var(--tooltip-max-width);
+  left: 50%;
+  width: auto;
+  min-width: min(280px, calc(100vw - 2rem));
+  max-width: min(var(--tooltip-max-width), calc(100vw - 2rem));
   padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
   border-radius: var(--tooltip-radius);
   background: oklch(var(--tooltip-surface));
@@ -359,8 +361,9 @@
   letter-spacing: var(--letter-spacing-normal);
   pointer-events: none;
   white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: break-word;
   text-wrap: pretty;
-  transform: translateX(-50%);
   z-index: var(--z-tooltip);
 }
 

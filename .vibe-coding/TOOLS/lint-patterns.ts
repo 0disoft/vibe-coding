@@ -232,6 +232,38 @@ const RULES: LintRule[] = [
 		suggestion: '디자인 시스템 타이포그래피 클래스(.text-h1, .text-body 등)를 사용하세요. (참고: .vibe-coding/TOOLS/design-system/tokens.dtcg.json)',
 		severity: 'info', // 정보성으로 낮춤 (필요시 쓸 수도 있으므로)
 		scope: 'markup'
+	},
+
+	// Design System Component Recommendations
+	{
+		id: 'ds-prefer-button',
+		name: 'DS Button 컴포넌트 권장',
+		description: '일반 button 태그 대신 DsButton 사용 권장',
+		// <button 태그 감지 (ds-button 클래스 사용 중이면 제외)
+		pattern: /<button\b(?![^>]*class\s*=\s*["'][^"']*ds-button)/gi,
+		suggestion: 'DsButton 또는 DsIconButton 컴포넌트 사용 권장 (참고: src/lib/components/design-system)',
+		severity: 'info',
+		scope: 'markup'
+	},
+	{
+		id: 'ds-prefer-input',
+		name: 'DS Input 컴포넌트 권장',
+		description: '일반 input 태그 대신 DsInput 사용 권장',
+		// ds- 클래스가 없는 input 태그 감지
+		pattern: /<input\b(?![^>]*class\s*=\s*["'][^"']*ds-)/gi,
+		suggestion: 'DsInput + DsField 컴포넌트 사용 권장 (참고: src/lib/components/design-system)',
+		severity: 'info',
+		scope: 'markup'
+	},
+	{
+		id: 'ds-custom-dropdown',
+		name: '커스텀 드롭다운 감지',
+		description: 'aria-haspopup 속성의 커스텀 드롭다운 감지',
+		// aria-haspopup="menu|listbox|dialog" 사용 시 DsDropdown 권장
+		pattern: /\baria-haspopup\s*=\s*["'](?:menu|listbox|dialog)["']/gi,
+		suggestion: 'DsDropdown 컴포넌트 사용 권장 (참고: src/lib/components/design-system/Dropdown.svelte)',
+		severity: 'info',
+		scope: 'markup'
 	}
 ];
 
@@ -246,7 +278,9 @@ const IGNORE_PATTERNS = [
 	/(?:^|\/)build(?:\/|$)/,
 	/(?:^|\/)\.git(?:\/|$)/,
 	/(?:^|\/)scripts(?:\/|$)/,
-	/(?:^|\/)\.vibe-coding(?:\/|$)/
+	/(?:^|\/)\.vibe-coding(?:\/|$)/,
+	// DS 컴포넌트 내부는 원본 HTML 태그 사용이 필수이므로 제외
+	/\/components\/design-system(?:\/|$)/
 ];
 
 // Svelte 파일에서 script/style 블록 추출 (시작 라인 오프셋 포함)
