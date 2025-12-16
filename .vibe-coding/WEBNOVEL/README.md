@@ -11,7 +11,7 @@ WEBNOVEL/
 ├── README.md           # 이 파일
 ├── WORKFLOW.md         # 집필 워크플로우 + 플로우차트
 ├── TEMPLATE.md         # 작품 기본 정보 (장르, 시놉시스)
-├── EPISODES.md         # 화별 줄거리 + 등장요소 목록
+├── EPISODES.md         # 화별 줄거리 + 등장요소 + 훅/루프 목록
 │
 ├── proposals/          # AI 제안 저장소
 │   └── _template.md
@@ -20,6 +20,10 @@ WEBNOVEL/
 ├── objects/            # 사물 개별 파일
 │   └── _template.md
 ├── phenomena/          # 현상 개별 파일
+│   └── _template.md
+├── hooks/              # 복선/떡밥(훅) 개별 파일
+│   └── _template.md
+├── loops/              # 미해결 과제(Open Loops) 개별 파일
 │   └── _template.md
 │
 ├── draft.txt           # 작가 초고 (선택, 사용 후 내용 삭제)

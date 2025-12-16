@@ -20,6 +20,30 @@ const APPLICATION_ID = 0x57564E4C;
 const REQUIRED_TABLES = ["element_types", "elements", "episodes", "episode_elements"] as const;
 
 /**
+ * 레거시/불일치 DB를 현재 스키마로 재생성
+ * (DB는 WEBNOVEL 마크다운에서 재생성 가능하므로, 동기화 스크립트 실행 시 안전하게 재구축합니다.)
+ */
+function rebuildDatabaseSchema(db: Database): void {
+  db.transaction(() => {
+    db.run("PRAGMA foreign_keys = OFF;");
+
+    db.run("DROP TABLE IF EXISTS episode_elements;");
+    db.run("DROP TABLE IF EXISTS elements;");
+    db.run("DROP TABLE IF EXISTS episodes;");
+    db.run("DROP TABLE IF EXISTS element_types;");
+
+    db.run("DROP INDEX IF EXISTS idx_elements_type;");
+    db.run("DROP INDEX IF EXISTS idx_elements_first_appear;");
+    db.run("DROP INDEX IF EXISTS idx_elements_role;");
+    db.run("DROP INDEX IF EXISTS idx_elements_type_first_appear;");
+    db.run("DROP INDEX IF EXISTS idx_episode_elements_episode;");
+    db.run("DROP INDEX IF EXISTS idx_episode_elements_element;");
+
+    db.run("PRAGMA foreign_keys = ON;");
+  })();
+}
+
+/**
  * 스키마 스모크 테스트: 주요 제약조건이 올바르게 적용되었는지 확인
  */
 function validateSchemaIntegrity(db: Database): string | null {
@@ -65,6 +89,7 @@ function validateSchemaIntegrity(db: Database): string | null {
  */
 export function initDatabase(): Database {
   const db = new Database(DB_PATH, { create: true });
+  let didRebuild = false;
 
   // 외래 키 제약조건 활성화
   db.run("PRAGMA foreign_keys = ON;");
@@ -81,12 +106,14 @@ export function initDatabase(): Database {
   ).get();
   const hasAnyTable = tableCount && tableCount.count > 0;
 
-  // 테이블이 하나라도 있으면 반드시 우리 DB인지 검증
+  // 테이블이 하나라도 있으면 반드시 우리 DB인지 검증 (레거시 DB 자동 복구 포함)
   if (hasAnyTable) {
     const appId = db.query<{ application_id: number; }, []>("PRAGMA application_id;").get();
+    const currentVersion = db.query<{ user_version: number; }, []>("PRAGMA user_version;").get();
+    const dbVersion = currentVersion?.user_version ?? 0;
 
-    // application_id가 우리 값이 아니면 (0 포함) 중단
-    if (!appId || appId.application_id !== APPLICATION_ID) {
+    // application_id가 우리 값이 아니면 중단 (단, 0은 레거시로 간주하고 복구 시도)
+    if (!appId || (appId.application_id !== APPLICATION_ID && appId.application_id !== 0)) {
       db.close();
       throw new Error(
         `❌ 호환되지 않는 DB 파일입니다.\n` +
@@ -113,18 +140,6 @@ export function initDatabase(): Database {
 
     // 스키마 스모크 테스트 (제약조건 검증)
     const schemaError = validateSchemaIntegrity(db);
-    if (schemaError) {
-      db.close();
-      throw new Error(
-        `❌ 스키마 불일치: ${schemaError}\n` +
-        `   다음 파일을 삭제하고 재동기화하세요:\n` +
-        `   "${DB_PATH}"`
-      );
-    }
-
-    // 스키마 버전 체크
-    const currentVersion = db.query<{ user_version: number; }, []>("PRAGMA user_version;").get();
-    const dbVersion = currentVersion?.user_version ?? 0;
 
     if (dbVersion > SCHEMA_VERSION) {
       db.close();
@@ -135,18 +150,39 @@ export function initDatabase(): Database {
       );
     }
 
-    if (dbVersion < SCHEMA_VERSION) {
+    // 레거시/불일치 DB는 동기화 시 재구축 (삭제 대신 DROP+CREATE로 복구)
+    // - schemaError가 있으면 구버전/손상으로 보고 재구축
+    // - dbVersion이 더 낮으면 마이그레이션 대신 재구축
+    const needsRebuild =
+      Boolean(schemaError) ||
+      (dbVersion > 0 && dbVersion < SCHEMA_VERSION);
+
+    if (needsRebuild) {
+      rebuildDatabaseSchema(db);
+      didRebuild = true;
+      // 아래의 버전/스키마 검증은 새로 생성된 스키마 기준으로 수행합니다.
+      // (CREATE TABLE은 아래 트랜잭션에서 처리)
+    } else if (schemaError) {
       db.close();
       throw new Error(
-        `❌ 스키마 버전 불일치: DB=${dbVersion}, 코드=${SCHEMA_VERSION}\n` +
+        `❌ 스키마 불일치: ${schemaError}\n` +
         `   다음 파일을 삭제하고 재동기화하세요:\n` +
         `   "${DB_PATH}"`
       );
     }
+
+    // 레거시 DB 자동 복구:
+    // - application_id=0 또는 user_version=0 인 경우, 스키마 검증 통과 시 현재 값으로 설정
+    if (appId.application_id === 0) {
+      db.run(`PRAGMA application_id = ${APPLICATION_ID};`);
+    }
+    if (dbVersion === 0) {
+      db.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
+    }
   }
 
   // 신규 DB 여부 (테이블이 0개일 때만 신규)
-  const isNewDb = !hasAnyTable;
+  const isNewDb = !hasAnyTable || didRebuild;
 
   // 스키마/시드/인덱스 생성을 트랜잭션으로 감싸기 (원자성 보장, 속도 향상)
   db.transaction(() => {
@@ -164,7 +200,9 @@ export function initDatabase(): Database {
       INSERT OR IGNORE INTO element_types (name, display_name) VALUES
       ('character', '캐릭터'),
       ('object', '사물'),
-      ('phenomenon', '현상');
+      ('phenomenon', '현상'),
+      ('hook', '복선/떡밥'),
+      ('loop', '미해결 과제');
     `);
 
     // 등장요소 테이블 (CHECK 제약조건, raw_content NOT NULL)

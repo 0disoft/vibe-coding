@@ -25,6 +25,8 @@ const TYPE_FOLDERS = [
   { folder: "characters", type: "character" },
   { folder: "objects", type: "object" },
   { folder: "phenomena", type: "phenomenon" },
+  { folder: "hooks", type: "hook" },
+  { folder: "loops", type: "loop" },
 ] as const;
 
 /**
@@ -54,8 +56,12 @@ function parseMarkdownTable(content: string): Map<string, string> {
  * 등장화 파싱 (숫자 또는 null)
  */
 function parseFirstAppear(value: string | undefined): number | null {
-  if (!value || value === "(몇 화에서 등장)" || value === "(작성 예정)") return null;
-  const match = value.match(/(\d+)/);
+  const trimmed = value?.trim();
+  if (!trimmed) return null;
+  if (trimmed.startsWith("(")) return null;
+  if (trimmed === "(몇 화에서 등장)" || trimmed === "(작성 예정)") return null;
+
+  const match = trimmed.match(/(\d+)/);
   if (!match) return null;
   const num = parseInt(match[1], 10);
   // DB CHECK (first_appear > 0) 정합성 유지
@@ -78,7 +84,8 @@ function parseTags(value: string | undefined): string | null {
  */
 async function parseElementFile(
   filePath: string,
-  typeId: number
+  typeId: number,
+  typeName: string
 ): Promise<ElementEntry | null> {
   const file = Bun.file(filePath);
   if (!(await file.exists())) return null;
@@ -96,10 +103,22 @@ async function parseElementFile(
   if (displayName.startsWith("(")) return null; // 미작성 파일 스킵
 
   // 역할 추출 (캐릭터용)
-  const role = table.get("역할") ?? null;
+  const role =
+    typeName === "character"
+      ? (table.get("역할") ?? null)
+      : typeName === "hook"
+        ? (table.get("유형") ?? null)
+        : typeName === "loop"
+          ? (table.get("유형") ?? null)
+        : null;
 
   // 등장화 추출
-  const firstAppear = parseFirstAppear(table.get("등장화"));
+  const firstAppear =
+    typeName === "hook"
+      ? parseFirstAppear(table.get("심은 화"))
+      : typeName === "loop"
+        ? parseFirstAppear(table.get("시작 화"))
+      : parseFirstAppear(table.get("등장화"));
 
   // 태그 추출
   const tags = parseTags(table.get("태그"));
@@ -120,7 +139,8 @@ async function parseElementFile(
  */
 async function parseElementsInFolder(
   folderPath: string,
-  typeId: number
+  typeId: number,
+  typeName: string
 ): Promise<ElementEntry[]> {
   try {
     const files = await readdir(folderPath);
@@ -128,7 +148,7 @@ async function parseElementsInFolder(
 
     // 병렬로 모든 파일 파싱 (I/O 대기 시간 최소화)
     const results = await Promise.all(
-      mdFiles.map((file) => parseElementFile(join(folderPath, file), typeId))
+      mdFiles.map((file) => parseElementFile(join(folderPath, file), typeId, typeName))
     );
 
     // null 제외한 유효한 엔트리만 반환
@@ -153,20 +173,37 @@ async function parseEpisodes(): Promise<{ num: number; summary: string; }[]> {
   if (!(await file.exists())) return [];
 
   const content = await file.text();
-  const lines = content.split("\n");
+  const lines = content.replace(/\r/g, "").split("\n");
   const episodes: { num: number; summary: string; }[] = [];
 
   let currentEpisode: number | null = null;
   let inSummary = false;
   let summary = "";
 
+  function normalizeSummary(raw: string): string | null {
+    const trimmed = raw.trim();
+    if (!trimmed) return null;
+
+    const meaningfulLines = trimmed
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+    // 템플릿 플레이스홀더("(작성 예정)" 등)만 남아있으면 미작성으로 간주
+    const isOnlyPlaceholders = meaningfulLines.every((l) => /^\(.*\)$/.test(l));
+    if (isOnlyPlaceholders) return null;
+
+    return trimmed;
+  }
+
   for (const line of lines) {
     // 에피소드 헤더 (## 1화, ## 2화, ...)
     const episodeMatch = line.match(/^## (\d+)화/);
     if (episodeMatch) {
       // 이전 에피소드 저장
-      if (currentEpisode !== null && summary.trim()) {
-        episodes.push({ num: currentEpisode, summary: summary.trim() });
+      const normalized = currentEpisode !== null ? normalizeSummary(summary) : null;
+      if (currentEpisode !== null && normalized) {
+        episodes.push({ num: currentEpisode, summary: normalized });
       }
       currentEpisode = parseInt(episodeMatch[1], 10);
       summary = "";
@@ -174,8 +211,8 @@ async function parseEpisodes(): Promise<{ num: number; summary: string; }[]> {
       continue;
     }
 
-    // 줄거리 섹션 시작 (### 줄거리 헤딩만 매칭)
-    if (/^###\s*줄거리\b/.test(line)) {
+    // 줄거리 섹션 시작 (### 줄거리 / ### 1화 줄거리 둘 다 허용)
+    if (/^###\s*(?:\d+화\s*)?줄거리\b/.test(line)) {
       inSummary = true;
       continue;
     }
@@ -193,8 +230,9 @@ async function parseEpisodes(): Promise<{ num: number; summary: string; }[]> {
   }
 
   // 마지막 에피소드 저장
-  if (currentEpisode !== null && summary.trim()) {
-    episodes.push({ num: currentEpisode, summary: summary.trim() });
+  const normalized = currentEpisode !== null ? normalizeSummary(summary) : null;
+  if (currentEpisode !== null && normalized) {
+    episodes.push({ num: currentEpisode, summary: normalized });
   }
 
   return episodes;
@@ -223,7 +261,7 @@ async function main() {
       }
 
       const folderPath = join(WEBNOVEL_PATH, folder);
-      const elements = await parseElementsInFolder(folderPath, typeId);
+      const elements = await parseElementsInFolder(folderPath, typeId, type);
       allElements.push({ folder, elements });
     }
 

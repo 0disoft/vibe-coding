@@ -23,6 +23,8 @@
       --character: #ff6b9d;
       --object: #00d9ff;
       --phenomenon: #a855f7;
+      --hook: #ffab00;
+      --loop: #00e676;
     }
 
     [data-theme="light"] {
@@ -336,6 +338,14 @@
       background: var(--phenomenon);
     }
 
+    .element-card.type-hook::before {
+      background: var(--hook);
+    }
+
+    .element-card.type-loop::before {
+      background: var(--loop);
+    }
+
     .card-header {
       display: flex;
       justify-content: space-between;
@@ -368,6 +378,16 @@
     .card-type.type-phenomenon {
       background: rgba(168, 85, 247, 0.2);
       color: var(--phenomenon);
+    }
+
+    .card-type.type-hook {
+      background: rgba(255, 171, 0, 0.2);
+      color: var(--hook);
+    }
+
+    .card-type.type-loop {
+      background: rgba(0, 230, 118, 0.2);
+      color: var(--loop);
     }
 
     .card-meta {
@@ -601,6 +621,14 @@
         <div class="stat-label">현상</div>
       </div>
       <div class="stat-card">
+        <div class="stat-value" id="hookCount">-</div>
+        <div class="stat-label">복선/떡밥</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="loopCount">-</div>
+        <div class="stat-label">미해결 과제</div>
+      </div>
+      <div class="stat-card">
         <div class="stat-value" id="episodeCount">-</div>
         <div class="stat-label">에피소드</div>
       </div>
@@ -626,7 +654,7 @@
           </select>
         </div>
         <div class="filter-group">
-          <label for="roleFilter">역할</label>
+          <label for="roleFilter">역할/유형</label>
           <select id="roleFilter">
             <option value="">전체</option>
           </select>
@@ -638,7 +666,7 @@
           </select>
         </div>
         <div class="filter-group">
-          <label for="firstAppearFilter">등장화</label>
+          <label for="firstAppearFilter">화(등장/심기)</label>
           <select id="firstAppearFilter">
             <option value="">전체</option>
           </select>
@@ -706,6 +734,8 @@
       characterCount: document.getElementById('characterCount'),
       objectCount: document.getElementById('objectCount'),
       phenomenonCount: document.getElementById('phenomenonCount'),
+      hookCount: document.getElementById('hookCount'),
+      loopCount: document.getElementById('loopCount'),
       episodeCount: document.getElementById('episodeCount'),
     };
 
@@ -793,6 +823,8 @@
         el.characterCount.textContent = byType['캐릭터'] || 0;
         el.objectCount.textContent = byType['사물'] || 0;
         el.phenomenonCount.textContent = byType['현상'] || 0;
+        el.hookCount.textContent = byType['복선/떡밥'] || 0;
+        el.loopCount.textContent = byType['미해결 과제'] || 0;
       } catch (error) {
         console.error('통계 로드 실패:', error);
       }
@@ -901,8 +933,8 @@
           <div class="detail-section">
             <h3>기본 정보</h3>
             <p><strong>유형:</strong> ${escapeHtml(detail.type_display)}</p>
-            ${detail.role ? `<p><strong>역할:</strong> ${escapeHtml(detail.role)}</p>` : ''}
-            ${detail.first_appear ? `<p><strong>등장화:</strong> ${detail.first_appear}화</p>` : ''}
+            ${detail.role ? `<p><strong>역할/유형:</strong> ${escapeHtml(detail.role)}</p>` : ''}
+            ${detail.first_appear ? `<p><strong>화(등장/심기):</strong> ${detail.first_appear}화</p>` : ''}
             ${detail.tags ? `<p><strong>태그:</strong> ${detail.tags.split(',').map(t => `#${escapeHtml(t.trim())}`).join(' ')}</p>` : ''}
           </div>
           <div class="detail-section">
