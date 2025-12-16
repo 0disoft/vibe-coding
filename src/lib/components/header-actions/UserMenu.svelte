@@ -2,7 +2,7 @@
   import * as m from '$lib/paraglide/messages.js';
   import { localizeUrl } from '$lib/paraglide/runtime.js';
 
-  import { DsDropdown, DsIconButton } from '$lib/components/design-system';
+  import { DsDropdown, DsDropdownItem, DsIconButton } from '$lib/components/design-system';
 
   // TODO: Better-Auth 연동 시 실제 인증 상태로 교체
   // 현재는 UI 확인용 mock 상태
@@ -47,7 +47,7 @@
   {#snippet trigger(props)}
     <DsIconButton
       {...props}
-      class={isLoggedIn ? 'text-success' : 'text-warning'}
+      intent={isLoggedIn ? 'success' : 'warning'}
       label={m.user_menu()}
       data-testid="header-user-menu"
     >
@@ -83,76 +83,64 @@
       </div>
 
       <div class="grid gap-1">
-        <a
+        <DsDropdownItem
           href={localizeUrl('/profile').href}
-          class="ds-dropdown-item ds-focus-ring"
-          role="menuitem"
           onclick={() => close()}
         >
           <span class="i-lucide-user h-4 w-4"></span>
           {m.menu_profile()}
-        </a>
-        <a
+        </DsDropdownItem>
+        <DsDropdownItem
           href={localizeUrl('/settings').href}
-          class="ds-dropdown-item ds-focus-ring"
-          role="menuitem"
           onclick={() => close()}
         >
           <span class="i-lucide-settings h-4 w-4"></span>
           {m.menu_settings()}
-        </a>
+        </DsDropdownItem>
 
         <div class="my-1 border-t border-border"></div>
 
-        <button
-          type="button"
+        <DsDropdownItem
           onclick={() => {
             handleLogout();
             close();
           }}
-          class="ds-dropdown-item ds-focus-ring"
-          data-ds-intent="destructive"
-          role="menuitem"
+          intent="destructive"
         >
           <span class="i-lucide-log-out h-4 w-4"></span>
           {m.menu_logout()}
-        </button>
+        </DsDropdownItem>
       </div>
     {:else}
       <!-- 비로그인 상태 메뉴 -->
       <div class="grid gap-1">
-        <a
+        <DsDropdownItem
           href={localizeUrl('/login').href}
-          class="ds-dropdown-item ds-focus-ring"
-          role="menuitem"
           onclick={() => close()}
         >
           <span class="i-lucide-log-in h-4 w-4"></span>
           {m.menu_login()}
-        </a>
-        <a
+        </DsDropdownItem>
+        <DsDropdownItem
           href={localizeUrl('/signup').href}
-          class="ds-dropdown-item ds-focus-ring"
-          role="menuitem"
           onclick={() => close()}
         >
           <span class="i-lucide-user-plus h-4 w-4"></span>
           {m.menu_signup()}
-        </a>
+        </DsDropdownItem>
       </div>
     {/if}
 
     <!-- 개발용: 로그인 상태 토글 버튼 (프로덕션에서는 표시되지 않음) -->
     {#if import.meta.env.DEV}
       <div class="mt-2 pt-2 border-t border-border">
-        <button
-          type="button"
+        <DsDropdownItem
           onclick={toggleLoginState}
-          class="inline-flex h-8 w-full items-center justify-center gap-2 px-2 rounded-md text-helper text-muted-foreground transition-colors hover:bg-accent"
+          class="text-menu-sm text-muted-foreground"
         >
           <span class="i-lucide-bug h-3 w-3"></span>
           DEV: Toggle Login State
-        </button>
+        </DsDropdownItem>
       </div>
     {/if}
   {/snippet}

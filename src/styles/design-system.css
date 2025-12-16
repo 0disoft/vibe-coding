@@ -284,6 +284,14 @@
   --ds-btn-bg-hover: var(--color-secondary);
 }
 
+.ds-icon-button[data-ds-intent="success"] {
+  --ds-btn-text: var(--color-success);
+}
+
+.ds-icon-button[data-ds-intent="warning"] {
+  --ds-btn-text: var(--color-warning);
+}
+
 .ds-icon-button[data-ds-intent="error"] {
   --ds-btn-text: var(--color-error);
   --ds-btn-bg: var(--color-error);

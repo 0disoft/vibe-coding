@@ -2,7 +2,7 @@
 	import * as m from "$lib/paraglide/messages.js";
 	import { type FontSize, fontSize } from "$lib/stores";
 
-	import { DsDropdown, DsIconButton } from "$lib/components/design-system";
+	import { DsDropdown, DsDropdownItem, DsIconButton } from "$lib/components/design-system";
 
 	function selectFontSize(level: FontSize) {
 		fontSize.set(level);
@@ -62,7 +62,6 @@
 <DsDropdown
 	align="end"
 	menuClass="w-56"
-	itemSelector={'[role="menuitemradio"]'}
 >
 	{#snippet trigger(props)}
 		<DsIconButton
@@ -85,18 +84,17 @@
 			onkeydown={handleMenuKeyDown}
 		>
 			{#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as const as level (level)}
-				<button
-					type="button"
+				<DsDropdownItem
 					onclick={() => {
 						selectFontSize(level);
 						close();
 					}}
-					class="ds-dropdown-item ds-focus-ring justify-center"
+					class="justify-center"
 					aria-checked={fontSize.current === level}
 					role="menuitemradio"
 				>
 					{level}
-				</button>
+				</DsDropdownItem>
 			{/each}
 		</div>
 	{/snippet}

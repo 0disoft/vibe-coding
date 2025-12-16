@@ -3,7 +3,7 @@
 	import * as m from "$lib/paraglide/messages.js";
 	import { getLocale, locales, localizeUrl } from "$lib/paraglide/runtime";
 
-	import { DsDropdown, DsIconButton } from "$lib/components/design-system";
+	import { DsDropdown, DsDropdownItem, DsIconButton } from "$lib/components/design-system";
 
 	// 언어 코드 → 사람이 읽기 쉬운 이름 맵
 	const languageNames: Record<string, string> = {
@@ -52,7 +52,6 @@
 <DsDropdown
 	align="end"
 	menuClass="!min-w-fit w-max max-h-[300px] overflow-y-auto thin-scrollbar"
-	itemSelector={`[role="menuitemradio"]`}
 >
 	{#snippet trigger(props)}
 		<DsIconButton
@@ -66,11 +65,11 @@
 
 	{#snippet children({ close })}
 		{#each availableLanguageTags as lang (lang)}
-			<a
+			<DsDropdownItem
 				href={localizeUrl(page.url.pathname + page.url.search, {
 					locale: lang,
 				}).href}
-				class="ds-dropdown-item ds-focus-ring whitespace-nowrap"
+				class="whitespace-nowrap"
 				data-sveltekit-reload
 				onclick={() => {
 					document.cookie = `PARAGLIDE_LOCALE=${lang}; path=/; max-age=31536000; SameSite=Lax`;
@@ -82,7 +81,7 @@
 				role="menuitemradio"
 			>
 				{getLanguageName(lang)}
-			</a>
+			</DsDropdownItem>
 		{/each}
 	{/snippet}
 </DsDropdown>

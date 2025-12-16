@@ -2,6 +2,7 @@ export { default as DsButton } from './Button.svelte';
 export { default as DsCard } from './Card.svelte';
 export { default as DsDialog } from './Dialog.svelte';
 export { default as DsDropdown } from './Dropdown.svelte';
+export { default as DsDropdownItem } from './DropdownItem.svelte';
 export { default as DsField } from './Field.svelte';
 export { default as DsIcon } from './Icon.svelte';
 export { default as DsIconButton } from './IconButton.svelte';

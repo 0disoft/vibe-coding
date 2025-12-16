@@ -76,6 +76,14 @@ src/
 └── service-worker.ts               # PWA 오프라인 지원
 ```
 
+## 디자인 시스템 운영 규칙 (권장)
+
+- 토큰 SSOT: `src/styles/design-system.tokens.css`
+- 스타일 규칙: `src/styles/design-system.css`
+- 컴포넌트: `src/lib/components/design-system/` 아래 `Ds*` 우선 사용
+- 드랍다운/메뉴 아이템은 `DsDropdownItem` 우선 사용(직접 `ds-dropdown-item` 사용은 지양)
+- 색/상태 표현은 유틸(`text-*`, `bg-*`, `hover:*`)보다 `Ds*`의 `intent`/`variant` 우선
+
 자세한 구조는 `.vibe-coding/TREE.md` 참조.
 
 ## 프리퍼런스
