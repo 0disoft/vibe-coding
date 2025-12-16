@@ -3,6 +3,24 @@
    기본 HTML 요소 스타일: body, headings, paragraphs, code
    ═══════════════════════════════════════════════════════════════════════════ */
 
+:root {
+	/* 
+	   뷰포트 너비 기반 spacing 스케일링 (CSS-only)
+	   - 375px에서 0.75x, 1200px에서 1.0x
+	   - calc에서 length/length 나눗셈은 브라우저 호환성이 떨어져서(vw/px) 사용하지 않습니다.
+	   - 대신 clamp + (rem + vw) 선형식을 사용해 안전하게 보간합니다.
+	*/
+	/* 주의: base.css가 tokens.css보다 뒤에 로드되어야 적용됨 (app.css 순서 확인 필) */
+	--spacing-1: clamp(0.1875rem, calc(0.159091rem + 0.121212vw), 0.25rem);
+	--spacing-2: clamp(0.375rem, calc(0.318182rem + 0.242424vw), 0.5rem);
+	--spacing-3: clamp(0.5625rem, calc(0.477273rem + 0.363636vw), 0.75rem);
+	--spacing-4: clamp(0.75rem, calc(0.636364rem + 0.484848vw), 1rem);
+	--spacing-6: clamp(1.125rem, calc(0.954545rem + 0.727272vw), 1.5rem);
+	--spacing-8: clamp(1.5rem, calc(1.272727rem + 0.969696vw), 2rem);
+	--spacing-12: clamp(2.25rem, calc(1.909091rem + 1.454545vw), 3rem);
+	--spacing-16: clamp(3rem, calc(2.545455rem + 1.939394vw), 4rem);
+}
+
 body {
 	background-color: oklch(var(--color-background));
 	color: oklch(var(--color-text));
@@ -66,6 +84,12 @@ h3 {
 	line-height: var(--line-height-heading);
 }
 
+h4 {
+	font-size: var(--font-size-h4);
+	line-height: var(--line-height-heading);
+	text-wrap: balance;
+}
+
 p {
 	font-size: var(--font-size-body);
 	line-height: var(--line-height-body);
@@ -119,6 +143,8 @@ pre:not(.shiki) {
 	padding: 1rem;
 	overflow-x: auto;
 }
+
+/* .code-card removed to use CodeBlock's inline styles */
 
 .code-card {
 	background-color: oklch(var(--color-code-card));

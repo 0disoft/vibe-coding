@@ -4,38 +4,107 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .prose {
-	color: oklch(var(--color-text-muted));
-	font-size: var(--font-size-prose);
-	line-height: var(--line-height-prose);
+	color: oklch(var(--color-text-muted)) !important;
+	font-size: var(--font-size-prose) !important;
+	line-height: var(--line-height-body) !important;
 }
 
 .prose :where(p, ul, ol, li) {
-	color: oklch(var(--color-text-muted));
-	font-size: inherit;
-	line-height: inherit;
+	color: oklch(var(--color-text-muted)) !important;
+	font-size: inherit !important;
+	line-height: inherit !important;
 }
 
 .prose :where(h1, h2, h3, h4, h5, h6, strong, b, th) {
-	color: oklch(var(--color-text));
+	color: oklch(var(--color-text)) !important;
+}
+
+.prose h1 {
+	font-size: var(--font-size-h1);
+	line-height: var(--line-height-heading);
+}
+
+.prose h2 {
+	font-size: var(--font-size-h2);
+	line-height: var(--line-height-heading);
+}
+
+.prose h3 {
+	font-size: var(--font-size-h3);
+	line-height: var(--line-height-heading);
+}
+
+.prose h4 {
+	font-size: var(--font-size-h4);
+	line-height: var(--line-height-heading);
 }
 
 .prose :where(a) {
-	color: oklch(var(--color-link));
-	text-decoration: none;
+	color: oklch(var(--color-link)) !important;
+	text-decoration-line: underline !important;
+	text-decoration-thickness: 1px !important;
+	text-decoration-color: oklch(var(--color-link) / 0.45) !important;
+	text-underline-offset: 0.18em !important;
+	text-decoration-skip-ink: auto;
+	font-weight: 500;
+}
+
+.prose :where(a:hover) {
+	color: oklch(var(--color-link) / 0.9) !important;
+	text-decoration-color: oklch(var(--color-link) / 0.75) !important;
 }
 
 .prose :where(code) {
-	color: oklch(var(--color-on-accent));
-	background-color: oklch(var(--color-accent) / 0.3);
-	padding: 0.1em 0.3em;
-	border-radius: 0.25em;
-	font-weight: 500;
+	color: oklch(var(--color-on-accent)) !important;
+	background-color: oklch(var(--color-accent) / 0.3) !important;
+	font-size: var(--font-size-inline-code) !important;
+	padding: 0.1em 0.3em !important;
+	border-radius: 0.25em !important;
+	font-weight: var(--font-weight-regular) !important;
+}
+
+.prose :where(pre code) {
+	color: inherit !important;
+	background-color: transparent !important;
+	font-size: inherit !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+	font-weight: inherit;
 }
 
 
 .prose :where(blockquote) {
-	color: oklch(var(--color-text-muted));
-	border-left-color: oklch(var(--color-border));
+	color: oklch(var(--color-text)) !important;
+	background-color: oklch(var(--color-surface) / 0.6) !important;
+	border-left: 4px solid oklch(var(--color-primary)) !important;
+	border-radius: var(--radius-md);
+	padding: var(--spacing-3) var(--spacing-4);
+	line-height: var(--line-height-body) !important;
+}
+
+.prose :where(blockquote p) {
+	margin: 0 !important;
+	font-size: inherit !important;
+	line-height: inherit !important;
+}
+
+.prose :where(blockquote p + p) {
+	margin-top: var(--spacing-2) !important;
+}
+
+.prose ul {
+	list-style-type: disc;
+	padding-left: 1.625em;
+}
+
+.prose ol {
+	list-style-type: decimal;
+	padding-left: 1.625em;
+}
+
+.prose li {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
 
 /* 개인정보처리방침 테이블 스타일 조정 */

@@ -31,7 +31,12 @@ function setAttrOnTag(tag: string, name: string, value: string): string {
  * 참고: setAttrOnTag는 name="만 찾으므로, SSR 출력에서 속성이
  * 큰따옴표(")를 사용한다는 전제가 있습니다 (SvelteKit 기본 동작).
  */
-function patchHtmlRoot(html: string, theme: string | null, fontSize: string | null): string {
+function patchHtmlRoot(
+	html: string,
+	theme: string | null,
+	fontSize: string | null,
+	dir: string
+): string {
 	// 성능 최적화: 전체 HTML 대신 앞 8KB만 lowercase 처리
 	const HEAD_LIMIT = 8192;
 	const head = html.slice(0, HEAD_LIMIT);
@@ -54,6 +59,9 @@ function patchHtmlRoot(html: string, theme: string | null, fontSize: string | nu
 
 	const end = start + endRel;
 	let tag = html.slice(start, end + 1);
+
+	// dir 속성 주입 (항상 존재해야 함)
+	tag = setAttrOnTag(tag, 'dir', dir);
 
 	if (theme) tag = setAttrOnTag(tag, 'data-theme', theme);
 	if (fontSize) tag = setAttrOnTag(tag, 'data-font-size', fontSize);
@@ -82,8 +90,12 @@ export const handleParaglide: Handle = ({ event, resolve }) =>
 				// 언어 속성 주입 (중복 등장 대비 replaceAll 사용)
 				html = html.replaceAll('%paraglide.lang%', locale);
 
-				// <html> 태그에만 테마/폰트 속성 주입
-				html = patchHtmlRoot(html, theme, fontSize);
+				// RTL 감지 (아랍어인 경우 right-to-left)
+				// TODO: RTL 언어가 늘어나면 배열로 관리
+				const dir = locale === 'ar' ? 'rtl' : 'ltr';
+
+				// <html> 태그에만 테마/폰트/방향 속성 주입
+				html = patchHtmlRoot(html, theme, fontSize, dir);
 
 				return html;
 			}

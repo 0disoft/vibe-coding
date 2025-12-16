@@ -17,7 +17,6 @@
 ├── .bun-version
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                 # CI: lint/check/unit + DTCG→CSS/토큰 매니페스트 검증
 ├── .vibe-coding/
 │   └── PUBLIC_APIS/
 │       └── README.md               # Public API 카탈로그 (하위 구조는 이 파일 참조)
@@ -38,7 +37,7 @@
     ├── scripts/                   # 빌드 스크립트
     ├── styles/
     │   ├── typography.css          # CSS 변수 (폰트, 언어별 설정)
-    │   ├── design-system.tokens.css # 디자인 시스템 전역 토큰(:root 스코프, generated)
+    │   ├── design-system.tokens.css # 디자인 시스템 전역 토큰(:root 스코프, SSOT)
     │   ├── design-system.css       # 디자인 시스템 컴포넌트/패턴 스타일
     │   ├── base.css
     │   ├── scrollbar.css
@@ -186,7 +185,7 @@
 | 파일              | 역할                                                      |
 | ----------------- | --------------------------------------------------------- |
 | `typography.css`    | CSS 변수: 폰트 패밀리, 언어별 타이포그래피 설정           |
-| `design-system.tokens.css` | 디자인 시스템 전역 토큰(:root 스코프, generated) |
+| `design-system.tokens.css` | 디자인 시스템 전역 토큰(:root 스코프, SSOT) |
 | `design-system.css` | 디자인 시스템 컴포넌트/패턴 스타일                        |
 | `base.css`        | 기본 HTML 요소 스타일 (body, h1-h3, code, pre)            |
 | `scrollbar.css`   | 얇은 스크롤바 스타일 (Svelte 공식 사이트 스타일)          |

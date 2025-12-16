@@ -4,7 +4,7 @@ SvelteKit 2 + Svelte 5 기반 현대적 웹 스타터입니다.
 
 ## 주요 특징
 
-- **디자인 시스템**: DTCG 기반 토큰 SSOT + OKLCH 시맨틱 색상, UnoCSS 통합
+- **디자인 시스템**: CSS 토큰 SSOT(`src/styles/design-system.tokens.css`) + OKLCH 시맨틱 색상, UnoCSS 통합
 - **컴포넌트**: Button, Dialog, Dropdown, Tooltip 등 13종 재사용 가능 UI
 - **테마/폰트**: 라이트/다크 테마 + 9단계 폰트 스케일, 쿠키 + SSR 동기화로 FOUC 방지
 - **i18n**: Paraglide JS로 20개 언어 지원 (한국어 기본)
@@ -111,7 +111,7 @@ bun lint          # Biome 린트 + 포맷팅
 ## 문서
 
 - `.vibe-coding/TREE.md` - 프로젝트 구조 상세
-- `.vibe-coding/TOOLS/design-system/README.md` - 디자인 시스템 운영(토큰 SSOT, 동기화 규칙)
+- `src/styles/design-system.tokens.css` - 디자인 시스템 토큰(SSOT)
 - `.vibe-coding/SPEC.md` - 프로젝트 스펙
 - `.vibe-coding/KNOWLEDGE/` - 기술 지식 베이스
 - `.vibe-coding/TROUBLE/SOLVED.md` - 문제 해결 기록

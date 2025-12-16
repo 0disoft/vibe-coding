@@ -211,7 +211,7 @@ const RULES: LintRule[] = [
 		name: '구 버전 토큰 사용',
 		description: '레거시 css 변수(--color-gray-*) 감지',
 		pattern: /--color-(?:gray|red|blue|green|yellow|indigo|purple|pink)-(?:[1-9]00|50)/g,
-		suggestion: '디자인 시스템 Semantic 토큰(--neutral-*, --primary-*)을 사용하세요. (참고: .vibe-coding/TOOLS/design-system/tokens.dtcg.json)',
+		suggestion: '디자인 시스템 Semantic 토큰(--color-*, --raw-color-*)을 사용하세요. (참고: src/styles/design-system.tokens.css)',
 		severity: 'warning',
 		scope: 'markup' // style 블록이나 클래스 내 사용 감지
 	},
@@ -220,7 +220,7 @@ const RULES: LintRule[] = [
 		name: 'Raw Tailwind/UnoCSS 색상 사용',
 		description: '기본 팔레트 색상(bg-blue-500 등) 직접 사용 감지',
 		pattern: /\b(?:text|bg|border|ring|divide|shadow|from|to|via)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|[1-9]00|950)\b/g,
-		suggestion: 'Semantic 클래스(bg-primary, text-muted-foreground)를 사용하세요. (참고: .vibe-coding/TOOLS/design-system/tokens.dtcg.json)',
+		suggestion: 'Semantic 클래스(bg-primary, text-muted-foreground)를 사용하세요. (참고: src/styles/design-system.tokens.css)',
 		severity: 'warning',
 		scope: 'markup'
 	},
@@ -229,7 +229,7 @@ const RULES: LintRule[] = [
 		name: '기본 폰트 유틸리티 사용',
 		description: 'font-sans, font-mono 등 직접 사용 감지',
 		pattern: /\bfont-(?:sans|serif|mono)\b/g,
-		suggestion: '디자인 시스템 타이포그래피 클래스(.text-h1, .text-body 등)를 사용하세요. (참고: .vibe-coding/TOOLS/design-system/tokens.dtcg.json)',
+		suggestion: '디자인 시스템 타이포그래피 클래스(.text-h1, .text-body 등)를 사용하세요. (참고: src/styles/design-system.tokens.css)',
 		severity: 'info', // 정보성으로 낮춤 (필요시 쓸 수도 있으므로)
 		scope: 'markup'
 	},

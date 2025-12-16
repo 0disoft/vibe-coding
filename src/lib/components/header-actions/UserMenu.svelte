@@ -41,7 +41,7 @@
 
 <DsDropdown
   align="end"
-  menuClass="w-56 max-h-80 overflow-y-auto thin-scrollbar p-2"
+  menuClass="w-56 max-h-80 overflow-y-auto thin-scrollbar"
   itemSelector='[role="menuitem"]'
 >
   {#snippet trigger(props)}
@@ -85,7 +85,7 @@
       <div class="grid gap-1">
         <a
           href={localizeUrl('/profile').href}
-          class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          class="ds-dropdown-item ds-focus-ring"
           role="menuitem"
           onclick={() => close()}
         >
@@ -94,7 +94,7 @@
         </a>
         <a
           href={localizeUrl('/settings').href}
-          class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          class="ds-dropdown-item ds-focus-ring"
           role="menuitem"
           onclick={() => close()}
         >
@@ -110,7 +110,8 @@
             handleLogout();
             close();
           }}
-          class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu text-destructive outline-none transition-colors hover:bg-destructive/10 focus:bg-destructive/10"
+          class="ds-dropdown-item ds-focus-ring"
+          data-ds-intent="destructive"
           role="menuitem"
         >
           <span class="i-lucide-log-out h-4 w-4"></span>
@@ -122,7 +123,7 @@
       <div class="grid gap-1">
         <a
           href={localizeUrl('/login').href}
-          class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          class="ds-dropdown-item ds-focus-ring"
           role="menuitem"
           onclick={() => close()}
         >
@@ -131,7 +132,7 @@
         </a>
         <a
           href={localizeUrl('/signup').href}
-          class="inline-flex h-9 w-full items-center gap-2 px-2 rounded-md text-menu font-medium text-link outline-none transition-colors hover:bg-link/10 focus:bg-link/10"
+          class="ds-dropdown-item ds-focus-ring"
           role="menuitem"
           onclick={() => close()}
         >

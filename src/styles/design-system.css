@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    Design System (Global)
    - 이 파일은 토큰을 소비하는 전역 유틸/컴포넌트/패턴 스타일만 포함합니다.
-   - 토큰 선언은 src/styles/design-system.tokens.css (generated)에서 관리합니다.
+   - 토큰 선언은 src/styles/design-system.tokens.css (SSOT)에서 관리합니다.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .ds-focus-ring:focus-visible {
@@ -40,6 +40,20 @@
     transform: none;
     opacity: 0.9;
   }
+}
+
+/* ───────────────────────────────────────────────────────────
+   Component: Code Block (Shiki)
+   ─────────────────────────────────────────────────────────── */
+
+.ds-code-block {
+  background-color: oklch(var(--color-code-card));
+  color: oklch(var(--color-on-code-card));
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-code);
+  line-height: 1.5;
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid oklch(var(--color-border));
 }
 
 .ds-touch-target {
@@ -276,7 +290,9 @@
   --ds-btn-fg: var(--color-on-error);
 }
 
-/* Variants */
+
+
+/* Typography */
 /* Ghost */
 .ds-icon-button[data-ds-variant="ghost"] {
   background-color: transparent;
@@ -483,9 +499,19 @@
 }
 
 .ds-select-item:hover,
-.ds-select-item:focus {
+.ds-select-item:focus-visible {
   background-color: oklch(var(--color-surface-hover));
   outline: none;
+}
+
+.ds-select-item[aria-checked="true"] {
+  background-color: oklch(var(--color-selected));
+  color: oklch(var(--color-on-selected));
+}
+
+.ds-select-item[aria-checked="true"]:hover,
+.ds-select-item[aria-checked="true"]:focus-visible {
+  background-color: oklch(var(--color-selected) / 0.9);
 }
 
 .ds-select-item:disabled {
@@ -502,6 +528,10 @@
   margin-right: 0.5rem;
   flex-shrink: 0;
   color: oklch(var(--color-primary));
+}
+
+.ds-select-item[aria-checked="true"] .ds-select-check {
+  color: oklch(var(--color-on-selected));
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -877,8 +907,9 @@
 .ds-dropdown-menu {
   position: absolute;
   top: calc(100% + var(--spacing-2));
-  inset-inline-start: auto;
-  inset-inline-end: 0;
+  /* Default: Align Start (Left) */
+  inset-inline-start: 0;
+  inset-inline-end: auto;
   min-width: var(--dropdown-min-width, 220px);
   background: oklch(var(--dropdown-surface));
   border: var(--border-width) solid oklch(var(--dropdown-border));
@@ -889,18 +920,55 @@
   gap: var(--spacing-1);
 }
 
+.ds-dropdown[data-ds-align="end"] .ds-dropdown-menu {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
 .ds-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
   text-align: start;
   padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
   border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   color: oklch(var(--color-text));
+  font-size: var(--font-size-menu);
+  line-height: var(--line-height-normal);
   cursor: pointer;
 }
 
 .ds-dropdown-item:hover:not(:disabled) {
   background: oklch(var(--dropdown-item-hover));
+}
+
+.ds-dropdown-item:focus-visible:not(:disabled) {
+  background: oklch(var(--dropdown-item-hover));
+  outline: none;
+}
+
+.ds-dropdown-item[aria-checked="true"],
+.ds-dropdown-item[aria-selected="true"] {
+  background: oklch(var(--color-selected));
+  color: oklch(var(--color-on-selected));
+}
+
+.ds-dropdown-item[aria-checked="true"]:hover:not(:disabled),
+.ds-dropdown-item[aria-selected="true"]:hover:not(:disabled),
+.ds-dropdown-item[aria-checked="true"]:focus-visible:not(:disabled),
+.ds-dropdown-item[aria-selected="true"]:focus-visible:not(:disabled) {
+  background: oklch(var(--color-selected) / 0.9);
+}
+
+.ds-dropdown-item[data-ds-intent="destructive"] {
+  color: oklch(var(--color-error));
+}
+
+.ds-dropdown-item[data-ds-intent="destructive"]:hover:not(:disabled) {
+  background: oklch(var(--color-error) / 0.12);
 }
 
 .ds-dropdown-item:disabled,
@@ -945,32 +1013,47 @@
 }
 
 /* Placements */
+/* Placements */
 .ds-tooltip[data-placement="top"] {
   bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  inset-inline-start: 50%;
+  --tw-translate-x: -50%;
+  --tw-translate-y: 0;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y));
   padding-bottom: var(--tooltip-offset);
+}
+
+/* RTL Overrides (Increased specificity) */
+[dir="rtl"] .ds-tooltip[data-placement="top"],
+[dir="rtl"] .ds-tooltip[data-placement="bottom"] {
+  --tw-translate-x: 50%;
 }
 
 .ds-tooltip[data-placement="bottom"] {
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  inset-inline-start: 50%;
+  --tw-translate-x: -50%;
+  --tw-translate-y: 0;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y));
   padding-top: var(--tooltip-offset);
 }
 
 .ds-tooltip[data-placement="left"] {
-  right: 100%;
+  inset-inline-end: 100%;
   top: 50%;
-  transform: translateY(-50%);
-  padding-right: var(--tooltip-offset);
+  --tw-translate-x: 0;
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y));
+  padding-inline-end: var(--tooltip-offset);
 }
 
 .ds-tooltip[data-placement="right"] {
-  left: 100%;
+  inset-inline-start: 100%;
   top: 50%;
-  transform: translateY(-50%);
-  padding-left: var(--tooltip-offset);
+  --tw-translate-x: 0;
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y));
+  padding-inline-start: var(--tooltip-offset);
 }
 
 /* Arrow */
@@ -985,24 +1068,24 @@
 
 .ds-tooltip[data-placement="top"] .ds-tooltip-arrow {
   bottom: calc(var(--tooltip-arrow-size) / -2);
-  left: 50%;
-  margin-left: calc(var(--tooltip-arrow-size) / -2);
+  inset-inline-start: 50%;
+  margin-inline-start: calc(var(--tooltip-arrow-size) / -2);
 }
 
 .ds-tooltip[data-placement="bottom"] .ds-tooltip-arrow {
   top: calc(var(--tooltip-arrow-size) / -2);
-  left: 50%;
-  margin-left: calc(var(--tooltip-arrow-size) / -2);
+  inset-inline-start: 50%;
+  margin-inline-start: calc(var(--tooltip-arrow-size) / -2);
 }
 
 .ds-tooltip[data-placement="left"] .ds-tooltip-arrow {
-  right: calc(var(--tooltip-arrow-size) / -2);
+  inset-inline-end: calc(var(--tooltip-arrow-size) / -2);
   top: 50%;
   margin-top: calc(var(--tooltip-arrow-size) / -2);
 }
 
 .ds-tooltip[data-placement="right"] .ds-tooltip-arrow {
-  left: calc(var(--tooltip-arrow-size) / -2);
+  inset-inline-start: calc(var(--tooltip-arrow-size) / -2);
   top: 50%;
   margin-top: calc(var(--tooltip-arrow-size) / -2);
 }
@@ -1027,7 +1110,6 @@
   display: flex;
   flex-direction: column;
   border-radius: var(--card-radius, var(--radius-md));
-  overflow: hidden;
   background: oklch(var(--card-bg));
   color: oklch(var(--card-fg));
 }

@@ -7,8 +7,8 @@
 	import "@fontsource/pacifico";
 	import "@fontsource/righteous";
 	// app.css 보다 먼저 불러와야 함
-	import "virtual:uno.css";
 	import "../app.css";
+	import "virtual:uno.css";
 	// 공통 레이아웃 컴포넌트
 	import { page } from "$app/state";
 	import Footer from "$lib/components/Footer.svelte";

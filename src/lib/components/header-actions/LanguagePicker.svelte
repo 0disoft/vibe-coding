@@ -51,7 +51,7 @@
 
 <DsDropdown
 	align="end"
-	menuClass="!min-w-fit w-max max-h-[300px] overflow-y-auto thin-scrollbar p-1.5"
+	menuClass="!min-w-fit w-max max-h-[300px] overflow-y-auto thin-scrollbar"
 	itemSelector={`[role="menuitemradio"]`}
 >
 	{#snippet trigger(props)}
@@ -65,29 +65,24 @@
 	{/snippet}
 
 	{#snippet children({ close })}
-		<div class="grid gap-1">
-			{#each availableLanguageTags as lang (lang)}
-				<a
-					href={localizeUrl(page.url.pathname + page.url.search, {
-						locale: lang,
-					}).href}
-					class="inline-flex h-8 w-full items-center justify-start px-3 rounded-md text-menu-sm outline-none transition-colors whitespace-nowrap {lang ===
-					currentLang
-						? 'bg-selected text-selected-foreground'
-						: 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'}"
-					data-sveltekit-reload
-					onclick={() => {
-						document.cookie = `PARAGLIDE_LOCALE=${lang}; path=/; max-age=31536000; SameSite=Lax`;
-						close();
-					}}
-					aria-current={lang === currentLang ? "page" : undefined}
-					aria-checked={lang === currentLang}
-					hreflang={lang}
-					role="menuitemradio"
-				>
-					{getLanguageName(lang)}
-				</a>
-			{/each}
-		</div>
+		{#each availableLanguageTags as lang (lang)}
+			<a
+				href={localizeUrl(page.url.pathname + page.url.search, {
+					locale: lang,
+				}).href}
+				class="ds-dropdown-item ds-focus-ring whitespace-nowrap"
+				data-sveltekit-reload
+				onclick={() => {
+					document.cookie = `PARAGLIDE_LOCALE=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+					close();
+				}}
+				aria-current={lang === currentLang ? "page" : undefined}
+				aria-checked={lang === currentLang}
+				hreflang={lang}
+				role="menuitemradio"
+			>
+				{getLanguageName(lang)}
+			</a>
+		{/each}
 	{/snippet}
 </DsDropdown>

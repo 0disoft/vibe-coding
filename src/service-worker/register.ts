@@ -36,7 +36,22 @@ export function registerServiceWorker(sw: ServiceWorkerGlobalScope, config: SwCo
 	sw.addEventListener('install', (event) => {
 		async function addFilesToCache() {
 			const cache = await caches.open(config.cacheName);
-			await cache.addAll(config.assets);
+
+			const precache = config.assets.map((p) => {
+				if (p.startsWith('http')) return p;
+				if (!p.startsWith('/')) p = `/${p}`;
+				return addBase(stripBase(p));
+			});
+
+			await Promise.all(
+				precache.map(async (p) => {
+					try {
+						await cache.add(p);
+					} catch (e) {
+						console.warn('[sw] precache failed', p, e);
+					}
+				})
+			);
 		}
 
 		sw.skipWaiting();

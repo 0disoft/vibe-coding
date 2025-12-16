@@ -1,8 +1,7 @@
 /*
-  GENERATED FILE — DO NOT EDIT
-  Source: .vibe-coding/TOOLS/design-system/tokens.dtcg.json
-  Generator: .vibe-coding/TOOLS/design-system/dtcg-sync.ts
-  Preset: root
+  Design System Tokens (SSOT)
+  - 이 파일은 수동으로 관리합니다.
+  - 라이트: :root / 다크: :root[data-theme="dark"]
 */
 
 :root {
@@ -74,44 +73,45 @@
   --font-family-base: var(--font-sans);
   --font-family-heading: var(--font-sans);
   --font-family-mono: var(--font-mono);
-  --font-size-2xl: 1.728rem;
-  --font-size-3xl: 2.074rem;
-  --font-size-4xl: 2.488rem;
-  --font-size-badge: 0.75rem;
+  --font-size-2xl: 1.65rem;
+  --font-size-3xl: 1.85rem;
+  --font-size-4xl: 2.05rem;
+  --font-size-badge: 0.85rem;
   --font-size-base: 1rem;
-  --font-size-body: 1.1rem;
-  --font-size-body-secondary: 0.95rem;
-  --font-size-brand: 1.05rem;
-  --font-size-breadcrumb: 0.8rem;
-  --font-size-btn: 0.9rem;
-  --font-size-btn-lg: 1.0rem;
-  --font-size-btn-sm: 0.8rem;
-  --font-size-caption: 0.85rem;
-  --font-size-code: 0.8rem;
-  --font-size-comment: 0.95rem;
-  --font-size-h1: 1.8rem;
-  --font-size-h2: 1.6rem;
-  --font-size-h3: 1.4rem;
-  --font-size-helper: 0.75rem;
-  --font-size-inline-code: 0.85rem;
-  --font-size-label: 0.85rem;
-  --font-size-lg: 1.2rem;
-  --font-size-logo: 1.15rem;
-  --font-size-menu: 0.85rem;
-  --font-size-menu-lg: 0.9rem;
-  --font-size-menu-sm: 0.8rem;
-  --font-size-placeholder: 0.9rem;
-  --font-size-price: 1.15rem;
-  --font-size-prose: 0.875rem;
-  --font-size-sm: 0.833rem;
-  --font-size-stat: 1.4rem;
-  --font-size-tag: 0.75rem;
-  --font-size-timestamp: 0.7rem;
-  --font-size-toast: 0.85rem;
-  --font-size-tooltip: 0.75rem;
-  --font-size-xl: 1.44rem;
-  --font-size-xs: 0.694rem;
-  --font-size-xs-resp: 0.7rem;
+  --font-size-body: 1.15rem;
+  --font-size-body-secondary: 1.05rem;
+  --font-size-brand: 1.1rem;
+  --font-size-breadcrumb: 0.9rem;
+  --font-size-btn: 1.0rem;
+  --font-size-btn-lg: 1.05rem;
+  --font-size-btn-sm: 0.95rem;
+  --font-size-caption: 0.9rem;
+  --font-size-code: 0.95rem;
+  --font-size-comment: 1.1rem;
+  --font-size-h1: var(--font-size-4xl);
+  --font-size-h2: var(--font-size-3xl);
+  --font-size-h3: var(--font-size-2xl);
+  --font-size-h4: var(--font-size-xl);
+  --font-size-helper: 0.9rem;
+  --font-size-inline-code: 0.95rem;
+  --font-size-label: 0.95rem;
+  --font-size-lg: 1.15rem;
+  --font-size-logo: 1.2rem;
+  --font-size-menu: 1.0rem;
+  --font-size-menu-lg: 1.05rem;
+  --font-size-menu-sm: 0.95rem;
+  --font-size-placeholder: 0.95rem;
+  --font-size-price: 1.25rem;
+  --font-size-prose: 1.15rem;
+  --font-size-sm: 0.9rem;
+  --font-size-stat: 1.55rem;
+  --font-size-tag: 0.9rem;
+  --font-size-timestamp: var(--font-size-xs);
+  --font-size-toast: 0.95rem;
+  --font-size-tooltip: 0.9rem;
+  --font-size-xl: 1.45rem;
+  --font-size-xs: 0.85rem;
+  --font-size-xs-resp: var(--font-size-xs);
   --font-weight-bold: 700;
   --font-weight-medium: 500;
   --font-weight-regular: 400;
@@ -186,7 +186,7 @@
   --toast-surface: var(--color-surface);
   --toast-width: min(420px, calc(100vw - (var(--spacing-4) * 2)));
 
-  /* Other */
+  /* Pattern: Card */
   --component-card-padding-lg: var(--spacing-6);
   --component-card-padding-md: var(--spacing-4);
   --component-card-padding-none: 0;
@@ -197,7 +197,7 @@
   --raw-color-accent: 90% 0.06 155;
   --raw-color-background: 99% 0.004 255;
   --raw-color-border: 90% 0.012 255;
-  --raw-color-code-card: 95% 0.02 102;
+  --raw-color-code-card: 27% 0.0314 274;
   --raw-color-danger: 62% 0.2 25;
   --raw-color-error: 62% 0.2 25;
   --raw-color-input: 92% 0.012 255;
@@ -214,13 +214,13 @@
   --raw-color-neutral-900: 18% 0.004 255;
   --raw-color-neutral-950: 12% 0.004 255;
   --raw-color-on-accent: 22% 0.03 155;
-  --raw-color-on-code-card: 35% 0.04 331;
+  --raw-color-on-code-card: 96% 0.01 106;
   --raw-color-on-danger: 96% 0.002 25;
   --raw-color-on-error: 96% 0.002 25;
   --raw-color-on-link: 18% 0.02 250;
   --raw-color-on-primary: 96% 0.002 255;
   --raw-color-on-secondary: 24% 0.03 250;
-  --raw-color-on-selected: 22% 0.03 150;
+  --raw-color-on-selected: 22% 0.03 250;
   --raw-color-on-sidebar: 26% 0.02 255;
   --raw-color-on-success: 96% 0.002 150;
   --raw-color-on-warning: 20% 0.02 70;
@@ -229,7 +229,7 @@
   --raw-color-primary-hover: 56% 0.15 250;
   --raw-color-scrim: 20% 0.01 255;
   --raw-color-secondary: 92% 0.04 250;
-  --raw-color-selected: 90% 0.06 150;
+  --raw-color-selected: 90% 0.06 250;
   --raw-color-sidebar: 97% 0.01 255;
   --raw-color-success: 62% 0.14 150;
   --raw-color-surface: 98% 0.008 255;
@@ -316,7 +316,7 @@
   --raw-color-on-link: 92% 0.01 250;
   --raw-color-on-primary: 18% 0.02 250;
   --raw-color-on-secondary: 20% 0.01 250;
-  --raw-color-on-selected: 95% 0.02 150;
+  --raw-color-on-selected: 95% 0.02 250;
   --raw-color-on-sidebar: 85% 0.01 255;
   --raw-color-on-success: 18% 0.02 150;
   --raw-color-on-warning: 18% 0.02 70;
@@ -325,7 +325,7 @@
   --raw-color-primary-hover: 82% 0.12 250;
   --raw-color-scrim: 10% 0.01 255;
   --raw-color-secondary: 85% 0.04 250;
-  --raw-color-selected: 45% 0.09 150;
+  --raw-color-selected: 45% 0.09 250;
   --raw-color-sidebar: 15% 0.02 255;
   --raw-color-success: 75% 0.1 150;
   --raw-color-surface: 22% 0.02 255;

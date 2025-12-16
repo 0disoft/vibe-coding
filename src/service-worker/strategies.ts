@@ -50,7 +50,17 @@ export function createStrategies(args: {
 		if (cachedResponse) return cachedResponse;
 
 		try {
-			return await fetch(request);
+			const res = await fetch(request);
+
+			const cacheControl = res.headers.get('cache-control')?.toLowerCase() || '';
+			const noStore = cacheControl.includes('no-store');
+
+			if (res.ok && !noStore) {
+				const cache = await caches.open(args.cacheName);
+				await cache.put(request, res.clone());
+			}
+
+			return res;
 		} catch {
 			return new Response('Offline', {
 				status: 503,
@@ -68,13 +78,15 @@ export function createStrategies(args: {
 			const contentType = response.headers.get('content-type')?.toLowerCase() || '';
 			const isHtml = contentType.includes('text/html');
 			const cacheControl = response.headers.get('cache-control')?.toLowerCase() || '';
+			const vary = response.headers.get('vary')?.toLowerCase() || ''; // [MODIFIED] Added vary check
+			const sensitiveVary = vary.includes('cookie') || vary.includes('authorization'); // [MODIFIED] Added sensitive vary check
 			const shouldSkipCache =
 				cacheControl.includes('no-store') ||
 				cacheControl.includes('private') ||
 				cacheControl.includes('no-cache') ||
 				cacheControl.includes('must-revalidate');
 
-			if (isNavigation && response.ok && isHtml && !shouldSkipCache) {
+			if (isNavigation && response.ok && isHtml && !shouldSkipCache && !sensitiveVary) { // [MODIFIED] Added !sensitiveVary
 				const cache = await caches.open(args.cacheName);
 				await cache.put(request, response.clone());
 			}

@@ -8,8 +8,10 @@ export function createMatchFromMyCache(args: {
 	stripBase: (pathname: string) => string;
 	addBase: (pathname: string) => string;
 }): (request: Request | string, kind: CacheMatchKind) => Promise<Response | undefined> {
+	const cachePromise = caches.open(args.cacheName);
+
 	return async (request, kind) => {
-		const cache = await caches.open(args.cacheName);
+		const cache = await cachePromise;
 
 		const matchOptions =
 			kind === 'navigation'

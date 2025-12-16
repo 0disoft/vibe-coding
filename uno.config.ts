@@ -229,6 +229,13 @@ const typographyRules: Rule<object>[] = [
 		}
 	],
 	[
+		'text-h4',
+		{
+			'font-size': 'var(--font-size-h4)',
+			'line-height': 'var(--line-height-heading)'
+		}
+	],
+	[
 		'text-caption',
 		{
 			'font-size': 'var(--font-size-caption)',
@@ -414,6 +421,16 @@ export default defineConfig({
 		fontFamily: {
 			sans: 'var(--font-family-base)',
 			mono: 'var(--font-family-mono)'
+		},
+		fontSize: {
+			xs: ['var(--font-size-xs)', { lineHeight: '1.4' }],
+			sm: ['var(--font-size-sm)', { lineHeight: '1.4' }],
+			base: ['var(--font-size-base)', { lineHeight: '1.5' }],
+			lg: ['var(--font-size-lg)', { lineHeight: '1.4' }],
+			xl: ['var(--font-size-xl)', { lineHeight: '1.3' }],
+			'2xl': ['var(--font-size-2xl)', { lineHeight: '1.2' }],
+			'3xl': ['var(--font-size-3xl)', { lineHeight: '1.2' }],
+			'4xl': ['var(--font-size-4xl)', { lineHeight: '1.1' }]
 		}
 	},
 	// 커스텀 룰로 시맨틱 색상 유틸리티 직접 정의

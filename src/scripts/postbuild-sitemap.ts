@@ -4,8 +4,8 @@ import { statSync } from 'node:fs';
 import { site } from '../lib/constants/site';
 
 type OriginResolution =
-	| { ok: true; origin: string; hostname: string }
-	| { ok: false; reason: 'missing' | 'invalid' | 'not_http' };
+	| { ok: true; origin: string; hostname: string; }
+	| { ok: false; reason: 'missing' | 'invalid' | 'not_http'; };
 
 function resolveOrigin(raw: string): OriginResolution {
 	const trimmed = raw.trim();
@@ -37,20 +37,32 @@ function isExistingDirectory(path: string): boolean {
 function isPlaceholderHostname(hostname: string): boolean {
 	const h = hostname.toLowerCase();
 	if (h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0') return true;
-	return (
+	if (
 		h === 'yoursite.com' ||
 		h.endsWith('.yoursite.com') ||
 		h === 'example.com' ||
 		h.endsWith('.example.com')
-	);
+	)
+		return true;
+
+	// 예약된 TLD 및 로컬 도메인 확장 필터링
+	if (h.endsWith('.test') || h.endsWith('.invalid') || h.endsWith('.local')) return true;
+	return false;
 }
 
 function main(): void {
+	if (process.env.SITEMAP_DISABLE === '1') {
+		console.warn('Skipping sitemap (SITEMAP_DISABLE=1).');
+		return;
+	}
+
 	const strict = process.env.SITEMAP_STRICT === '1';
 
 	const outDir = (process.env.SITEMAP_OUT_DIR ?? 'build').trim() || 'build';
 	if (!isExistingDirectory(outDir)) {
-		console.warn(`Skipping sitemap (no ${outDir}/ folder). Set SITEMAP_OUT_DIR if needed.`);
+		console.warn(
+			`Skipping sitemap (no ${outDir}/ folder). cwd=${process.cwd()}. Set SITEMAP_OUT_DIR if needed.`
+		);
 		if (strict) process.exitCode = 1;
 		return;
 	}
@@ -78,17 +90,28 @@ function main(): void {
 		return;
 	}
 
-	// bun으로 실행되는 스크립트이므로 execPath를 쓰는 것이 PATH/shell 의존도가 가장 낮습니다.
-	const bunBin = process.execPath || 'bun';
+	// [Bun Binary Detection]
+	// process.execPath가 node일 수도 있으므로, 확실히 bun인지 확인
+	const bunBin =
+		(process.env.BUN_BIN ?? '').trim() ||
+		((process.versions as { bun?: string; }).bun ? process.execPath : 'bun');
+
 	const r = spawnSync(
 		bunBin,
 		['x', 'svelte-sitemap', '--out-dir', outDir, '--domain', resolved.origin],
 		{ stdio: 'inherit' }
 	);
+
 	if (r.error) {
 		console.error('Failed to run svelte-sitemap:', r.error);
 		process.exit(1);
 	}
+
+	if (r.signal) {
+		console.error(`svelte-sitemap terminated by signal: ${r.signal}`);
+		process.exit(1);
+	}
+
 	process.exit(r.status ?? 1);
 }
 

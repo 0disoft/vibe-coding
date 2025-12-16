@@ -35,6 +35,8 @@
 		children,
 		start,
 		end,
+		onclick,
+		onkeydown,
 		...rest
 	}: Props = $props();
 
@@ -58,10 +60,22 @@
 	);
 
 	/** 로딩 중 중복 클릭 방지 */
-	function guardIfLoading(e: Event) {
-		if (!loading) return;
-		e.preventDefault();
-		e.stopPropagation();
+	function handleClick(e: MouseEvent) {
+		if (loading) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
+		onclick?.(e as any);
+	}
+
+	function handleKeyDown(e: KeyboardEvent) {
+		if (loading) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
+		onkeydown?.(e as any);
 	}
 </script>
 
@@ -78,8 +92,8 @@
 	data-ds-intent={intentCss}
 	data-ds-full-width={fullWidth ? "true" : undefined}
 	data-ds-loading={loading || undefined}
-	onclick={guardIfLoading}
-	onkeydown={guardIfLoading}
+	onclick={handleClick}
+	onkeydown={handleKeyDown}
 >
 	{#if loading}
 		<span

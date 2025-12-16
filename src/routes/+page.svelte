@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
 
 	import {
 		DsButton,
@@ -25,6 +26,80 @@
 		exampleEmail.length > 0 && !exampleEmail.includes("@"),
 	);
 	let lastDropdown = $state<string | null>(null);
+
+	const typographyTokenKeys = [
+		"h1",
+		"h2",
+		"h3",
+		"h4",
+		"body",
+		"body-secondary",
+		"comment",
+		"prose",
+		"menu-lg",
+		"menu",
+		"menu-sm",
+		"btn-lg",
+		"btn",
+		"btn-sm",
+		"label",
+		"placeholder",
+		"helper",
+		"caption",
+		"xs-resp",
+		"badge",
+		"tag",
+		"tooltip",
+		"toast",
+		"breadcrumb",
+		"logo",
+		"brand",
+		"stat",
+		"price",
+		"timestamp",
+		"code",
+		"inline-code",
+	] as const;
+
+	type TypographyTokenKey = (typeof typographyTokenKeys)[number];
+
+	let typographyTokenValues = $state<Record<TypographyTokenKey, string>>(
+		Object.fromEntries(typographyTokenKeys.map((k) => [k, "—"])) as Record<
+			TypographyTokenKey,
+			string
+		>,
+	);
+
+	function readTypographyTokens() {
+		const style = getComputedStyle(document.documentElement);
+		const next = {} as Record<TypographyTokenKey, string>;
+
+		for (const key of typographyTokenKeys) {
+			const cssVar = `--font-size-${key}`;
+			next[key] = style.getPropertyValue(cssVar).trim() || "—";
+		}
+
+		typographyTokenValues = next;
+	}
+
+	function t(key: TypographyTokenKey) {
+		return typographyTokenValues[key] ?? "—";
+	}
+
+	onMount(() => {
+		readTypographyTokens();
+
+		const observer = new MutationObserver(() => {
+			readTypographyTokens();
+		});
+
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["data-theme", "data-font-size"],
+		});
+
+		return () => observer.disconnect();
+	});
 </script>
 
 <div class="container py-12 space-y-16">
@@ -55,120 +130,311 @@
 
 	<!-- Typography Showcase -->
 	<section class="space-y-6">
-		<h2 class="text-h2 font-semibold">Typography</h2>
+		<h2 class="text-h2 font-semibold">Typography System</h2>
 		<p class="text-body-secondary text-muted-foreground">
-			폰트 크기 토큰을 용도별로 구분하여 보여줍니다. 우측 상단 <code
+			디자인 시스템에 정의된 모든 타이포그래피 토큰입니다. 우측 상단 <code
 				class="text-code">Aa</code
-			> 버튼으로 전체 스케일을 조정해보세요.
+			> 버튼으로 전체 스케일을 조정하며 검증하세요. (Values from SSOT)
 		</p>
 
-		<DsCard class="space-y-6">
-			<!-- 제목 (Headings) -->
+		<DsCard class="space-y-8">
+			<!-- 1. Headings -->
 			<div class="space-y-3">
-				<div class="text-label font-medium text-muted-foreground">
-					제목 (Headings)
+				<div
+					class="text-label font-medium text-muted-foreground border-b border-border pb-1 mb-2"
+				>
+					Headings (제목)
 				</div>
 				<div class="space-y-2">
 					<div class="flex items-baseline gap-4 flex-wrap">
-						<span class="text-h1 font-semibold">H1 제목</span>
-						<code class="text-code text-muted-foreground">text-h1 (1.8rem)</code
-						>
-					</div>
-					<div class="flex items-baseline gap-4 flex-wrap">
-						<span class="text-h2 font-semibold">H2 제목</span>
-						<code class="text-code text-muted-foreground">text-h2 (1.6rem)</code
-						>
-					</div>
-					<div class="flex items-baseline gap-4 flex-wrap">
-						<span class="text-h3 font-semibold">H3 제목</span>
-						<code class="text-code text-muted-foreground">text-h3 (1.4rem)</code
-						>
-					</div>
+							<span class="text-h1 font-semibold">H1 Heading</span>
+							<code class="text-code text-muted-foreground"
+								>text-h1 ({t("h1")})</code
+							>
+						</div>
+						<div class="flex items-baseline gap-4 flex-wrap">
+							<span class="text-h2 font-semibold">H2 Heading</span>
+							<code class="text-code text-muted-foreground"
+								>text-h2 ({t("h2")})</code
+							>
+						</div>
+						<div class="flex items-baseline gap-4 flex-wrap">
+							<span class="text-h3 font-semibold">H3 Heading</span>
+							<code class="text-code text-muted-foreground"
+								>text-h3 ({t("h3")})</code
+							>
+						</div>
+						<div class="flex items-baseline gap-4 flex-wrap">
+							<span class="text-h4 font-semibold">H4 Heading</span>
+							<code class="text-code text-muted-foreground"
+								>text-h4 ({t("h4")})</code
+							>
+						</div>
 				</div>
 			</div>
 
-			<hr class="border-border my-6" />
-
-			<!-- 본문 (Body) -->
+			<!-- 2. Body -->
 			<div class="space-y-3">
-				<div class="text-label font-medium text-muted-foreground">
-					본문 (Body)
+				<div
+					class="text-label font-medium text-muted-foreground border-b border-border pb-1 mb-2"
+				>
+					Body (본문)
 				</div>
 				<div class="space-y-2">
 					<div class="flex items-baseline gap-4 flex-wrap">
-						<span class="text-body">본문 텍스트 Body</span>
-						<code class="text-code text-muted-foreground"
-							>text-body (1.1rem)</code
-						>
-					</div>
+							<span class="text-body">Body Text (Default)</span>
+							<code class="text-code text-muted-foreground"
+								>text-body ({t("body")})</code
+							>
+						</div>
 					<div class="flex items-baseline gap-4 flex-wrap">
 						<span class="text-body-secondary text-muted-foreground"
-							>보조 본문 Body Secondary</span
+							>Body Secondary</span
 						>
-						<code class="text-code text-muted-foreground"
-							>text-body-secondary (0.95rem)</code
-						>
+							<code class="text-code text-muted-foreground"
+								>text-body-secondary ({t("body-secondary")})</code
+							>
+						</div>
+					<div class="flex items-baseline gap-4 flex-wrap">
+							<span class="text-comment">Comment Text</span>
+							<code class="text-code text-muted-foreground"
+								>text-comment ({t("comment")})</code
+							>
+						</div>
+					<div class="flex items-baseline gap-4 flex-wrap">
+						<div class="prose max-w-none">
+							<p>Prose Paragraph (Markdown content)</p>
+							</div>
+							<code class="text-code text-muted-foreground"
+								>.prose p ({t("prose")})</code
+							>
+						</div>
+				</div>
+			</div>
+
+			<!-- 3. UI & Actions -->
+			<div class="space-y-3">
+				<div
+					class="text-label font-medium text-muted-foreground border-b border-border pb-1 mb-2"
+				>
+					UI Elements & Actions
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+					<!-- Menu -->
+					<div class="space-y-2">
+						<div class="flex items-baseline justify-between">
+								<span class="text-menu-lg">Menu Large</span>
+								<code class="text-code text-muted-foreground"
+									>text-menu-lg ({t("menu-lg")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+								<span class="text-menu">Menu Default</span>
+								<code class="text-code text-muted-foreground"
+									>text-menu ({t("menu")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+								<span class="text-menu-sm">Menu Small</span>
+								<code class="text-code text-muted-foreground"
+									>text-menu-sm ({t("menu-sm")})</code
+								>
+							</div>
+					</div>
+
+					<!-- Buttons -->
+					<div class="space-y-2">
+						<div class="flex items-baseline justify-between">
+								<span class="text-btn-lg font-medium">Button Large</span>
+								<code class="text-code text-muted-foreground"
+									>text-btn-lg ({t("btn-lg")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+								<span class="text-btn font-medium">Button Default</span>
+								<code class="text-code text-muted-foreground"
+									>text-btn ({t("btn")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+								<span class="text-btn-sm font-medium">Button Small</span>
+								<code class="text-code text-muted-foreground"
+									>text-btn-sm ({t("btn-sm")})</code
+								>
+							</div>
+					</div>
+
+					<!-- Form -->
+					<div class="space-y-2">
+						<div class="flex items-baseline justify-between">
+								<span class="text-label">Input Label</span>
+								<code class="text-code text-muted-foreground"
+									>text-label ({t("label")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+							<span class="text-placeholder text-muted-foreground"
+								>Placeholder</span
+							>
+								<code class="text-code text-muted-foreground"
+									>text-placeholder ({t("placeholder")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+								<span class="text-helper text-muted-foreground">Helper Text</span>
+								<code class="text-code text-muted-foreground"
+									>text-helper ({t("helper")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+								<span class="text-caption text-muted-foreground">Caption</span>
+								<code class="text-code text-muted-foreground"
+									>text-caption ({t("caption")})</code
+								>
+							</div>
+					</div>
+
+					<!-- Small & Responsive -->
+					<div class="space-y-2">
+						<div class="flex items-baseline justify-between">
+								<span class="text-xs-resp">XS Responsive (Footer)</span>
+								<code class="text-code text-muted-foreground"
+									>text-xs-resp ({t("xs-resp")})</code
+								>
+							</div>
 					</div>
 				</div>
 			</div>
 
-			<hr class="border-border my-6" />
-
-			<!-- UI 텍스트 -->
+			<!-- 4. Components -->
 			<div class="space-y-3">
-				<div class="text-label font-medium text-muted-foreground">
-					UI 텍스트
+				<div
+					class="text-label font-medium text-muted-foreground border-b border-border pb-1 mb-2"
+				>
+					Components
 				</div>
-				<div class="space-y-2">
-					<div class="flex items-baseline gap-4 flex-wrap">
-						<span class="text-label">라벨 Label</span>
-						<code class="text-code text-muted-foreground"
-							>text-label (0.85rem)</code
+				<div class="flex flex-wrap gap-4 items-center">
+					<div class="flex flex-col gap-1">
+						<span
+							class="bg-primary text-primary-foreground px-2 py-0.5 rounded text-badge"
+							>Badge</span
 						>
+							<code class="text-code text-muted-foreground text-xs"
+								>text-badge ({t("badge")})</code
+							>
+						</div>
+					<div class="flex flex-col gap-1">
+						<span
+							class="bg-secondary text-secondary-foreground px-2 py-0.5 rounded text-tag"
+							>Tag</span
+						>
+							<code class="text-code text-muted-foreground text-xs"
+								>text-tag ({t("tag")})</code
+							>
+						</div>
+					<div class="flex flex-col gap-1">
+						<span
+							class="bg-overlay text-neutral-50 px-2 py-1 rounded text-tooltip"
+							>Tooltip Text</span
+						>
+							<code class="text-code text-muted-foreground text-xs"
+								>text-tooltip ({t("tooltip")})</code
+							>
+						</div>
+					<div class="flex flex-col gap-1">
+						<span
+							class="bg-surface border border-border px-3 py-1 rounded shadow-sm text-toast"
+							>Toast Message</span
+						>
+							<code class="text-code text-muted-foreground text-xs"
+								>text-toast ({t("toast")})</code
+							>
+						</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-breadcrumb text-muted-foreground"
+							>Home / Library / Data</span
+						>
+							<code class="text-code text-muted-foreground text-xs"
+								>text-breadcrumb ({t("breadcrumb")})</code
+							>
+						</div>
+				</div>
+			</div>
+
+			<!-- 5. Data & Brand -->
+			<div class="space-y-3">
+				<div
+					class="text-label font-medium text-muted-foreground border-b border-border pb-1 mb-2"
+				>
+					Data & Brand
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="space-y-2">
+						<div class="flex items-baseline justify-between">
+								<span class="text-logo font-bold">LogoType</span>
+								<code class="text-code text-muted-foreground"
+									>text-logo ({t("logo")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+							<span class="text-brand font-semibold text-primary"
+								>Brand Text</span
+							>
+								<code class="text-code text-muted-foreground"
+									>text-brand ({t("brand")})</code
+								>
+							</div>
 					</div>
-					<div class="flex items-baseline gap-4 flex-wrap">
-						<span class="text-helper text-muted-foreground">도움말 Helper</span>
-						<code class="text-code text-muted-foreground"
-							>text-helper (0.75rem)</code
-						>
-					</div>
-					<div class="flex items-baseline gap-4 flex-wrap">
-						<span class="text-caption">캡션 Caption</span>
-						<code class="text-code text-muted-foreground"
-							>text-caption (0.85rem)</code
-						>
-					</div>
-					<div class="flex items-baseline gap-4 flex-wrap">
-						<span class="text-menu">메뉴 Menu</span>
-						<code class="text-code text-muted-foreground"
-							>text-menu (0.85rem)</code
-						>
+					<div class="space-y-2">
+						<div class="flex items-baseline justify-between">
+								<span class="text-stat font-bold">12,345</span>
+								<code class="text-code text-muted-foreground"
+									>text-stat ({t("stat")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+								<span class="text-price font-medium">$99.00</span>
+								<code class="text-code text-muted-foreground"
+									>text-price ({t("price")})</code
+								>
+							</div>
+						<div class="flex items-baseline justify-between">
+							<span class="text-timestamp text-muted-foreground"
+								>2025-12-16 14:00</span
+							>
+								<code class="text-code text-muted-foreground"
+									>text-timestamp ({t("timestamp")})</code
+								>
+							</div>
 					</div>
 				</div>
 			</div>
 
-			<hr class="border-border my-6" />
-
-			<!-- 코드 -->
+			<!-- 6. Code -->
 			<div class="space-y-3">
-				<div class="text-label font-medium text-muted-foreground">
-					코드 (Code)
+				<div
+					class="text-label font-medium text-muted-foreground border-b border-border pb-1 mb-2"
+				>
+					Code
 				</div>
 				<div class="space-y-2">
 					<div class="flex items-baseline gap-4 flex-wrap">
-						<code class="text-code font-mono">const example = "code";</code>
-						<span class="text-helper text-muted-foreground"
-							>text-code (0.8rem)</span
-						>
-					</div>
+						<code class="text-code font-mono">const x = 1; // Block Code</code>
+							<span class="text-helper text-muted-foreground"
+								>text-code ({t("code")})</span
+							>
+						</div>
 					<div class="flex items-baseline gap-4 flex-wrap">
-						<code class="text-inline-code font-mono bg-surface px-1 rounded"
-							>inline code</code
+						<span class="text-body"
+							>Press <code
+								class="text-inline-code font-mono bg-surface px-1 rounded"
+								>Ctrl+C</code
+							> to copy</span
 						>
-						<span class="text-helper text-muted-foreground"
-							>text-inline-code (0.85rem)</span
-						>
-					</div>
+							<span class="text-helper text-muted-foreground"
+								>text-inline-code ({t("inline-code")})</span
+							>
+						</div>
 				</div>
 			</div>
 		</DsCard>
@@ -429,14 +695,29 @@
 				사용하여 예측 가능한 상태 관리가 가능해졌습니다.
 			</p>
 
-			<h2 class="text-h2 font-semibold mt-8 mb-4">왜 Runes인가?</h2>
-			<p class="text-body leading-relaxed">
-				기존 Svelte 3/4의 반응성 시스템은 파일 최상위 레벨에서만 동작하는 한계가
-				있었습니다. 함수 내부나 중첩된 객체에서의 반응성을 처리하려면 스토어를
-				사용하거나 복잡한 우회로를 선택해야 했죠. <code
-					class="text-inline-code bg-muted px-1 rounded">$state()</code
-				> 룬은 이 모든 제약을 해결합니다.
-			</p>
+			<h3 class="text-h3 font-semibold mt-8 mb-4">
+				주요 변경 사항 (Typography Test)
+			</h3>
+			<ul class="list-disc pl-6 space-y-2 text-body">
+				<li>
+					<strong>일관된 폰트 크기:</strong> 본문과 마크다운 영역의 폰트 크기가
+					<code>1.05rem</code>으로 통일되었습니다.
+				</li>
+				<li>
+					<strong>리스트 스타일 복구:</strong> UnoCSS Reset으로 사라졌던 리스트
+					불릿과 여백이 <code>.prose</code> 영역에 다시 적용됩니다.
+				</li>
+				<li>
+					<strong>H4 태그 지원:</strong> 디자인 시스템에 <code>H4</code> 계층이 추가되었습니다.
+				</li>
+			</ul>
+
+			<h3 class="text-h3 font-semibold mt-8 mb-4">마이그레이션 단계</h3>
+			<ol class="list-decimal pl-6 space-y-2 text-body">
+				<li>기존 Svelte 4 프로젝트를 최신 버전으로 업데이트</li>
+				<li><code>svelte-migrate</code> 도구를 사용하여 문법 자동 변환</li>
+				<li>컴포넌트별로 점진적인 Runes 문법 적용</li>
+			</ol>
 
 			<div class="my-6 not-prose">
 				<CodeBlock
@@ -464,12 +745,11 @@
 				쉬워졌습니다.
 			</p>
 
-			<blockquote
-				class="border-l-4 border-primary pl-4 italic text-body-secondary my-6"
-			>
-				"Svelte 5는 단순한 버전 업그레이드가 아닙니다. 프레임워크의 패러다임
-				전환입니다."
-			</blockquote>
+				<blockquote>
+					<p>
+						"Svelte 5는 단순한 버전 업그레이드가 아닙니다. 프레임워크의 패러다임 전환입니다."
+					</p>
+				</blockquote>
 		</article>
 
 		<!-- Comments Section Example -->
