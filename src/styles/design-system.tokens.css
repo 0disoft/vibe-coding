@@ -12,14 +12,14 @@
   --touch-target-min: 44px;
 
   /* Spacing */
-  --spacing-1: 0.25rem;
-  --spacing-12: 3rem;
-  --spacing-16: 4rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
+  --spacing-1: clamp(0.1875rem, calc(0.159091rem + 0.121212vw), 0.25rem);
+  --spacing-2: clamp(0.375rem, calc(0.318182rem + 0.242424vw), 0.5rem);
+  --spacing-3: clamp(0.5625rem, calc(0.477273rem + 0.363636vw), 0.75rem);
+  --spacing-4: clamp(0.75rem, calc(0.636364rem + 0.484848vw), 1rem);
+  --spacing-6: clamp(1.125rem, calc(0.954545rem + 0.727272vw), 1.5rem);
+  --spacing-8: clamp(1.5rem, calc(1.272727rem + 0.969696vw), 2rem);
+  --spacing-12: clamp(2.25rem, calc(1.909091rem + 1.454545vw), 3rem);
+  --spacing-16: clamp(3rem, calc(2.545455rem + 1.939394vw), 4rem);
 
   /* Radius */
   --radius-lg: 1rem;
@@ -30,6 +30,7 @@
   --border-width: 1px;
 
   /* Opacity */
+  --alpha-scrim: 0.55;
   --opacity-disabled: 0.6;
   --opacity-hover: 0.9;
 
@@ -273,7 +274,7 @@
   --color-overlay: var(--raw-color-overlay);
   --color-primary: var(--raw-color-primary);
   --color-primary-hover: var(--raw-color-primary-hover);
-  --color-scrim: oklch(var(--raw-color-scrim) / 0.55);
+  --color-scrim: oklch(var(--raw-color-scrim) / var(--alpha-scrim));
   --color-secondary: var(--raw-color-secondary);
   --color-selected: var(--raw-color-selected);
   --color-sidebar: var(--raw-color-sidebar);
@@ -288,6 +289,9 @@
 :root[data-theme="dark"] {
   /* 폼 컨트롤 렌더링 힌트 (테마별로 재정의) */
   color-scheme: dark;
+
+  /* Opacity */
+  --alpha-scrim: 0.6;
 
   /* Primitive (Raw) */
   --raw-color-accent: 35% 0.06 155;
@@ -333,54 +337,4 @@
   --raw-color-text: 96% 0.01 255;
   --raw-color-text-muted: 82% 0.01 255;
   --raw-color-warning: 80% 0.12 70;
-
-  /* Semantic (Canonical) */
-  --color-accent: var(--raw-color-accent);
-  --color-background: var(--raw-color-background);
-  --color-border: var(--raw-color-border);
-  --color-code-card: var(--raw-color-code-card);
-  --color-danger: var(--raw-color-danger);
-  --color-error: var(--raw-color-error);
-  --color-input: var(--raw-color-input);
-  --color-link: var(--raw-color-link);
-  --color-neutral-100: var(--raw-color-neutral-100);
-  --color-neutral-200: var(--raw-color-neutral-200);
-  --color-neutral-300: var(--raw-color-neutral-300);
-  --color-neutral-400: var(--raw-color-neutral-400);
-  --color-neutral-50: var(--raw-color-neutral-50);
-  --color-neutral-500: var(--raw-color-neutral-500);
-  --color-neutral-600: var(--raw-color-neutral-600);
-  --color-neutral-700: var(--raw-color-neutral-700);
-  --color-neutral-800: var(--raw-color-neutral-800);
-  --color-neutral-900: var(--raw-color-neutral-900);
-  --color-neutral-950: var(--raw-color-neutral-950);
-  --color-on-accent: var(--raw-color-on-accent);
-  --color-on-code-card: var(--raw-color-on-code-card);
-  --color-on-danger: var(--raw-color-on-danger);
-  --color-on-error: var(--raw-color-on-error);
-  --color-on-link: var(--raw-color-on-link);
-  --color-on-primary: var(--raw-color-on-primary);
-  --color-on-secondary: var(--raw-color-on-secondary);
-  --color-on-selected: var(--raw-color-on-selected);
-  --color-on-sidebar: var(--raw-color-on-sidebar);
-  --color-on-success: var(--raw-color-on-success);
-  --color-on-surface: var(--raw-color-text);
-  --color-on-warning: var(--raw-color-on-warning);
-  --color-overlay: var(--raw-color-overlay);
-  --color-primary: var(--raw-color-primary);
-  --color-primary-hover: var(--raw-color-primary-hover);
-  --color-scrim: oklch(var(--raw-color-scrim) / 0.6);
-  --color-secondary: var(--raw-color-secondary);
-  --color-selected: var(--raw-color-selected);
-  --color-sidebar: var(--raw-color-sidebar);
-  --color-success: var(--raw-color-success);
-  --color-surface: var(--raw-color-surface);
-  --color-surface-hover: var(--raw-color-surface-hover);
-  --color-text: var(--raw-color-text);
-  --color-text-muted: var(--raw-color-text-muted);
-  --color-warning: var(--raw-color-warning);
-
-  /* Focus Ring */
-  --focus-ring-color: var(--color-primary);
-  --focus-ring-offset-color: var(--color-background);
 }

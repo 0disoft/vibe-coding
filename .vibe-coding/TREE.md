@@ -14,9 +14,6 @@
 ├── uno.config.ts
 ├── playwright.config.ts
 ├── bun.lock
-├── .bun-version
-├── .github/
-│   └── workflows/
 ├── .vibe-coding/
 │   └── PUBLIC_APIS/
 │       └── README.md               # Public API 카탈로그 (하위 구조는 이 파일 참조)
@@ -44,8 +41,11 @@
     │   ├── prose.css
     │   └── transitions.css
     ├── routes/                    # SvelteKit 페이지 라우트
-    │   ├── +layout.server.ts
+    │   ├── offline/
+    │   ├── [[lang]]/
+    │   ├── +error.svelte
     │   ├── +layout.svelte
+    │   ├── +page.server.ts
     │   └── +page.svelte
     └── lib/
         ├── index.ts

@@ -1,25 +1,8 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   Base Styles
-   기본 HTML 요소 스타일: body, headings, paragraphs, code
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-:root {
-	/* 
-	   뷰포트 너비 기반 spacing 스케일링 (CSS-only)
-	   - 375px에서 0.75x, 1200px에서 1.0x
-	   - calc에서 length/length 나눗셈은 브라우저 호환성이 떨어져서(vw/px) 사용하지 않습니다.
-	   - 대신 clamp + (rem + vw) 선형식을 사용해 안전하게 보간합니다.
-	*/
-	/* 주의: base.css가 tokens.css보다 뒤에 로드되어야 적용됨 (app.css 순서 확인 필) */
-	--spacing-1: clamp(0.1875rem, calc(0.159091rem + 0.121212vw), 0.25rem);
-	--spacing-2: clamp(0.375rem, calc(0.318182rem + 0.242424vw), 0.5rem);
-	--spacing-3: clamp(0.5625rem, calc(0.477273rem + 0.363636vw), 0.75rem);
-	--spacing-4: clamp(0.75rem, calc(0.636364rem + 0.484848vw), 1rem);
-	--spacing-6: clamp(1.125rem, calc(0.954545rem + 0.727272vw), 1.5rem);
-	--spacing-8: clamp(1.5rem, calc(1.272727rem + 0.969696vw), 2rem);
-	--spacing-12: clamp(2.25rem, calc(1.909091rem + 1.454545vw), 3rem);
-	--spacing-16: clamp(3rem, calc(2.545455rem + 1.939394vw), 4rem);
-}
+/*
+  Base Styles
+  - HTML 기본 요소(body, headings, paragraphs, code) 스타일
+  - 디자인 토큰(색/간격/타이포 스케일)은 src/styles/design-system.tokens.css 에서만 관리
+*/
 
 body {
 	background-color: oklch(var(--color-background));
@@ -27,23 +10,26 @@ body {
 	font-size: var(--font-size-body);
 	line-height: var(--line-height-body);
 	font-family: var(--font-family-base);
+
 	/* 폰트 렌더링 최적화 */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
 	/* 모바일 폰트 부스팅(강제 확대) 방지 */
 	-webkit-text-size-adjust: none;
 	text-size-adjust: none;
-	/* 렌더링 성능 및 가독성 최적화 */
+
+	/* 렌더링/가독성 최적화 */
 	text-rendering: optimizeLegibility;
-	/* 가짜 굵기 방지 및 Variable Font 최적화 */
 	font-synthesis: none;
 	font-optical-sizing: auto;
-	/* 기본 커닝 및 합자 설정 명시 */
 	font-kerning: normal;
 	font-variant-ligatures: common-ligatures contextual;
-	/* 고아(orphan) 방지: 마지막 줄에 단어 하나만 남는 것을 방지 */
+
+	/* 고아(orphan) 방지: 마지막 줄에 글자 하나만 남는 현상 완화 */
 	text-wrap: pretty;
-	/* 밑줄 디테일: CJK 문자는 from-font보다 under가 더 안전함 */
+
+	/* 밑줄(링크 등) 가독성 */
 	text-decoration-skip-ink: auto;
 	text-underline-position: under;
 	text-underline-offset: 0.15em;
@@ -54,8 +40,8 @@ a {
 	text-decoration: none;
 }
 
-/* 
-  접근성: 프로그램적으로 포커스를 받는 컨테이너(tabindex="-1")는 
+/*
+  접근성: 프로그램적으로 포커스를 받는 컨테이너(tabindex="-1")는
   포커스 링을 숨깁니다. (예: 페이지 이동 후 main 태그)
 */
 [tabindex="-1"]:focus {
@@ -105,12 +91,13 @@ pre {
 	font-size: var(--font-size-code);
 	line-height: 1.5;
 	font-family: var(--font-family-mono);
+
 	/* 코드 가독성: 합자 끄기, 0에 사선 긋기, 숫자 등폭 */
 	font-variant-ligatures: none;
 	font-variant-numeric: tabular-nums slashed-zero;
 }
 
-/* Shiki 코드블록: 기본값 (태블릿+) - 가로 스크롤 */
+/* Shiki 코드블록: 기본값(태블릿+) - 가로 스크롤 */
 pre.shiki {
 	max-width: 100%;
 	overflow-x: auto;
@@ -144,8 +131,7 @@ pre:not(.shiki) {
 	overflow-x: auto;
 }
 
-/* .code-card removed to use CodeBlock's inline styles */
-
+/* Legacy: 기존 마크업 호환(새 코드는 ds-code-block 사용) */
 .code-card {
 	background-color: oklch(var(--color-code-card));
 	color: oklch(var(--color-on-code-card));
@@ -165,3 +151,4 @@ pre code {
 	background: transparent;
 	border: none;
 }
+

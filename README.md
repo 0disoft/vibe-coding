@@ -66,6 +66,8 @@ src/
 │   └── paraglide/                  # i18n 자동 생성 파일
 ├── styles/
 │   ├── typography.css              # CSS 변수 (폰트, 언어별 설정)
+│   ├── design-system.tokens.css    # 디자인 시스템 토큰(SSOT)
+│   ├── design-system.css           # 디자인 시스템 컴포넌트/패턴 스타일
 │   ├── base.css                    # 기본 HTML 스타일
 │   ├── scrollbar.css               # 스크롤바 스타일
 │   ├── prose.css                   # 마크다운 타이포그래피
@@ -112,6 +114,7 @@ bun lint          # Biome 린트 + 포맷팅
 
 - `.vibe-coding/TREE.md` - 프로젝트 구조 상세
 - `src/styles/design-system.tokens.css` - 디자인 시스템 토큰(SSOT)
+- `src/styles/design-system.css` - 디자인 시스템 컴포넌트/패턴 스타일
 - `.vibe-coding/SPEC.md` - 프로젝트 스펙
 - `.vibe-coding/KNOWLEDGE/` - 기술 지식 베이스
 - `.vibe-coding/TROUBLE/SOLVED.md` - 문제 해결 기록
