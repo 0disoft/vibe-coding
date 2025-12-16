@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "Мобильная навигация",
 	"header_menu_open": "Открыть меню",
 	"header_menu_close": "Закрыть меню",
+	"header_menu_title": "Меню",
 	"theme_toggle_label": "Сменить тему",
 	"language_picker_label": "Сменить язык",
 	"footer_nav_label": "Навигация в футере",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "Загрузка…",
+	"ds_navigating": "Переход…",
+	"ds_clear_value": "Очистить значение",
+	"ds_toast_region": "Уведомления",
+	"ds_toast_dismiss": "Закрыть уведомление"
 }

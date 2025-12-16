@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { DsIconButton } from "$lib/components/design-system";
+	import * as m from "$lib/paraglide/messages.js";
 	import type { Snippet } from "svelte";
 	import { tick } from "svelte";
 	import type { HTMLInputAttributes } from "svelte/elements";
@@ -27,7 +28,7 @@
 		clearable = false,
 		value = $bindable(""),
 		ref = $bindable(null),
-		clearLabel = "값 지우기",
+		clearLabel = m.ds_clear_value(),
 		class: className = "",
 		start,
 		end,

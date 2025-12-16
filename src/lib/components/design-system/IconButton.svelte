@@ -3,6 +3,7 @@
 	import type { HTMLButtonAttributes } from "svelte/elements";
 
 	import { DsIcon } from "$lib/components/design-system";
+	import * as m from "$lib/paraglide/messages.js";
 
 	import type { IconButtonVariant, IntentWithNeutral, Size } from "./types";
 	import { toIntentCss } from "./types";
@@ -22,7 +23,8 @@
 		showTitle?: boolean;
 		/** 로딩 SR 텍스트 */
 		loadingLabel?: string;
-		ref?: HTMLButtonElement | null;
+		// Support both binding and callback (for actions)
+		ref?: HTMLButtonElement | null | ((node: HTMLElement) => void);
 		children?: Snippet;
 	}
 
@@ -37,11 +39,13 @@
 		disabled = false,
 		flipInRtl = false,
 		showTitle = false,
-		loadingLabel = "처리 중…",
+		loadingLabel = m.ds_loading(),
 		type = "button",
 		ref = $bindable(null),
 		class: className = "",
 		children,
+		onclick,
+		onkeydown,
 		...rest
 	}: Props = $props();
 
@@ -61,17 +65,52 @@
 			.join(" "),
 	);
 
-	/** 로딩 중 중복 클릭 방지 */
-	function guardIfLoading(e: Event) {
-		if (!loading) return;
-		e.preventDefault();
-		e.stopPropagation();
+	/** 로딩 중 중복 클릭 방지 래퍼 */
+	function handleClick(e: MouseEvent) {
+		if (loading) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
+		onclick?.(e as any);
+	}
+
+	function handleKeyDown(e: KeyboardEvent) {
+		if (loading) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
+		onkeydown?.(e as any);
+	}
+
+	/** Ref Action to handle both binding and callback */
+	function refAction(node: HTMLButtonElement) {
+		if (typeof ref === "function") {
+			ref(node);
+		} else {
+			ref = node;
+		}
+
+		return {
+			destroy() {
+				if (typeof ref === "function") {
+					// @ts-ignore - Callback might expect an element, but here we explicitly destroy
+					// Some callbacks might assume unmounting if called with null/undefined?
+					// But usually 'destroy' means the element is gone.
+					// We'll leave it be or call with null if type allows.
+					// ref(null); // Type mismatch potentially.
+				} else if (ref === node) {
+					ref = null;
+				}
+			},
+		};
 	}
 </script>
 
 <button
 	{...rest}
-	bind:this={ref}
+	use:refAction
 	{type}
 	class={buttonClass}
 	disabled={isNativeDisabled}
@@ -83,8 +122,8 @@
 	data-ds-size={size}
 	data-ds-variant={variant}
 	data-ds-intent={intentCss}
-	onclick={guardIfLoading}
-	onkeydown={guardIfLoading}
+	onclick={handleClick}
+	onkeydown={handleKeyDown}
 >
 	{#if loading}
 		<DsIcon name="loader-circle" {size} class="animate-spin" />

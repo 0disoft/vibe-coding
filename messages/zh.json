@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "移动导航",
 	"header_menu_open": "打开菜单",
 	"header_menu_close": "关闭菜单",
+	"header_menu_title": "菜单",
 	"theme_toggle_label": "切换主题",
 	"language_picker_label": "更改语言",
 	"footer_nav_label": "底部导航",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "加载中…",
+	"ds_navigating": "跳转中…",
+	"ds_clear_value": "清除值",
+	"ds_toast_region": "通知",
+	"ds_toast_dismiss": "关闭通知"
 }

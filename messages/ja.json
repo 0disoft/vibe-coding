@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "モバイルナビゲーション",
 	"header_menu_open": "メニューを開く",
 	"header_menu_close": "メニューを閉じる",
+	"header_menu_title": "メニュー",
 	"theme_toggle_label": "テーマ変更",
 	"language_picker_label": "言語変更",
 	"footer_nav_label": "フッターナビゲーション",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "読み込み中…",
+	"ds_navigating": "移動中…",
+	"ds_clear_value": "値をクリア",
+	"ds_toast_region": "通知",
+	"ds_toast_dismiss": "通知を閉じる"
 }

@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "मोबाइल नेविगेशन",
 	"header_menu_open": "मेनू खोलें",
 	"header_menu_close": "मेनू बंद करें",
+	"header_menu_title": "मेनू",
 	"theme_toggle_label": "थीम बदलें",
 	"language_picker_label": "भाषा बदलें",
 	"footer_nav_label": "फुटर नेविगेशन",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "लोड हो रहा है…",
+	"ds_navigating": "नेविगेट हो रहा है…",
+	"ds_clear_value": "मान साफ़ करें",
+	"ds_toast_region": "सूचनाएं",
+	"ds_toast_dismiss": "सूचना बंद करें"
 }

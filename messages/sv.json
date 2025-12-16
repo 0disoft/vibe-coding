@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "Mobilnavigering",
 	"header_menu_open": "Öppna meny",
 	"header_menu_close": "Stäng meny",
+	"header_menu_title": "Meny",
 	"theme_toggle_label": "Ändra tema",
 	"language_picker_label": "Ändra språk",
 	"footer_nav_label": "Sidfotsnavigering",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "Laddar…",
+	"ds_navigating": "Navigerar…",
+	"ds_clear_value": "Rensa värde",
+	"ds_toast_region": "Aviseringar",
+	"ds_toast_dismiss": "Stäng avisering"
 }

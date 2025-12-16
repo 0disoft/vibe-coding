@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "Mobil gezinti",
 	"header_menu_open": "Menüyü aç",
 	"header_menu_close": "Menüyü kapat",
+	"header_menu_title": "Menü",
 	"theme_toggle_label": "Temayı değiştir",
 	"language_picker_label": "Dili değiştir",
 	"footer_nav_label": "Alt bilgi gezintisi",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "Yükleniyor…",
+	"ds_navigating": "Geziniliyor…",
+	"ds_clear_value": "Değeri temizle",
+	"ds_toast_region": "Bildirimler",
+	"ds_toast_dismiss": "Bildirimi kapat"
 }

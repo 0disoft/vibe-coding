@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "Mobiele navigatie",
 	"header_menu_open": "Menu openen",
 	"header_menu_close": "Menu sluiten",
+	"header_menu_title": "Menu",
 	"theme_toggle_label": "Thema wijzigen",
 	"language_picker_label": "Taal wijzigen",
 	"footer_nav_label": "Voettekstnavigatie",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "Laden…",
+	"ds_navigating": "Navigeren…",
+	"ds_clear_value": "Waarde wissen",
+	"ds_toast_region": "Meldingen",
+	"ds_toast_dismiss": "Melding sluiten"
 }

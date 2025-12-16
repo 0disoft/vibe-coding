@@ -2,6 +2,8 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAnchorAttributes } from "svelte/elements";
 
+	import * as m from "$lib/paraglide/messages.js";
+
 	import type { ButtonVariant, Intent, Size } from "./types";
 	import { toIntentCss } from "./types";
 
@@ -26,7 +28,7 @@
 		disabled = false,
 		fullWidth = false,
 		loading = false,
-		loadingLabel = "이동 중…",
+		loadingLabel = m.ds_navigating(),
 		href,
 		tabindex,
 		class: className = "",

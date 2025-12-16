@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "Nabigasyon sa mobile",
 	"header_menu_open": "Buksan ang menu",
 	"header_menu_close": "Isara ang menu",
+	"header_menu_title": "Menu",
 	"theme_toggle_label": "Baguhin ang tema",
 	"language_picker_label": "Baguhin ang wika",
 	"footer_nav_label": "Nabigasyon sa footer",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "Naglo-load…",
+	"ds_navigating": "Nagna-navigate…",
+	"ds_clear_value": "Burahin ang halaga",
+	"ds_toast_region": "Mga Notification",
+	"ds_toast_dismiss": "Isara ang notification"
 }

@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "모바일 메뉴",
 	"header_menu_open": "메뉴 열기",
 	"header_menu_close": "메뉴 닫기",
+	"header_menu_title": "메뉴",
 	"theme_toggle_label": "테마 변경",
 	"language_picker_label": "언어 변경",
 	"footer_nav_label": "푸터 메뉴",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "처리 중…",
+	"ds_navigating": "이동 중…",
+	"ds_clear_value": "값 지우기",
+	"ds_toast_region": "알림",
+	"ds_toast_dismiss": "알림 닫기"
 }

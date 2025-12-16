@@ -9,6 +9,8 @@
 		"aria-invalid"?: "true" | undefined;
 		required: boolean;
 		"aria-required"?: "true" | undefined;
+		// 직접 invalid 전달 (일부 컴포넌트는 aria-invalid 대신 invalid prop을 사용)
+		invalid?: boolean;
 	};
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
@@ -60,6 +62,7 @@
 		id,
 		"aria-describedby": describedBy,
 		"aria-invalid": invalid ? "true" : undefined,
+		invalid,
 		required,
 		"aria-required": required ? "true" : undefined,
 	});

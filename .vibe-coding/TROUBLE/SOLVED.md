@@ -125,6 +125,84 @@ pnpm dlx sv create ./
   - 단일 선택(라디오) 성격: `role="menuitemradio"` + `aria-checked`
 - **적용 시점:** 폰트 크기 선택, 테마 선택 등 메뉴 내에서 옵션을 선택하는 UI 구현 시.
 
+### 8. 이벤트 핸들러 래퍼 함수에서 currentTarget 타입 불일치 오류
+
+- **증상:** 이벤트 핸들러를 래퍼 함수로 감쌀 때 다음과 같은 타입 오류 발생:
+
+  ```plaintext
+  Argument of type 'MouseEvent' is not assignable to parameter of type
+  'MouseEvent & { currentTarget: EventTarget & HTMLButtonElement; }'.
+  Type 'null' is not assignable to type 'EventTarget & HTMLButtonElement'.
+  ```
+
+- **원인:** Svelte 5의 `HTMLButtonAttributes`에서 `onclick`/`onkeydown` 핸들러는 `{ currentTarget: EventTarget & HTMLButtonElement }` 타입을 요구하지만, 래퍼 함수의 파라미터 타입(`MouseEvent`, `KeyboardEvent`)은 `currentTarget`이 `EventTarget | null`이라 타입이 호환되지 않음.
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  function handleClick(e: MouseEvent) {
+    if (loading) { e.preventDefault(); return; }
+    onclick?.(e);
+  }
+
+  <!-- After (해결) - as any로 캐스팅 -->
+  function handleClick(e: MouseEvent) {
+    if (loading) { e.preventDefault(); return; }
+    onclick?.(e as any);
+  }
+  ```
+
+- **원리:** 런타임에는 실제 버튼 요소에서 발생한 이벤트가 그대로 전달되므로 동작에는 문제가 없음. `as any` 캐스팅으로 타입 검사만 우회.
+- **적용 시점:** `HTMLButtonAttributes` 등을 확장한 Props에서 이벤트 핸들러를 받아 래퍼 함수 내에서 호출할 때.
+
+### 9. DsDropdown 커스텀 itemSelector 키보드 탐색 미작동
+
+- **증상:** `DsDropdown`에 `itemSelector='[role="menuitemradio"]'`를 지정했는데 키보드(화살표 키)로 아이템 탐색이 안 됨.
+- **원인:**
+  1. `DsDropdown`의 `getItems()` 함수가 `role="menuitem"`만 쿼리하고 `itemSelector` prop을 무시함.
+  2. `onMenuKeyDown`에서도 `role="menuitem"`만 탐색 대상으로 인식.
+- **해결:**
+
+  ```typescript
+  // getItems()에서 itemSelector 사용
+  function getItems(): HTMLElement[] {
+    const selector = itemSelector || '[role="menuitem"]:not([disabled])';
+    return Array.from(rootEl.querySelectorAll<HTMLElement>(selector))
+      .filter(el => !el.hasAttribute('disabled') && el.getAttribute('aria-disabled') !== 'true');
+  }
+
+  // onMenuKeyDown에서도 itemSelector 사용
+  const itemRole = itemSelector ? itemSelector : '[role="menuitem"]';
+  const item = target.closest<HTMLElement>(itemRole);
+  ```
+
+- **주의사항:** `el.disabled`는 `HTMLElement` 타입에 없으므로 `el.hasAttribute('disabled')`를 사용해야 함.
+- **적용 시점:** `DsDropdown`에서 `menuitemradio`, `menuitemcheckbox` 등 커스텀 role을 사용할 때.
+
+### 10. 그리드 레이아웃 드롭다운에서 stopPropagation으로 인한 ESC 키 미작동
+
+- **증상:** 3x3 그리드 형태의 드롭다운(예: 폰트 크기 선택기)에서 ESC 키로 닫히지 않음.
+- **원인:** 그리드 탐색을 위해 `onkeydown` 핸들러에서 `event.stopPropagation()`을 함수 시작 부분에서 무조건 호출하여 ESC 이벤트가 `DsDropdown`에 전달되지 않음.
+- **해결:** 조건부 stopPropagation 적용 - 화살표 키 등 실제 처리하는 키에만 `stopPropagation()` 호출.
+
+  ```typescript
+  function handleMenuKeyDown(event: KeyboardEvent) {
+    let handled = false;
+    switch (event.key) {
+      case "ArrowDown": /* ... */ handled = true; break;
+      case "ArrowUp": /* ... */ handled = true; break;
+      // ESC, Tab, Enter, Space는 처리 안 함
+    }
+    if (handled) {
+      event.preventDefault();
+      event.stopPropagation();
+      items[nextIndex]?.focus();
+    }
+  }
+  ```
+
+- **적용 시점:** 그리드 레이아웃의 드롭다운 메뉴에서 커스텀 키보드 탐색을 구현할 때.
+
 ---
 
 ## [Paraglide / i18n]
@@ -342,4 +420,50 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
   {/if}
   ```
 
-- **적용 시점:** 다국어(RTL)를 지원하는 웹사이트의 모바일 메뉴, 사이드바, 슬라이드 패널 구현 시.
+
+---
+
+## [UI / CSS / Components]
+
+### 1. 다크 모드 토글 버튼의 "눌림(Pressed)" 상태 고착 현상
+
+- **증상:** 다크 모드 상태일 때, 테마 토글 버튼이 항상 호버되거나 선택된(active) 것처럼 배경색이 적용되어 보임.
+- **원인:** `ThemeToggle` 컴포넌트가 `DsIconButton`에 `pressed={theme.current === 'dark'}`를 전달하고 있었음. 디자인 시스템 CSS에서 `[aria-pressed="true"]`인 경우 배경색을 강제로 적용(`background-color: var(--color-surface-hover)`)하기 때문에 발생.
+- **해결:** `ThemeToggle.svelte`에서 `pressed` 속성 제거. 테마 토글은 상태 표시보다는 단순 액션 트리거이므로 `pressed` 상태가 불필요함.
+- **적용 시점:** 토글 버튼이 상태(On/Off)를 시각적으로 유지할 필요가 없을 때.
+
+### 2. 드롭다운 메뉴 텍스트 세로 깨짐 및 너비 문제
+
+- **증상:** 언어 선택 드롭다운 메뉴에서 "English", "한국어" 등 텍스트가 가로로 나열되지 않고 한 글자씩 세로로 렌더링됨.
+- **원인:**
+  1. `DsDropdown`의 메뉴 컨테이너(`menuClass`)에 `min-w-fit`만 적용되어 있고, 텍스트 줄바꿈 방지 스타일이 없음.
+  2. 플렉스나 그리드 아이템이 공간 부족 시 자동으로 줄바꿈을 시도함.
+- **해결:**
+  - 메뉴 컨테이너에 `w-max` 추가 (내용물 크기에 맞춰 너비 확장).
+  - 아이템(`<a>`)에 `whitespace-nowrap` 추가 (텍스트 줄바꿈 강제 방지).
+- **적용 시점:** 드롭다운 내용이 텍스트 위주이며, 절대 줄바꿈되면 안 되는 경우.
+
+### 3. 카드(Card) 컴포넌트 내부 타이포그래피와 폼 필드 간 간격 부족
+
+- **증상:** `DsCard` 내부에 제목(H3)과 폼 필드(Input)를 배치했을 때, 둘 사이의 간격이 너무 좁아 보임.
+- **원인:** `DsCard` 컴포넌트 자체에 `class="space-y-4"`를 주었으나, Svelte 컴포넌트(`DsCard`)의 최상위 요소가 아닌 내부 슬롯이나 구조 탓에 `space-y-4`가 자식 요소들 간의 간격으로 정확히 전달되지 않음.
+- **해결:** `DsCard` 바로 안쪽에 `div` 래퍼를 두고, 그 `div`에 `class="space-y-4"`를 적용하여 자식 요소(제목, 폼, 필드 등) 간의 수직 간격을 제어함.
+- **적용 시점:** 컴포넌트의 루트 클래스가 내부 슬롯 아이템의 레이아웃(간격)에 직접 영향을 주기 어려운 경우, 명시적인 레이아웃 다이브(div) 사용.
+
+---
+
+## [Svelte / Parser]
+
+### 1. 템플릿 리터럴 내 `</script>` 문자열로 인한 파싱 오류
+
+- **증상:** Svelte 컴포넌트 내 문자열(예: 코드 블록 예시)에 `</script>`를 포함하면, 컴파일러나 IDE가 이를 실제 스크립트 닫는 태그로 오인하여 "Unexpected token", "Cannot find name 'script'" 등 치명적인 문법 오류 발생.
+- **원인:** HTML 파서는 문자열 컨텍스트(`"..."` 또는 `` `...` ``)와 상관없이 `</script>`를 만나면 즉시 스크립트 블록을 종료시킴.
+- **해결:** 문자열 분리 기법(String Splitting) 사용.
+  ```svelte
+  <!-- Before (오류) -->
+  code={`<script>...</script>`}
+
+  <!-- After (해결) -->
+  code={`<script>...</` + `script>`}
+  ```
+- **적용 시점:** `<script>` 태그 자체를 문자열로 다뤄야 하는 문서화 페이지나 예제 코드 작성 시.

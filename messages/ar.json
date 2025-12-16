@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "التنقل عبر الهاتف المحمول",
 	"header_menu_open": "فتح القائمة",
 	"header_menu_close": "إغلاق القائمة",
+	"header_menu_title": "القائمة",
 	"theme_toggle_label": "تغيير السمة",
 	"language_picker_label": "تغيير اللغة",
 	"footer_nav_label": "تنقل التذييل",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "جارٍ التحميل…",
+	"ds_navigating": "جارٍ الانتقال…",
+	"ds_clear_value": "مسح القيمة",
+	"ds_toast_region": "الإشعارات",
+	"ds_toast_dismiss": "إغلاق الإشعار"
 }

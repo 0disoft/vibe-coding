@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "Điều hướng di động",
 	"header_menu_open": "Mở menu",
 	"header_menu_close": "Đóng menu",
+	"header_menu_title": "Menu",
 	"theme_toggle_label": "Thay đổi giao diện",
 	"language_picker_label": "Thay đổi ngôn ngữ",
 	"footer_nav_label": "Điều hướng chân trang",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "Đang tải…",
+	"ds_navigating": "Đang điều hướng…",
+	"ds_clear_value": "Xóa giá trị",
+	"ds_toast_region": "Thông báo",
+	"ds_toast_dismiss": "Đóng thông báo"
 }

@@ -2,6 +2,8 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLButtonAttributes } from "svelte/elements";
 
+	import * as m from "$lib/paraglide/messages.js";
+
 	import type { ButtonVariant, Intent, Size } from "./types";
 	import { toIntentCss } from "./types";
 
@@ -25,7 +27,7 @@
 		intent = "primary",
 		loading = false,
 		fullWidth = false,
-		loadingLabel = "처리 중…",
+		loadingLabel = m.ds_loading(),
 		disabled = false,
 		type = "button",
 		ref = $bindable(null),

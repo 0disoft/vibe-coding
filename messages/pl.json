@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "Nawigacja mobilna",
 	"header_menu_open": "Otwórz menu",
 	"header_menu_close": "Zamknij menu",
+	"header_menu_title": "Menu",
 	"theme_toggle_label": "Zmień motyw",
 	"language_picker_label": "Zmień język",
 	"footer_nav_label": "Nawigacja w stopce",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "Ładowanie…",
+	"ds_navigating": "Nawigowanie…",
+	"ds_clear_value": "Wyczyść wartość",
+	"ds_toast_region": "Powiadomienia",
+	"ds_toast_dismiss": "Zamknij powiadomienie"
 }

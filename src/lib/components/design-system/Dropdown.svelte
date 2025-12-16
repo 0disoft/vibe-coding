@@ -83,7 +83,7 @@
 		if (disabled) return;
 		const next = !isOpen;
 		setOpen(next);
-		if (next) tick().then(focusFirstItem);
+		if (next) tick().then(focusSelectedOrFirstItem);
 	}
 
 	function close(options?: { focusButton?: boolean }): void {
@@ -97,11 +97,26 @@
 
 	function getItems(): HTMLElement[] {
 		if (!rootEl) return [];
-		return Array.from(
-			rootEl.querySelectorAll<HTMLElement>(
-				'[role="menuitem"]:not([disabled]):not([aria-disabled="true"])',
-			),
+		// itemSelector를 사용하여 커스텀 아이템(menuitemradio 등)도 지원
+		const selector =
+			itemSelector ||
+			'[role="menuitem"]:not([disabled]):not([aria-disabled="true"])';
+		return Array.from(rootEl.querySelectorAll<HTMLElement>(selector)).filter(
+			(el) =>
+				!el.hasAttribute("disabled") &&
+				el.getAttribute("aria-disabled") !== "true",
 		);
+	}
+
+	function focusSelectedOrFirstItem(): void {
+		const items = getItems();
+		// 선택된 아이템(aria-checked 또는 aria-selected) 먼저 찾기
+		const selected = items.find(
+			(el) =>
+				el.getAttribute("aria-checked") === "true" ||
+				el.getAttribute("aria-selected") === "true",
+		);
+		(selected || items[0])?.focus();
 	}
 
 	function focusFirstItem(): void {
@@ -154,7 +169,7 @@
 		if (e.key === "ArrowDown") {
 			e.preventDefault();
 			if (!isOpen) setOpen(true);
-			tick().then(focusFirstItem);
+			tick().then(focusSelectedOrFirstItem);
 			return;
 		}
 
@@ -171,7 +186,7 @@
 				close({ focusButton: true });
 			} else {
 				setOpen(true);
-				tick().then(focusFirstItem);
+				tick().then(focusSelectedOrFirstItem);
 			}
 		}
 	}
@@ -199,7 +214,9 @@
 			return;
 		}
 
-		const item = target.closest<HTMLElement>('[role="menuitem"]');
+		// itemSelector가 지정된 경우 해당 요소를, 아니면 기본 menuitem 사용
+		const itemRole = itemSelector ? itemSelector : '[role="menuitem"]';
+		const item = target.closest<HTMLElement>(itemRole);
 		if (!item) return;
 
 		if (e.key === "ArrowDown") {

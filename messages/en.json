@@ -209,9 +209,15 @@
 	"header_mobile_nav_label": "Mobile navigation",
 	"header_menu_open": "Open menu",
 	"header_menu_close": "Close menu",
+	"header_menu_title": "Menu",
 	"theme_toggle_label": "Toggle theme",
 	"language_picker_label": "Change language",
 	"footer_nav_label": "Footer navigation",
 	"meta_site_title": "{siteName}",
-	"meta_site_description": "{siteDescription}"
+	"meta_site_description": "{siteDescription}",
+	"ds_loading": "Loading…",
+	"ds_navigating": "Navigating…",
+	"ds_clear_value": "Clear value",
+	"ds_toast_region": "Notifications",
+	"ds_toast_dismiss": "Dismiss notification"
 }

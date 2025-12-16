@@ -6,6 +6,7 @@
 	import { fly } from "svelte/transition";
 
 	import { DsIcon, DsIconButton } from "$lib/components/design-system";
+	import * as m from "$lib/paraglide/messages.js";
 	import type { ToastItem } from "$lib/stores/toast.svelte";
 
 	export type ToastPosition =
@@ -39,8 +40,8 @@
 		position = "bottom-right",
 		class: className = "",
 		action,
-		regionLabel = "알림",
-		dismissLabel = "알림 닫기",
+		regionLabel = m.ds_toast_region(),
+		dismissLabel = m.ds_toast_dismiss(),
 		assertiveIntents = ["error"],
 		...rest
 	}: Props = $props();
