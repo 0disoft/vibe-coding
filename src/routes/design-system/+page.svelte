@@ -66,7 +66,8 @@
 					.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
 
 				const top = visible[0]?.target as HTMLElement | undefined;
-				if (top?.id) activeSectionId = top.id;
+				const id = top?.id;
+				if (id && isTocId(id)) activeSectionId = id;
 			},
 			{
 				root: null,

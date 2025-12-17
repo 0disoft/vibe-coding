@@ -14,6 +14,7 @@
 		variant?: IconButtonVariant;
 		intent?: IntentWithNeutral;
 		disabled?: boolean;
+		style?: string;
 		flipInRtl?: boolean;
 		showTitle?: boolean;
 		loadingLabel?: string;
@@ -44,6 +45,7 @@
 		variant = "ghost",
 		intent = "neutral",
 		disabled = false,
+		style,
 		flipInRtl = false,
 		showTitle = false,
 		loadingLabel,
@@ -99,7 +101,8 @@
 	{size}
 	{variant}
 	{intent}
-	{disabled}
+		{disabled}
+	style={style}
 	{flipInRtl}
 	{showTitle}
 	{loadingLabel}
