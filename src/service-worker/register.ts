@@ -48,7 +48,7 @@ export function registerServiceWorker(sw: ServiceWorkerGlobalScope, config: SwCo
 					try {
 						await cache.add(p);
 					} catch (e) {
-						console.warn('[sw] precache failed', p, e);
+						if (import.meta.env.DEV) console.warn('[sw] precache failed', p, e);
 					}
 				})
 			);

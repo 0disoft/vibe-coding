@@ -70,21 +70,16 @@
           <p class="text-helper text-muted-foreground flex-1 truncate">
             {showEmail ? user.email : maskEmail(user.email)}
           </p>
-          <button
-            type="button"
+          <DsIconButton
+            size="sm"
+            variant="ghost"
+            label={showEmail ? '이메일 숨기기' : '이메일 보기'}
+            icon={showEmail ? 'eye-off' : 'eye'}
             onclick={(e) => {
               e.stopPropagation();
               showEmail = !showEmail;
             }}
-            class="inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
-            aria-label={showEmail ? '이메일 숨기기' : '이메일 보기'}
-          >
-            {#if showEmail}
-              <span class="i-lucide-eye-off h-3 w-3"></span>
-            {:else}
-              <span class="i-lucide-eye h-3 w-3"></span>
-            {/if}
-          </button>
+          />
         </div>
       </div>
 

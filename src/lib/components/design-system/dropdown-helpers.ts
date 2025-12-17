@@ -1,0 +1,187 @@
+export function getDropdownItems(rootEl: HTMLElement | null, selector: string): HTMLElement[] {
+	if (!rootEl) return [];
+	return Array.from(rootEl.querySelectorAll<HTMLElement>(selector)).filter(
+		(el) => !el.hasAttribute('disabled') && el.getAttribute('aria-disabled') !== 'true'
+	);
+}
+
+export function createDropdownFocusManager(getItems: () => HTMLElement[]) {
+	function focusSelectedOrFirstItem(): void {
+		const items = getItems();
+		const selected = items.find(
+			(el) =>
+				el.getAttribute('aria-checked') === 'true' || el.getAttribute('aria-selected') === 'true'
+		);
+		(selected || items[0])?.focus();
+	}
+
+	function focusFirstItem(): void {
+		getItems()[0]?.focus();
+	}
+
+	function focusLastItem(): void {
+		getItems().at(-1)?.focus();
+	}
+
+	function focusNext(current: HTMLElement, dir: 1 | -1): void {
+		const items = getItems();
+		const idx = items.indexOf(current);
+		if (idx === -1) return;
+		const next = items[(idx + dir + items.length) % items.length];
+		next?.focus();
+	}
+
+	return {
+		focusSelectedOrFirstItem,
+		focusFirstItem,
+		focusLastItem,
+		focusNext
+	};
+}
+
+export function createDropdownTypeahead(getItems: () => HTMLElement[], timeoutMs = 500) {
+	let buffer = '';
+	let timer: number | null = null;
+
+	function reset() {
+		buffer = '';
+		if (typeof window === 'undefined') return;
+		if (timer) window.clearTimeout(timer);
+		timer = null;
+	}
+
+	function handleKey(key: string) {
+		if (key.length !== 1) return;
+		if (typeof window === 'undefined') return;
+
+		if (timer) window.clearTimeout(timer);
+		buffer += key.toLowerCase();
+
+		timer = window.setTimeout(() => {
+			buffer = '';
+		}, timeoutMs);
+
+		const items = getItems();
+		const match = items.find((item) => {
+			const text = item.textContent?.trim().toLowerCase() || '';
+			return text.startsWith(buffer);
+		});
+
+		match?.focus();
+	}
+
+	return { handleKey, reset };
+}
+
+export function createDropdownKeyHandlers(opts: {
+	getDisabled: () => boolean;
+	getIsOpen: () => boolean;
+	setOpen: (next: boolean) => void;
+	close: (options?: { focusButton?: boolean }) => void;
+	afterOpen: (fn: () => void) => void;
+	getItemSelector: () => string;
+	focusSelectedOrFirstItem: () => void;
+	focusFirstItem: () => void;
+	focusLastItem: () => void;
+	focusNext: (current: HTMLElement, dir: 1 | -1) => void;
+	typeahead: { handleKey: (key: string) => void };
+}) {
+	function onTriggerKeyDown(e: KeyboardEvent): void {
+		if (opts.getDisabled()) return;
+
+		const isOpen = opts.getIsOpen();
+
+		if (e.key === 'Escape' && isOpen) {
+			e.preventDefault();
+			opts.close({ focusButton: true });
+			return;
+		}
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			if (!isOpen) opts.setOpen(true);
+			opts.afterOpen(opts.focusSelectedOrFirstItem);
+			return;
+		}
+
+		if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			if (!isOpen) opts.setOpen(true);
+			opts.afterOpen(opts.focusLastItem);
+			return;
+		}
+
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			if (isOpen) {
+				opts.close({ focusButton: true });
+			} else {
+				opts.setOpen(true);
+				opts.afterOpen(opts.focusSelectedOrFirstItem);
+			}
+		}
+	}
+
+	function onMenuKeyDown(e: KeyboardEvent): void {
+		const target = e.target as HTMLElement | null;
+		if (!target) return;
+
+		if (e.key === 'Escape') {
+			e.preventDefault();
+			e.stopPropagation();
+			opts.close({ focusButton: true });
+			return;
+		}
+
+		if (e.key === 'Tab') {
+			queueMicrotask(() => opts.close());
+			return;
+		}
+
+		if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+			opts.typeahead.handleKey(e.key);
+			return;
+		}
+
+		const item = target.closest<HTMLElement>(opts.getItemSelector());
+		if (!item) return;
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			opts.focusNext(item, 1);
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			opts.focusNext(item, -1);
+		} else if (e.key === 'Home') {
+			e.preventDefault();
+			opts.focusFirstItem();
+		} else if (e.key === 'End') {
+			e.preventDefault();
+			opts.focusLastItem();
+		} else if (e.key === 'Enter' || e.key === ' ') {
+			if (item.tagName !== 'BUTTON') {
+				e.preventDefault();
+				item.click();
+			}
+		}
+	}
+
+	return { onTriggerKeyDown, onMenuKeyDown };
+}
+
+export function computeDropdownPlacementStyles(opts: {
+	triggerEl: HTMLElement;
+	menuEl: HTMLElement;
+}): string {
+	if (typeof window === 'undefined') return '';
+
+	const rect = opts.triggerEl.getBoundingClientRect();
+	const menuRect = opts.menuEl.getBoundingClientRect();
+	const spaceBelow = window.innerHeight - rect.bottom;
+
+	if (spaceBelow < menuRect.height && rect.top > menuRect.height) {
+		return 'top: auto; bottom: 100%; margin-bottom: var(--spacing-2); margin-top: 0;';
+	}
+
+	return '';
+}

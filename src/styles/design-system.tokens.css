@@ -95,10 +95,10 @@
   --font-size-caption: 0.9rem;
   --font-size-code: 0.95rem;
   --font-size-comment: 1.1rem;
-  --font-size-h1: var(--font-size-4xl);
-  --font-size-h2: var(--font-size-3xl);
-  --font-size-h3: var(--font-size-2xl);
-  --font-size-h4: var(--font-size-xl);
+  --font-size-h1: 2.15rem;
+  --font-size-h2: 1.9rem;
+  --font-size-h3: 1.65rem;
+  --font-size-h4: 1.4rem;
   --font-size-helper: 0.9rem;
   --font-size-inline-code: 0.95rem;
   --font-size-label: 0.95rem;
@@ -149,6 +149,179 @@
   --input-padding-x: 0.75rem;
   --input-padding-y: 0.5rem;
   --input-radius: var(--radius-md);
+
+  /* Component: NavigationMenu */
+  --nav-menu-gap: var(--spacing-6);
+  --nav-menu-trigger-gap: var(--spacing-1);
+  --nav-menu-panel-border: var(--color-border);
+  --nav-menu-panel-padding: var(--spacing-3);
+  --nav-menu-panel-radius: var(--radius-lg);
+  --nav-menu-panel-shadow: var(--elevation-3);
+  --nav-menu-panel-surface: var(--color-surface);
+  --nav-menu-panel-min-width: 520px;
+  --nav-menu-panel-max-width: 760px;
+  --nav-menu-link-hover: var(--color-surface-hover);
+  --nav-menu-link-radius: var(--radius-md);
+  --nav-menu-link-padding-x: var(--spacing-3);
+  --nav-menu-link-padding-y: var(--spacing-2);
+
+  /* Component: InlineAlert */
+  --inline-alert-gap: var(--spacing-2);
+  --inline-alert-icon-size: var(--size-icon-sm);
+
+  /* Component: Banner */
+  --banner-gap: var(--spacing-3);
+  --banner-padding-x: var(--spacing-4);
+  --banner-padding-y: var(--spacing-2);
+  --banner-radius: var(--radius-lg);
+  --banner-border: var(--color-border);
+  --banner-surface: var(--color-surface);
+
+  /* Component: ContextMenu */
+  --context-menu-min-width: 220px;
+  --context-menu-padding-x: var(--spacing-2);
+  --context-menu-padding-y: var(--spacing-2);
+  --context-menu-radius: var(--radius-md);
+  --context-menu-border: var(--color-border);
+  --context-menu-surface: var(--color-surface);
+  --context-menu-shadow: var(--elevation-3);
+  --context-menu-item-gap: var(--spacing-2);
+  --context-menu-item-padding-x: var(--spacing-3);
+  --context-menu-item-padding-y: var(--spacing-2);
+  --context-menu-item-hover: var(--color-surface-hover);
+
+  /* Component: MultiSelect */
+  --multiselect-chip-gap: var(--spacing-1);
+  --multiselect-chip-radius: var(--radius-sm);
+  --multiselect-chip-padding-x: 0.4rem;
+  --multiselect-chip-padding-y: 0.15rem;
+  --multiselect-chip-bg: var(--color-surface-hover);
+  --multiselect-chip-fg: var(--color-text);
+
+  /* Component: NumberInput */
+  --number-input-step-gap: 0.15rem;
+  --number-input-stepper-bg: var(--color-surface-hover);
+
+  /* Component: Slider */
+  --slider-track-height: 0.4rem;
+  --slider-thumb-size: 1.1rem;
+  --slider-track-bg: var(--color-border);
+  --slider-fill-bg: var(--color-primary);
+
+  /* Component: TagInput */
+  --tag-input-gap: var(--spacing-2);
+  --tag-input-padding-x: 0.5rem;
+  --tag-input-padding-y: 0.35rem;
+  --tag-input-chip-gap: var(--spacing-1);
+  --tag-input-chip-radius: var(--radius-sm);
+  --tag-input-chip-bg: var(--color-surface-hover);
+  --tag-input-chip-fg: var(--color-text);
+  --tag-input-chip-padding-x: 0.4rem;
+  --tag-input-chip-padding-y: 0.15rem;
+
+  /* Component: Steps */
+  --steps-gap: var(--spacing-3);
+  --steps-dot-size: 1.6rem;
+  --steps-dot-border: var(--color-border);
+  --steps-dot-bg: var(--color-surface);
+  --steps-dot-active: var(--color-primary);
+  --steps-connector: var(--color-border);
+
+  /* Component: Wizard */
+  --wizard-gap: var(--spacing-4);
+  --wizard-footer-gap: var(--spacing-2);
+
+  /* Component: TreeView */
+  --treeview-indent: 1.1rem;
+  --treeview-gap: var(--spacing-2);
+  --treeview-padding-x: var(--spacing-3);
+  --treeview-padding-y: 0.45rem;
+  --treeview-radius: var(--radius-md);
+  --treeview-item-hover: var(--color-surface-hover);
+  --treeview-item-selected: var(--color-surface-hover);
+  --treeview-toggle-size: 1.5rem;
+
+  /* Component: Carousel */
+  --carousel-gap: var(--spacing-3);
+  --carousel-padding: var(--spacing-2);
+  --carousel-slide-width: min(360px, 80vw);
+  --carousel-slide-radius: var(--radius-lg);
+  --carousel-dot-size: 0.55rem;
+  --carousel-dot-gap: var(--spacing-2);
+  --carousel-control-gap: var(--spacing-1);
+
+  /* Component: NotificationCenter */
+  --notification-center-gap: var(--spacing-3);
+  --notification-item-gap: var(--spacing-3);
+  --notification-item-padding-x: var(--spacing-3);
+  --notification-item-padding-y: var(--spacing-3);
+  --notification-item-radius: var(--radius-md);
+  --notification-item-hover: var(--color-surface-hover);
+
+  /* Component: Chart */
+  --chart-gap: var(--spacing-3);
+  --chart-padding: var(--spacing-4);
+  --chart-radius: var(--radius-lg);
+  --chart-surface: var(--color-surface);
+  --chart-border: var(--color-border);
+  --chart-title: var(--color-text);
+  --chart-desc: var(--color-text-muted);
+  --sparkline-neutral: var(--color-text-muted);
+  --sparkline-primary: var(--color-primary);
+  --sparkline-success: var(--color-success);
+  --sparkline-warning: var(--color-warning);
+  --sparkline-error: var(--color-error);
+
+  /* Component: Editor */
+  --editor-toolbar-gap: var(--spacing-2);
+  --editor-toolbar-padding: var(--spacing-2);
+  --editor-toolbar-radius: var(--radius-lg);
+  --editor-toolbar-surface: var(--color-surface);
+  --editor-toolbar-border: var(--color-border);
+  --editor-inline-gap: var(--spacing-1);
+  --editor-inline-padding: 0.25rem;
+  --editor-inline-radius: var(--radius-lg);
+  --editor-inline-surface: var(--color-surface);
+  --editor-inline-border: var(--color-border);
+  --editor-inline-shadow: var(--elevation-3);
+
+  /* Component: ContentMeta */
+  --content-meta-gap: var(--spacing-2);
+  --content-meta-color: var(--color-text-muted);
+  --content-meta-icon-size: 1rem;
+
+  /* Component: TagList */
+  --tag-list-gap: var(--spacing-1);
+
+  /* Component: ContentCard */
+  --content-card-gap: var(--spacing-3);
+  --content-card-media-height: 180px;
+  --content-card-excerpt-color: var(--color-text-muted);
+
+  /* Component: ContentActions */
+  --content-actions-gap: var(--spacing-1);
+
+  /* Component: FilterBar */
+  --filter-bar-gap: var(--spacing-3);
+  --filter-bar-padding: var(--spacing-3);
+  --filter-bar-radius: var(--radius-lg);
+  --filter-bar-surface: var(--color-surface);
+  --filter-bar-border: var(--color-border);
+
+  /* Component: FacetFilter */
+  --facet-filter-gap: var(--spacing-4);
+  --facet-option-gap: var(--spacing-2);
+
+  /* Component: MediaPicker */
+  --media-picker-gap: var(--spacing-3);
+  --media-thumb-size: 96px;
+  --media-thumb-radius: var(--radius-md);
+
+  /* Component: Quote */
+  --quote-border: var(--color-border);
+  --quote-surface: var(--color-surface);
+  --quote-padding: var(--spacing-4);
+  --quote-radius: var(--radius-lg);
 
   /* Pattern: Field */
   --field-error-color: var(--color-error);

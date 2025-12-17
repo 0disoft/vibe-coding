@@ -11,6 +11,9 @@
     children?: Snippet;
   }
 
+  type ButtonClickEvent = Parameters<NonNullable<HTMLButtonAttributes["onclick"]>>[0];
+  type ButtonKeyDownEvent = Parameters<NonNullable<HTMLButtonAttributes["onkeydown"]>>[0];
+
   let {
     value,
     disabled = false,
@@ -31,20 +34,22 @@
     `${accordion.baseId}-content-${encodeURIComponent(value).replace(/%/g, "_")}`,
   );
 
-  function handleClick(e: MouseEvent) {
+  function handleClick(e: ButtonClickEvent) {
     if (disabled) {
       e.preventDefault();
       return;
     }
     accordion.toggle(value);
-    onclick?.(e as any);
+    onclick?.(e);
   }
 
-  function handleKeyDown(e: KeyboardEvent) {
-    const currentTarget = e.currentTarget as HTMLElement;
-    const root = currentTarget.closest('[data-ds-accordion-root="true"]') ?? currentTarget.closest(".ds-accordion");
+  function handleKeyDown(e: ButtonKeyDownEvent) {
+    const currentTarget = e.currentTarget;
+    const root =
+      currentTarget.closest('[data-ds-accordion-root="true"]') ??
+      currentTarget.closest(".ds-accordion");
     if (!root) {
-      onkeydown?.(e as any);
+      onkeydown?.(e);
       return;
     }
 
@@ -52,13 +57,13 @@
       root.querySelectorAll<HTMLElement>('[data-ds-accordion-trigger="true"]:not([aria-disabled="true"])'),
     );
     if (!triggers.length) {
-      onkeydown?.(e as any);
+      onkeydown?.(e);
       return;
     }
 
     const currentIndex = triggers.indexOf(currentTarget);
     if (currentIndex < 0) {
-      onkeydown?.(e as any);
+      onkeydown?.(e);
       return;
     }
 
@@ -68,7 +73,7 @@
     else if (e.key === "Home") nextIndex = 0;
     else if (e.key === "End") nextIndex = triggers.length - 1;
     else {
-      onkeydown?.(e as any);
+      onkeydown?.(e);
       return;
     }
 

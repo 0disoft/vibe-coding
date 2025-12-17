@@ -8,6 +8,9 @@
 	import type { IconButtonVariant, IntentWithNeutral, Size } from "./types";
 	import { toIntentCss } from "./types";
 
+	type ButtonClickEvent = Parameters<NonNullable<HTMLButtonAttributes["onclick"]>>[0];
+	type ButtonKeyDownEvent = Parameters<NonNullable<HTMLButtonAttributes["onkeydown"]>>[0];
+
 	interface Props extends HTMLButtonAttributes {
 		label: string;
 		icon?: string;
@@ -66,22 +69,22 @@
 	);
 
 	/** 로딩 중 중복 클릭 방지 래퍼 */
-	function handleClick(e: MouseEvent) {
+	function handleClick(e: ButtonClickEvent) {
 		if (loading) {
 			e.preventDefault();
 			e.stopPropagation();
 			return;
 		}
-		onclick?.(e as any);
+		onclick?.(e);
 	}
 
-	function handleKeyDown(e: KeyboardEvent) {
+	function handleKeyDown(e: ButtonKeyDownEvent) {
 		if (loading) {
 			e.preventDefault();
 			e.stopPropagation();
 			return;
 		}
-		onkeydown?.(e as any);
+		onkeydown?.(e);
 	}
 
 	/** Ref Action to handle both binding and callback */
@@ -111,7 +114,7 @@
 <button
 	{...rest}
 	use:refAction
-	{type}
+	type={type}
 	class={buttonClass}
 	disabled={isNativeDisabled}
 	aria-disabled={isSoftDisabled || undefined}

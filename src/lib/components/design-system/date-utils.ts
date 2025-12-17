@@ -3,7 +3,7 @@ export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function pad2(n: number) {
-	return String(n).padStart(2, "0");
+	return String(n).padStart(2, '0');
 }
 
 export function isIsoDate(value: string): boolean {
@@ -12,7 +12,7 @@ export function isIsoDate(value: string): boolean {
 
 export function parseIsoDate(value: string): Date | null {
 	if (!isIsoDate(value)) return null;
-	const [y, m, d] = value.split("-").map(Number);
+	const [y, m, d] = value.split('-').map(Number);
 	if (!y || !m || !d) return null;
 	// DST 경계에서도 안전하게 "날짜"로만 취급하기 위해 정오로 고정
 	const date = new Date(y, m - 1, d, 12, 0, 0, 0);

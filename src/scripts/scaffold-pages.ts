@@ -1,8 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { pages } from "../lib/constants/pages";
+import { pages } from '../lib/constants/pages';
 
 type Scaffolded = {
 	created: number;
@@ -12,15 +12,15 @@ type Scaffolded = {
 
 function toRouteSegments(pagePath: string): string[] {
 	const normalized = pagePath.trim();
-	if (!normalized.startsWith("/")) return [];
-	return normalized.split("/").filter(Boolean);
+	if (!normalized.startsWith('/')) return [];
+	return normalized.split('/').filter(Boolean);
 }
 
 function pageTemplate(opts: { title: string; description?: string; path: string }): string {
-	const title = opts.title.replaceAll("`", "");
+	const title = opts.title.replaceAll('`', '');
 	const description =
-		opts.description?.replaceAll("`", "") ||
-		"이 페이지는 템플릿 스캐폴딩 단계에서 자동 생성된 스텁입니다.";
+		opts.description?.replaceAll('`', '') ||
+		'이 페이지는 템플릿 스캐폴딩 단계에서 자동 생성된 스텁입니다.';
 
 	return `<script lang="ts">
   import { DsCard, DsLinkButton } from "$lib/components/design-system";
@@ -54,7 +54,7 @@ function pageTemplate(opts: { title: string; description?: string; path: string 
       </div>
 
       <div class="text-label text-muted-foreground pt-4">Next</div>
-      <ul class="list-disc pl-6 space-y-1 text-body">
+      <ul class="list-disc ps-6 space-y-1 text-body">
         <li>페이지 목적/콘텐츠 구조 확정</li>
         <li>필요한 DS/Docs 컴포넌트 조합 적용</li>
         <li>데이터 로딩/폼/검증/에러 상태 추가</li>
@@ -67,13 +67,13 @@ function pageTemplate(opts: { title: string; description?: string; path: string 
 
 function main(): Scaffolded {
 	const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-	const repoRoot = path.resolve(scriptDir, "..", "..");
-	const routesRoot = path.join(repoRoot, "src", "routes", "[[lang]]");
+	const repoRoot = path.resolve(scriptDir, '..', '..');
+	const routesRoot = path.join(repoRoot, 'src', 'routes', '[[lang]]');
 
 	const result: Scaffolded = { created: 0, skipped: 0, createdPaths: [] };
 
 	for (const p of pages) {
-		if (p.path === "/" || p.path.startsWith("/design-system")) {
+		if (p.path === '/' || p.path.startsWith('/design-system')) {
 			result.skipped += 1;
 			continue;
 		}
@@ -85,7 +85,7 @@ function main(): Scaffolded {
 		}
 
 		const dir = path.join(routesRoot, ...segments);
-		const pageFile = path.join(dir, "+page.svelte");
+		const pageFile = path.join(dir, '+page.svelte');
 
 		if (fs.existsSync(pageFile)) {
 			result.skipped += 1;
@@ -96,7 +96,7 @@ function main(): Scaffolded {
 		fs.writeFileSync(
 			pageFile,
 			pageTemplate({ title: p.title, description: p.description, path: p.path }),
-			"utf8",
+			'utf8'
 		);
 		result.created += 1;
 		result.createdPaths.push(path.relative(repoRoot, pageFile));
@@ -108,6 +108,5 @@ function main(): Scaffolded {
 const out = main();
 console.log(
 	`scaffold-pages: created=${out.created} skipped=${out.skipped}\n` +
-		out.createdPaths.map((p) => `- ${p}`).join("\n"),
+		out.createdPaths.map((p) => `- ${p}`).join('\n')
 );
-

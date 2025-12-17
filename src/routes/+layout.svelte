@@ -46,6 +46,21 @@
 		page.url.pathname === "/offline" || page.url.pathname.endsWith("/offline"),
 	);
 
+	let isDocsPage = $derived(/(^|\/)docs(\/|$)/.test(page.url.pathname));
+
+	let mainClass = $derived(
+		[
+			"flex-1",
+			"w-full",
+			isDocsPage ? "max-w-7xl" : "max-w-5xl",
+			"mx-auto",
+			"px-4",
+			"md:px-6",
+			"py-6",
+			"md:py-10",
+		].join(" "),
+	);
+
 	// SPA 페이지 이동 시 스크린 리더/키보드 사용자가 변경을 인지할 수 있도록 main에 포커스 이동
 	afterNavigate(() => {
 		document.getElementById("main-content")?.focus();
@@ -79,7 +94,7 @@
 		<main
 			id="main-content"
 			tabindex="-1"
-			class="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10"
+			class={mainClass}
 		>
 			{@render children()}
 		</main>
@@ -87,6 +102,8 @@
 		<DsToastRegion
 			toasts={toast.toasts}
 			onDismiss={(id) => toast.remove(id)}
+			onPause={() => toast.pause()}
+			onResume={() => toast.resume()}
 			position="bottom-right"
 		/>
 	{:else}

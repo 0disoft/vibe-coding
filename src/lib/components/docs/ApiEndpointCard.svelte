@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
 
-  import { DsBadge, DsCard, DsDropdown, DsDropdownItem } from "$lib/components/design-system";
+  import { DsBadge, DsButton, DsCard, DsDropdown, DsDropdownItem } from "$lib/components/design-system";
 
   type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -42,15 +42,9 @@
   {#if examples.length}
     <DsDropdown align="end" menuClass="w-64" itemSelector='[role="menuitemradio"]'>
       {#snippet trigger(props)}
-        <button
-          {...props}
-          type="button"
-          class="ds-button ds-focus-ring ds-touch-target"
-          data-ds-variant="outline"
-          data-ds-intent="secondary"
-        >
+        <DsButton {...props} variant="outline" intent="secondary">
           예제 선택
-        </button>
+        </DsButton>
       {/snippet}
 
       {#snippet children({ close })}

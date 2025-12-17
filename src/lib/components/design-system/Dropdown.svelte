@@ -6,6 +6,13 @@
 	import { DsButton } from "$lib/components/design-system";
 	import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
 	import { useId } from "$lib/shared/utils/use-id";
+	import {
+		computeDropdownPlacementStyles,
+		createDropdownFocusManager,
+		createDropdownKeyHandlers,
+		createDropdownTypeahead,
+		getDropdownItems,
+	} from "./dropdown-helpers";
 
 	type Item = {
 		id: string;
@@ -79,10 +86,6 @@
 
 	let isOpen = $derived(openState.value);
 
-	// Typeahead State
-	let typeaheadBuffer = "";
-	let typeaheadTimer: number | null = null;
-
 	let menuRole = $derived(haspopup === "listbox" ? "listbox" : "menu");
 	let itemRole = $derived(haspopup === "listbox" ? "option" : "menuitem");
 	let effectiveItemSelector = $derived(
@@ -100,7 +103,7 @@
 		if (disabled) return;
 		const next = !isOpen;
 		setOpen(next);
-		if (next) tick().then(focusSelectedOrFirstItem);
+		if (next) tick().then(focus.focusSelectedOrFirstItem);
 	}
 
 	function close(options?: { focusButton?: boolean }): void {
@@ -110,148 +113,24 @@
 		}
 	}
 
-	// --- Focus Management ---
+	const getItems = () => getDropdownItems(rootEl, effectiveItemSelector);
 
-	function getItems(): HTMLElement[] {
-		if (!rootEl) return [];
-		// itemSelector를 사용하여 커스텀 아이템(menuitemradio 등)도 지원
-		return Array.from(
-			rootEl.querySelectorAll<HTMLElement>(effectiveItemSelector),
-		).filter(
-			(el) =>
-				!el.hasAttribute("disabled") &&
-				el.getAttribute("aria-disabled") !== "true",
-		);
-	}
+	const focus = createDropdownFocusManager(getItems);
+	const typeahead = createDropdownTypeahead(getItems);
 
-	function focusSelectedOrFirstItem(): void {
-		const items = getItems();
-		// 선택된 아이템(aria-checked 또는 aria-selected) 먼저 찾기
-		const selected = items.find(
-			(el) =>
-				el.getAttribute("aria-checked") === "true" ||
-				el.getAttribute("aria-selected") === "true",
-		);
-		(selected || items[0])?.focus();
-	}
-
-	function focusFirstItem(): void {
-		getItems()[0]?.focus();
-	}
-
-	function focusLastItem(): void {
-		getItems().at(-1)?.focus();
-	}
-
-	function focusNext(current: HTMLElement, dir: 1 | -1): void {
-		const items = getItems();
-		const idx = items.indexOf(current);
-		if (idx === -1) return;
-		const next = items[(idx + dir + items.length) % items.length];
-		next?.focus();
-	}
-
-	// --- Typeahead ---
-	function handleTypeahead(key: string) {
-		if (key.length !== 1) return;
-
-		if (typeaheadTimer) window.clearTimeout(typeaheadTimer);
-		typeaheadBuffer += key.toLowerCase();
-
-		typeaheadTimer = window.setTimeout(() => {
-			typeaheadBuffer = "";
-		}, 500);
-
-		const items = getItems();
-		const match = items.find((item) => {
-			const text = item.textContent?.trim().toLowerCase() || "";
-			return text.startsWith(typeaheadBuffer);
-		});
-
-		if (match) match.focus();
-	}
-
-	// --- Event Handlers ---
-
-	function onTriggerKeyDown(e: KeyboardEvent): void {
-		if (disabled) return;
-
-		if (e.key === "Escape" && isOpen) {
-			e.preventDefault();
-			close({ focusButton: true });
-			return;
-		}
-
-		if (e.key === "ArrowDown") {
-			e.preventDefault();
-			if (!isOpen) setOpen(true);
-			tick().then(focusSelectedOrFirstItem);
-			return;
-		}
-
-		if (e.key === "ArrowUp") {
-			e.preventDefault();
-			if (!isOpen) setOpen(true);
-			tick().then(focusLastItem);
-			return;
-		}
-
-		if (e.key === "Enter" || e.key === " ") {
-			e.preventDefault();
-			if (isOpen) {
-				close({ focusButton: true });
-			} else {
-				setOpen(true);
-				tick().then(focusSelectedOrFirstItem);
-			}
-		}
-	}
-
-	function onMenuKeyDown(e: KeyboardEvent): void {
-		const target = e.target as HTMLElement | null;
-		if (!target) return;
-
-		if (e.key === "Escape") {
-			e.preventDefault();
-			e.stopPropagation();
-			close({ focusButton: true });
-			return;
-		}
-
-		if (e.key === "Tab") {
-			// 기본 Tab 이동 후 닫기 (자연스러운 포커스 이동)
-			queueMicrotask(() => close());
-			return;
-		}
-
-		// Typeahead
-		if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
-			handleTypeahead(e.key);
-			return;
-		}
-
-		const item = target.closest<HTMLElement>(effectiveItemSelector);
-		if (!item) return;
-
-		if (e.key === "ArrowDown") {
-			e.preventDefault();
-			focusNext(item, 1);
-		} else if (e.key === "ArrowUp") {
-			e.preventDefault();
-			focusNext(item, -1);
-		} else if (e.key === "Home") {
-			e.preventDefault();
-			focusFirstItem();
-		} else if (e.key === "End") {
-			e.preventDefault();
-			focusLastItem();
-		} else if (e.key === "Enter" || e.key === " ") {
-			if (item.tagName !== "BUTTON") {
-				e.preventDefault();
-				item.click();
-			}
-		}
-	}
+	const { onTriggerKeyDown, onMenuKeyDown } = createDropdownKeyHandlers({
+		getDisabled: () => disabled,
+		getIsOpen: () => isOpen,
+		setOpen,
+		close,
+		afterOpen: (fn) => tick().then(fn),
+		getItemSelector: () => effectiveItemSelector,
+		focusSelectedOrFirstItem: focus.focusSelectedOrFirstItem,
+		focusFirstItem: focus.focusFirstItem,
+		focusLastItem: focus.focusLastItem,
+		focusNext: focus.focusNext,
+		typeahead,
+	});
 
 	function onDocumentPointerDown(e: PointerEvent): void {
 		if (!isOpen || !rootEl) return;
@@ -271,16 +150,7 @@
 
 	$effect(() => {
 		if (isOpen && menuEl && triggerEl) {
-			const rect = triggerEl.getBoundingClientRect();
-			const menuRect = menuEl.getBoundingClientRect();
-			const spaceBelow = window.innerHeight - rect.bottom;
-
-			if (spaceBelow < menuRect.height && rect.top > menuRect.height) {
-				placementStyles =
-					"top: auto; bottom: 100%; margin-bottom: var(--spacing-2); margin-top: 0;";
-			} else {
-				placementStyles = "";
-			}
+			placementStyles = computeDropdownPlacementStyles({ triggerEl, menuEl });
 		}
 	});
 
@@ -302,13 +172,7 @@
 
 	// 닫힐 때 타입어헤드 버퍼 정리
 	$effect(() => {
-		if (!isOpen) {
-			typeaheadBuffer = "";
-			if (typeaheadTimer) {
-				window.clearTimeout(typeaheadTimer);
-				typeaheadTimer = null;
-			}
-		}
+		if (!isOpen) typeahead.reset();
 	});
 </script>
 

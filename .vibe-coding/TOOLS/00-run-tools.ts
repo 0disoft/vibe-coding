@@ -17,15 +17,31 @@ const tailArgs = separatorIndex === -1 ? [] : rawArgs.slice(separatorIndex + 1);
 
 const stopOnFail = pipelineArgs.includes('--stop-on-fail');
 const fixBoldWrite = pipelineArgs.includes('--fix-bold-write');
+const lintNonStrict = pipelineArgs.includes('--lint-nonstrict') || pipelineArgs.includes('--lint-warn');
+const lintNoDsTokens = pipelineArgs.includes('--lint-no-ds-tokens');
 
 const forwardArgs =
 	separatorIndex === -1
-		? pipelineArgs.filter((arg) => arg !== '--stop-on-fail' && arg !== '--fix-bold-write')
+		? pipelineArgs.filter(
+				(arg) =>
+					arg !== '--stop-on-fail' &&
+					arg !== '--fix-bold-write' &&
+					arg !== '--lint-nonstrict' &&
+					arg !== '--lint-warn' &&
+					arg !== '--lint-no-ds-tokens'
+			)
 		: tailArgs;
 
 const steps: Step[] = [
 	{ file: '01-security-patterns.ts', label: 'security-patterns' },
-	{ file: '02-lint-patterns.ts', label: 'lint-patterns' },
+	{
+		file: '02-lint-patterns.ts',
+		label: 'lint-patterns',
+		args: [
+			...(lintNonStrict ? [] : ['--strict']),
+			...(lintNoDsTokens ? ['--no-ds-tokens'] : [])
+		]
+	},
 	{ file: '03-route-audit.ts', label: 'route-audit' },
 	{ file: '04-a11y-ux-patterns.ts', label: 'a11y-ux-patterns' },
 	{ file: '05-file-size-patterns.ts', label: 'file-size-patterns' },

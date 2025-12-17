@@ -46,11 +46,20 @@ bun .vibe-coding/TOOLS/00-run-tools.ts
 # 한 단계라도 실패하면 즉시 중단
 bun .vibe-coding/TOOLS/00-run-tools.ts --stop-on-fail
 
+# lint-patterns는 기본적으로 strict 모드로 실행
+# (warning을 error로 승격해서 커밋 전에 강하게 잡음)
+
 # 각 단계에 동일 옵션 전달 (예: 리포트 생략)
 bun .vibe-coding/TOOLS/00-run-tools.ts --no-report
 
 # 옵션 충돌을 피하고 싶다면 -- 구분자도 사용 가능
 bun .vibe-coding/TOOLS/00-run-tools.ts -- --no-report
+
+# lint-patterns만 non-strict로 실행 (다른 단계에는 영향 없음)
+bun .vibe-coding/TOOLS/00-run-tools.ts --lint-nonstrict
+
+# DS 토큰 사용 검사 끄기 (lint-patterns에만 적용)
+bun .vibe-coding/TOOLS/00-run-tools.ts --lint-no-ds-tokens
 ```
 
 단계별 실행 도구:
@@ -314,6 +323,12 @@ bun .vibe-coding/TOOLS/02-lint-patterns.ts src/lib/utils.ts
 
 # 오류만 표시 (경고, 정보 제외)
 bun .vibe-coding/TOOLS/02-lint-patterns.ts --errors-only
+
+# strict 모드: warning을 error로 처리 (커밋 전에 빡세게 잡을 때)
+bun .vibe-coding/TOOLS/02-lint-patterns.ts --strict
+
+# DS 컴포넌트 토큰 사용 검사 끄기
+bun .vibe-coding/TOOLS/02-lint-patterns.ts --no-ds-tokens
 ```
 
 ### lint-patterns 감지 규칙
@@ -343,6 +358,12 @@ bun .vibe-coding/TOOLS/02-lint-patterns.ts --errors-only
 |----|--------|------|
 | `no-private-env-client` | ❌ 오류 | 클라이언트에서 `$env/*/private` import |
 | `no-browser-globals-server` | ❌ 오류 | 서버 파일에서 `window`, `document` 등 사용 |
+
+#### Design System
+
+| ID | 심각도 | 설명 |
+|----|--------|------|
+| `ds-component-token-unused` | ⚠️ 경고 | `src/styles/design-system.tokens.css`의 Component/Pattern 토큰이 코드베이스에서 사용되지 않음 (범위: `src/styles/design-system.css`, `src/lib/components/design-system/**`) |
 
 ---
 

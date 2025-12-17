@@ -43,6 +43,9 @@
     ├── routes/                    # SvelteKit 페이지 라우트
     │   ├── offline/
     │   ├── design-system/          # DS/Docs 컴포넌트 쇼케이스 (임시)
+    │   │   ├── +page.server.ts
+    │   │   ├── +page.svelte
+    │   │   └── _sections/          # 섹션 컴포넌트 (조립용)
     │   ├── [[lang]]/
     │   ├── +error.svelte
     │   ├── +layout.svelte
@@ -79,6 +82,9 @@
         │   ├── index.ts
         │   ├── persisted-state.svelte.ts
         │   ├── theme.svelte.ts
+        │   ├── toast.svelte.ts
+        │   ├── toast-store.svelte.ts
+        │   ├── toast.types.ts
         │   └── font-size.svelte.ts
         ├── paraglide/             # Paraglide 자동 생성 파일
         │   ├── messages.js
@@ -92,6 +98,7 @@
         │   ├── Header.svelte
         │   ├── docs/              # 문서/가이드/API 문서 전용 컴포넌트
         │   ├── design-system/     # 디자인 시스템 UI 컴포넌트 (Button/Input/Card 등)
+        │   │   └── README.md      # DS 컴포넌트 레퍼런스 (Props/예제/패턴 요약)
         │   ├── footer-actions/
         │   │   └── FooterMenu.svelte
         │   ├── header-actions/
@@ -193,7 +200,8 @@
 | 파일/폴더 | 역할 |
 | --- | --- |
 | `routes/offline/+page.svelte` | 오프라인 폴백 페이지 |
-| `routes/design-system/+page.svelte` | DS/Docs 컴포넌트 쇼케이스 (임시) |
+| `routes/design-system/+page.svelte` | DS/Docs 컴포넌트 쇼케이스 (조립용, 임시) |
+| `routes/design-system/_sections/` | `/design-system` 섹션 컴포넌트 모음 |
 | `routes/[[lang]]/` | i18n 로케일 파라미터 루트 (Optional) |
 | `routes/[[lang]]/terms/+page.svelte` | 이용약관 페이지 |
 | `routes/[[lang]]/privacy/+page.svelte` | 개인정보 처리방침 페이지 |
@@ -234,13 +242,17 @@
 | `stores/index.ts`                                 | 스토어 배럴 export                                             |
 | `stores/persisted-state.svelte.ts`                | 쿠키+DOM 동기화 퍼시스턴스 스토어 팩토리                       |
 | `stores/theme.svelte.ts`                          | 라이트/다크 테마 상태 관리, FOUC 방지                          |
+| `stores/toast.svelte.ts`                          | 전역 토스트 Public API(export 재노출)                          |
+| `stores/toast-store.svelte.ts`                    | 전역 토스트 스토어 구현(큐/중복 방지/업데이트/pause-resume)     |
+| `stores/toast.types.ts`                           | Toast 타입(ToastItem/Options 등)                               |
 | `stores/font-size.svelte.ts`                      | 글자 크기 1~9단계 관리                                         |
 | `paraglide/`                                      | Paraglide 자동 생성 파일 (messages, runtime, registry, server) |
 | `components/CodeBlock.svelte`                     | Shiki 기반 코드 하이라이팅 + 복사 버튼 컴포넌트                |
 | `components/Header.svelte`                        | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯)         |
 | `components/Footer.svelte`                        | 공통 푸터 컴포넌트 (카피라이트, 약관 링크)                     |
 | `components/docs/`                                | 문서/가이드/API 문서 전용 패턴 컴포넌트                        |
-| `components/design-system/`                       | 디자인 시스템 UI 컴포넌트 (Button/Input/Card/Select/Badge/Alert/Tabs/Accordion 등) |
+| `components/design-system/`                       | 디자인 시스템 UI 컴포넌트 폴더 (세부 목록/사용법은 README 참조) |
+| `components/design-system/README.md`              | DS 컴포넌트 레퍼런스 (Props/예제/패턴 요약)                    |
 | `components/header-actions/ThemeToggle.svelte`    | 테마 토글 버튼                                                 |
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달                                         |
 | `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달                                    |

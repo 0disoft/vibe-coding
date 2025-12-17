@@ -35,6 +35,7 @@
   let isDisabled = $derived(!!rest.disabled);
   let isMixed = $derived(indeterminate);
   let ariaChecked = $derived<"mixed" | undefined>(isMixed ? "mixed" : undefined);
+  let resolvedAriaLabel = $derived(rest["aria-label"] ?? label);
 
   let rootClass = $derived(["ds-checkbox", className].filter(Boolean).join(" "));
 </script>
@@ -47,6 +48,7 @@
     type="checkbox"
     bind:checked
     class="ds-checkbox-native"
+    aria-label={resolvedAriaLabel}
     aria-checked={ariaChecked}
   />
 

@@ -1,0 +1,54 @@
+<script lang="ts">
+  import type { HTMLAttributes } from "svelte/elements";
+
+  import DsSkeleton from "./Skeleton.svelte";
+
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    columns?: number;
+    rows?: number;
+    showHeader?: boolean;
+  }
+
+  let {
+    columns = 4,
+    rows = 5,
+    showHeader = true,
+    class: className = "",
+    ...rest
+  }: Props = $props();
+
+  let safeCols = $derived(Math.min(8, Math.max(1, Math.floor(columns))));
+  let safeRows = $derived(Math.min(12, Math.max(1, Math.floor(rows))));
+</script>
+
+<div {...rest} class={["ds-table-scroll", className].filter(Boolean).join(" ")}>
+  <div class="ds-table" aria-hidden="true">
+    <table class="ds-table-native" role="presentation">
+      {#if showHeader}
+        <thead class="ds-table-head">
+          <tr class="ds-table-tr">
+            {#each Array.from({ length: safeCols }) as _, i (i)}
+              <th class="ds-table-th">
+                <div class="px-[0.9rem] py-[0.7rem]">
+                  <DsSkeleton width="70%" height={12} />
+                </div>
+              </th>
+            {/each}
+          </tr>
+        </thead>
+      {/if}
+      <tbody>
+        {#each Array.from({ length: safeRows }) as _, r (r)}
+          <tr class="ds-table-tr">
+            {#each Array.from({ length: safeCols }) as __, c (c)}
+              <td class="ds-table-td">
+                <DsSkeleton width={c === 0 ? "55%" : "80%"} height={12} />
+              </td>
+            {/each}
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
+</div>
+

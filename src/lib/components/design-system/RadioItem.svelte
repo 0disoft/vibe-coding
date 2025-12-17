@@ -32,6 +32,7 @@
 
   let isDisabled = $derived(group.disabled || disabled);
   let checked = $derived(group.value() === value);
+  let resolvedAriaLabel = $derived(rest["aria-label"] ?? label);
 
   function onChange() {
     if (isDisabled) return;
@@ -53,6 +54,7 @@
     checked={checked}
     disabled={isDisabled}
     required={group.required}
+    aria-label={resolvedAriaLabel}
     aria-describedby={group.describedBy}
     onchange={onChange}
   />

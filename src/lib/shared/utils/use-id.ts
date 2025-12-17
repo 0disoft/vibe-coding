@@ -1,31 +1,50 @@
 /**
- * SSR-safe unique ID generator
+ * Unique ID generator (Universal)
  *
- * 서버와 클라이언트에서 동일한 순서로 ID를 생성하여
- * 하이드레이션 불일치를 방지합니다.
+ * 목표:
+ * - SSR에서 요청 단위로 카운터를 분리해 동시성 안전성을 확보합니다.
+ * - 클라이언트에서는 모듈 단위 카운터로 충분합니다.
  *
- * @example
- * ```ts
- * // 컴포넌트 스크립트 최상단에서 호출
- * const id = useId('ds-dropdown');
- * // 결과: 'ds-dropdown-1', 'ds-dropdown-2', ...
- * ```
+ * 구현:
+ * - 서버 훅에서 AsyncLocalStorage 기반 Provider를 등록하면, SSR 렌더링 중 `useId()`가 요청 컨텍스트를 사용합니다.
+ * - Provider가 없으면 fallback 카운터를 사용합니다(클라이언트/테스트 환경).
  */
-let counter = 0;
+
+type IdStore = { counter: number };
+
+type IdProvider = {
+	get: () => IdStore | undefined;
+	run: <T>(fn: () => T) => T;
+};
+
+let provider: IdProvider | null = null;
+let fallbackCounter = 0;
 
 /**
- * 고유 ID 생성 (SSR-safe)
- * 컴포넌트 인스턴스당 한 번만 호출해야 합니다.
+ * 서버에서만 사용: 요청 컨텍스트 Provider 주입 (서버 훅에서 1회 등록)
  */
-export function useId(prefix = 'ds'): string {
-	counter += 1;
-	return `${prefix}-${counter}`;
+export function configureUseIdProvider(next: IdProvider | null) {
+	provider = next;
 }
 
-/**
- * ID 카운터 리셋 (테스트용)
- * @internal
- */
+export function useId(prefix = 'ds'): string {
+	const store = provider?.get();
+	if (store) {
+		store.counter += 1;
+		return `${prefix}-${store.counter}`;
+	}
+
+	fallbackCounter += 1;
+	return `${prefix}-${fallbackCounter}`;
+}
+
+export function runWithIdContext<T>(fn: () => T): T {
+	if (provider) return provider.run(fn);
+	return fn();
+}
+
 export function resetIdCounter(): void {
-	counter = 0;
+	fallbackCounter = 0;
+	const store = provider?.get();
+	if (store) store.counter = 0;
 }

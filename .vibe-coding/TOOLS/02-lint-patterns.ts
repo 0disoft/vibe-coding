@@ -25,6 +25,8 @@ interface LintResult {
 	match: string;
 }
 
+type Severity = LintRule['severity'];
+
 // 서버 파일 패턴 (윈도우 경로 대응을 위해 슬래시로 정규화 후 검사)
 const SERVER_FILE_PATTERNS = [
 	/\+page\.server\.(ts|tsx|js|jsx)$/,
@@ -91,6 +93,137 @@ function isDevIfLine(line: string): boolean {
 	// 조건 범위 내에서 DEV 확인 (중첩 괄호 문제 해결)
 	const cond = line.slice(open + 1, end);
 	return cond.includes('import.meta.env.DEV');
+}
+
+type DsTokenKind = 'component' | 'pattern';
+type DsToken = {
+	name: string; // --dialog-padding
+	line: number; // 1-based
+	kind: DsTokenKind;
+	section: string; // Button, Dialog, Field...
+};
+
+function normalizePathForReport(path: string): string {
+	return path.replace(/\\/g, '/');
+}
+
+function isTestFilePath(filePath: string): boolean {
+	const normalized = filePath.replace(/\\/g, '/');
+	if (normalized.includes('/__test__/')) return true;
+	if (normalized.includes('/__tests__/')) return true;
+	return /\.(?:spec|test)\.[^.]+$/.test(normalized);
+}
+
+function parseDesignSystemComponentTokens(tokensCss: string): DsToken[] {
+	const tokens: DsToken[] = [];
+	const lines = tokensCss.split('\n');
+
+	let currentKind: DsTokenKind | null = null;
+	let currentSection: string | null = null;
+
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i] ?? '';
+
+		const header = line.match(/^\s*\/\*\s*([^*]+?)\s*\*\/\s*$/);
+		if (header) {
+			const title = header[1]?.trim() ?? '';
+			const sectionMatch = title.match(/^(Component|Pattern):\s*(.+)$/i);
+			if (sectionMatch) {
+				const kind = sectionMatch[1]?.toLowerCase() as DsTokenKind;
+				currentKind = kind;
+				currentSection = (sectionMatch[2] ?? '').trim();
+			} else {
+				// 큰 섹션 이동(예: Typography, Color 등)에서는 컴포넌트/패턴 토큰 수집 종료
+				currentKind = null;
+				currentSection = null;
+			}
+		}
+
+		const tokenMatch = line.match(/^\s*(--[a-z0-9-]+)\s*:/i);
+		if (!tokenMatch || !currentKind) continue;
+
+		const name = tokenMatch[1];
+		if (!name) continue;
+
+		tokens.push({
+			name,
+			line: i + 1,
+			kind: currentKind,
+			section: currentSection ?? name
+		});
+	}
+
+	return tokens;
+}
+
+async function walkWithIgnore(dir: string, ignorePatterns: RegExp[]): Promise<string[]> {
+	const files: string[] = [];
+	const entries = await readdir(dir, { withFileTypes: true });
+
+	for (const entry of entries) {
+		const path = join(dir, entry.name);
+
+		// 무시 패턴 체크 (윈도우 역슬래시 정규화)
+		const normalizedPath = path.replace(/\\/g, '/');
+		if (ignorePatterns.some((p) => p.test(normalizedPath))) continue;
+
+		if (entry.isDirectory()) {
+			files.push(...(await walkWithIgnore(path, ignorePatterns)));
+		} else if (entry.isFile()) {
+			const ext = extname(path);
+			if (VALID_EXTENSIONS.includes(ext)) files.push(path);
+		}
+	}
+
+	return files;
+}
+
+async function collectDesignSystemAuditFiles(projectRoot: string): Promise<string[]> {
+	const result: string[] = [];
+
+	const designSystemCssPath = join(projectRoot, 'src', 'styles', 'design-system.css');
+	try {
+		const s = await stat(designSystemCssPath);
+		if (s.isFile()) result.push(designSystemCssPath);
+	} catch {
+		// optional
+	}
+
+	const dsComponentsDir = join(projectRoot, 'src', 'lib', 'components', 'design-system');
+	try {
+		const s = await stat(dsComponentsDir);
+		if (s.isDirectory()) {
+			const ignorePatterns = [
+				/(?:^|\/)node_modules(?:\/|$)/,
+				/(?:^|\/)\.svelte-kit(?:\/|$)/,
+				/(?:^|\/)dist(?:\/|$)/,
+				/(?:^|\/)build(?:\/|$)/,
+				/(?:^|\/)\.git(?:\/|$)/
+			];
+			const dsFiles = await walkWithIgnore(dsComponentsDir, ignorePatterns);
+			for (const f of dsFiles) {
+				if (isTestFilePath(f)) continue;
+				result.push(f);
+			}
+		}
+	} catch {
+		// optional
+	}
+
+	return result;
+}
+
+function makeRule(params: Omit<LintRule, 'pattern'> & { pattern?: RegExp }): LintRule {
+	return {
+		...params,
+		pattern: params.pattern ?? /$/g
+	};
+}
+
+function upgradeSeverityForStrictMode(severity: Severity, strict: boolean): Severity {
+	if (!strict) return severity;
+	if (severity === 'warning') return 'error';
+	return severity;
 }
 
 const RULES: LintRule[] = [
@@ -228,7 +361,8 @@ const RULES: LintRule[] = [
 		id: 'ds-raw-font-family',
 		name: '기본 폰트 유틸리티 사용',
 		description: 'font-sans, font-mono 등 직접 사용 감지',
-		pattern: /\bfont-(?:sans|serif|mono)\b/g,
+		// CSS 변수(--font-sans)까지 오탐이 나지 않도록 `--font-*`는 제외
+		pattern: /(?<!-)\bfont-(?:sans|serif|mono)\b/g,
 		suggestion: '디자인 시스템 타이포그래피 클래스(.text-h1, .text-body 등)를 사용하세요. (참고: src/styles/design-system.tokens.css)',
 		severity: 'info', // 정보성으로 낮춤 (필요시 쓸 수도 있으므로)
 		scope: 'markup'
@@ -340,24 +474,7 @@ function extractStyleBlocks(content: string): CodeBlock[] {
 }
 
 async function walk(dir: string): Promise<string[]> {
-	const files: string[] = [];
-	const entries = await readdir(dir, { withFileTypes: true });
-
-	for (const entry of entries) {
-		const path = join(dir, entry.name);
-
-		// 무시 패턴 체크 (윈도우 역슬래시 정규화)
-		const normalizedPath = path.replace(/\\/g, '/');
-		if (IGNORE_PATTERNS.some((p) => p.test(normalizedPath))) continue;
-
-		if (entry.isDirectory()) {
-			files.push(...(await walk(path)));
-		} else if (entry.isFile()) {
-			const ext = extname(path);
-			if (VALID_EXTENSIONS.includes(ext)) files.push(path);
-		}
-	}
-	return files;
+	return walkWithIgnore(dir, IGNORE_PATTERNS);
 }
 
 /**
@@ -693,7 +810,7 @@ function formatResults(results: LintResult[], basePath: string): string {
 	// 파일별로 그룹화
 	const byFile = new Map<string, LintResult[]>();
 	for (const r of results) {
-		const rel = relative(basePath, r.file);
+		const rel = normalizePathForReport(relative(basePath, r.file));
 		const existing = byFile.get(rel);
 		if (existing) {
 			existing.push(r);
@@ -728,6 +845,12 @@ async function main() {
 	const TARGET = process.argv.slice(2).find((arg) => !arg.startsWith('--')) || 'src';
 	const FILTER_SEVERITY = process.argv.includes('--errors-only') ? 'error' : null;
 	const NO_REPORT = process.argv.includes('--no-report');
+	const STRICT = process.argv.includes('--strict');
+	const NO_DS_TOKENS = process.argv.includes('--no-ds-tokens');
+
+	if (STRICT) {
+		console.log('⚙️ strict 모드: warning을 error로 처리합니다.');
+	}
 
 	console.log(`🔍 스캔 대상: ${TARGET}`);
 
@@ -755,8 +878,87 @@ async function main() {
 			allResults.push(...results);
 		}
 
+		// Design System Component Token Usage Audit
+		// - 범위: src/styles/design-system.css + src/lib/components/design-system/** (테스트 파일 제외)
+		// - 토큰 소스: src/styles/design-system.tokens.css 내 Component/Pattern 섹션
+		if (!NO_DS_TOKENS) {
+			const projectRoot = process.cwd();
+			const tokensPath = join(projectRoot, 'src', 'styles', 'design-system.tokens.css');
+
+			try {
+				const tokensContent = await readFile(tokensPath, 'utf-8');
+				const tokens = parseDesignSystemComponentTokens(tokensContent);
+
+				const extraAuditFiles = await collectDesignSystemAuditFiles(projectRoot);
+				const auditFilesSet = new Set<string>([...files, ...extraAuditFiles]);
+				auditFilesSet.delete(tokensPath);
+
+				const auditFiles = [...auditFilesSet];
+				const fileContents = new Map<string, string>();
+
+				for (const file of auditFiles) {
+					try {
+						fileContents.set(file, await readFile(file, 'utf-8'));
+					} catch {
+						// unreadable file: ignore
+					}
+				}
+
+				const dsTokenUnusedRuleBase = makeRule({
+					id: 'ds-component-token-unused',
+					name: 'DS 컴포넌트/패턴 토큰 미사용',
+					description:
+						'design-system.tokens.css에 정의된 Component/Pattern 토큰이 코드베이스에서 참조되지 않음',
+					suggestion:
+						'design-system.css 또는 Ds* 컴포넌트에서 var(--토큰)으로 사용하거나, 불필요하면 토큰을 제거하세요.',
+					severity: 'warning',
+					scope: 'all'
+				});
+
+				for (const token of tokens) {
+					const tokenNeedle = token.name;
+					let used = false;
+
+					for (const content of fileContents.values()) {
+						if (content.includes(tokenNeedle)) {
+							used = true;
+							break;
+						}
+					}
+
+					if (used) continue;
+
+					const rule: LintRule = {
+						...dsTokenUnusedRuleBase,
+						severity: upgradeSeverityForStrictMode(dsTokenUnusedRuleBase.severity, STRICT)
+					};
+
+					allResults.push({
+						file: tokensPath,
+						line: token.line,
+						column: 1,
+						rule,
+						match: tokenNeedle
+					});
+				}
+			} catch (e) {
+				console.warn(
+					'⚠️ DS 토큰 사용 검사 스킵: src/styles/design-system.tokens.css 를 읽지 못했습니다.',
+					e
+				);
+			}
+		}
+
 		const elapsed = performance.now() - startTime;
 		const elapsedStr = elapsed < 1000 ? `${elapsed.toFixed(0)}ms` : `${(elapsed / 1000).toFixed(2)}s`;
+
+		if (STRICT) {
+			allResults = allResults.map((r) => {
+				const severity = upgradeSeverityForStrictMode(r.rule.severity, STRICT);
+				if (severity === r.rule.severity) return r;
+				return { ...r, rule: { ...r.rule, severity } };
+			});
+		}
 
 		// 심각도 필터링
 		if (FILTER_SEVERITY) {
@@ -770,8 +972,8 @@ async function main() {
 			return a.column - b.column;
 		});
 
-		// basePath는 디렉터리 기준으로 (파일 타겟일 때 relative 경로 정상화)
-		const basePath = targetStat.isFile() ? dirname(TARGET) : TARGET;
+		// 리포트는 프로젝트 루트 기준 상대 경로로 고정 (윈도우/리눅스 환경 차이 방지)
+		const basePath = process.cwd();
 		const report = formatResults(allResults, basePath);
 		console.log(report);
 		console.log(`\n⏱️ 소요 시간: ${elapsedStr}`);
@@ -790,7 +992,8 @@ async function main() {
 			console.log(`📝 리포트 저장됨: ${reportPath}`);
 		}
 
-		// CI용 종료 코드: 오류가 있으면 exit(1)
+		// 종료 코드: error가 있으면 exit(1)
+		// - strict 모드에서는 warning도 error 취급
 		const hasErrors = allResults.some((r) => r.rule.severity === 'error');
 		if (hasErrors) {
 			process.exit(1);

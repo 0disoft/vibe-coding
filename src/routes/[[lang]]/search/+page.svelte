@@ -64,7 +64,7 @@
       </div>
 
       <div class="text-label text-muted-foreground pt-4">Next</div>
-      <ul class="list-disc pl-6 space-y-1 text-body">
+      <ul class="list-disc ps-6 space-y-1 text-body">
         <li>페이지 목적/콘텐츠 구조 확정</li>
         <li>필요한 DS/Docs 컴포넌트 조합 적용</li>
         <li>데이터 로딩/폼/검증/에러 상태 추가</li>

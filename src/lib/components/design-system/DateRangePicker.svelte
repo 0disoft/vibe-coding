@@ -85,6 +85,7 @@
           <input
             type="date"
             class="ds-date-range-input"
+            aria-label="Start"
             value={value.start}
             oninput={(e) => set({ start: (e.target as HTMLInputElement).value, end: value.end })}
           />
@@ -95,6 +96,7 @@
           <input
             type="date"
             class="ds-date-range-input"
+            aria-label="End"
             value={value.end}
             oninput={(e) => set({ start: value.start, end: (e.target as HTMLInputElement).value })}
           />

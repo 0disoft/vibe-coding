@@ -19,7 +19,14 @@ export const init: ClientInit = async () => {
 	// 모바일: 가상 키보드가 콘텐츠를 "리사이즈"로 밀어올리지 않도록(지원 브라우저)
 	if ('virtualKeyboard' in navigator) {
 		try {
-			(navigator as any).virtualKeyboard.overlaysContent = true;
+			type NavigatorWithVirtualKeyboard = Navigator & {
+				virtualKeyboard?: { overlaysContent: boolean };
+			};
+
+			const nav = navigator as NavigatorWithVirtualKeyboard;
+			if (nav.virtualKeyboard) {
+				nav.virtualKeyboard.overlaysContent = true;
+			}
 		} catch {
 			// 일부 브라우저/웹뷰에서 setter가 막혀있을 수 있음 (무시)
 		}

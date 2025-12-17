@@ -27,6 +27,8 @@
   }
 
   let {
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledby,
     size = "md",
     variant = "outline",
     invalid = false,
@@ -117,6 +119,8 @@
     bind:this={ref}
     bind:value
     class="ds-input-native"
+    aria-label={ariaLabel}
+    aria-labelledby={ariaLabelledby}
     type={isRevealed ? "text" : "password"}
     aria-invalid={invalid ? "true" : undefined}
     onkeydown={(e) => {

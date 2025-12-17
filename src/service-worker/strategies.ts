@@ -86,7 +86,8 @@ export function createStrategies(args: {
 				cacheControl.includes('no-cache') ||
 				cacheControl.includes('must-revalidate');
 
-			if (isNavigation && response.ok && isHtml && !shouldSkipCache && !sensitiveVary) { // [MODIFIED] Added !sensitiveVary
+			if (isNavigation && response.ok && isHtml && !shouldSkipCache && !sensitiveVary) {
+				// [MODIFIED] Added !sensitiveVary
 				const cache = await caches.open(args.cacheName);
 				await cache.put(request, response.clone());
 			}

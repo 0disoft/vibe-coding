@@ -85,6 +85,7 @@ src/
 - 드랍다운/메뉴 아이템은 `DsDropdownItem` 우선 사용(직접 `ds-dropdown-item` 사용은 지양)
 - 색/상태 표현은 유틸(`text-*`, `bg-*`, `hover:*`)보다 `Ds*`의 `intent`/`variant` 우선
 - 쇼케이스: `/design-system` 페이지에서 DS/Docs 컴포넌트를 한 번에 검증 (임시)
+- 쇼케이스 소스: `src/routes/design-system/_sections/` 에서 섹션 단위로 관리
 - 페이지 스캐폴딩: `bun src/scripts/scaffold-pages.ts`
 - 내부 구현(예: `*-context.ts`)은 비공개로 두고, 외부에서는 `src/lib/components/design-system/index.ts` 경유 import만 권장
 
@@ -127,6 +128,7 @@ bun lint          # Biome 린트 + 포맷팅
 - `.vibe-coding/TREE.md` - 프로젝트 구조 상세
 - `src/styles/design-system.tokens.css` - 디자인 시스템 토큰(SSOT)
 - `src/styles/design-system.css` - 디자인 시스템 컴포넌트/패턴 스타일
+- `src/lib/components/design-system/README.md` - DS 컴포넌트 레퍼런스
 - `.vibe-coding/SPEC.md` - 프로젝트 스펙
 - `.vibe-coding/KNOWLEDGE/` - 기술 지식 베이스
 - `.vibe-coding/TROUBLE/SOLVED.md` - 문제 해결 기록

@@ -1,0 +1,108 @@
+<script lang="ts">
+  import type { Snippet } from "svelte";
+  import type { HTMLAttributes } from "svelte/elements";
+
+  import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
+  import { useId } from "$lib/shared/utils/use-id";
+
+  import DsButton from "./Button.svelte";
+
+  interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+    title: string;
+    description?: string;
+    /** 차트 영역 */
+    children?: Snippet;
+    /** 우측 상단 액션 영역 */
+    actions?: Snippet;
+    /** 범례 영역 */
+    legend?: Snippet;
+    /** 데이터 테이블(접근성/검증용) */
+    table?: Snippet;
+    tableToggleLabel?: string;
+
+    showTable?: boolean;
+    onShowTableChange?: (next: boolean) => void;
+    defaultShowTable?: boolean;
+  }
+
+  let {
+    title,
+    description,
+    children,
+    actions,
+    legend,
+    table,
+    tableToggleLabel = "Show data",
+    showTable,
+    onShowTableChange,
+    defaultShowTable = false,
+    class: className = "",
+    ...rest
+  }: Props = $props();
+
+  const generatedId = useId("ds-chart");
+  let chartId = $derived(rest.id ?? generatedId);
+  let tableId = $derived(`${chartId}-table`);
+
+  let showTableState = createControllableState<boolean>({
+    value: () => showTable ?? undefined,
+    onChange: (next) => onShowTableChange?.(next),
+    defaultValue: defaultShowTable,
+  });
+
+  let canShowTable = $derived(Boolean(table));
+</script>
+
+<section
+  {...rest}
+  class={["ds-chart-frame", className].filter(Boolean).join(" ")}
+  aria-label={title}
+>
+  <header class="ds-chart-header">
+    <div class="ds-chart-heading">
+      <div class="ds-chart-title">{title}</div>
+      {#if description}
+        <div class="ds-chart-desc">{description}</div>
+      {/if}
+    </div>
+
+    {#if actions}
+      <div class="ds-chart-actions">
+        {@render actions()}
+      </div>
+    {/if}
+  </header>
+
+  <div class="ds-chart-body">
+    {#if children}
+      {@render children()}
+    {/if}
+  </div>
+
+  {#if legend}
+    <div class="ds-chart-legend">
+      {@render legend()}
+    </div>
+  {/if}
+
+  {#if canShowTable}
+    <div class="ds-chart-footer">
+      <DsButton
+        size="sm"
+        variant="outline"
+        intent="secondary"
+        aria-controls={tableId}
+        aria-expanded={showTableState.value ? "true" : "false"}
+        onclick={() => (showTableState.value = !showTableState.value)}
+      >
+        {tableToggleLabel}
+      </DsButton>
+    </div>
+
+    {#if showTableState.value}
+      <div class="ds-chart-table" id={tableId}>
+        {@render table?.()}
+      </div>
+    {/if}
+  {/if}
+</section>

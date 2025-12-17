@@ -2,7 +2,8 @@
 	// 동적 import를 위해 타입만 import (런타임 번들에 포함되지 않음)
 	import type { BundledLanguage, BundledTheme, Highlighter } from "shiki";
 	import { SvelteSet } from "svelte/reactivity";
-	import { writeToClipboard } from "$lib/shared/utils/clipboard";
+
+	import { DsCopyButton } from "$lib/components/design-system";
 
 	interface Props {
 		code: string;
@@ -16,7 +17,6 @@
 		theme = "catppuccin-mocha",
 	}: Props = $props();
 
-	let copied = $state(false);
 	let highlightedHtml = $state("");
 
 	// 싱글톤 highlighter 인스턴스 (언어 추가 시 재사용)
@@ -100,18 +100,6 @@
 		return (langMap[normalized] ?? normalized) as BundledLanguage;
 	}
 
-	async function copyCode() {
-		try {
-			await writeToClipboard(code);
-			copied = true;
-			setTimeout(() => (copied = false), 1500);
-		} catch (error) {
-			if (import.meta.env.DEV) {
-				console.error("[CodeBlock] Failed to copy:", error);
-			}
-		}
-	}
-
 	// code 또는 language prop 변경 시 자동 재하이라이트 (Svelte 5 runes)
 	$effect(() => {
 		let active = true; // Race condition 방지
@@ -161,31 +149,33 @@
 			.replace(/'/g, "&#039;");
 	}
 
-		// 스타일은 src/styles/design-system.css 에서 디자인 시스템으로 관리합니다.
-	</script>
+	// 스타일은 src/styles/design-system.css 에서 디자인 시스템으로 관리합니다.
+</script>
 
 <div class="relative group">
-	<button
-		type="button"
-		onclick={copyCode}
-		aria-label={copied ? "Copied to clipboard" : "Copy code"}
-		class="absolute end-4 top-4 z-10 rounded-md px-2 py-1 text-xs-resp font-medium transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+	<DsCopyButton
+		size="sm"
+		variant="ghost"
+		intent="neutral"
+		label="Copy code"
+		copiedLabel="Copied to clipboard"
+		text={code}
+		showTitle
+		class="absolute end-4 top-4 z-10 transition opacity-0 group-hover:opacity-100 focus:opacity-100"
 		style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
-	>
-		{copied ? "✓ Copied!" : "📋 Copy"}
-	</button>
+	/>
 
-		{#if highlightedHtml}
-			<!-- Shiki wrapper color override -->
-			<div
-				class="ds-code-block overflow-hidden [&>pre]:!m-0 [&>pre]:!p-4 [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
-			>
-				{@html highlightedHtml}<!-- security-ignore: xss-svelte-html -->
-			</div>
-		{:else}
-			<!-- Fallback: 하이라이팅 로딩 중에도 코드는 즉시 노출 (테스트/UX 안정성) -->
-			<div class="ds-code-block overflow-hidden" aria-busy="true">
-				<pre class="!m-0 !p-4 !bg-transparent !rounded-[inherit]"><code>{code}</code></pre>
-			</div>
-		{/if}
+	{#if highlightedHtml}
+		<!-- Shiki wrapper color override -->
+		<div
+			class="ds-code-block overflow-hidden [&>pre]:!m-0 [&>pre]:!p-4 [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
+		>
+			{@html highlightedHtml}<!-- security-ignore: xss-svelte-html -->
+		</div>
+	{:else}
+		<!-- Fallback: 하이라이팅 로딩 중에도 코드는 즉시 노출 (테스트/UX 안정성) -->
+		<div class="ds-code-block overflow-hidden" aria-busy="true">
+			<pre class="!m-0 !p-4 !bg-transparent !rounded-[inherit]"><code>{code}</code></pre>
+		</div>
+	{/if}
 </div>

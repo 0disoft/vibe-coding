@@ -162,6 +162,7 @@
 		{multiple}
 		{disabled}
 		{required}
+		aria-label={label}
 		aria-describedby={describedBy}
 		onchange={onInputChange}
 	/>

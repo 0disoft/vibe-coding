@@ -32,9 +32,9 @@ describe('DsDropdown', () => {
 		const alpha = page.getByRole('menuitem', { name: 'Alpha' });
 		await expect.element(alpha).toHaveFocus();
 
-		alpha.element().dispatchEvent(
-			new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
-		);
+		alpha
+			.element()
+			.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
 
 		const beta = page.getByRole('menuitem', { name: 'Beta' });
 		await expect.element(beta).toHaveFocus();
@@ -48,9 +48,7 @@ describe('DsDropdown', () => {
 		await expect.element(page.getByRole('menu')).toBeInTheDocument();
 
 		const gamma = page.getByRole('menuitem', { name: 'Gamma' });
-		gamma.element().dispatchEvent(
-			new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
-		);
+		gamma.element().dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
 
 		await expect.element(page.getByRole('menu')).not.toBeInTheDocument();
 		await expect.element(trigger).toHaveFocus();
@@ -78,4 +76,3 @@ describe('DsDropdown', () => {
 		await expect.element(optionAlpha).toHaveFocus();
 	});
 });
-

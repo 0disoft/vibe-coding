@@ -139,6 +139,7 @@
         bind:this={ref[i]}
         id={`${rootId}-${i}`}
         class="ds-otp-slot"
+        aria-label={`${label} ${i + 1}/${length}`}
         value={current}
         disabled={disabled}
         inputmode={numeric ? "numeric" : "text"}
@@ -147,7 +148,6 @@
         oninput={(e) => onInput(e as any, i)}
         onkeydown={(e) => onKeyDown(e, i)}
         onpaste={(e) => onPaste(e, i)}
-        aria-label={`${label} ${i + 1}/${length}`}
       />
     {/each}
   </div>

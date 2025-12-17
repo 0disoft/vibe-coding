@@ -11,6 +11,12 @@
     description?: string;
     sidebar?: Snippet;
     tocItems?: ReadonlyArray<TocItem>;
+    /**
+     * 부모 레이아웃(예: /design-system 쇼케이스) 안에 "임베드"되는 경우,
+     * 뷰포트가 넓어도 좌/우 사이드바를 고정 컬럼으로 렌더하지 않고
+     * Menu / On this page 를 Sheet로 제공합니다.
+     */
+    embedded?: boolean;
     children?: Snippet;
   }
 
@@ -19,6 +25,7 @@
     description,
     sidebar,
     tocItems = [],
+    embedded = false,
     class: className = "",
     children,
     ...rest
@@ -26,15 +33,28 @@
 
   let sidebarOpen = $state(false);
   let tocOpen = $state(false);
+
+  let rootClass = $derived(
+    [
+      "grid gap-6",
+      embedded
+        ? ""
+        : "lg:grid-cols-[220px_minmax(0,1fr)_220px] xl:grid-cols-[240px_minmax(0,1fr)_240px]",
+      className,
+    ]
+      .filter(Boolean)
+      .join(" "),
+  );
+
+  let desktopOnlyClass = $derived(embedded ? "hidden" : "hidden lg:block");
+  let mobileOnlyClass = $derived(embedded ? "" : "lg:hidden");
 </script>
 
 <div
   {...rest}
-  class={["grid gap-6 lg:grid-cols-[260px_1fr_260px]", className]
-    .filter(Boolean)
-    .join(" ")}
+  class={rootClass}
 >
-  <aside class="hidden lg:block">
+  <aside class={desktopOnlyClass}>
     {#if sidebar}
       {@render sidebar()}
     {/if}
@@ -44,7 +64,7 @@
     <header class="space-y-3">
       <div class="flex flex-wrap items-center justify-between gap-2">
         <h1 class="text-h1 font-semibold">{title}</h1>
-        <div class="flex items-center gap-2 lg:hidden">
+        <div class={["flex items-center gap-2", mobileOnlyClass].filter(Boolean).join(" ")}>
           {#if sidebar}
             <DsButton size="sm" variant="outline" intent="secondary" onclick={() => (sidebarOpen = true)}>
               <span class="i-lucide-menu h-4 w-4" aria-hidden="true"></span>
@@ -71,7 +91,7 @@
     </div>
   </section>
 
-  <aside class="hidden lg:block">
+  <aside class={desktopOnlyClass}>
     {#if tocItems.length > 0}
       <DocsToc items={tocItems} />
     {/if}
@@ -88,7 +108,7 @@
     size="sm"
     closeOnOutsideClick
     closeOnEscape
-    class="lg:hidden"
+    class={mobileOnlyClass}
   >
     {@render sidebar()}
   </DsSheet>
@@ -104,7 +124,7 @@
     size="sm"
     closeOnOutsideClick
     closeOnEscape
-    class="lg:hidden"
+    class={mobileOnlyClass}
   >
     <DocsToc items={tocItems} class="border-0 bg-transparent p-0" />
   </DsSheet>

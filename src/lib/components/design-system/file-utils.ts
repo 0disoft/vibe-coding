@@ -1,12 +1,12 @@
 export function formatBytes(bytes: number): string {
-	const units = ["B", "KB", "MB", "GB"] as const;
+	const units = ['B', 'KB', 'MB', 'GB'] as const;
 	let value = bytes;
 	let unitIndex = 0;
 	while (value >= 1024 && unitIndex < units.length - 1) {
 		value /= 1024;
 		unitIndex += 1;
 	}
-	const unit = units[unitIndex] ?? "B";
+	const unit = units[unitIndex] ?? 'B';
 	const precision = unitIndex === 0 ? 0 : value < 10 ? 2 : 1;
 	return `${value.toFixed(precision)} ${unit}`;
 }
@@ -26,4 +26,3 @@ export function dedupeFiles(files: File[]): File[] {
 	}
 	return next;
 }
-

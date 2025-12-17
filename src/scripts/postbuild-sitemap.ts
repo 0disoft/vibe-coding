@@ -4,8 +4,8 @@ import { statSync } from 'node:fs';
 import { site } from '../lib/constants/site';
 
 type OriginResolution =
-	| { ok: true; origin: string; hostname: string; }
-	| { ok: false; reason: 'missing' | 'invalid' | 'not_http'; };
+	| { ok: true; origin: string; hostname: string }
+	| { ok: false; reason: 'missing' | 'invalid' | 'not_http' };
 
 function resolveOrigin(raw: string): OriginResolution {
 	const trimmed = raw.trim();
@@ -94,7 +94,7 @@ function main(): void {
 	// process.execPath가 node일 수도 있으므로, 확실히 bun인지 확인
 	const bunBin =
 		(process.env.BUN_BIN ?? '').trim() ||
-		((process.versions as { bun?: string; }).bun ? process.execPath : 'bun');
+		((process.versions as { bun?: string }).bun ? process.execPath : 'bun');
 
 	const r = spawnSync(
 		bunBin,

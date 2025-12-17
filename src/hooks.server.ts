@@ -8,6 +8,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 
 import { handleBodySizeLimit } from '$lib/server/hooks/body-size-limit';
 import { handleError } from '$lib/server/hooks/error-handler';
+import { handleIdContext } from '$lib/server/hooks/id-context';
 import { handleParaglide } from '$lib/server/hooks/paraglide-theme-font';
 import { handleRateLimit } from '$lib/server/hooks/rate-limit';
 import { handleRequestId } from '$lib/server/hooks/request-id';
@@ -15,6 +16,7 @@ import { handleRootRedirect } from '$lib/server/hooks/root-redirect';
 import { handleSecurityHeaders } from '$lib/server/hooks/security-headers';
 
 export const handle: Handle = sequence(
+	handleIdContext,
 	handleRequestId,
 	handleSecurityHeaders,
 	handleBodySizeLimit,

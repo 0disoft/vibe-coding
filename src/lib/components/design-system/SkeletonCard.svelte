@@ -1,0 +1,47 @@
+<script lang="ts">
+  import type { HTMLAttributes } from "svelte/elements";
+
+  import DsSkeleton from "./Skeleton.svelte";
+
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    /** 상단 미디어(썸네일) 블록 표시 */
+    showMedia?: boolean;
+    /** 아바타(원형) 표시 */
+    showAvatar?: boolean;
+    /** 본문 라인 개수 */
+    lines?: number;
+  }
+
+  let {
+    showMedia = false,
+    showAvatar = true,
+    lines = 3,
+    class: className = "",
+    ...rest
+  }: Props = $props();
+</script>
+
+<div
+  {...rest}
+  class={["rounded-md border border-border bg-surface p-4", className]
+    .filter(Boolean)
+    .join(" ")}
+  aria-hidden="true"
+>
+  {#if showMedia}
+    <DsSkeleton class="mb-4 w-full" height={140} />
+  {/if}
+
+  <div class="flex items-start gap-3">
+    {#if showAvatar}
+      <DsSkeleton variant="circular" width={40} height={40} />
+    {/if}
+    <div class="flex-1 space-y-2">
+      <DsSkeleton width="60%" height={14} />
+      {#each Array.from({ length: Math.max(1, lines) }) as _, i (i)}
+        <DsSkeleton width={i === lines - 1 ? "55%" : "90%"} height={12} />
+      {/each}
+    </div>
+  </div>
+</div>
+

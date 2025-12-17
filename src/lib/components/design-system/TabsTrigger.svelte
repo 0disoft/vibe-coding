@@ -10,6 +10,8 @@
     children?: Snippet;
   }
 
+  type ButtonClickEvent = Parameters<NonNullable<HTMLButtonAttributes["onclick"]>>[0];
+
   let {
     value,
     disabled = false,
@@ -25,13 +27,13 @@
   let id = $derived(tabs.tabId(value));
   let panelId = $derived(tabs.panelId(value));
 
-  function handleClick(e: MouseEvent) {
+  function handleClick(e: ButtonClickEvent) {
     if (disabled) {
       e.preventDefault();
       return;
     }
     tabs.setValue(value);
-    onclick?.(e as any);
+    onclick?.(e);
   }
 
   function onKeyDown(e: KeyboardEvent) {

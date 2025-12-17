@@ -57,7 +57,7 @@ describe('CodeBlock.svelte', () => {
 	});
 
 	it('복사 후 버튼 상태가 변경되어야 한다', async () => {
-		const testCode = 'console.log("copied!");';
+		const testCode = 'export const copied = true;';
 
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.defineProperty(navigator, 'clipboard', {

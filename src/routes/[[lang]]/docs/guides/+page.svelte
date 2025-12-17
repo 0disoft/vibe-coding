@@ -1,40 +1,34 @@
 <script lang="ts">
-  import { DsCard, DsLinkButton } from "$lib/components/design-system";
+  import { DocsAnchoredHeading, DocsPrevNext, DocsProse } from "$lib/components/docs";
+
+  import { localizeUrl } from "$lib/paraglide/runtime.js";
   import { site } from "$lib/constants";
 
   // NOTE: 스텁 페이지이므로, 실제 구현 시 컴포넌트/데이터 로딩을 추가하세요.
 </script>
 
 <svelte:head>
-  <title>가이드 | {site.name}</title>
-  <meta name="description" content="가이드 - {site.name}" />
+  <title>가이드 모음 | {site.name}</title>
+  <meta name="description" content="가이드 모음 - {site.name}" />
 </svelte:head>
 
-<div class="container px-4 py-12 md:px-6">
-  <div class="mx-auto max-w-4xl space-y-6">
-    <div class="space-y-2">
-      <p class="text-label text-muted-foreground">Page Stub</p>
-      <h1 class="text-h1 font-semibold">가이드</h1>
-      <p class="text-body-secondary text-muted-foreground">이 페이지는 템플릿 스캐폴딩 단계에서 자동 생성된 스텁입니다.</p>
-      <div class="flex flex-wrap gap-2 pt-2">
-        <DsLinkButton href="/design-system" variant="outline" intent="secondary">
-          Design System
-        </DsLinkButton>
-      </div>
-    </div>
+<DocsProse>
+  {#snippet children()}
+    <DocsAnchoredHeading id="docs-intro" text="Intro" />
+    <p>기능별/주제별로 문서를 묶어 제공하는 가이드 인덱스입니다.</p>
 
-    <DsCard class="space-y-3 p-6 md:p-8">
-      <div class="text-label text-muted-foreground">Route</div>
-      <div class="text-body">
-        <code class="text-code">/docs/guides</code>
-      </div>
+    <DocsAnchoredHeading id="docs-next" text="Next" />
+    <ul>
+      <li>가이드 카테고리(예: i18n, PWA, DS) 확정</li>
+      <li>각 가이드 페이지에 메타(난이도/소요시간) 추가</li>
+      <li>검색(명령 팔레트)와 연결</li>
+    </ul>
+  {/snippet}
+</DocsProse>
 
-      <div class="text-label text-muted-foreground pt-4">Next</div>
-      <ul class="list-disc pl-6 space-y-1 text-body">
-        <li>페이지 목적/콘텐츠 구조 확정</li>
-        <li>필요한 DS/Docs 컴포넌트 조합 적용</li>
-        <li>데이터 로딩/폼/검증/에러 상태 추가</li>
-      </ul>
-    </DsCard>
-  </div>
+<div class="pt-6">
+  <DocsPrevNext
+    prev={{ href: localizeUrl("/docs").pathname, label: "Overview", description: "문서 홈" }}
+    next={{ href: localizeUrl("/docs/guide").pathname, label: "Guide", description: "단일 가이드 예시" }}
+  />
 </div>
