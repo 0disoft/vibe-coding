@@ -13,10 +13,12 @@
 		disabled?: boolean;
 	};
 
+	type PopupRole = "menu" | "listbox";
+
 	export type TriggerProps = {
 		id: string;
 		"aria-controls": string;
-		"aria-haspopup": "menu";
+		"aria-haspopup": PopupRole;
 		"aria-expanded": boolean;
 		disabled: boolean;
 		onclick: () => void;
@@ -31,9 +33,12 @@
 		open?: boolean;
 		onOpenChange?: (next: boolean) => void;
 		align?: "start" | "end";
+		haspopup?: PopupRole;
 		disabled?: boolean;
 		trigger?: Snippet<[TriggerProps]>;
 		children?: Snippet<[{ close: () => void }]>;
+		header?: Snippet;
+		footer?: Snippet;
 		menuClass?: string;
 		itemSelector?: string;
 	}
@@ -45,10 +50,13 @@
 		open,
 		onOpenChange,
 		align = "start",
+		haspopup = "menu",
 		disabled = false,
 		class: className = "",
+		header,
+		footer,
 		menuClass = "",
-		itemSelector = '[data-ds-dropdown-item="true"]',
+		itemSelector,
 		trigger,
 		children,
 		...rest
@@ -75,6 +83,15 @@
 	let typeaheadBuffer = "";
 	let typeaheadTimer: number | null = null;
 
+	let menuRole = $derived(haspopup === "listbox" ? "listbox" : "menu");
+	let itemRole = $derived(haspopup === "listbox" ? "option" : "menuitem");
+	let effectiveItemSelector = $derived(
+		itemSelector ||
+			(haspopup === "listbox"
+				? '[role="option"]'
+				: '[data-ds-dropdown-item="true"]'),
+	);
+
 	function setOpen(next: boolean): void {
 		openState.value = next;
 	}
@@ -98,10 +115,9 @@
 	function getItems(): HTMLElement[] {
 		if (!rootEl) return [];
 		// itemSelector를 사용하여 커스텀 아이템(menuitemradio 등)도 지원
-		const selector =
-			itemSelector ||
-			'[role="menuitem"]:not([disabled]):not([aria-disabled="true"])';
-		return Array.from(rootEl.querySelectorAll<HTMLElement>(selector)).filter(
+		return Array.from(
+			rootEl.querySelectorAll<HTMLElement>(effectiveItemSelector),
+		).filter(
 			(el) =>
 				!el.hasAttribute("disabled") &&
 				el.getAttribute("aria-disabled") !== "true",
@@ -214,9 +230,7 @@
 			return;
 		}
 
-		// itemSelector가 지정된 경우 해당 요소를, 아니면 기본 menuitem 사용
-		const itemRole = itemSelector ? itemSelector : '[role="menuitem"]';
-		const item = target.closest<HTMLElement>(itemRole);
+		const item = target.closest<HTMLElement>(effectiveItemSelector);
 		if (!item) return;
 
 		if (e.key === "ArrowDown") {
@@ -309,7 +323,7 @@
 		{@render trigger({
 			id: triggerId,
 			"aria-controls": menuId,
-			"aria-haspopup": "menu",
+			"aria-haspopup": haspopup,
 			"aria-expanded": isOpen,
 			disabled,
 			onclick: toggle,
@@ -324,7 +338,7 @@
 			variant="outline"
 			id={triggerId}
 			aria-controls={menuId}
-			aria-haspopup="menu"
+			aria-haspopup={haspopup}
 			aria-expanded={isOpen}
 			{disabled}
 			onclick={toggle}
@@ -342,11 +356,17 @@
 				.filter(Boolean)
 				.join(" ")}
 			style={placementStyles}
-			role="menu"
+			role={menuRole}
 			aria-labelledby={triggerId}
 			tabindex="-1"
 			onkeydown={onMenuKeyDown}
 		>
+			{#if header}
+				<div class="ds-dropdown-header">
+					{@render header()}
+				</div>
+			{/if}
+
 			{#if children}
 				{@render children({ close: () => close({ focusButton: true }) })}
 			{:else}
@@ -354,7 +374,7 @@
 					<button
 						type="button"
 						class="ds-dropdown-item ds-focus-ring"
-						role="menuitem"
+						role={itemRole}
 						data-ds-dropdown-item="true"
 						data-disabled={item.disabled ? "true" : undefined}
 						disabled={item.disabled}
@@ -367,6 +387,12 @@
 						{item.label}
 					</button>
 				{/each}
+			{/if}
+
+			{#if footer}
+				<div class="ds-dropdown-footer">
+					{@render footer()}
+				</div>
 			{/if}
 		</div>
 	{/if}

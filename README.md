@@ -5,7 +5,7 @@ SvelteKit 2 + Svelte 5 기반 현대적 웹 스타터입니다.
 ## 주요 특징
 
 - **디자인 시스템**: CSS 토큰 SSOT(`src/styles/design-system.tokens.css`) + OKLCH 시맨틱 색상, UnoCSS 통합
-- **컴포넌트**: Button, Dialog, Dropdown, Tooltip 등 13종 재사용 가능 UI
+- **컴포넌트**: Button, Dialog, Dropdown, DataTable 등 30+종 DS/Docs 컴포넌트
 - **테마/폰트**: 라이트/다크 테마 + 9단계 폰트 스케일, 쿠키 + SSR 동기화로 FOUC 방지
 - **i18n**: Paraglide JS로 20개 언어 지원 (한국어 기본)
 - **코드 하이라이팅**: Shiki v3 기반 VS Code급 구문 강조
@@ -81,8 +81,12 @@ src/
 - 토큰 SSOT: `src/styles/design-system.tokens.css`
 - 스타일 규칙: `src/styles/design-system.css`
 - 컴포넌트: `src/lib/components/design-system/` 아래 `Ds*` 우선 사용
+- 타이포 유틸: `text-h1`, `text-body` 같은 DS 유틸 우선(참고: `text-sm` 등 Tailwind 호환 유틸도 DS 토큰 기반으로 오버라이드됨)
 - 드랍다운/메뉴 아이템은 `DsDropdownItem` 우선 사용(직접 `ds-dropdown-item` 사용은 지양)
 - 색/상태 표현은 유틸(`text-*`, `bg-*`, `hover:*`)보다 `Ds*`의 `intent`/`variant` 우선
+- 쇼케이스: `/design-system` 페이지에서 DS/Docs 컴포넌트를 한 번에 검증 (임시)
+- 페이지 스캐폴딩: `bun src/scripts/scaffold-pages.ts`
+- 내부 구현(예: `*-context.ts`)은 비공개로 두고, 외부에서는 `src/lib/components/design-system/index.ts` 경유 import만 권장
 
 자세한 구조는 `.vibe-coding/TREE.md` 참조.
 

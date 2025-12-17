@@ -17,8 +17,8 @@
   role="alert"
   aria-labelledby="error-title"
 >
-  <h1 id="error-title" class="text-5xl font-bold tracking-tight">{page.status}</h1>
-  <p class="text-xl text-muted-foreground">
+  <h1 id="error-title" class="text-h1 font-bold">{page.status}</h1>
+  <p class="text-body-secondary text-muted-foreground">
     {#if page.status === 404}
       {m.error_not_found()}
     {:else if page.status >= 500}

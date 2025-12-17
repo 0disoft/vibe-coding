@@ -18,6 +18,11 @@
     showEmail = false;
   }
 
+  function handleMenuOpenChange(next: boolean) {
+    // 메뉴가 닫힐 때는 항상 마스킹 상태로 리셋
+    if (!next) showEmail = false;
+  }
+
   // 개발용: 로그인 상태 토글
   function toggleLoginState() {
     isLoggedIn = !isLoggedIn;
@@ -43,6 +48,7 @@
   align="end"
   menuClass="w-56 max-h-80 overflow-y-auto thin-scrollbar"
   itemSelector='[role="menuitem"]'
+  onOpenChange={handleMenuOpenChange}
 >
   {#snippet trigger(props)}
     <DsIconButton

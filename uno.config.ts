@@ -179,6 +179,64 @@ for (const color of semanticColors) {
  * - prose 영역에서 OKLCH 토큰 색상이 필요하면 app.css에서 .prose 오버라이드 추가
  */
 const typographyRules: Rule<object>[] = [
+	// Tailwind 호환 타이포 유틸도 DS 토큰을 참조하도록 오버라이드
+	// 목적: Docs/마케팅 영역에서 text-sm 같은 유틸을 써도 토큰 기반으로 일관성 유지
+	[
+		'text-xs',
+		{
+			'font-size': 'var(--font-size-xs)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-sm',
+		{
+			'font-size': 'var(--font-size-sm)',
+			'line-height': '1.4'
+		}
+	],
+	[
+		'text-base',
+		{
+			'font-size': 'var(--font-size-base)',
+			'line-height': 'var(--line-height-body)'
+		}
+	],
+	[
+		'text-lg',
+		{
+			'font-size': 'var(--font-size-lg)',
+			'line-height': 'var(--line-height-body)'
+		}
+	],
+	[
+		'text-xl',
+		{
+			'font-size': 'var(--font-size-xl)',
+			'line-height': 'var(--line-height-heading)'
+		}
+	],
+	[
+		'text-2xl',
+		{
+			'font-size': 'var(--font-size-2xl)',
+			'line-height': 'var(--line-height-heading)'
+		}
+	],
+	[
+		'text-3xl',
+		{
+			'font-size': 'var(--font-size-3xl)',
+			'line-height': 'var(--line-height-heading)'
+		}
+	],
+	[
+		'text-4xl',
+		{
+			'font-size': 'var(--font-size-4xl)',
+			'line-height': 'var(--line-height-heading)'
+		}
+	],
 	[
 		'text-body',
 		{

@@ -42,6 +42,7 @@
     │   └── transitions.css
     ├── routes/                    # SvelteKit 페이지 라우트
     │   ├── offline/
+    │   ├── design-system/          # DS/Docs 컴포넌트 쇼케이스 (임시)
     │   ├── [[lang]]/
     │   ├── +error.svelte
     │   ├── +layout.svelte
@@ -89,13 +90,8 @@
         │   ├── CodeBlock.svelte
         │   ├── Footer.svelte
         │   ├── Header.svelte
+        │   ├── docs/              # 문서/가이드/API 문서 전용 컴포넌트
         │   ├── design-system/     # 디자인 시스템 UI 컴포넌트 (Button/Input/Card 등)
-        │   ├── typography/          # 스타일 가이드/타이포그래피 테스트 컴포넌트
-        │   │   ├── TypographyCard.svelte
-        │   │   ├── TypographySection.svelte
-        │   │   ├── TypographyPageBasics.svelte
-        │   │   ├── TypographyPageUi.svelte
-        │   │   └── TypographyPageInline.svelte
         │   ├── footer-actions/
         │   │   └── FooterMenu.svelte
         │   ├── header-actions/
@@ -197,6 +193,7 @@
 | 파일/폴더 | 역할 |
 | --- | --- |
 | `routes/offline/+page.svelte` | 오프라인 폴백 페이지 |
+| `routes/design-system/+page.svelte` | DS/Docs 컴포넌트 쇼케이스 (임시) |
 | `routes/[[lang]]/` | i18n 로케일 파라미터 루트 (Optional) |
 | `routes/[[lang]]/terms/+page.svelte` | 이용약관 페이지 |
 | `routes/[[lang]]/privacy/+page.svelte` | 개인정보 처리방침 페이지 |
@@ -212,6 +209,7 @@
 | 파일 | 역할 |
 | --- | --- |
 | `postbuild-sitemap.ts` | `postbuild` 훅에서 sitemap 생성(도메인/출력폴더 안전가드 포함) |
+| `scaffold-pages.ts` | `src/lib/constants/pages.ts` 기반으로 `routes/[[lang]]/**/+page.svelte` 스텁 페이지 자동 생성 |
 
 ### src/lib/
 
@@ -232,6 +230,7 @@
 | `constants/cookies.ts`                            | 쿠키 키 상수 (THEME_COOKIE, FONT_SIZE_COOKIE)                  |
 | `constants/site.ts`                               | 사이트 기본 정보 (name, description, origin, email, links)     |
 | `constants/policy.ts`                             | 정책 설정 (effectiveDate, cpoName, dataProcessors)             |
+| `constants/pages.ts`                              | 페이지 레지스트리(스캐폴딩/링크 목록용)                         |
 | `stores/index.ts`                                 | 스토어 배럴 export                                             |
 | `stores/persisted-state.svelte.ts`                | 쿠키+DOM 동기화 퍼시스턴스 스토어 팩토리                       |
 | `stores/theme.svelte.ts`                          | 라이트/다크 테마 상태 관리, FOUC 방지                          |
@@ -240,8 +239,8 @@
 | `components/CodeBlock.svelte`                     | Shiki 기반 코드 하이라이팅 + 복사 버튼 컴포넌트                |
 | `components/Header.svelte`                        | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯)         |
 | `components/Footer.svelte`                        | 공통 푸터 컴포넌트 (카피라이트, 약관 링크)                     |
-| `components/typography/`                          | 타이포그래피/유틸리티 테스트 섹션 컴포넌트                      |
-| `components/design-system/`                       | 디자인 시스템 UI 컴포넌트 (Button/Input/Card/Select 등)         |
+| `components/docs/`                                | 문서/가이드/API 문서 전용 패턴 컴포넌트                        |
+| `components/design-system/`                       | 디자인 시스템 UI 컴포넌트 (Button/Input/Card/Select/Badge/Alert/Tabs/Accordion 등) |
 | `components/header-actions/ThemeToggle.svelte`    | 테마 토글 버튼                                                 |
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달                                         |
 | `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달                                    |

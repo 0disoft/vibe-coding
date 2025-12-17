@@ -11,6 +11,12 @@
   /* A11y / Touch */
   --touch-target-min: 44px;
 
+  /* Safe Area (iOS notch / home indicator) */
+  --safe-area-top: env(safe-area-inset-top);
+  --safe-area-bottom: env(safe-area-inset-bottom);
+  --safe-area-left: env(safe-area-inset-left);
+  --safe-area-right: env(safe-area-inset-right);
+
   /* Spacing */
   --spacing-1: clamp(0.1875rem, calc(0.159091rem + 0.121212vw), 0.25rem);
   --spacing-2: clamp(0.375rem, calc(0.318182rem + 0.242424vw), 0.5rem);
@@ -337,4 +343,30 @@
   --raw-color-text: 96% 0.01 255;
   --raw-color-text-muted: 82% 0.01 255;
   --raw-color-warning: 80% 0.12 70;
+}
+
+@media (prefers-contrast: more) {
+
+  :root {
+    /* 더 강한 테두리/포커스 대비 */
+    --raw-color-border: 0% 0 0;
+    --focus-ring-color: var(--color-text);
+    --focus-ring-width: 3px;
+    --alpha-scrim: 0.75;
+  }
+
+  :root[data-theme="dark"] {
+    --raw-color-border: 100% 0 0;
+    --focus-ring-color: var(--color-text);
+    --focus-ring-width: 3px;
+    --alpha-scrim: 0.75;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+
+  :root {
+    /* 반투명 오버레이(스크림) 대비 */
+    --alpha-scrim: 1;
+  }
 }

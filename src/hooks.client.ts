@@ -15,7 +15,16 @@
 
 import type { ClientInit, HandleClientError } from '@sveltejs/kit';
 
-export const init: ClientInit = async () => {};
+export const init: ClientInit = async () => {
+	// 모바일: 가상 키보드가 콘텐츠를 "리사이즈"로 밀어올리지 않도록(지원 브라우저)
+	if ('virtualKeyboard' in navigator) {
+		try {
+			(navigator as any).virtualKeyboard.overlaysContent = true;
+		} catch {
+			// 일부 브라우저/웹뷰에서 setter가 막혀있을 수 있음 (무시)
+		}
+	}
+};
 
 export const handleError: HandleClientError = ({ error, status, message }) => {
 	// 이 훅은 절대 throw 하면 안 됩니다.

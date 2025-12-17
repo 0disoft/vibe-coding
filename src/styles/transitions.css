@@ -34,6 +34,16 @@
 	}
 }
 
+@media (prefers-reduced-motion: reduce) {
+
+	/* biome-ignore lint/correctness/noUnknownTypeSelector: View Transitions API의 유효한 CSS 구문 */
+	::view-transition-old(root),
+	/* biome-ignore lint/correctness/noUnknownTypeSelector: View Transitions API의 유효한 CSS 구문 */
+	::view-transition-new(root) {
+		animation: none !important;
+	}
+}
+
 /* 슬라이드 효과 (선택적으로 사용) */
 
 /* 슬라이드 효과 (선택적으로 사용: 주석 해제 시 페이드 대신 슬라이드 적용) */

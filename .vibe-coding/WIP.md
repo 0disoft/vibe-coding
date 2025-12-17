@@ -54,12 +54,12 @@
 ### Phase 3: 동작 및 역할
 
 - [x] `close` 헬퍼 전달 - `children` 스니펫에 `close` 함수 제공 (커스텀 아이템 클릭 시 닫기용)
-- [ ] `haspopup` prop - `menu` (액션) vs `listbox` (선택) 역할 분리 고려
+- [x] `haspopup` prop - `menu` (액션) vs `listbox` (선택) 역할 분리
   - *참고: 폼 선택 목적은 별도 `DsSelect` 컴포넌트로 분리 권장*
 
 ### Phase 4: 슬롯 확장
 
-- [ ] `header` / `footer` 슬롯
+- [x] `header` / `footer` 슬롯
 
 ---
 
@@ -131,18 +131,17 @@
 
 ### 추후 검토
 
-- [ ] **DsCheckbox** / **DsRadio** / **DsSwitch**
-- [ ] **DsAvatar** / **DsBadge**
-- [ ] **DsTabs** / **DsAccordion**
-- [ ] **DsPopover** (Interactive Tooltip 대체재)
+- [x] **DsCheckbox** / **DsRadioGroup** / **DsSwitch**
+- [x] **DsAvatar** / **DsBadge**
+- [x] **DsTabs** / **DsAccordion**
+- [x] **DsPopover** (Interactive Tooltip 대체재)
 
 ---
 
 ## 문서 및 테스트 (신설)
 
-- [ ] `SPECS.md` 업데이트 - Props/Slots 변경 사항 반영
-- [ ] **접근성 테스트 보강** - Custom Trigger, Keyboard Navigation, Focus Management (Dialog)
-- [ ] **시각 회귀 테스트** - 다양한 Variant/Size 조합 테스트
+- [ ] **접근성 테스트 보강** - Dropdown 완료, Dialog/Popover 등 추가 필요
+- [ ] **시각 회귀 테스트** - `toMatchScreenshot` 기반으로 도입 검토
 
 ---
 
@@ -166,5 +165,46 @@
 - [x] **DsInput** start/end 슬롯 및 Clearable 구현
 - [x] **DsSelect** 컴포넌트 신규 구현
 - [x] **DsTextarea / DsSkeleton** 컴포넌트 신규 구현
-- [x] **SPECS.md** 업데이트 완료
+- [x] **README.md** DS 운영 규칙(권장) 정리
+- [x] **접근성 테스트(드롭다운)** 추가
 - [ ] **접근성 테스트** 및 **시각 회귀 테스트** 수행 및 검증
+
+## 웹페이지 구축용 DS 확장 로드맵 (P0/P1/P2)
+
+요구된 페이지 범위(마케팅 + 문서 + 대시보드 + 정책/지원 + 결제/청구) 구현을 위해, DS를 다음 3단계로 확장합니다.
+
+### P0 (필수: 구현 차질 방지)
+
+- 폼/설정
+  - `DsCheckbox`, `DsRadioGroup`, `DsSwitch` (약관 동의, 설정 토글, 플랜/옵션 선택)
+  - `DsPasswordInput` (보기/숨기기, CapsLock, strength 옵션)
+  - `DsOtpInput` (PW 재설정/2FA 코드 입력)
+- 네비/콘텐츠
+  - `DsTabs` (문서/설정/대시보드)
+  - `DsAccordion` (FAQ/헬프 센터)
+  - `DsBadge`, `DsTag` (상태/태그/아카이브)
+  - `DsAlert` / `DsCallout` (정책/공지/경고/성공/정보)
+- 데이터 표현(최소)
+  - `DsEmptyState` (검색/데이터 없음/권한 없음)
+  - `DsSpinner` / `DsProgress` (로딩/진행률)
+  - `DsPagination` (리스트/아카이브/검색)
+
+### P1 (고도화: 앱급 UX)
+
+- 데이터/대시보드
+  - `DsDataTable` (정렬/필터/선택/컬럼 숨김/빈 상태/로딩)
+  - `DsStatCard` / `DsKpi` (성과 지표/ROI 결과)
+  - `DsDateRangePicker` (분석/대시보드 기간 필터)
+- 문서/개발자 경험
+  - `DocsToc`, `DocsSteps`, `DocsCodeTabs`, `ApiEndpointCard` (DS 바깥 “사이트 컴포넌트”로 관리)
+  - `DsCommandPalette` (문서/대시보드 검색 및 빠른 이동)
+
+### P2 (감성/완성도: shadcn 급 디테일)
+
+- 오버레이/모바일
+  - `DsPopover` (인터랙티브 툴팁 대체)
+  - `DsSheet` / `DsDrawer` (모바일 필터/설정/네비)
+- 커머스/신뢰
+  - `DsTimeline` (로드맵/변경 로그)
+  - `DsRating` (후기/고객 사례)
+  - `DsPricingTable` (가격/비교 페이지 전용 패턴)

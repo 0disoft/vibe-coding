@@ -122,6 +122,32 @@ pre.shiki {
 	}
 }
 
+@media (prefers-reduced-motion: reduce) {
+
+	html:focus-within {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+@media (prefers-reduced-transparency: reduce) {
+
+	.backdrop-blur,
+	.backdrop-blur-sm,
+	.backdrop-blur-md,
+	.backdrop-blur-lg {
+		backdrop-filter: none !important;
+	}
+}
+
 /* Shiki 외 일반 코드블록 */
 pre:not(.shiki) {
 	background-color: oklch(var(--color-surface));
@@ -151,4 +177,3 @@ pre code {
 	background: transparent;
 	border: none;
 }
-

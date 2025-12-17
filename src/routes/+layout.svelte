@@ -13,11 +13,13 @@
 	import { page } from "$app/state";
 	import Footer from "$lib/components/Footer.svelte";
 	import Header from "$lib/components/Header.svelte";
+	import { DsToastRegion } from "$lib/components/design-system";
 	// 사이트 설정
 	import { site } from "$lib/constants";
 	// 전역 테마 스토어
 	import * as m from "$lib/paraglide/messages.js";
 	import { fontSize, theme } from "$lib/stores";
+	import { toast } from "$lib/stores/toast.svelte";
 
 	let { children } = $props();
 
@@ -30,6 +32,7 @@
 	// View Transitions API 활성화 (부드러운 페이지 전환)
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
+		if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
 
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {
@@ -61,10 +64,10 @@
 <!-- 
 	레이아웃 레벨에서 전역 배경색과 텍스트 색상을 설정합니다.
 	data-theme 속성은 hooks.server.ts에서 SSR 시점에 이미 적용됩니다.
--->
-<div
-	class="flex min-h-screen flex-col bg-background font-sans antialiased text-foreground"
->
+	-->
+	<div
+		class="flex min-h-screen flex-col bg-background text-foreground"
+	>
 	{#if !isOfflinePage}
 		<a
 			href="#main-content"
@@ -81,6 +84,11 @@
 			{@render children()}
 		</main>
 		<Footer siteName={site.name} />
+		<DsToastRegion
+			toasts={toast.toasts}
+			onDismiss={(id) => toast.remove(id)}
+			position="bottom-right"
+		/>
 	{:else}
 		{@render children()}
 	{/if}

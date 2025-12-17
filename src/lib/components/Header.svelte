@@ -5,11 +5,10 @@
 	import ThemeToggle from "$lib/components/header-actions/ThemeToggle.svelte";
 	import UserMenu from "$lib/components/header-actions/UserMenu.svelte";
 
-	import { DsIconButton } from "$lib/components/design-system";
+	import { DsIconButton, DsSheet } from "$lib/components/design-system";
 	import * as m from "$lib/paraglide/messages.js";
 	import { localizeUrl } from "$lib/paraglide/runtime.js";
 	import type { Snippet } from "svelte";
-	import { tick } from "svelte";
 
 	interface Props {
 		siteName?: string;
@@ -21,7 +20,6 @@
 
 	// 모바일 메뉴 상태
 	let mobileMenuOpen = $state(false);
-	let mobileMenuRef = $state<HTMLElement | null>(null);
 	let mobileMenuButtonRef = $state<HTMLButtonElement | null>(null);
 
 	// 네비게이션 항목 배열화 (유지보수 용이)
@@ -70,15 +68,8 @@
 	}
 
 	// 모바일 메뉴 토글
-	async function toggleMobileMenu() {
-		if (mobileMenuOpen) {
-			closeMobileMenu({ focusButton: true });
-		} else {
-			mobileMenuOpen = true;
-			await tick();
-			const firstItem = mobileMenuRef?.querySelector("a") as HTMLElement;
-			firstItem?.focus();
-		}
+	function toggleMobileMenu() {
+		mobileMenuOpen = !mobileMenuOpen;
 	}
 
 	// 모바일 메뉴 닫기
@@ -92,7 +83,7 @@
 </script>
 
 <header
-	class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+	class="ds-safe-area-top sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
 >
 	<div
 		class="mx-auto flex h-12 max-w-5xl items-center justify-between px-4 md:px-6"
@@ -119,7 +110,7 @@
 					<a
 						href={localizeUrl(item.href).href}
 						aria-current={active ? "page" : undefined}
-						class="transition-colors hover:text-foreground {active
+						class="ds-focus-ring rounded-md px-1 py-1 transition-colors hover:text-foreground focus-visible:text-foreground {active
 							? 'text-foreground font-medium'
 							: 'text-muted-foreground'}">{item.label()}</a
 					>
@@ -157,54 +148,36 @@
 	</div>
 </header>
 
-<!-- 모바일 메뉴 오버레이 -->
-{#if mobileMenuOpen}
-	<div
-		role="button"
-		tabindex="-1"
-		class="fixed inset-0 z-40 bg-overlay/50 backdrop-blur-sm md:hidden"
-		onclick={() => closeMobileMenu()}
-		onkeydown={(e) =>
-			e.key === "Escape" && closeMobileMenu({ focusButton: true })}
-	></div>
-{/if}
-
-<!-- 모바일 메뉴 패널 (nav 링크만) -->
-{#if mobileMenuOpen}
-	<div
-		class="fixed end-0 top-0 z-50 h-full w-64 transform bg-background border-s border-border shadow-xl transition-transform duration-300 ease-in-out md:hidden translate-x-0"
-	>
-		<div
-			class="flex h-12 items-center justify-between border-b border-border px-4"
-		>
-			<span class="font-semibold">{m.header_menu_title()}</span>
-			<DsIconButton
-				onclick={() => closeMobileMenu({ focusButton: true })}
-				label={m.header_menu_close()}
-			>
-				<span class="i-lucide-x h-4 w-4"></span>
-			</DsIconButton>
-		</div>
-
-		<!-- 모바일 네비게이션 링크 -->
-		<nav aria-label={m.header_mobile_nav_label()} class="flex flex-col p-4">
-			<ul bind:this={mobileMenuRef} class="flex flex-col gap-1">
-				{#each navItems as item (item.href)}
-					{@const active = isActive(item.href)}
-					<li>
-						<a
-							href={localizeUrl(item.href).href}
-							onclick={() => closeMobileMenu()}
-							aria-current={active ? "page" : undefined}
-							class="block rounded-md px-3 py-2 text-menu outline-none transition-colors hover:bg-accent focus:bg-accent {active
-								? 'bg-accent text-foreground font-medium'
-								: 'text-muted-foreground'}"
-						>
-							{item.label()}
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
-	</div>
-{/if}
+<DsSheet
+	id="ds-mobile-nav"
+	title={m.header_menu_title()}
+	open={mobileMenuOpen}
+	onOpenChange={(next) => (mobileMenuOpen = next)}
+	returnFocusTo={mobileMenuButtonRef}
+	initialFocus="a"
+	side="right"
+	size="sm"
+	closeOnOutsideClick
+	closeOnEscape
+	class="md:hidden"
+>
+	<nav aria-label={m.header_mobile_nav_label()} class="flex flex-col gap-1">
+		<ul class="flex flex-col gap-1">
+			{#each navItems as item (item.href)}
+				{@const active = isActive(item.href)}
+				<li>
+					<a
+						href={localizeUrl(item.href).href}
+						onclick={() => closeMobileMenu()}
+						aria-current={active ? "page" : undefined}
+						class="ds-focus-ring ds-touch-target block rounded-md px-3 py-2 text-menu transition-colors hover:bg-accent focus-visible:bg-accent {active
+							? 'bg-accent text-foreground font-medium'
+							: 'text-muted-foreground'}"
+					>
+						{item.label()}
+					</a>
+				</li>
+			{/each}
+		</ul>
+	</nav>
+</DsSheet>

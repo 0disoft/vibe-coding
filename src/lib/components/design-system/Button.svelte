@@ -15,7 +15,8 @@
 		fullWidth?: boolean;
 		/** 로딩 시 SR에 읽힐 텍스트 */
 		loadingLabel?: string;
-		ref?: HTMLButtonElement | null;
+		// Support both binding and callback (for actions)
+		ref?: HTMLButtonElement | null | ((node: HTMLElement) => void);
 		children?: Snippet;
 		start?: Snippet;
 		end?: Snippet;
@@ -59,6 +60,25 @@
 			.join(" "),
 	);
 
+	/** Ref Action to handle both binding and callback */
+	function refAction(node: HTMLButtonElement) {
+		if (typeof ref === "function") {
+			ref(node);
+		} else {
+			ref = node;
+		}
+
+		return {
+			destroy() {
+				if (typeof ref === "function") {
+					// noop
+				} else if (ref === node) {
+					ref = null;
+				}
+			},
+		};
+	}
+
 	/** 로딩 중 중복 클릭 방지 */
 	function handleClick(e: MouseEvent) {
 		if (loading) {
@@ -81,7 +101,7 @@
 
 <button
 	{...rest}
-	bind:this={ref}
+	use:refAction
 	{type}
 	class={buttonClass}
 	disabled={isNativeDisabled}

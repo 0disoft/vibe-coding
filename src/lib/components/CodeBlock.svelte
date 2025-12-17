@@ -2,6 +2,7 @@
 	// 동적 import를 위해 타입만 import (런타임 번들에 포함되지 않음)
 	import type { BundledLanguage, BundledTheme, Highlighter } from "shiki";
 	import { SvelteSet } from "svelte/reactivity";
+	import { writeToClipboard } from "$lib/shared/utils/clipboard";
 
 	interface Props {
 		code: string;
@@ -101,7 +102,7 @@
 
 	async function copyCode() {
 		try {
-			await navigator.clipboard.writeText(code);
+			await writeToClipboard(code);
 			copied = true;
 			setTimeout(() => (copied = false), 1500);
 		} catch (error) {
@@ -168,7 +169,7 @@
 		type="button"
 		onclick={copyCode}
 		aria-label={copied ? "Copied to clipboard" : "Copy code"}
-		class="absolute end-4 top-4 z-10 rounded-md px-2 py-1 text-xs font-medium transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+		class="absolute end-4 top-4 z-10 rounded-md px-2 py-1 text-xs-resp font-medium transition opacity-0 group-hover:opacity-100 focus:opacity-100"
 		style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
 	>
 		{copied ? "✓ Copied!" : "📋 Copy"}
@@ -182,11 +183,9 @@
 				{@html highlightedHtml}<!-- security-ignore: xss-svelte-html -->
 			</div>
 		{:else}
-			<!-- Loading Placeholder -->
-			<div
-				class="ds-code-block flex min-h-[3rem] items-center justify-center p-4 text-sm opacity-50"
-			>
-				Loading...
+			<!-- Fallback: 하이라이팅 로딩 중에도 코드는 즉시 노출 (테스트/UX 안정성) -->
+			<div class="ds-code-block overflow-hidden" aria-busy="true">
+				<pre class="!m-0 !p-4 !bg-transparent !rounded-[inherit]"><code>{code}</code></pre>
 			</div>
 		{/if}
-	</div>
+</div>

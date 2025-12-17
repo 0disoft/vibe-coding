@@ -15,8 +15,8 @@
   role="alert"
   aria-labelledby="offline-title"
 >
-  <h1 id="offline-title" class="text-5xl font-bold tracking-tight">{m.offline_title()}</h1>
-  <p class="text-xl text-muted-foreground">{m.offline_message()}</p>
+  <h1 id="offline-title" class="text-h1 font-bold">{m.offline_title()}</h1>
+  <p class="text-body-secondary text-muted-foreground">{m.offline_message()}</p>
   <DsButton intent="primary" onclick={() => window.location.reload()}>
     {m.offline_retry()}
   </DsButton>

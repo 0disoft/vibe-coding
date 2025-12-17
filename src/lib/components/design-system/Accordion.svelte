@@ -1,0 +1,101 @@
+<script lang="ts">
+  import type { Snippet } from "svelte";
+  import type { HTMLAttributes } from "svelte/elements";
+
+  import { useId } from "$lib/shared/utils/use-id";
+  import { setAccordionContext, type AccordionType } from "./accordion-context";
+
+  type Value = string | string[];
+
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    type?: AccordionType;
+    value?: Value;
+    onValueChange?: (next: Value) => void;
+    /** type="single"일 때, 열린 항목을 닫을 수 있게 허용 */
+    collapsible?: boolean;
+    id?: string;
+    children?: Snippet;
+  }
+
+  let {
+    type = "single",
+    value,
+    onValueChange,
+    collapsible = true,
+    id: idProp,
+    class: className = "",
+    children,
+    ...rest
+  }: Props = $props();
+
+  const generatedId = useId("ds-accordion");
+  let baseId = $derived(idProp ?? generatedId);
+
+  let uncontrolledValue = $state<Value>("");
+
+  $effect(() => {
+    // controlled 모드에서는 내부 값을 건드리지 않음
+    if (value !== undefined) return;
+
+    if (type === "multiple" && !Array.isArray(uncontrolledValue)) {
+      uncontrolledValue = [];
+    } else if (type === "single" && Array.isArray(uncontrolledValue)) {
+      uncontrolledValue = "";
+    }
+  });
+
+  function currentValue(): Value {
+    return value === undefined ? uncontrolledValue : value;
+  }
+
+  function setValue(next: Value) {
+    if (value === undefined) uncontrolledValue = next;
+    onValueChange?.(next);
+  }
+
+  function isOpen(itemValue: string) {
+    const active = currentValue();
+    if (Array.isArray(active)) return active.includes(itemValue);
+    return active === itemValue;
+  }
+
+  function toggle(itemValue: string) {
+    if (type === "multiple") {
+      const active = currentValue();
+      const list = Array.isArray(active) ? active : [];
+      if (list.includes(itemValue)) {
+        setValue(list.filter((v) => v !== itemValue));
+      } else {
+        setValue([...list, itemValue]);
+      }
+      return;
+    }
+
+    const active = currentValue();
+    const isSame = !Array.isArray(active) && active === itemValue;
+    if (isSame) {
+      if (collapsible) setValue("");
+      return;
+    }
+    setValue(itemValue);
+  }
+
+  setAccordionContext({
+    get type() {
+      return type;
+    },
+    isOpen,
+    toggle,
+    get baseId() {
+      return baseId;
+    },
+  });
+
+  let rootClass = $derived(["ds-accordion", className].filter(Boolean).join(" "));
+</script>
+
+<div {...rest} class={rootClass} data-ds-accordion-root="true">
+  {#if children}
+    {@render children()}
+  {/if}
+</div>
