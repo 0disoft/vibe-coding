@@ -784,6 +784,12 @@ function lintCookieSetOptions(content: string, filePath: string): SecurityResult
 		// 대충 이 호출 구간만 스캔, 너무 멀리 가면 오탐이 늘어서 적당히 끊기
 		const slice = content.slice(start, Math.min(content.length, start + 1500));
 
+		// SSOT 헬퍼(옵션 팩토리)로 옵션을 전달하는 경우는 오탐 방지
+		// - 예: cookies.set(name, value, getLocaleCookieSetOptions(event.url))
+		if (/\bgetLocaleCookieSetOptions\s*\(/.test(slice)) {
+			continue;
+		}
+
 		const missing: string[] = [];
 		if (!/\bhttpOnly\s*:/i.test(slice)) missing.push('httpOnly');
 		if (!/\bsecure\s*:/i.test(slice)) missing.push('secure');

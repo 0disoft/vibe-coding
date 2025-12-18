@@ -1,7 +1,7 @@
 /*
   Design System Tokens (SSOT)
   - 이 파일은 수동으로 관리합니다.
-  - 라이트: :root / 다크: :root[data-theme="dark"]
+  - 라이트: :root / 다크: [data-theme="dark"]
 */
 
 :root {
@@ -465,7 +465,38 @@
   --color-warning: var(--raw-color-warning);
 }
 
-:root[data-theme="dark"] {
+/* ───────────────────────────────────────────────────────────
+   Theme Palette (Accent)
+   - data-theme: 실제 적용(light/dark)
+   - data-theme-palette: 팔레트(classic/paper/forest/nordic)
+   - palette는 “accent 계열”만 우선 override (100+ 사이트 확장 대비)
+   ─────────────────────────────────────────────────────────── */
+
+[data-theme="light"][data-theme-palette="paper"] {
+  --raw-color-link: 60% 0.16 70;
+  --raw-color-primary: 62% 0.15 70;
+  --raw-color-primary-hover: 56% 0.15 70;
+  --raw-color-secondary: 92% 0.04 70;
+  --raw-color-selected: 90% 0.06 70;
+}
+
+[data-theme="light"][data-theme-palette="forest"] {
+  --raw-color-link: 60% 0.16 150;
+  --raw-color-primary: 62% 0.15 150;
+  --raw-color-primary-hover: 56% 0.15 150;
+  --raw-color-secondary: 92% 0.04 150;
+  --raw-color-selected: 90% 0.06 150;
+}
+
+[data-theme="light"][data-theme-palette="nordic"] {
+  --raw-color-link: 60% 0.16 300;
+  --raw-color-primary: 62% 0.15 300;
+  --raw-color-primary-hover: 56% 0.15 300;
+  --raw-color-secondary: 92% 0.04 300;
+  --raw-color-selected: 90% 0.06 300;
+}
+
+[data-theme="dark"] {
   /* 폼 컨트롤 렌더링 힌트 (테마별로 재정의) */
   color-scheme: dark;
 
@@ -518,6 +549,30 @@
   --raw-color-warning: 80% 0.12 70;
 }
 
+[data-theme="dark"][data-theme-palette="paper"] {
+  --raw-color-link: 80% 0.12 70;
+  --raw-color-primary: 78% 0.12 70;
+  --raw-color-primary-hover: 82% 0.12 70;
+  --raw-color-secondary: 85% 0.04 70;
+  --raw-color-selected: 45% 0.09 70;
+}
+
+[data-theme="dark"][data-theme-palette="forest"] {
+  --raw-color-link: 80% 0.12 150;
+  --raw-color-primary: 78% 0.12 150;
+  --raw-color-primary-hover: 82% 0.12 150;
+  --raw-color-secondary: 85% 0.04 150;
+  --raw-color-selected: 45% 0.09 150;
+}
+
+[data-theme="dark"][data-theme-palette="nordic"] {
+  --raw-color-link: 80% 0.12 300;
+  --raw-color-primary: 78% 0.12 300;
+  --raw-color-primary-hover: 82% 0.12 300;
+  --raw-color-secondary: 85% 0.04 300;
+  --raw-color-selected: 45% 0.09 300;
+}
+
 @media (prefers-contrast: more) {
 
   :root {
@@ -528,7 +583,7 @@
     --alpha-scrim: 0.75;
   }
 
-  :root[data-theme="dark"] {
+  [data-theme="dark"] {
     --raw-color-border: 100% 0 0;
     --focus-ring-color: var(--color-text);
     --focus-ring-width: 3px;

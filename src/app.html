@@ -1,6 +1,12 @@
 <!doctype html>
 <!-- 서버 훅이 이 data-theme 값을 동적으로 교체합니다 -->
-<html lang="%paraglide.lang%" data-theme="light" data-font-size="5">
+<html
+	lang="%paraglide.lang%"
+	data-theme-mode="system"
+	data-theme="light"
+	data-theme-palette="classic"
+	data-font-size="5"
+>
 	<head>
 		<meta charset="utf-8" />
 		<meta
@@ -9,6 +15,67 @@
 		/>
 		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
 		<meta name="theme-color" content="#ffffff" />
+		<script>
+			(() => {
+				try {
+					const root = document.documentElement;
+
+					function getCookie(name) {
+						const parts = document.cookie.split("; ");
+						for (const part of parts) {
+							if (!part) continue;
+							const i = part.indexOf("=");
+							if (i < 0) continue;
+							const key = part.slice(0, i);
+							if (key !== name) continue;
+							try {
+								return decodeURIComponent(part.slice(i + 1));
+							} catch {
+								return part.slice(i + 1);
+							}
+						}
+						return null;
+					}
+
+					const mode = getCookie("theme");
+					const palette = getCookie("themePalette");
+
+					const isMode = mode === "light" || mode === "dark" || mode === "system";
+					const isPalette =
+						palette === "classic" ||
+						palette === "paper" ||
+						palette === "forest" ||
+						palette === "nordic";
+
+					if (isMode) root.setAttribute("data-theme-mode", mode);
+					if (isPalette) root.setAttribute("data-theme-palette", palette);
+
+					function applyTheme() {
+						const currentMode = root.getAttribute("data-theme-mode") || "system";
+						if (currentMode === "dark" || currentMode === "light") {
+							root.setAttribute("data-theme", currentMode);
+							return;
+						}
+
+						const prefersDark =
+							window.matchMedia &&
+							window.matchMedia("(prefers-color-scheme: dark)").matches;
+						root.setAttribute("data-theme", prefersDark ? "dark" : "light");
+					}
+
+					applyTheme();
+
+					if (isMode && mode === "system" && window.matchMedia) {
+						const mq = window.matchMedia("(prefers-color-scheme: dark)");
+						if (mq.addEventListener) mq.addEventListener("change", applyTheme);
+						// deprecated fallback (일부 Safari)
+						else mq.addListener(applyTheme);
+					}
+				} catch {
+					// noop
+				}
+			})();
+		</script>
 		%sveltekit.head%
 	</head>
 

@@ -1,3 +1,7 @@
+<script module lang="ts">
+	export const trailingSlash = 'never';
+</script>
+
 <script lang="ts">
 	// 전역 CSS 및 UnoCSS 유틸리티
 
@@ -14,11 +18,12 @@
 	import Footer from "$lib/components/Footer.svelte";
 	import Header from "$lib/components/Header.svelte";
 	import { DsToastRegion } from "$lib/components/design-system";
+	import { DsDirectionProvider } from "$lib/components/design-system";
 	// 사이트 설정
 	import { site } from "$lib/constants";
 	// 전역 테마 스토어
 	import * as m from "$lib/paraglide/messages.js";
-	import { fontSize, theme } from "$lib/stores";
+	import { fontSize, theme, themePalette } from "$lib/stores";
 	import { toast } from "$lib/stores/toast.svelte";
 
 	let { children } = $props();
@@ -26,6 +31,7 @@
 	// 컴포넌트 마운트 시 클라이언트에서 테마 상태를 초기화하고 서버 상태와 동기화합니다.
 	onMount(() => {
 		theme.init();
+		themePalette.init();
 		fontSize.init();
 	});
 
@@ -80,9 +86,11 @@
 	레이아웃 레벨에서 전역 배경색과 텍스트 색상을 설정합니다.
 	data-theme 속성은 hooks.server.ts에서 SSR 시점에 이미 적용됩니다.
 	-->
-	<div
-		class="flex min-h-screen flex-col bg-background text-foreground"
-	>
+<DsDirectionProvider>
+	{#snippet children()}
+		<div
+			class="flex min-h-screen flex-col bg-background text-foreground"
+		>
 	{#if !isOfflinePage}
 		<a
 			href="#main-content"
@@ -96,7 +104,9 @@
 			tabindex="-1"
 			class={mainClass}
 		>
-			{@render children()}
+			{#if children}
+				{@render children()}
+			{/if}
 		</main>
 		<Footer siteName={site.name} />
 		<DsToastRegion
@@ -107,6 +117,10 @@
 			position="bottom-right"
 		/>
 	{:else}
-		{@render children()}
+		{#if children}
+			{@render children()}
+		{/if}
 	{/if}
 </div>
+	{/snippet}
+</DsDirectionProvider>

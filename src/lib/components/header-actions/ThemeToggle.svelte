@@ -1,18 +1,15 @@
 <script lang="ts">
 	import * as m from "$lib/paraglide/messages.js";
 
-	import { DsIconButton } from "$lib/components/design-system";
-	import { theme } from "$lib/stores";
+	import { DsThemeControlCenter } from "$lib/components/design-system";
+	import { theme, themePalette } from "$lib/stores";
 </script>
 
-<DsIconButton
-	onclick={() => theme.toggle()}
+<DsThemeControlCenter
+	mode={theme.current}
+	onModeChange={(next) => theme.set(next)}
+	palette={themePalette.current}
+	onPaletteChange={(next) => themePalette.set(next)}
 	label={m.theme_toggle_label()}
-	data-testid="header-theme-toggle"
->
-	{#if theme.current === "light"}
-		<span class="i-lucide-sun h-4 w-4"></span>
-	{:else}
-		<span class="i-lucide-moon h-4 w-4"></span>
-	{/if}
-</DsIconButton>
+	triggerTestId="header-theme-toggle"
+/>

@@ -13,3 +13,5 @@ export { type FontSize, fontSize } from './font-size.svelte';
 export { createPersistedState } from './persisted-state.svelte';
 // 테마 스토어
 export { theme } from './theme.svelte';
+// 테마 팔레트 스토어
+export { themePalette } from './theme-palette.svelte';

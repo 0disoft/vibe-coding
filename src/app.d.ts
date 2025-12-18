@@ -1,6 +1,7 @@
 import type { ParaglideLocals } from '@inlang/paraglide-sveltekit';
 
 import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
+import type { ThemeMode, ThemePalette } from '$lib/shared/utils/theme';
 
 /**
  * SvelteKit 전역 타입 정의
@@ -21,6 +22,8 @@ declare global {
 		interface Locals {
 			paraglide: ParaglideLocals<AvailableLanguageTag>;
 			theme: 'light' | 'dark' | null;
+			themeMode: ThemeMode | null;
+			themePalette: ThemePalette | null;
 			fontSize: string | null;
 			requestId: string;
 		}

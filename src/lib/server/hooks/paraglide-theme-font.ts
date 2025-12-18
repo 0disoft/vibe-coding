@@ -1,7 +1,14 @@
 import type { Handle } from '@sveltejs/kit';
 
-import { FONT_SIZE_COOKIE, THEME_COOKIE } from '$lib/constants';
+import { FONT_SIZE_COOKIE, THEME_COOKIE, THEME_PALETTE_COOKIE } from '$lib/constants';
 import { paraglideMiddleware } from '$lib/paraglide/server';
+import { getDirForLocale } from '$lib/shared/utils/locale';
+import {
+	isThemeMode,
+	isThemePalette,
+	type ThemeMode,
+	type ThemePalette
+} from '$lib/shared/utils/theme';
 
 /**
  * html 태그에 속성을 안전하게 설정/추가하는 헬퍼
@@ -34,6 +41,8 @@ function setAttrOnTag(tag: string, name: string, value: string): string {
 function patchHtmlRoot(
 	html: string,
 	theme: string | null,
+	themeMode: ThemeMode | null,
+	themePalette: ThemePalette | null,
 	fontSize: string | null,
 	dir: string
 ): string {
@@ -64,6 +73,8 @@ function patchHtmlRoot(
 	tag = setAttrOnTag(tag, 'dir', dir);
 
 	if (theme) tag = setAttrOnTag(tag, 'data-theme', theme);
+	if (themeMode) tag = setAttrOnTag(tag, 'data-theme-mode', themeMode);
+	if (themePalette) tag = setAttrOnTag(tag, 'data-theme-palette', themePalette);
 	if (fontSize) tag = setAttrOnTag(tag, 'data-font-size', fontSize);
 
 	return html.slice(0, start) + tag + html.slice(end + 1);
@@ -73,9 +84,14 @@ export const handleParaglide: Handle = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ request, locale }) => {
 		event.request = request;
 
-		// 테마 쿠키 읽기 (light/dark만 허용)
+		// 테마 모드 쿠키 읽기 (light/dark/system)
 		const rawTheme = event.cookies.get(THEME_COOKIE);
-		const theme = rawTheme === 'light' || rawTheme === 'dark' ? rawTheme : null;
+		const themeMode = isThemeMode(rawTheme) ? (rawTheme as ThemeMode) : null;
+		const theme = themeMode === 'light' || themeMode === 'dark' ? themeMode : null;
+
+		// 팔레트 쿠키 읽기
+		const rawPalette = event.cookies.get(THEME_PALETTE_COOKIE);
+		const themePalette = isThemePalette(rawPalette) ? (rawPalette as ThemePalette) : null;
 
 		// 폰트 크기 쿠키 읽기 (1~9만 허용)
 		const rawFontSize = event.cookies.get(FONT_SIZE_COOKIE);
@@ -83,6 +99,9 @@ export const handleParaglide: Handle = ({ event, resolve }) =>
 
 		// 서버 로드/액션에서 접근 가능하도록 locals에도 동기화
 		event.locals.theme = theme;
+		// no-js fallback을 위해 모드/팔레트도 기록
+		event.locals.themeMode = themeMode;
+		event.locals.themePalette = themePalette;
 		event.locals.fontSize = fontSize;
 
 		return resolve(event, {
@@ -90,12 +109,10 @@ export const handleParaglide: Handle = ({ event, resolve }) =>
 				// 언어 속성 주입 (중복 등장 대비 replaceAll 사용)
 				html = html.replaceAll('%paraglide.lang%', locale);
 
-				// RTL 감지 (아랍어인 경우 right-to-left)
-				// TODO: RTL 언어가 늘어나면 배열로 관리
-				const dir = locale === 'ar' ? 'rtl' : 'ltr';
+				const dir = getDirForLocale(locale);
 
 				// <html> 태그에만 테마/폰트/방향 속성 주입
-				html = patchHtmlRoot(html, theme, fontSize, dir);
+				html = patchHtmlRoot(html, theme, themeMode, themePalette, fontSize, dir);
 
 				return html;
 			}

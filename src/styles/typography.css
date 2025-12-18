@@ -386,7 +386,7 @@ body:lang(ru) {
 /* ───────────────────────────────────────────────────────────
    Dark Theme
    ─────────────────────────────────────────────────────────── */
-:root[data-theme="dark"] {
+[data-theme="dark"] {
 	color-scheme: dark;
 
 	/* 색상 토큰은 `src/styles/design-system.tokens.css`에서 관리합니다. */

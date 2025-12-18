@@ -86,6 +86,31 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 역할: 구분선(수평/수직, decorative 지원)
 - Props: `orientation`, `decorative`, `label`
 
+### Internationalization
+
+#### `DsDirectionProvider`
+
+- 파일: `src/lib/components/design-system/DirectionProvider.svelte`
+- 역할: locale 기반 LTR/RTL 규칙을 중앙화하고, `<html lang/dir>`를 클라이언트 내비게이션에서도 동기화
+- Props: `locale`, `applyToDocument`, `children`
+- 내부 로직(SSOT): `src/lib/shared/utils/locale.ts`
+
+#### `DsLocaleSwitcher`
+
+- 파일: `src/lib/components/design-system/LocaleSwitcher.svelte`
+- 역할: 언어 전환 “규칙 엔진” + 기본 UI(검색/리스트, URL 유지, 쿠키 저장)
+- Props: `label`, `value`, `onValueChange`, `showSearch`, `searchPlaceholder`, `disableCurrent`, `announce`
+- 내부 로직(SSOT): `src/lib/shared/utils/locale.ts`
+
+### Theme
+
+#### `DsThemeControlCenter`
+
+- 파일: `src/lib/components/design-system/ThemeControlCenter.svelte`
+- 역할: 테마 모드/팔레트 선택 UI(DS 컴파운드)
+- Props: `mode`, `onModeChange`, `palette`, `onPaletteChange`, `label`, `triggerTestId`, `title`
+- 내부 규칙(SSOT): `src/lib/shared/utils/theme.ts` (+ SSR 주입: `src/lib/server/hooks/paraglide-theme-font.ts`)
+
 ### Buttons
 
 #### `DsButton`
@@ -210,8 +235,16 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 #### `DsEditorToolbar`
 
 - 파일: `src/lib/components/design-system/EditorToolbar.svelte`
-- 역할: “구조 중심” 편집 툴바(블록 타입 + 6개 커맨드)
-- Props: `blockType`, `onBlockTypeChange`, `defaultBlockType`, `active`, `disabled`, `onCommand`, `blockLabel`, `labels`
+- 역할: “구조 중심” 편집 툴바(블록 타입 + 9개 커맨드)
+- 기본 커맨드: `bold`, `italic`, `link`, `bulletList`, `orderedList`, `codeBlock`
+- 추가 커맨드: `insertImages`, `blockquote`, `callout`, `clearFormatting`
+- Props: `blockType`, `onBlockTypeChange`, `defaultBlockType`, `active`, `disabled`, `onCommand`, `blockLabel`, `labels`, `imageLabel`, `imageAccept`, `imageMultiple`, `imageMaxFiles`, `imageMaxSizeBytes`, `imageInsertLabel`, `imageCancelLabel`
+
+#### `DsEditorImagesButton`
+
+- 파일: `src/lib/components/design-system/EditorImagesButton.svelte`
+- 역할: 이미지 삽입용 버튼 + 팝오버(파일 선택 UI 포함)
+- Props: `disabled`, `pressed`, `label`, `accept`, `multiple`, `maxFiles`, `maxSizeBytes`, `insertLabel`, `cancelLabel`, `onInsert`
 
 #### `DsEditorInlineControls`
 
@@ -269,6 +302,17 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/ContextMenu.svelte`
 - 역할: 우클릭 컨텍스트 메뉴(단일 레벨, 키보드 이동 포함)
 - Props: `items`, `open`, `onOpenChange`, `disabled`, `label`, `align`, `offset`, `trigger`, `children`
+
+### Disclosure
+
+#### `DsAccordion` / `DsAccordionItem` / `DsAccordionTrigger` / `DsAccordionContent`
+
+- 파일: `src/lib/components/design-system/Accordion.svelte`, `src/lib/components/design-system/AccordionItem.svelte`, `src/lib/components/design-system/AccordionTrigger.svelte`, `src/lib/components/design-system/AccordionContent.svelte`
+- 역할: 아코디언(단일/다중 열림, 키보드 내비 포함)
+- `DsAccordion` Props: `type`, `value`, `onValueChange`, `collapsible`, `id`, `children`
+- `DsAccordionItem` Props: `value`, `disabled`, `children`
+- `DsAccordionTrigger` Props: `value`, `disabled`, `children` (+ button props)
+- `DsAccordionContent` Props: `value`, `children`
 
 ### Navigation
 

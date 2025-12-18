@@ -3,6 +3,9 @@
 
   import DsIconButton from "./IconButton.svelte";
   import DsSelect from "./Select.svelte";
+  import DsDropdown from "./Dropdown.svelte";
+  import DsDropdownItem from "./DropdownItem.svelte";
+  import DsEditorImagesButton from "./EditorImagesButton.svelte";
 
   export type EditorBlockType = "paragraph" | "h2" | "h3";
   export type EditorCommand =
@@ -11,7 +14,11 @@
     | "link"
     | "bulletList"
     | "orderedList"
-    | "codeBlock";
+    | "codeBlock"
+    | "insertImages"
+    | "blockquote"
+    | "callout"
+    | "clearFormatting";
 
   type ActiveState = Partial<Record<EditorCommand, boolean>>;
   type DisabledState = Partial<Record<EditorCommand, boolean>>;
@@ -27,10 +34,19 @@
     disabled?: DisabledState;
 
     /** 버튼 클릭 시 호출 */
-    onCommand?: (cmd: EditorCommand) => void;
+    onCommand?: (cmd: EditorCommand, detail?: unknown) => void;
 
     blockLabel?: string;
     labels?: Partial<Record<EditorCommand, string>>;
+
+    /** 이미지 삽입 팝오버 */
+    imageLabel?: string;
+    imageAccept?: string;
+    imageMultiple?: boolean;
+    imageMaxFiles?: number;
+    imageMaxSizeBytes?: number;
+    imageInsertLabel?: string;
+    imageCancelLabel?: string;
   }
 
   let {
@@ -42,6 +58,13 @@
     onCommand,
     blockLabel = "Block type",
     labels = {},
+    imageLabel = "Insert images",
+    imageAccept = "image/*",
+    imageMultiple = true,
+    imageMaxFiles = 10,
+    imageMaxSizeBytes,
+    imageInsertLabel = "Insert",
+    imageCancelLabel = "Cancel",
     class: className = "",
     ...rest
   }: Props = $props();
@@ -80,6 +103,10 @@
         bulletList: "Bulleted list",
         orderedList: "Numbered list",
         codeBlock: "Code block",
+        insertImages: "Insert images",
+        blockquote: "Blockquote",
+        callout: "Callout",
+        clearFormatting: "Clear formatting",
       } satisfies Record<EditorCommand, string>)[cmd]
     );
   }
@@ -90,6 +117,10 @@
 
   function isDisabled(cmd: EditorCommand) {
     return Boolean(disabled?.[cmd]);
+  }
+
+  function handleInsertImages(files: File[]) {
+    onCommand?.("insertImages", { files });
   }
 </script>
 
@@ -163,6 +194,72 @@
         pressed={isPressed("codeBlock")}
         disabled={isDisabled("codeBlock")}
         onclick={() => onCommand?.("codeBlock")}
+      />
+
+      <DsEditorImagesButton
+        disabled={isDisabled("insertImages")}
+        label={cmdLabel("insertImages")}
+        accept={imageAccept}
+        multiple={imageMultiple}
+        maxFiles={imageMaxFiles}
+        maxSizeBytes={imageMaxSizeBytes}
+        insertLabel={imageInsertLabel}
+        cancelLabel={imageCancelLabel}
+        onInsert={handleInsertImages}
+      />
+
+      <DsDropdown align="start">
+        {#snippet trigger(props)}
+          <DsIconButton
+            {...props}
+            icon="quote"
+            label="Quote / Callout"
+            size="sm"
+            variant="ghost"
+            intent="neutral"
+            pressed={isPressed("blockquote") || isPressed("callout")}
+            disabled={isDisabled("blockquote") && isDisabled("callout")}
+          />
+        {/snippet}
+
+        {#snippet children({ close })}
+          <DsDropdownItem
+            type="button"
+            disabled={isDisabled("blockquote")}
+            onclick={() => {
+              onCommand?.("blockquote");
+              close();
+            }}
+          >
+            {#snippet children()}
+              {cmdLabel("blockquote")}
+            {/snippet}
+          </DsDropdownItem>
+
+          <DsDropdownItem
+            type="button"
+            disabled={isDisabled("callout")}
+            onclick={() => {
+              onCommand?.("callout");
+              close();
+            }}
+          >
+            {#snippet children()}
+              {cmdLabel("callout")}
+            {/snippet}
+          </DsDropdownItem>
+        {/snippet}
+      </DsDropdown>
+
+      <DsIconButton
+        icon="remove-format"
+        label={cmdLabel("clearFormatting")}
+        size="sm"
+        variant="ghost"
+        intent="neutral"
+        pressed={isPressed("clearFormatting")}
+        disabled={isDisabled("clearFormatting")}
+        onclick={() => onCommand?.("clearFormatting")}
       />
     </div>
   </div>

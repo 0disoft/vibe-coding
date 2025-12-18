@@ -8,7 +8,7 @@
  */
 
 // 쿠키 관련 상수
-export { FONT_SIZE_COOKIE, THEME_COOKIE } from './cookies';
+export { FONT_SIZE_COOKIE, THEME_COOKIE, THEME_PALETTE_COOKIE } from './cookies';
 // 라우트/페이지 레지스트리
 export { pages } from './pages';
 // 정책 관련 설정

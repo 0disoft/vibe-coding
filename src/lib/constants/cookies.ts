@@ -8,3 +8,4 @@
  */
 export const THEME_COOKIE = 'theme';
 export const FONT_SIZE_COOKIE = 'fontSize';
+export const THEME_PALETTE_COOKIE = 'themePalette';
