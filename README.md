@@ -98,7 +98,10 @@ src/
 | 설정              | 저장소          | SSR 속성         |
 | ----------------- | --------------- | ---------------- |
 | 테마 (light/dark) | 쿠키 `theme`    | `data-theme`     |
+| 팔레트            | 쿠키 `themePalette` | `data-theme-palette` |
 | 폰트 크기 (1~9)   | 쿠키 `fontSize` | `data-font-size` |
+
+첫 방문 기본 팔레트는 `linen` 입니다(쿠키가 없을 때).
 
 ## 테스트
 

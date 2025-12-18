@@ -91,6 +91,7 @@
         │   ├── index.ts
         │   ├── persisted-state.svelte.ts
         │   ├── theme.svelte.ts
+        │   ├── theme-palette.svelte.ts
         │   ├── toast.svelte.ts
         │   ├── toast-store.svelte.ts
         │   ├── toast.types.ts

@@ -96,7 +96,7 @@
 
         <div class="flex flex-wrap items-end gap-2">
           <DsButton intent="primary" onclick={submitErrorSummaryDemo}>Submit</DsButton>
-          <DsButton intent="secondary" variant="soft" onclick={resetErrorSummaryDemo}>Reset</DsButton>
+          <DsButton intent="secondary" variant="outline" onclick={resetErrorSummaryDemo}>Reset</DsButton>
         </div>
       </div>
     </div>

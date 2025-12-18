@@ -48,7 +48,7 @@
     {#snippet trigger(props)}
       <DsIconButton
         {...props}
-        icon="palette"
+        icon="sparkles"
         label={label}
         data-testid={triggerTestId ?? "header-theme-control"}
       />
@@ -73,7 +73,7 @@
             <DsRadioItem value="classic">
               {#snippet children()}
                 <div class="ds-theme-palette-row">
-                  <div class="ds-theme-palette-name">Classic</div>
+                  <div class="ds-theme-palette-name">Classic · Periwinkle</div>
                   <div class="ds-theme-palette-preview">
                     <div class="ds-theme-swatches" data-theme="light" data-theme-palette="classic" aria-label="Classic light preview">
                       <span class="ds-theme-swatch is-primary"></span>
@@ -90,17 +90,17 @@
               {/snippet}
             </DsRadioItem>
 
-            <DsRadioItem value="paper">
+            <DsRadioItem value="linen">
               {#snippet children()}
                 <div class="ds-theme-palette-row">
-                  <div class="ds-theme-palette-name">Paper</div>
+                  <div class="ds-theme-palette-name">Linen · Beige</div>
                   <div class="ds-theme-palette-preview">
-                    <div class="ds-theme-swatches" data-theme="light" data-theme-palette="paper" aria-label="Paper light preview">
+                    <div class="ds-theme-swatches" data-theme="light" data-theme-palette="linen" aria-label="Linen light preview">
                       <span class="ds-theme-swatch is-primary"></span>
                       <span class="ds-theme-swatch is-secondary"></span>
                       <span class="ds-theme-swatch is-link"></span>
                     </div>
-                    <div class="ds-theme-swatches" data-theme="dark" data-theme-palette="paper" aria-label="Paper dark preview">
+                    <div class="ds-theme-swatches" data-theme="dark" data-theme-palette="linen" aria-label="Linen dark preview">
                       <span class="ds-theme-swatch is-primary"></span>
                       <span class="ds-theme-swatch is-secondary"></span>
                       <span class="ds-theme-swatch is-link"></span>
@@ -110,17 +110,17 @@
               {/snippet}
             </DsRadioItem>
 
-            <DsRadioItem value="forest">
+            <DsRadioItem value="sage">
               {#snippet children()}
                 <div class="ds-theme-palette-row">
-                  <div class="ds-theme-palette-name">Forest</div>
+                  <div class="ds-theme-palette-name">Sage · Mint/Lavender</div>
                   <div class="ds-theme-palette-preview">
-                    <div class="ds-theme-swatches" data-theme="light" data-theme-palette="forest" aria-label="Forest light preview">
+                    <div class="ds-theme-swatches" data-theme="light" data-theme-palette="sage" aria-label="Sage light preview">
                       <span class="ds-theme-swatch is-primary"></span>
                       <span class="ds-theme-swatch is-secondary"></span>
                       <span class="ds-theme-swatch is-link"></span>
                     </div>
-                    <div class="ds-theme-swatches" data-theme="dark" data-theme-palette="forest" aria-label="Forest dark preview">
+                    <div class="ds-theme-swatches" data-theme="dark" data-theme-palette="sage" aria-label="Sage dark preview">
                       <span class="ds-theme-swatch is-primary"></span>
                       <span class="ds-theme-swatch is-secondary"></span>
                       <span class="ds-theme-swatch is-link"></span>
@@ -130,17 +130,17 @@
               {/snippet}
             </DsRadioItem>
 
-            <DsRadioItem value="nordic">
+            <DsRadioItem value="midnight">
               {#snippet children()}
                 <div class="ds-theme-palette-row">
-                  <div class="ds-theme-palette-name">Nordic</div>
+                  <div class="ds-theme-palette-name">Midnight · Peach/Pink</div>
                   <div class="ds-theme-palette-preview">
-                    <div class="ds-theme-swatches" data-theme="light" data-theme-palette="nordic" aria-label="Nordic light preview">
+                    <div class="ds-theme-swatches" data-theme="light" data-theme-palette="midnight" aria-label="Midnight light preview">
                       <span class="ds-theme-swatch is-primary"></span>
                       <span class="ds-theme-swatch is-secondary"></span>
                       <span class="ds-theme-swatch is-link"></span>
                     </div>
-                    <div class="ds-theme-swatches" data-theme="dark" data-theme-palette="nordic" aria-label="Nordic dark preview">
+                    <div class="ds-theme-swatches" data-theme="dark" data-theme-palette="midnight" aria-label="Midnight dark preview">
                       <span class="ds-theme-swatch is-primary"></span>
                       <span class="ds-theme-swatch is-secondary"></span>
                       <span class="ds-theme-swatch is-link"></span>
@@ -181,6 +181,10 @@
     gap: 6px;
     align-items: center;
     justify-content: flex-end;
+    padding: 6px 8px;
+    border-radius: 999px;
+    border: 1px solid oklch(var(--color-border));
+    background: oklch(var(--color-background));
   }
 
   .ds-theme-swatch {
@@ -206,4 +210,3 @@
     border-color: oklch(var(--color-link) / 0.4);
   }
 </style>
-

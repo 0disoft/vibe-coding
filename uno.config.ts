@@ -4,9 +4,50 @@ import {
 	defineConfig,
 	presetAttributify,
 	presetIcons,
+	type Extractor,
 	type Rule,
 	transformerVariantGroup
 } from 'unocss';
+
+const dsLucideIconExtractor: Extractor = {
+	name: 'ds-lucide-icon-props',
+	order: 0,
+	extract(code) {
+		const tokens = new Set<string>();
+
+		const add = (raw: string) => {
+			const v = raw.trim();
+			if (!v) return;
+			if (v.startsWith('i-')) {
+				tokens.add(v);
+				return;
+			}
+			tokens.add(`i-lucide-${v}`);
+		};
+
+		// Component props -> icon classes
+		for (const re of [
+			/<DsIcon\b[^>]*\bname=["']([a-z0-9-]+)["']/g,
+			/<DsInlineIcon\b[^>]*\bname=["']([a-z0-9-]+)["']/g,
+			/<DsIconButton\b[^>]*\bicon=["']([a-z0-9-]+)["']/g,
+			/<DsIconButton\b[^>]*\bcopiedIcon=["']([a-z0-9-]+)["']/g
+		]) {
+			let m: RegExpExecArray | null;
+			while ((m = re.exec(code))) add(m[1]);
+		}
+
+		// Object literals / config -> icon names
+		for (const re of [
+			/\bicon\s*:\s*["']([a-z0-9-]+|i-[a-z0-9-]+)["']/g,
+			/\bcopiedIcon\s*:\s*["']([a-z0-9-]+|i-[a-z0-9-]+)["']/g
+		]) {
+			let m: RegExpExecArray | null;
+			while ((m = re.exec(code))) add(m[1]);
+		}
+
+		return Array.from(tokens);
+	}
+};
 
 // 시맨틱 색상 이름들
 // semanticColors에 이름을 추가/삭제할 때는 아래 semanticColorVarMap도 함께 유지보수할 것.
@@ -493,6 +534,7 @@ export default defineConfig({
 	},
 	// 커스텀 룰로 시맨틱 색상 유틸리티 직접 정의
 	rules: [...colorRules, ...typographyRules],
+	extractors: [dsLucideIconExtractor],
 	// 동적 클래스 사용 대비(예: CMS에서 bg-primary 문자열 주입)
 	safelist: [
 		...semanticColors.flatMap((c) => [

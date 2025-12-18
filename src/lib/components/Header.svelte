@@ -100,7 +100,7 @@
 		<a
 			href={localizeUrl("/").href}
 			aria-label={m.header_home_label({ siteName })}
-			class="flex items-center gap-2 text-logo font-pacifico text-foreground"
+			class="ds-no-select flex items-center gap-2 text-logo font-pacifico text-foreground"
 		>
 			{siteName}
 		</a>
@@ -118,7 +118,7 @@
 					<a
 						href={localizeUrl(item.href).href}
 						aria-current={active ? "page" : undefined}
-						class="ds-focus-ring rounded-md px-1 py-1 transition-colors hover:text-foreground focus-visible:text-foreground {active
+						class="ds-no-select ds-focus-ring rounded-md px-1 py-1 transition-colors hover:text-foreground focus-visible:text-foreground {active
 							? 'text-foreground font-medium'
 							: 'text-muted-foreground'}">{item.label()}</a
 					>
@@ -181,7 +181,7 @@
 							href={localizeUrl(item.href).href}
 							onclick={() => closeMobileMenu()}
 							aria-current={active ? "page" : undefined}
-							class="ds-focus-ring ds-touch-target block rounded-md px-3 py-2 text-menu transition-colors hover:bg-accent focus-visible:bg-accent {active
+							class="ds-no-select ds-focus-ring ds-touch-target block rounded-md px-3 py-2 text-menu transition-colors hover:bg-accent focus-visible:bg-accent {active
 								? 'bg-accent text-foreground font-medium'
 								: 'text-muted-foreground'}"
 						>

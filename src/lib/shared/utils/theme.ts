@@ -1,11 +1,11 @@
 export const THEME_MODES = ['light', 'dark', 'system'] as const;
 export type ThemeMode = (typeof THEME_MODES)[number];
 
-export const THEME_PALETTES = ['classic', 'paper', 'forest', 'nordic'] as const;
+export const THEME_PALETTES = ['classic', 'linen', 'sage', 'midnight'] as const;
 export type ThemePalette = (typeof THEME_PALETTES)[number];
 
 export const DEFAULT_THEME_MODE: ThemeMode = 'system';
-export const DEFAULT_THEME_PALETTE: ThemePalette = 'classic';
+export const DEFAULT_THEME_PALETTE: ThemePalette = 'linen';
 
 export function isThemeMode(value: string | null | undefined): value is ThemeMode {
 	return THEME_MODES.includes(value as ThemeMode);

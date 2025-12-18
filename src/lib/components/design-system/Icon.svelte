@@ -24,8 +24,6 @@
 	}: Props = $props();
 
 	let hasLabel = $derived(!!label?.trim());
-	// aria-hidden은 boolean 속성이 아니라 "true"/"false" 문자열로 전달하는 것이 안전합니다.
-	let ariaHidden = $derived(hasLabel ? undefined : "true");
 	let role = $derived(hasLabel ? "img" : undefined);
 </script>
 
@@ -34,7 +32,7 @@
 	class={`ds-icon i-lucide-${name} ${className}`.trim()}
 	{role}
 	aria-label={hasLabel ? label : undefined}
-	aria-hidden={ariaHidden}
+	aria-hidden={hasLabel ? undefined : true}
 	title={hasLabel ? title : undefined}
 	data-ds-size={size}
 	data-ds-flip-rtl={flipInRtl ? "true" : undefined}

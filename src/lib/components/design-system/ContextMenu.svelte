@@ -183,20 +183,27 @@
     {#snippet trigger(props)}
       {#if triggerContent}
         {@render triggerContent({
-          ...props,
-          ref: (node) => captureTriggerRef(node, props.ref),
+          id: props.id,
+          "aria-controls": props["aria-controls"],
+          "aria-haspopup": "menu",
+          "aria-expanded": props["aria-expanded"],
+          disabled,
+          onclick: props.onclick,
           onkeydown: (e) => handleTriggerKeyDown(e, props.onkeydown),
+          ref: (node) => captureTriggerRef(node, props.ref),
         })}
       {:else}
-        {@const { ref, onclick, onkeydown, disabled: _disabled, ...a11y } = props}
         <button
           type="button"
-          use:triggerAction={ref}
+          id={props.id}
+          aria-controls={props["aria-controls"]}
+          aria-haspopup="menu"
+          aria-expanded={props["aria-expanded"]}
+          use:triggerAction={props.ref}
           class="ds-context-menu-trigger ds-focus-ring"
           disabled={disabled}
-          {...a11y}
-          onclick={onclick}
-          onkeydown={(e) => handleTriggerKeyDown(e, onkeydown)}
+          onclick={props.onclick}
+          onkeydown={(e) => handleTriggerKeyDown(e, props.onkeydown)}
         >
           Open
         </button>

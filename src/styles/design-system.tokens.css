@@ -374,14 +374,14 @@
   --component-card-radius: var(--radius-md);
 
   /* Primitive (Raw) */
-  --raw-color-accent: 90% 0.06 155;
-  --raw-color-background: 99% 0.004 255;
-  --raw-color-border: 90% 0.012 255;
+  --raw-color-accent: 94% 0.035 265;
+  --raw-color-background: 98.9% 0.014 250;
+  --raw-color-border: 89.5% 0.02 250;
   --raw-color-code-card: 27% 0.0314 274;
   --raw-color-danger: 62% 0.2 25;
   --raw-color-error: 62% 0.2 25;
-  --raw-color-input: 92% 0.012 255;
-  --raw-color-link: 60% 0.16 250;
+  --raw-color-input: 97% 0.016 250;
+  --raw-color-link: 54% 0.14 250;
   --raw-color-neutral-100: 97% 0.004 255;
   --raw-color-neutral-200: 93% 0.004 255;
   --raw-color-neutral-300: 88% 0.004 255;
@@ -393,29 +393,29 @@
   --raw-color-neutral-800: 26% 0.004 255;
   --raw-color-neutral-900: 18% 0.004 255;
   --raw-color-neutral-950: 12% 0.004 255;
-  --raw-color-on-accent: 22% 0.03 155;
+  --raw-color-on-accent: 20% 0.02 255;
   --raw-color-on-code-card: 96% 0.01 106;
   --raw-color-on-danger: 96% 0.002 25;
   --raw-color-on-error: 96% 0.002 25;
   --raw-color-on-link: 18% 0.02 250;
   --raw-color-on-primary: 96% 0.002 255;
-  --raw-color-on-secondary: 24% 0.03 250;
-  --raw-color-on-selected: 22% 0.03 250;
+  --raw-color-on-secondary: 20% 0.02 250;
+  --raw-color-on-selected: 20% 0.02 250;
   --raw-color-on-sidebar: 26% 0.02 255;
   --raw-color-on-success: 96% 0.002 150;
   --raw-color-on-warning: 20% 0.02 70;
-  --raw-color-overlay: 20% 0.01 255;
-  --raw-color-primary: 62% 0.15 250;
-  --raw-color-primary-hover: 56% 0.15 250;
-  --raw-color-scrim: 20% 0.01 255;
-  --raw-color-secondary: 92% 0.04 250;
-  --raw-color-selected: 90% 0.06 250;
-  --raw-color-sidebar: 97% 0.01 255;
+  --raw-color-overlay: 22% 0.015 255;
+  --raw-color-primary: 60% 0.13 250;
+  --raw-color-primary-hover: 54% 0.13 250;
+  --raw-color-scrim: 22% 0.015 255;
+  --raw-color-secondary: 93% 0.03 270;
+  --raw-color-selected: 90% 0.05 255;
+  --raw-color-sidebar: 98% 0.012 250;
   --raw-color-success: 62% 0.14 150;
-  --raw-color-surface: 98% 0.008 255;
-  --raw-color-surface-hover: 96.5% 0.008 255;
+  --raw-color-surface: 99.2% 0.012 250;
+  --raw-color-surface-hover: 97.5% 0.016 250;
   --raw-color-text: 21% 0.02 255;
-  --raw-color-text-muted: 46% 0.02 255;
+  --raw-color-text-muted: 44% 0.02 255;
   --raw-color-warning: 75% 0.16 70;
 
   /* Semantic (Canonical) */
@@ -468,32 +468,106 @@
 /* ───────────────────────────────────────────────────────────
    Theme Palette (Accent)
    - data-theme: 실제 적용(light/dark)
-   - data-theme-palette: 팔레트(classic/paper/forest/nordic)
-   - palette는 “accent 계열”만 우선 override (100+ 사이트 확장 대비)
+   - data-theme-palette: 팔레트(classic/linen/sage/midnight)
+   - palette는 “분위기(배경/서피스/텍스트/포인트)” 토큰을 override합니다.
    ─────────────────────────────────────────────────────────── */
 
-[data-theme="light"][data-theme-palette="paper"] {
-  --raw-color-link: 60% 0.16 70;
-  --raw-color-primary: 62% 0.15 70;
-  --raw-color-primary-hover: 56% 0.15 70;
-  --raw-color-secondary: 92% 0.04 70;
-  --raw-color-selected: 90% 0.06 70;
+[data-theme="light"][data-theme-palette="linen"] {
+  /* Linen: 종이 질감, 카페, 에세이 (pastel beige paper) */
+  --raw-color-background: 98.9% 0.024 92;
+  --raw-color-surface: 99.4% 0.018 92;
+  --raw-color-surface-hover: 98.2% 0.024 92;
+  --raw-color-border: 90% 0.02 92;
+  --raw-color-input: 97.3% 0.022 92;
+  --raw-color-sidebar: 99% 0.02 92;
+  --raw-color-overlay: 22% 0.02 92;
+  --raw-color-scrim: 22% 0.02 92;
+
+  --raw-color-text: 18% 0.02 85;
+  --raw-color-text-muted: 44% 0.02 85;
+
+  --raw-color-accent: 95% 0.035 92;
+  --raw-color-on-accent: 18% 0.02 85;
+
+  /* Butter */
+  --raw-color-primary: 64% 0.12 75;
+  --raw-color-primary-hover: 58% 0.12 75;
+  --raw-color-on-primary: 98.5% 0.008 92;
+
+  --raw-color-secondary: 93.5% 0.03 92;
+  --raw-color-on-secondary: 18% 0.02 85;
+
+  --raw-color-selected: 90% 0.06 92;
+  --raw-color-on-selected: 18% 0.02 85;
+
+  --raw-color-link: 56% 0.14 75;
+  --raw-color-on-link: 98.5% 0.008 92;
 }
 
-[data-theme="light"][data-theme-palette="forest"] {
-  --raw-color-link: 60% 0.16 150;
-  --raw-color-primary: 62% 0.15 150;
-  --raw-color-primary-hover: 56% 0.15 150;
-  --raw-color-secondary: 92% 0.04 150;
-  --raw-color-selected: 90% 0.06 150;
+[data-theme="light"][data-theme-palette="sage"] {
+  /* Sage: 민트 + 라벤더 (cute pastel mint/lavender) */
+  --raw-color-background: 98.6% 0.02 160;
+  --raw-color-surface: 99.4% 0.018 160;
+  --raw-color-surface-hover: 98.2% 0.022 160;
+  --raw-color-border: 90% 0.018 160;
+  --raw-color-input: 97.2% 0.018 160;
+  --raw-color-sidebar: 98.8% 0.02 160;
+  --raw-color-overlay: 22% 0.015 165;
+  --raw-color-scrim: 22% 0.015 165;
+
+  --raw-color-text: 18% 0.02 170;
+  --raw-color-text-muted: 42% 0.02 170;
+
+  /* Lavender */
+  --raw-color-accent: 94% 0.035 285;
+  --raw-color-on-accent: 20% 0.02 285;
+
+  --raw-color-primary: 60% 0.13 285;
+  --raw-color-primary-hover: 54% 0.13 285;
+  --raw-color-on-primary: 98% 0.006 285;
+
+  /* Mint */
+  --raw-color-secondary: 93% 0.028 160;
+  --raw-color-on-secondary: 18% 0.02 170;
+
+  --raw-color-selected: 90% 0.05 285;
+  --raw-color-on-selected: 20% 0.02 285;
+
+  --raw-color-link: 52% 0.14 285;
+  --raw-color-on-link: 98% 0.006 285;
 }
 
-[data-theme="light"][data-theme-palette="nordic"] {
-  --raw-color-link: 60% 0.16 300;
-  --raw-color-primary: 62% 0.15 300;
-  --raw-color-primary-hover: 56% 0.15 300;
-  --raw-color-secondary: 92% 0.04 300;
-  --raw-color-selected: 90% 0.06 300;
+[data-theme="light"][data-theme-palette="midnight"] {
+  /* Midnight: 핑크 + 피치 (cute pastel pink/peach) */
+  --raw-color-background: 98.6% 0.02 25;
+  --raw-color-surface: 99.2% 0.018 25;
+  --raw-color-surface-hover: 98% 0.024 25;
+  --raw-color-border: 90% 0.02 25;
+  --raw-color-input: 97.2% 0.018 25;
+  --raw-color-sidebar: 98.9% 0.02 25;
+  --raw-color-overlay: 22% 0.015 340;
+  --raw-color-scrim: 22% 0.015 340;
+
+  --raw-color-text: 18% 0.02 10;
+  --raw-color-text-muted: 42% 0.02 10;
+
+  /* Pink */
+  --raw-color-accent: 94% 0.04 340;
+  --raw-color-on-accent: 20% 0.02 340;
+
+  /* Peach */
+  --raw-color-primary: 58% 0.14 25;
+  --raw-color-primary-hover: 52% 0.14 25;
+  --raw-color-on-primary: 98% 0.006 25;
+
+  --raw-color-secondary: 92% 0.03 340;
+  --raw-color-on-secondary: 18% 0.02 10;
+
+  --raw-color-selected: 90% 0.06 340;
+  --raw-color-on-selected: 20% 0.02 340;
+
+  --raw-color-link: 52% 0.15 340;
+  --raw-color-on-link: 98% 0.006 25;
 }
 
 [data-theme="dark"] {
@@ -504,14 +578,14 @@
   --alpha-scrim: 0.6;
 
   /* Primitive (Raw) */
-  --raw-color-accent: 35% 0.06 155;
-  --raw-color-background: 21% 0.02 255;
-  --raw-color-border: 30% 0.01 255;
+  --raw-color-accent: 40% 0.05 265;
+  --raw-color-background: 21% 0.02 260;
+  --raw-color-border: 30% 0.012 260;
   --raw-color-code-card: 27% 0.0314 274;
   --raw-color-danger: 72% 0.18 25;
   --raw-color-error: 72% 0.18 25;
-  --raw-color-input: 32% 0.01 255;
-  --raw-color-link: 80% 0.12 250;
+  --raw-color-input: 32% 0.012 260;
+  --raw-color-link: 88% 0.1 250;
   --raw-color-neutral-100: 85% 0.004 255;
   --raw-color-neutral-200: 72% 0.004 255;
   --raw-color-neutral-300: 60% 0.004 255;
@@ -523,54 +597,128 @@
   --raw-color-neutral-800: 16% 0.004 255;
   --raw-color-neutral-900: 12% 0.004 255;
   --raw-color-neutral-950: 8% 0.004 255;
-  --raw-color-on-accent: 92% 0.01 155;
+  --raw-color-on-accent: 94% 0.008 265;
   --raw-color-on-code-card: 96% 0.01 106;
   --raw-color-on-danger: 18% 0.02 25;
   --raw-color-on-error: 18% 0.02 25;
-  --raw-color-on-link: 92% 0.01 250;
-  --raw-color-on-primary: 18% 0.02 250;
-  --raw-color-on-secondary: 20% 0.01 250;
+  --raw-color-on-link: 16% 0.02 260;
+  --raw-color-on-primary: 18% 0.02 260;
+  --raw-color-on-secondary: 18% 0.02 270;
   --raw-color-on-selected: 95% 0.02 250;
   --raw-color-on-sidebar: 85% 0.01 255;
   --raw-color-on-success: 18% 0.02 150;
   --raw-color-on-warning: 18% 0.02 70;
-  --raw-color-overlay: 10% 0.01 255;
-  --raw-color-primary: 78% 0.12 250;
-  --raw-color-primary-hover: 82% 0.12 250;
-  --raw-color-scrim: 10% 0.01 255;
-  --raw-color-secondary: 85% 0.04 250;
-  --raw-color-selected: 45% 0.09 250;
-  --raw-color-sidebar: 15% 0.02 255;
+  --raw-color-overlay: 10% 0.012 260;
+  --raw-color-primary: 86% 0.1 250;
+  --raw-color-primary-hover: 90% 0.1 250;
+  --raw-color-scrim: 10% 0.012 260;
+  --raw-color-secondary: 90% 0.04 270;
+  --raw-color-selected: 50% 0.08 255;
+  --raw-color-sidebar: 15% 0.02 260;
   --raw-color-success: 75% 0.1 150;
-  --raw-color-surface: 22% 0.02 255;
-  --raw-color-surface-hover: 26% 0.02 255;
+  --raw-color-surface: 22% 0.02 260;
+  --raw-color-surface-hover: 26% 0.02 260;
   --raw-color-text: 96% 0.01 255;
   --raw-color-text-muted: 82% 0.01 255;
   --raw-color-warning: 80% 0.12 70;
 }
 
-[data-theme="dark"][data-theme-palette="paper"] {
-  --raw-color-link: 80% 0.12 70;
-  --raw-color-primary: 78% 0.12 70;
-  --raw-color-primary-hover: 82% 0.12 70;
-  --raw-color-secondary: 85% 0.04 70;
-  --raw-color-selected: 45% 0.09 70;
+[data-theme="dark"][data-theme-palette="linen"] {
+  /* Linen: warm espresso (soft cocoa) */
+  --raw-color-background: 17% 0.012 85;
+  --raw-color-surface: 21% 0.012 85;
+  --raw-color-surface-hover: 26% 0.014 85;
+  --raw-color-border: 31% 0.012 85;
+  --raw-color-input: 28% 0.012 85;
+  --raw-color-sidebar: 15% 0.012 85;
+  --raw-color-overlay: 9% 0.01 85;
+  --raw-color-scrim: 9% 0.01 85;
+
+  --raw-color-text: 94% 0.008 95;
+  --raw-color-text-muted: 76% 0.008 95;
+
+  --raw-color-accent: 36% 0.035 90;
+  --raw-color-on-accent: 94% 0.008 95;
+
+  /* Butter */
+  --raw-color-primary: 84% 0.08 75;
+  --raw-color-primary-hover: 90% 0.08 75;
+  --raw-color-on-primary: 17% 0.012 85;
+
+  --raw-color-secondary: 86% 0.02 92;
+  --raw-color-on-secondary: 16% 0.012 85;
+
+  --raw-color-selected: 42% 0.05 90;
+  --raw-color-on-selected: 94% 0.008 95;
+
+  --raw-color-link: 90% 0.08 75;
+  --raw-color-on-link: 17% 0.012 85;
 }
 
-[data-theme="dark"][data-theme-palette="forest"] {
-  --raw-color-link: 80% 0.12 150;
-  --raw-color-primary: 78% 0.12 150;
-  --raw-color-primary-hover: 82% 0.12 150;
-  --raw-color-secondary: 85% 0.04 150;
-  --raw-color-selected: 45% 0.09 150;
+[data-theme="dark"][data-theme-palette="sage"] {
+  /* Sage: mint + lavender (cute pastel) */
+  --raw-color-background: 16% 0.018 170;
+  --raw-color-surface: 20% 0.02 170;
+  --raw-color-surface-hover: 26% 0.022 170;
+  --raw-color-border: 32% 0.018 170;
+  --raw-color-input: 28% 0.018 170;
+  --raw-color-sidebar: 15% 0.018 170;
+  --raw-color-overlay: 9% 0.012 170;
+  --raw-color-scrim: 9% 0.012 170;
+
+  --raw-color-text: 95% 0.008 170;
+  --raw-color-text-muted: 82% 0.01 170;
+
+  /* Lavender */
+  --raw-color-accent: 42% 0.06 285;
+  --raw-color-on-accent: 94% 0.008 285;
+
+  --raw-color-primary: 86% 0.09 285;
+  --raw-color-primary-hover: 90% 0.09 285;
+  --raw-color-on-primary: 16% 0.018 170;
+
+  /* Mint */
+  --raw-color-secondary: 90% 0.04 170;
+  --raw-color-on-secondary: 16% 0.018 170;
+
+  --raw-color-selected: 55% 0.1 285;
+  --raw-color-on-selected: 94% 0.008 285;
+
+  --raw-color-link: 88% 0.1 285;
+  --raw-color-on-link: 16% 0.018 170;
 }
 
-[data-theme="dark"][data-theme-palette="nordic"] {
-  --raw-color-link: 80% 0.12 300;
-  --raw-color-primary: 78% 0.12 300;
-  --raw-color-primary-hover: 82% 0.12 300;
-  --raw-color-secondary: 85% 0.04 300;
-  --raw-color-selected: 45% 0.09 300;
+[data-theme="dark"][data-theme-palette="midnight"] {
+  /* Midnight: pink + peach (cute pastel) */
+  --raw-color-background: 14% 0.02 330;
+  --raw-color-surface: 18% 0.022 330;
+  --raw-color-surface-hover: 24% 0.024 330;
+  --raw-color-border: 30% 0.02 330;
+  --raw-color-input: 26% 0.02 330;
+  --raw-color-sidebar: 13% 0.022 330;
+  --raw-color-overlay: 8% 0.012 330;
+  --raw-color-scrim: 8% 0.012 330;
+
+  --raw-color-text: 96% 0.008 340;
+  --raw-color-text-muted: 82% 0.012 340;
+
+  /* Pink */
+  --raw-color-accent: 44% 0.07 340;
+  --raw-color-on-accent: 96% 0.008 340;
+
+  /* Peach */
+  --raw-color-primary: 88% 0.09 35;
+  --raw-color-primary-hover: 92% 0.09 35;
+  --raw-color-on-primary: 14% 0.02 330;
+
+  --raw-color-secondary: 90% 0.05 340;
+  --raw-color-on-secondary: 14% 0.02 330;
+
+  --raw-color-selected: 60% 0.12 340;
+  --raw-color-on-selected: 96% 0.008 340;
+
+  --raw-color-link: 92% 0.08 35;
+  --raw-color-on-link: 14% 0.02 330;
 }
 
 @media (prefers-contrast: more) {

@@ -14,6 +14,12 @@
 - 색/상태 표현은 유틸 클래스보다 `intent` / `variant` props를 우선 사용합니다.
 - 외부에서는 되도록 `src/lib/components/design-system/index.ts` 경유 import만 사용합니다.
 
+## 테마 팔레트
+
+- 팔레트 값: `classic` / `linen` / `sage` / `midnight`
+- 적용 방식: `<html data-theme-palette="...">` + CSS 토큰(`src/styles/design-system.tokens.css`)에서 분위기(배경/서피스/텍스트/포인트) 토큰을 override
+- 첫 방문 기본값: `src/app.html` 의 `data-theme-palette` (현재 `linen`)
+
 ## 설치/적용(스타일 로딩)
 
 이 프로젝트는 `src/app.css` 에서 DS 스타일을 로드합니다.

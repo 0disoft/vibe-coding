@@ -4,7 +4,7 @@
 	lang="%paraglide.lang%"
 	data-theme-mode="system"
 	data-theme="light"
-	data-theme-palette="classic"
+	data-theme-palette="linen"
 	data-font-size="5"
 >
 	<head>
@@ -43,9 +43,9 @@
 					const isMode = mode === "light" || mode === "dark" || mode === "system";
 					const isPalette =
 						palette === "classic" ||
-						palette === "paper" ||
-						palette === "forest" ||
-						palette === "nordic";
+						palette === "linen" ||
+						palette === "sage" ||
+						palette === "midnight";
 
 					if (isMode) root.setAttribute("data-theme-mode", mode);
 					if (isPalette) root.setAttribute("data-theme-palette", palette);
