@@ -420,7 +420,6 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
   {/if}
   ```
 
-
 ---
 
 ## [UI / CSS / Components]
@@ -459,6 +458,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
 - **증상:** Svelte 컴포넌트 내 문자열(예: 코드 블록 예시)에 `</script>`를 포함하면, 컴파일러나 IDE가 이를 실제 스크립트 닫는 태그로 오인하여 "Unexpected token", "Cannot find name 'script'" 등 치명적인 문법 오류 발생.
 - **원인:** HTML 파서는 문자열 컨텍스트(`"..."` 또는 `` `...` ``)와 상관없이 `</script>`를 만나면 즉시 스크립트 블록을 종료시킴.
 - **해결:** 문자열 분리 기법(String Splitting) 사용.
+
   ```svelte
   <!-- Before (오류) -->
   code={`<script>...</script>`}
@@ -466,4 +466,50 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
   <!-- After (해결) -->
   code={`<script>...</` + `script>`}
   ```
+
 - **적용 시점:** `<script>` 태그 자체를 문자열로 다뤄야 하는 문서화 페이지나 예제 코드 작성 시.
+
+---
+
+## [Tools / Scripts]
+
+### 1. 정의되지 않은 메서드 호출로 인한 TypeScript 에러 (Dead Code)
+
+- **증상:** `'LintScanner' 형식에 'analyzeDevGuard' 속성이 없습니다.` TypeScript 에러 발생.
+- **원인:** `02-lint-patterns.ts`에서 리팩토링 과정에서 `this.analyzeDevGuard()` 메서드 호출이 남아있었지만, 실제 구현은 `this.checkDevGuardOnLine()`으로 대체됨. 호출부만 제거되지 않은 dead code.
+- **해결:** 미사용 `analyzeDevGuard` 호출 및 관련 주석(14줄) 제거.
+- **적용 시점:** 리팩토링 후 사용하지 않는 코드가 남아있을 때.
+
+### 2. 정규식 리터럴 문법 오류 (`///+$/`)
+
+- **증상:** `'let' 이름을 찾을 수 없습니다`, `','이(가) 필요합니다`, `'src' 이름을 찾을 수 없습니다` 등 연쇄적인 TypeScript 파싱 에러 발생.
+- **원인:** `03-route-audit.ts`에서 정규식 리터럴이 `///+$/`로 작성되어 있었는데, 이는 `/` 문자가 이스케이프되지 않아 정규식이 조기 종료됨. 결과적으로 `//+$/`가 주석으로 해석되고 이후 코드가 완전히 깨짐.
+- **해결:**
+
+  ```typescript
+  // Before (오류)
+  .replace(///+$/, '')
+
+  // After (해결)
+  .replace(/\/+$/, '')
+  ```
+
+- **적용 시점:** 정규식에서 슬래시(`/`)를 매칭해야 할 때 반드시 `\/`로 이스케이프.
+
+### 3. 정의되지 않은 변수 참조 (`VALID_EXTENSIONS`)
+
+- **증상:** `bun .../01-security-patterns.ts src/app.css` 실행 시 `VALID_EXTENSIONS is not defined` 런타임 에러 발생.
+- **원인:** `01-security-patterns.ts`에서 `VALID_EXTENSIONS.includes(ext)` 호출이 있었지만, 실제 변수명은 `CONFIG.validExtensions`와 `VALID_EXTENSIONS_SET`으로 정의되어 있었음.
+- **해결:**
+
+  ```typescript
+  // Before (오류)
+  if (!VALID_EXTENSIONS.includes(ext)) {
+    console.log(`Error: 지원 확장자는 ${VALID_EXTENSIONS.join(', ')} 입니다.`);
+
+  // After (해결)
+  if (!VALID_EXTENSIONS_SET.has(ext)) {
+    console.log(`Error: 지원 확장자는 ${CONFIG.validExtensions.join(', ')} 입니다.`);
+  ```
+
+- **적용 시점:** 리팩토링으로 변수명이 변경되었을 때, 모든 참조가 업데이트되었는지 확인.

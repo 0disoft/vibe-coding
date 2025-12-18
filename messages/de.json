@@ -219,5 +219,7 @@
 	"ds_navigating": "Navigiere…",
 	"ds_clear_value": "Wert löschen",
 	"ds_toast_region": "Benachrichtigungen",
-	"ds_toast_dismiss": "Benachrichtigung schließen"
+	"ds_toast_dismiss": "Benachrichtigung schließen",
+	"a11y_skip_to_main_content": "Zum Hauptinhalt springen",
+	"form_error_summary_title": "Bitte beheben Sie Folgendes"
 }

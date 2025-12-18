@@ -40,19 +40,43 @@ interface SecurityResult {
 	match: string;
 }
 
-// 서버 파일 패턴
-const SERVER_FILE_PATTERNS = [
-	/\+page\.server\.(ts|js)$/,
-	/\+layout\.server\.(ts|js)$/,
-	/\+server\.(ts|js)$/,
-	/hooks\.server\.(ts|js)$/,
-	/\/server\//,
-	/\.server\.(ts|js)$/
-];
+// 설정 상수 (Configuration)
+const CONFIG = {
+	// 서버 파일 패턴
+	serverFilePatterns: [
+		/\+page\.server\.(ts|js)$/,
+		/\+layout\.server\.(ts|js)$/,
+		/\+server\.(ts|js)$/,
+		/hooks\.server\.(ts|js)$/,
+		/\/server\//,
+		/\.server\.(ts|js)$/
+	],
+	// 파일 확장자 필터
+	validExtensions: ['.ts', '.tsx', '.js', '.jsx', '.svelte', '.css', '.html'],
+	// 무시할 경로 패턴
+	ignorePatterns: [
+		/(?:^|\/)node_modules(?:\/|$)/,
+		/(?:^|\/)\.svelte-kit(?:\/|$)/,
+		/(?:^|\/)dist(?:\/|$)/,
+		/(?:^|\/)build(?:\/|$)/,
+		/(?:^|\/)\.git(?:\/|$)/,
+		/(?:^|\/)scripts(?:\/|$)/,
+		/(?:^|\/)\.vibe-coding(?:\/|$)/,
+		/\.vibe-coding\/TOOLS\/reports(?:\/|$)/
+	]
+};
+
+// Type for validExtensions check
+const VALID_EXTENSIONS_SET = new Set(CONFIG.validExtensions);
+
+/** 밀리초를 읽기 쉬운 형식으로 변환 */
+function formatElapsed(ms: number): string {
+	return ms < 1000 ? `${ms.toFixed(0)}ms` : `${(ms / 1000).toFixed(2)}s`;
+}
 
 function isServerFile(filePath: string): boolean {
 	const normalized = filePath.replace(/\\/g, '/');
-	return SERVER_FILE_PATTERNS.some((p) => p.test(normalized));
+	return CONFIG.serverFilePatterns.some((p) => p.test(normalized));
 }
 
 const RULES: SecurityRule[] = [
@@ -403,23 +427,6 @@ const RULES: SecurityRule[] = [
 	}
 ];
 
-// 파일 확장자 필터
-const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.svelte', '.css', '.html'];
-
-// 무시할 경로 패턴 (경로 세그먼트 시작/끝 모두 매칭)
-// 백슬래시 매칭 제거 및 정규화 경로(/) 기준 매칭
-const IGNORE_PATTERNS = [
-	/(?:^|\/)node_modules(?:\/|$)/,
-	/(?:^|\/)\.svelte-kit(?:\/|$)/,
-	/(?:^|\/)dist(?:\/|$)/,
-	/(?:^|\/)build(?:\/|$)/,
-	/(?:^|\/)\.git(?:\/|$)/,
-	/(?:^|\/)scripts(?:\/|$)/,
-	/(?:^|\/)\.vibe-coding(?:\/|$)/,
-	// 자체 리포트 폴더만 무시 (다른 reports 폴더는 스캔)
-	/\.vibe-coding\/TOOLS\/reports(?:\/|$)/
-];
-
 // Svelte script/style 블록 추출
 interface CodeBlock {
 	content: string;
@@ -427,9 +434,9 @@ interface CodeBlock {
 	endLine: number;
 }
 
-function extractScriptBlocks(content: string): CodeBlock[] {
+function extractBlocks(content: string, tagName: 'script' | 'style'): CodeBlock[] {
 	const blocks: CodeBlock[] = [];
-	const regex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+	const regex = new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)<\\/${tagName}>`, 'gi');
 	let match: RegExpExecArray | null;
 
 	// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
@@ -440,46 +447,31 @@ function extractScriptBlocks(content: string): CodeBlock[] {
 		const beforeMatchEnd = content.slice(0, match.index + match[0].length);
 		const endLine = (beforeMatchEnd.match(/\n/g) || []).length;
 
-		blocks.push({ content: match[1], startLine, endLine: endLine + 1 }); // endLine+1로 미포함 끝 확정
+		blocks.push({ content: match[1], startLine, endLine: endLine + 1 });
 	}
 	return blocks;
 }
 
-function extractStyleBlocks(content: string): CodeBlock[] {
-	const blocks: CodeBlock[] = [];
-	const regex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
-	let match: RegExpExecArray | null;
+// Convenience wrappers for backward compatibility
+const extractScriptBlocks = (content: string) => extractBlocks(content, 'script');
+const extractStyleBlocks = (content: string) => extractBlocks(content, 'style');
 
-	// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-	while ((match = regex.exec(content)) !== null) {
-		const tagEndIndex = match.index + match[0].indexOf('>') + 1;
-		const beforeContent = content.slice(0, tagEndIndex);
-		const startLine = (beforeContent.match(/\n/g) || []).length;
-		const beforeMatchEnd = content.slice(0, match.index + match[0].length);
-		const endLine = (beforeMatchEnd.match(/\n/g) || []).length;
-
-		blocks.push({ content: match[1], startLine, endLine: endLine + 1 }); // endLine+1로 미포함 끝 확정
-	}
-	return blocks;
-}
-
-async function walk(dir: string): Promise<string[]> {
-	const files: string[] = [];
+async function walk(dir: string, fileList: string[] = []): Promise<string[]> {
 	const entries = await readdir(dir, { withFileTypes: true });
 
 	for (const entry of entries) {
 		const path = join(dir, entry.name);
 		const normalizedPath = path.replace(/\\/g, '/');
-		if (IGNORE_PATTERNS.some((p) => p.test(normalizedPath))) continue;
+		if (CONFIG.ignorePatterns.some((p) => p.test(normalizedPath))) continue;
 
 		if (entry.isDirectory()) {
-			files.push(...(await walk(path)));
+			await walk(path, fileList); // accumulator 패턴: spread 대신 직접 push
 		} else if (entry.isFile()) {
 			const ext = extname(path);
-			if (VALID_EXTENSIONS.includes(ext)) files.push(path);
+			if (VALID_EXTENSIONS_SET.has(ext)) fileList.push(path);
 		}
 	}
-	return files;
+	return fileList;
 }
 
 /**
@@ -682,8 +674,10 @@ function lintLines(
 		let line = lines[lineNum];
 		const rawLine = line; // suppression 추출용 원본 보존
 
-		// suppression을 먼저 추출 (주석 제거 전에)
-		const suppressed = extractSuppressedRuleIds(rawLine);
+		// suppression을 먼저 추출 (주석 제거 전에) - fast path: 키워드 없으면 Set 할당 생략
+		const suppressed = rawLine.includes('security-ignore')
+			? extractSuppressedRuleIds(rawLine)
+			: null;
 
 		// 통합 주석 처리
 		const stripped = stripComments(line, commentMode, parsingState);
@@ -702,7 +696,7 @@ function lintLines(
 			if (rule.id === 'sveltekit-private-env' && isServerFile(filePath)) continue;
 
 			// suppression comment 확인 (원본 라인에서 추출한 것 사용)
-			if (suppressed.has(rule.id)) continue;
+			if (suppressed?.has(rule.id)) continue;
 
 			const regex = rule.pattern;
 			regex.lastIndex = 0;
@@ -1039,8 +1033,8 @@ async function main() {
 
 		if (targetStat.isFile()) {
 			const ext = extname(TARGET);
-			if (!VALID_EXTENSIONS.includes(ext)) {
-				console.log(`Error: 지원 확장자는 ${VALID_EXTENSIONS.join(', ')} 입니다.`);
+			if (!VALID_EXTENSIONS_SET.has(ext)) {
+				console.log(`Error: 지원 확장자는 ${CONFIG.validExtensions.join(', ')} 입니다.`);
 				process.exit(1);
 			}
 			files = [TARGET];
@@ -1059,8 +1053,7 @@ async function main() {
 			allResults.push(...results);
 		}
 
-		const elapsed = performance.now() - startTime;
-		const elapsedStr = elapsed < 1000 ? `${elapsed.toFixed(0)}ms` : `${(elapsed / 1000).toFixed(2)}s`;
+		const elapsedStr = formatElapsed(performance.now() - startTime);
 
 		if (FILTER_SEVERITY) {
 			allResults = allResults.filter((r) => r.rule.severity === FILTER_SEVERITY);

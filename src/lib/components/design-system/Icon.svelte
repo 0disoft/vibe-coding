@@ -24,7 +24,8 @@
 	}: Props = $props();
 
 	let hasLabel = $derived(!!label?.trim());
-	let ariaHidden = $derived(hasLabel ? undefined : true);
+	// aria-hidden은 boolean 속성이 아니라 "true"/"false" 문자열로 전달하는 것이 안전합니다.
+	let ariaHidden = $derived(hasLabel ? undefined : "true");
 	let role = $derived(hasLabel ? "img" : undefined);
 </script>
 

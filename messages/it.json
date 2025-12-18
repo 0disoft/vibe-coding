@@ -219,5 +219,7 @@
 	"ds_navigating": "Navigazione…",
 	"ds_clear_value": "Cancella valore",
 	"ds_toast_region": "Notifiche",
-	"ds_toast_dismiss": "Chiudi notifica"
+	"ds_toast_dismiss": "Chiudi notifica",
+	"a11y_skip_to_main_content": "Vai al contenuto principale",
+	"form_error_summary_title": "Correggi quanto segue"
 }

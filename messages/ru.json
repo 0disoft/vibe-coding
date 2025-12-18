@@ -219,5 +219,7 @@
 	"ds_navigating": "Переход…",
 	"ds_clear_value": "Очистить значение",
 	"ds_toast_region": "Уведомления",
-	"ds_toast_dismiss": "Закрыть уведомление"
+	"ds_toast_dismiss": "Закрыть уведомление",
+	"a11y_skip_to_main_content": "Перейти к основному содержанию",
+	"form_error_summary_title": "Пожалуйста, исправьте следующее"
 }

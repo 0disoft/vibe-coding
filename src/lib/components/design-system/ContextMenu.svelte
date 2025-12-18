@@ -52,8 +52,8 @@
     label = "Context menu",
     align = "start",
     offset = 8,
-    trigger,
-    children,
+    trigger: triggerContent,
+    children: menuContent,
     class: className = "",
     ...rest
   }: Props = $props();
@@ -181,8 +181,8 @@
     returnFocusTo={triggerEl}
   >
     {#snippet trigger(props)}
-      {#if trigger}
-        {@render trigger({
+      {#if triggerContent}
+        {@render triggerContent({
           ...props,
           ref: (node) => captureTriggerRef(node, props.ref),
           onkeydown: (e) => handleTriggerKeyDown(e, props.onkeydown),
@@ -204,8 +204,8 @@
     {/snippet}
 
     {#snippet children({ close })}
-      {#if children}
-        {@render children({ close })}
+      {#if menuContent}
+        {@render menuContent({ close })}
       {:else}
         <div class="ds-context-menu-items" bind:this={itemsEl} onkeydown={onPanelKeyDown}>
           {#each items as item (item.id)}

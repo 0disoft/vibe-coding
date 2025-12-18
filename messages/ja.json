@@ -219,5 +219,7 @@
 	"ds_navigating": "移動中…",
 	"ds_clear_value": "値をクリア",
 	"ds_toast_region": "通知",
-	"ds_toast_dismiss": "通知を閉じる"
+	"ds_toast_dismiss": "通知を閉じる",
+	"a11y_skip_to_main_content": "本文へスキップ",
+	"form_error_summary_title": "次の内容を修正してください"
 }

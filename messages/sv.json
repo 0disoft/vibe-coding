@@ -219,5 +219,7 @@
 	"ds_navigating": "Navigerar…",
 	"ds_clear_value": "Rensa värde",
 	"ds_toast_region": "Aviseringar",
-	"ds_toast_dismiss": "Stäng avisering"
+	"ds_toast_dismiss": "Stäng avisering",
+	"a11y_skip_to_main_content": "Hoppa till huvudinnehåll",
+	"form_error_summary_title": "Åtgärda följande"
 }

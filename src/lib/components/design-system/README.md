@@ -62,6 +62,8 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 </DsDialog>
 ```
 
+> 주의: Svelte 5에서 `{#snippet children()}` 같은 이름과 `$props()`로 꺼낸 변수명이 겹치면 SSR에서 재귀 렌더가 발생할 수 있습니다. 이 경우 `$props()` destructuring에서 alias를 써서 이름 충돌을 피하세요.
+
 ## 컴포넌트 레퍼런스(요약)
 
 아래 Props 목록은 “주요 Props 빠른 파악”을 위한 요약이며, 세부 타입/설명은 각 파일 상단의 `Props` 타입 정의를 기준으로 합니다.
@@ -85,6 +87,26 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/Separator.svelte`
 - 역할: 구분선(수평/수직, decorative 지원)
 - Props: `orientation`, `decorative`, `label`
+
+#### `DsVisuallyHidden`
+
+- 파일: `src/lib/components/design-system/VisuallyHidden.svelte`
+- 역할: 스크린리더 전용 텍스트(sr-only) 래퍼
+- Props: `as`, `class`, `children`
+
+### A11y
+
+#### `DsSkipLink`
+
+- 파일: `src/lib/components/design-system/SkipLink.svelte`
+- 역할: “본문으로 건너뛰기” 스킵 링크(키보드 포커스 시 노출)
+- Props: `href`, `label`, `class`
+
+#### `DsLiveRegion`
+
+- 파일: `src/lib/components/design-system/LiveRegion.svelte`
+- 역할: 스크린리더용 상태 안내(aria-live) + `announce()` API
+- Props: `politeness`, `class`
 
 ### Internationalization
 
@@ -144,6 +166,13 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/Field.svelte`
 - 역할: 라벨/헬프/에러 메시지 및 aria 연결 패턴
 - Props: `id`, `label`, `hideLabel`, `helpText`, `errorText`, `invalid`, `required`, `announceError`, `children`
+
+#### `DsErrorSummary`
+
+- 파일: `src/lib/components/design-system/ErrorSummary.svelte`
+- 역할: 폼 에러 요약(0→N으로 바뀌는 순간 자동 포커스) + 항목 클릭 시 해당 필드로 스크롤/포커스 이동
+- Props: `id`, `title`, `errors`, `autoFocus`, `role`
+- `errors` 아이템: `message`, `fieldId`(id 기반 포커스 이동), `href`(직접 링크)
 
 #### `DsInput`
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from "svelte";
 	import { page } from "$app/state";
 	import FontSizePicker from "$lib/components/header-actions/FontSizePicker.svelte";
 	import LanguagePicker from "$lib/components/header-actions/LanguagePicker.svelte";
@@ -17,6 +18,13 @@
 	}
 
 	let { siteName = "Site", nav, actions }: Props = $props();
+
+	// SSR/프리렌더 단계에서 일부 오버레이/드롭다운 컴포넌트가 불안정할 수 있어
+	// 헤더의 “설정/메뉴”류는 마운트 이후에만 렌더합니다(SSR과 초기 hydration 일치).
+	let mounted = $state(false);
+	onMount(() => {
+		mounted = true;
+	});
 
 	// 모바일 메뉴 상태
 	let mobileMenuOpen = $state(false);
@@ -125,59 +133,63 @@
 			{/if}
 
 			<!-- 모바일: 햄버거 버튼 (가장 왼쪽) -->
-			<DsIconButton
-				bind:ref={mobileMenuButtonRef}
-				onclick={toggleMobileMenu}
-				label={mobileMenuOpen ? m.header_menu_close() : m.header_menu_open()}
-				aria-expanded={mobileMenuOpen}
-				class="md:hidden"
-			>
-				{#if mobileMenuOpen}
-					<span class="i-lucide-x h-4 w-4"></span>
-				{:else}
-					<span class="i-lucide-menu h-4 w-4"></span>
-				{/if}
-			</DsIconButton>
+			{#if mounted}
+				<DsIconButton
+					bind:ref={mobileMenuButtonRef}
+					onclick={toggleMobileMenu}
+					label={mobileMenuOpen ? m.header_menu_close() : m.header_menu_open()}
+					aria-expanded={mobileMenuOpen}
+					class="md:hidden"
+				>
+					{#if mobileMenuOpen}
+						<span class="i-lucide-x h-4 w-4"></span>
+					{:else}
+						<span class="i-lucide-menu h-4 w-4"></span>
+					{/if}
+				</DsIconButton>
 
-			<!-- 공통 액션 버튼들 (모바일/데스크톱 모두 표시) -->
-			<ThemeToggle />
-			<LanguagePicker />
-			<FontSizePicker />
-			<UserMenu />
+				<!-- 공통 액션 버튼들 (모바일/데스크톱 모두 표시) -->
+				<ThemeToggle />
+				<LanguagePicker />
+				<FontSizePicker />
+				<UserMenu />
+			{/if}
 		</div>
 	</div>
 </header>
 
-<DsSheet
-	id="ds-mobile-nav"
-	title={m.header_menu_title()}
-	open={mobileMenuOpen}
-	onOpenChange={(next) => (mobileMenuOpen = next)}
-	returnFocusTo={mobileMenuButtonRef}
-	initialFocus="a"
-	side="right"
-	size="sm"
-	closeOnOutsideClick
-	closeOnEscape
-	class="md:hidden"
->
-	<nav aria-label={m.header_mobile_nav_label()} class="flex flex-col gap-1">
-		<ul class="flex flex-col gap-1">
-			{#each navItems as item (item.href)}
-				{@const active = isActive(item.href)}
-				<li>
-					<a
-						href={localizeUrl(item.href).href}
-						onclick={() => closeMobileMenu()}
-						aria-current={active ? "page" : undefined}
-						class="ds-focus-ring ds-touch-target block rounded-md px-3 py-2 text-menu transition-colors hover:bg-accent focus-visible:bg-accent {active
-							? 'bg-accent text-foreground font-medium'
-							: 'text-muted-foreground'}"
-					>
-						{item.label()}
-					</a>
-				</li>
-			{/each}
-		</ul>
-	</nav>
-</DsSheet>
+{#if mounted}
+	<DsSheet
+		id="ds-mobile-nav"
+		title={m.header_menu_title()}
+		open={mobileMenuOpen}
+		onOpenChange={(next) => (mobileMenuOpen = next)}
+		returnFocusTo={mobileMenuButtonRef}
+		initialFocus="a"
+		side="right"
+		size="sm"
+		closeOnOutsideClick
+		closeOnEscape
+		class="md:hidden"
+	>
+		<nav aria-label={m.header_mobile_nav_label()} class="flex flex-col gap-1">
+			<ul class="flex flex-col gap-1">
+				{#each navItems as item (item.href)}
+					{@const active = isActive(item.href)}
+					<li>
+						<a
+							href={localizeUrl(item.href).href}
+							onclick={() => closeMobileMenu()}
+							aria-current={active ? "page" : undefined}
+							class="ds-focus-ring ds-touch-target block rounded-md px-3 py-2 text-menu transition-colors hover:bg-accent focus-visible:bg-accent {active
+								? 'bg-accent text-foreground font-medium'
+								: 'text-muted-foreground'}"
+						>
+							{item.label()}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
+	</DsSheet>
+{/if}

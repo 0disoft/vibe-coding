@@ -73,6 +73,7 @@ src/
 │   ├── prose.css                   # 마크다운 타이포그래피
 │   └── transitions.css             # 페이지 전환 효과
 ├── hooks.server.ts                 # SSR 테마/언어 쿠키 주입
+├── routes/+layout.server.ts         # 라우팅 옵션(예: trailingSlash) 등 서버 전용 설정
 └── service-worker.ts               # PWA 오프라인 지원
 ```
 
@@ -81,6 +82,7 @@ src/
 - 토큰 SSOT: `src/styles/design-system.tokens.css`
 - 스타일 규칙: `src/styles/design-system.css`
 - 컴포넌트: `src/lib/components/design-system/` 아래 `Ds*` 우선 사용
+- a11y 패턴: `src/routes/+layout.svelte` 에서 `DsSkipLink` 렌더 + `main#main-content`에 `tabindex="-1"` 유지
 - 타이포 유틸: `text-h1`, `text-body` 같은 DS 유틸 우선(참고: `text-sm` 등 Tailwind 호환 유틸도 DS 토큰 기반으로 오버라이드됨)
 - 드랍다운/메뉴 아이템은 `DsDropdownItem` 우선 사용(직접 `ds-dropdown-item` 사용은 지양)
 - 색/상태 표현은 유틸(`text-*`, `bg-*`, `hover:*`)보다 `Ds*`의 `intent`/`variant` 우선
@@ -106,7 +108,12 @@ bun test:e2e      # Playwright E2E 테스트
 bun check         # svelte-check 타입 검사
 bun run check:scripts  # (선택) 스크립트 전용 타입 체크
 bun lint          # Biome 린트 + 포맷팅
+
+# (선택) Playwright 브라우저 설치
+bunx playwright install
 ```
+
+로컬에서 E2E 실행 시 preview 서버를 재사용해서 속도를 올리고 싶으면 `PW_REUSE_SERVER=1`로 opt-in 할 수 있습니다(기본값은 비재사용).
 
 ## 배포 도메인 (sitemap)
 

@@ -219,5 +219,7 @@
 	"ds_navigating": "Navigating…",
 	"ds_clear_value": "Clear value",
 	"ds_toast_region": "Notifications",
-	"ds_toast_dismiss": "Dismiss notification"
+	"ds_toast_dismiss": "Dismiss notification",
+	"a11y_skip_to_main_content": "Skip to main content",
+	"form_error_summary_title": "Please fix the following"
 }

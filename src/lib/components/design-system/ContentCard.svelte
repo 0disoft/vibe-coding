@@ -39,7 +39,7 @@
     readingMinutes,
     tags,
     actions,
-    children,
+    children: extra,
     class: className = "",
     ...rest
   }: Props = $props();
@@ -81,9 +81,9 @@
           <DsTagList tags={tags} maxVisible={6} />
         {/if}
 
-        {#if children}
+        {#if extra}
           <div class="ds-content-card-extra">
-            {@render children()}
+            {@render extra()}
           </div>
         {/if}
       </div>

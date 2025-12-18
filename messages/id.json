@@ -219,5 +219,7 @@
 	"ds_navigating": "Menavigasi…",
 	"ds_clear_value": "Hapus nilai",
 	"ds_toast_region": "Notifikasi",
-	"ds_toast_dismiss": "Tutup notifikasi"
+	"ds_toast_dismiss": "Tutup notifikasi",
+	"a11y_skip_to_main_content": "Lewati ke konten utama",
+	"form_error_summary_title": "Mohon perbaiki hal berikut"
 }

@@ -219,5 +219,7 @@
 	"ds_navigating": "Navigeren…",
 	"ds_clear_value": "Waarde wissen",
 	"ds_toast_region": "Meldingen",
-	"ds_toast_dismiss": "Melding sluiten"
+	"ds_toast_dismiss": "Melding sluiten",
+	"a11y_skip_to_main_content": "Ga naar hoofdinhoud",
+	"form_error_summary_title": "Corrigeer het volgende"
 }

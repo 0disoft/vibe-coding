@@ -219,5 +219,7 @@
 	"ds_navigating": "नेविगेट हो रहा है…",
 	"ds_clear_value": "मान साफ़ करें",
 	"ds_toast_region": "सूचनाएं",
-	"ds_toast_dismiss": "सूचना बंद करें"
+	"ds_toast_dismiss": "सूचना बंद करें",
+	"a11y_skip_to_main_content": "मुख्य सामग्री पर जाएँ",
+	"form_error_summary_title": "कृपया निम्नलिखित ठीक करें"
 }

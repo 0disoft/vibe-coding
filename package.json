@@ -5,8 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
-		"postbuild": "bun src/scripts/postbuild-sitemap.ts",
+		"build": "bun run gen:paraglide && vite build",
+		"postbuild": "bun src/scripts/postbuild-sitemap.ts && bun src/scripts/postbuild-preview-manifest.ts",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"gen:paraglide": "bunx paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide --strategy url cookie preferredLanguage baseLocale --silent",

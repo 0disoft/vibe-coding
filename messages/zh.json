@@ -219,5 +219,7 @@
 	"ds_navigating": "跳转中…",
 	"ds_clear_value": "清除值",
 	"ds_toast_region": "通知",
-	"ds_toast_dismiss": "关闭通知"
+	"ds_toast_dismiss": "关闭通知",
+	"a11y_skip_to_main_content": "跳到主要内容",
+	"form_error_summary_title": "请修正以下内容"
 }

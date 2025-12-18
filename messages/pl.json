@@ -219,5 +219,7 @@
 	"ds_navigating": "Nawigowanie…",
 	"ds_clear_value": "Wyczyść wartość",
 	"ds_toast_region": "Powiadomienia",
-	"ds_toast_dismiss": "Zamknij powiadomienie"
+	"ds_toast_dismiss": "Zamknij powiadomienie",
+	"a11y_skip_to_main_content": "Przejdź do głównej treści",
+	"form_error_summary_title": "Popraw poniższe"
 }

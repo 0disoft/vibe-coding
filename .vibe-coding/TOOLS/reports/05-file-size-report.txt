@@ -1,0 +1,104 @@
+File Size Report - 2025-12-18T05-14-25
+Target: src
+Elapsed: 88ms
+==================================================
+
+📊 파일 크기 검사 결과
+
+분석: 60개 | 소형 스킵: 256개 | 총 대상: 316개
+
+── 요약 ────────────────────────────────────────
+💀 리스크:  0개
+🔴 필수:    0개
+🟠 권장:    0개
+🟡 경고:    41개
+────────────────────────────────────────────────
+
+🟡 lib/components/design-system/TreeView.svelte
+   줄: 299 | import: 0
+   → 299줄 — 경고 수준
+
+🟡 lib/components/design-system/NavigationMenu.svelte
+   줄: 293 | import: 0
+   → 293줄 — 경고 수준
+
+🟡 lib/stores/toast-store.svelte.ts
+   줄: 286 | import: 1
+   → 286줄 — 경고 수준
+
+🟡 lib/components/design-system/Calendar.svelte
+   줄: 273 | import: 0
+   → 273줄 — 경고 수준
+
+🟡 routes/design-system/_sections/FormsSection.svelte
+   줄: 271 | import: 0
+   → 271줄 — 경고 수준
+
+🟡 lib/components/design-system/Popover.svelte
+   줄: 268 | import: 0
+   → 268줄 — 경고 수준
+
+🟡 lib/components/design-system/EditorToolbar.svelte
+   줄: 266 | import: 0
+   → 266줄 — 경고 수준
+
+🟡 lib/components/design-system/FileUpload.svelte
+   줄: 264 | import: 0
+   → 264줄 — 경고 수준
+
+🟡 lib/components/design-system/Dropdown.svelte
+   줄: 263 | import: 0
+   → 263줄 — 경고 수준
+
+🟡 lib/components/design-system/Dialog.svelte
+   줄: 258 | import: 0
+   → 258줄 — 경고 수준
+
+🟡 routes/design-system/_sections/NavigationSection.svelte
+   줄: 258 | import: 0
+   → 258줄 — 경고 수준
+
+🟡 routes/design-system/_sections/FeedbackSection.svelte
+   줄: 243 | import: 0
+   → 243줄 — 경고 수준
+
+🟡 lib/components/design-system/NumberInput.svelte
+   줄: 242 | import: 0
+   → 242줄 — 경고 수준
+
+🟡 lib/components/design-system/ContextMenu.svelte
+   줄: 241 | import: 0
+   → 241줄 — 경고 수준
+
+🟡 lib/components/design-system/Carousel.svelte
+   줄: 234 | import: 0
+   → 234줄 — 경고 수준
+
+🟡 routes/design-system/_sections/DataSection.svelte
+   줄: 231 | import: 0
+   → 231줄 — 경고 수준
+
+🟡 lib/components/design-system/NotificationCenter.svelte
+   줄: 225 | import: 0
+   → 225줄 — 경고 수준
+
+🟡 lib/components/design-system/SearchPanel.svelte
+   줄: 217 | import: 0
+   → 217줄 — 경고 수준
+
+🟡 lib/components/design-system/Combobox.svelte
+   줄: 215 | import: 0
+   → 215줄 — 경고 수준
+
+🟡 lib/server/hooks/rate-limit.ts
+   줄: 214 | import: 3
+   → 214줄 — 경고 수준
+
+... 외 21개 파일 (전체: --all 옵션)
+
+── 기준 (AGENTS.md) ────────────────────────────
+🟡 ~150줄  : 책임이 2개 이상인지 점검
+🟠 ~300줄  : 모듈 경계 잡고 파일 분리
+🔴 ~600줄  : 즉시 분리 (리뷰·테스트 비용 급증)
+💀 1000+줄 : 진입 파일은 조립만, 로직 이동
+────────────────────────────────────────────────

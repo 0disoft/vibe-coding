@@ -34,7 +34,7 @@
     closeLabel = "Close",
     class: className = "",
     children,
-    footer,
+    footer: footerContent,
     ...rest
   }: Props = $props();
 </script>
@@ -60,8 +60,8 @@
   {/if}
 
   {#snippet footer()}
-    {#if footer}
-      {@render footer()}
+    {#if footerContent}
+      {@render footerContent()}
     {/if}
   {/snippet}
 </DsSheet>

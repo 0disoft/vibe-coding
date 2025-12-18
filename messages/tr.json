@@ -219,5 +219,7 @@
 	"ds_navigating": "Geziniliyor…",
 	"ds_clear_value": "Değeri temizle",
 	"ds_toast_region": "Bildirimler",
-	"ds_toast_dismiss": "Bildirimi kapat"
+	"ds_toast_dismiss": "Bildirimi kapat",
+	"a11y_skip_to_main_content": "Ana içeriğe atla",
+	"form_error_summary_title": "Lütfen aşağıdakileri düzeltin"
 }

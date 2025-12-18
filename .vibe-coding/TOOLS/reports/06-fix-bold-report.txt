@@ -1,0 +1,7 @@
+Fix Bold Issues Report - 2025-12-18T05-14-26
+Target: src/content
+Elapsed: 95ms
+Mode: DRY RUN (파일 미수정)
+==================================================
+
+✅ 수정이 필요한 파일이 없습니다.

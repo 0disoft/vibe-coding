@@ -1,7 +1,3 @@
-<script module lang="ts">
-	export const trailingSlash = 'never';
-</script>
-
 <script lang="ts">
 	// 전역 CSS 및 UnoCSS 유틸리티
 
@@ -17,8 +13,7 @@
 	import { page } from "$app/state";
 	import Footer from "$lib/components/Footer.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import { DsToastRegion } from "$lib/components/design-system";
-	import { DsDirectionProvider } from "$lib/components/design-system";
+	import { DsDirectionProvider, DsSkipLink, DsToastRegion } from "$lib/components/design-system";
 	// 사이트 설정
 	import { site } from "$lib/constants";
 	// 전역 테마 스토어
@@ -26,10 +21,11 @@
 	import { fontSize, theme, themePalette } from "$lib/stores";
 	import { toast } from "$lib/stores/toast.svelte";
 
-	let { children } = $props();
+	let { children: routeChildren } = $props();
 
 	// 컴포넌트 마운트 시 클라이언트에서 테마 상태를 초기화하고 서버 상태와 동기화합니다.
 	onMount(() => {
+		document.documentElement.dataset.hydrated = "true";
 		theme.init();
 		themePalette.init();
 		fontSize.init();
@@ -68,7 +64,14 @@
 	);
 
 	// SPA 페이지 이동 시 스크린 리더/키보드 사용자가 변경을 인지할 수 있도록 main에 포커스 이동
+	let didInitialAfterNavigate = false;
 	afterNavigate(() => {
+		// 초기 진입 시에는 SkipLink가 첫 포커스가 되도록 유지하고,
+		// 이후 클라이언트 내비게이션에서만 main으로 포커스를 이동합니다.
+		if (!didInitialAfterNavigate) {
+			didInitialAfterNavigate = true;
+			return;
+		}
 		document.getElementById("main-content")?.focus();
 	});
 </script>
@@ -92,20 +95,15 @@
 			class="flex min-h-screen flex-col bg-background text-foreground"
 		>
 	{#if !isOfflinePage}
-		<a
-			href="#main-content"
-			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-foreground focus:shadow-lg focus:ring-2 focus:ring-ring"
-		>
-			본문으로 바로가기
-		</a>
+		<DsSkipLink label={m.a11y_skip_to_main_content()} />
 		<Header siteName={site.name} />
 		<main
 			id="main-content"
 			tabindex="-1"
 			class={mainClass}
 		>
-			{#if children}
-				{@render children()}
+			{#if routeChildren}
+				{@render routeChildren()}
 			{/if}
 		</main>
 		<Footer siteName={site.name} />
@@ -117,8 +115,8 @@
 			position="bottom-right"
 		/>
 	{:else}
-		{#if children}
-			{@render children()}
+		{#if routeChildren}
+			{@render routeChildren()}
 		{/if}
 	{/if}
 </div>

@@ -219,5 +219,7 @@
 	"ds_navigating": "กำลังนำทาง…",
 	"ds_clear_value": "ล้างค่า",
 	"ds_toast_region": "การแจ้งเตือน",
-	"ds_toast_dismiss": "ปิดการแจ้งเตือน"
+	"ds_toast_dismiss": "ปิดการแจ้งเตือน",
+	"a11y_skip_to_main_content": "ข้ามไปยังเนื้อหาหลัก",
+	"form_error_summary_title": "โปรดแก้ไขรายการต่อไปนี้"
 }

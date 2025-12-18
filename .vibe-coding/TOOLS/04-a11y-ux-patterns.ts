@@ -1,20 +1,52 @@
+#!/usr/bin/env bun
+/**
+ * 04-a11y-ux-patterns.ts
+ *
+ * Accessibility & UX Pattern Audit Tool
+ * - Scans .svelte, .html, .css files
+ * - Checks for common a11y issues (alt text, labels, etc.)
+ * - Checks for mobile UX anti-patterns (tap-highlight, zoom blocking)
+ * - Checks for RTL compatibility
+ *
+ * Usage:
+ *   bun .vibe-coding/TOOLS/04-a11y-ux-patterns.ts
+ *   bun .vibe-coding/TOOLS/04-a11y-ux-patterns.ts --quiet
+ */
+
 import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// 04-a11y-ux-patterns.ts — 접근성 및 UX 패턴 검사 도구
+// ─────────────────────────────────────────────────────────────────────────────
+// 🎨 ANSI Colors & Styles
+// ─────────────────────────────────────────────────────────────────────────────
+const c = {
+	reset: '\x1b[0m',
+	red: '\x1b[31m',
+	green: '\x1b[32m',
+	yellow: '\x1b[33m',
+	blue: '\x1b[34m',
+	magenta: '\x1b[35m',
+	cyan: '\x1b[36m',
+	gray: '\x1b[90m',
+	bold: '\x1b[1m',
+	dim: '\x1b[2m',
+};
 
-// 규칙 스코프 정의
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔧 Types & Interfaces
+// ─────────────────────────────────────────────────────────────────────────────
+
+type Severity = 'error' | 'warning' | 'info';
 type RuleScope = 'markup' | 'style' | 'html' | 'all';
 
-// 검사 규칙 인터페이스
 interface LintRule {
 	id: string;
 	name: string;
 	description: string;
 	pattern: RegExp;
 	suggestion: string;
-	severity: 'error' | 'warning' | 'info';
+	severity: Severity;
 	scope: RuleScope;
 }
 
@@ -26,683 +58,621 @@ interface LintResult {
 	match: string;
 }
 
-// ============================================================
-// Phase 1 규칙: 필수 접근성
-// ============================================================
-
-const RULES: LintRule[] = [
-	// 이미지 접근성
-	{
-		id: 'a11y-img-alt-missing',
-		name: '이미지 alt 속성 누락',
-		description: '<img> 태그에 alt 속성 필수',
-		// \salt로 data-alt 미탐 방지, 커스텀 요소 오탐 방지
-		pattern: /<img(?=\s|>|\/>)(?![^>]*\salt\s*=)[^>]*>/gi,
-		suggestion: 'alt="설명" 추가 (장식용 이미지는 alt="")',
-		severity: 'error',
-		scope: 'markup'
-	},
-
-	// 버튼/링크 접근성
-	{
-		id: 'a11y-empty-link',
-		name: '빈 링크 텍스트',
-		description: '<a> 태그 내부 텍스트 없음',
-		// a 뒤에 공백 또는 >만 허용하여 커스텀 요소 <a-foo> 오탐 방지
-		pattern: /<a(?=\s|>)[^>]*>\s*<\/a>/gi,
-		suggestion: '링크 텍스트 또는 aria-label 추가',
-		severity: 'error',
-		scope: 'markup'
-	},
-	{
-		id: 'a11y-button-type',
-		name: 'button type 속성 누락',
-		description: '<button>에 type 속성 권장',
-		// \stype으로 data-type 미탐 방지, 커스텀 요소 오탐 방지
-		pattern: /<button(?=\s|>)(?![^>]*\stype\s*=)[^>]*>/gi,
-		suggestion: 'type="button" 추가 (폼 제출 방지)',
-		severity: 'warning',
-		scope: 'markup'
-	},
-	{
-		id: 'a11y-icon-only-interactive',
-		name: '아이콘만 있는 버튼/링크',
-		description: '아이콘만 있으면 aria-label 필요',
-		// 캡처 그룹 + 백레퍼런스로 여는/닫는 태그 일치 강제, <svg/> 공백 없이도 지원
-		pattern:
-			/<(?:button|a)(?=\s|>)(?![^>]*\saria-label\s*=\s*)(?![^>]*\saria-labelledby\s*=\s*)[^>]*>\s*<(span|i|svg)(?=[\s/>])[^>]*\sclass\s*=\s*["'][^"']*\bi-[^"']*["'][^>]*(?:\/>|>[\s\S]*?<\/\1>)\s*<\/(?:button|a)>/gi,
-		suggestion: 'aria-label="설명" 또는 aria-labelledby 추가',
-		severity: 'info',
-		scope: 'markup'
-	},
-
-	// ARIA 패턴
-	{
-		id: 'a11y-tabindex-positive',
-		name: '양수 tabindex 사용',
-		description: 'tabindex > 0은 탐색 순서 혼란 유발',
-		pattern: /\btabindex\s*=\s*["']?[1-9]\d*["']?/gi,
-		suggestion: 'tabindex="0" 또는 tabindex="-1" 사용',
-		severity: 'warning',
-		scope: 'markup'
-	},
-	{
-		id: 'a11y-popup-no-expanded',
-		name: '팝업 버튼에 aria-expanded 누락',
-		description: 'aria-haspopup 있으면 aria-expanded 필요',
-		// 태그 전체를 매치하고 lookahead로 판정 (속성 순서 무관)
-		pattern: /<[a-z][\w:-]*\b(?=[^>]*\baria-haspopup\s*=)(?![^>]*\baria-expanded\s*=)[^>]*>/gi,
-		suggestion: 'aria-expanded={isOpen} 추가',
-		severity: 'warning',
-		scope: 'markup'
-	},
-
-	// 폼 접근성
-	{
-		id: 'a11y-input-missing-label',
-		name: 'Input 레이블 누락 의심',
-		description: 'input 태그에 aria-label 또는 aria-labelledby 권장',
-		// \stype, \saria-*로 data-* 미탐 방지, 커스텀 요소 오탐 방지
-		pattern:
-			/<input(?=\s|>|\/>)(?![^>]*\stype\s*=\s*["']?(?:hidden|submit|button|image|reset)["']?)(?![^>]*\saria-label\s*=)(?![^>]*\saria-labelledby\s*=)[^>]*>/gi,
-		suggestion: 'aria-label 추가 또는 <label for=...> 사용 확인 (label로 감싼 경우 무시 가능)',
-		severity: 'info', // 오탐 가능성이 높아 info로 설정
-		scope: 'markup'
-	},
-
-	// 랜드마크 (별도 로직으로 처리)
-	// a11y-multiple-main은 CUSTOM_RULES에서 별도 정의
-
-	// ============================================================
-	// Phase 1 규칙: 모바일 접근성 (메타태그)
-	// ============================================================
-	// mobile-no-zoom은 viewport 메타 태그에서만 검사하도록 커스텀 로직으로 이동
-	// CUSTOM_RULES 섹션의 checkViewportZoom() 참고
-
-	// ============================================================
-	// Phase 2 규칙: RTL 대응
-	// ============================================================
-	{
-		id: 'rtl-position-class',
-		name: '물리적 위치 클래스 사용',
-		description: 'left-0, right-0 대신 start-0, end-0 권장',
-		pattern: /\b(?:left|right)-(?:0|px|auto|\d+)\b/g,
-		suggestion: 'start-*, end-* 사용 (RTL 언어 대응)',
-		severity: 'warning',
-		scope: 'markup'
-	},
-	{
-		id: 'rtl-margin-class',
-		name: '물리적 마진 클래스 사용',
-		description: 'ml-*, mr-* 대신 ms-*, me-* 권장',
-		pattern: /\b(?:ml|mr)-(?:\d+|auto|px)\b/g,
-		suggestion: 'ms-*, me-* 사용 (RTL 언어 대응)',
-		severity: 'info',
-		scope: 'markup'
-	},
-	{
-		id: 'rtl-padding-class',
-		name: '물리적 패딩 클래스 사용',
-		description: 'pl-*, pr-* 대신 ps-*, pe-* 권장',
-		pattern: /\b(?:pl|pr)-(?:\d+|auto|px)\b/g,
-		suggestion: 'ps-*, pe-* 사용 (RTL 언어 대응)',
-		severity: 'info',
-		scope: 'markup'
-	},
-	{
-		id: 'rtl-text-align-class',
-		name: '물리적 텍스트 정렬 사용',
-		description: 'text-left, text-right 대신 text-start, text-end 권장',
-		pattern: /\btext-(?:left|right)\b/g,
-		suggestion: 'text-start, text-end 사용 (RTL 언어 대응)',
-		severity: 'info',
-		scope: 'markup'
-	},
-
-	// ============================================================
-	// Phase 2 규칙: CSS 패턴
-	// ============================================================
-	{
-		id: 'mobile-tap-highlight-global',
-		name: '전역 tap-highlight 제거',
-		description: '* 선택자에 tap-highlight-color: transparent 감지',
-		pattern: /\*\s*\{[^}]*-webkit-tap-highlight-color\s*:\s*transparent/gi,
-		suggestion: '.interactive 클래스로 제한하고 :focus-visible 강화',
-		severity: 'warning',
-		scope: 'style'
-	}
-];
-
-// 별도 로직으로 처리되는 규칙 (패턴 매칭이 아닌 카운팅 등)
-const MULTIPLE_MAIN_RULE: LintRule = {
-	id: 'a11y-multiple-main',
-	name: 'main 요소 중복',
-	description: '페이지당 main은 하나만 허용',
-	pattern: /<main\b/gi,
-	suggestion: 'main 요소는 레이아웃에 하나만 사용',
-	severity: 'error',
-	scope: 'markup'
-};
-
-// mobile-no-zoom 커스텀 규칙 (viewport 메타 태그에서만 검사)
-const MOBILE_NO_ZOOM_RULE: LintRule = {
-	id: 'mobile-no-zoom',
-	name: '줌 차단 (접근성 위반)',
-	description: 'viewport 메타 태그에서 user-scalable=no 또는 maximum-scale=1 감지',
-	pattern: /(?:user-scalable\s*=\s*["']?no["']?|maximum-scale\s*=\s*["']?1["']?)/gi,
-	suggestion: '저시력 사용자에게 줌은 필수. 해당 속성 제거',
-	severity: 'error',
-	scope: 'all'
-};
-
-// viewport 메타 태그의 줌 차단 속성 패턴 (상수화)
-const ZOOM_BLOCK_PATTERN = /(?:user-scalable\s*=\s*["']?no["']?|maximum-scale\s*=\s*["']?1["']?)/gi;
-
-// viewport 메타 태그에서만 줌 차단 속성 검사
-function checkViewportZoom(content: string, filePath: string): LintResult[] {
-	const results: LintResult[] = [];
-	// viewport 메타 태그만 추출 (따옴표 없는 값도 지원: name=viewport, name=viewport/>)
-	const viewportRegex = /<meta\s+[^>]*name\s*=\s*(?:["']viewport["']|viewport(?=[\s/>]))[^>]*>/gi;
-	let viewportMatch: RegExpExecArray | null;
-
-	// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-	while ((viewportMatch = viewportRegex.exec(content)) !== null) {
-		const metaTag = viewportMatch[0];
-		const metaIndex = viewportMatch.index;
-
-		// 해당 메타 태그 내에서 줌 차단 속성 검사
-		const zoomPattern = new RegExp(ZOOM_BLOCK_PATTERN.source, 'gi');
-		let zoomMatch: RegExpExecArray | null;
-
-		// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-		while ((zoomMatch = zoomPattern.exec(metaTag)) !== null) {
-			const before = content.slice(0, metaIndex + zoomMatch.index);
-			const line = (before.match(/\n/g) || []).length + 1;
-			const lastNl = before.lastIndexOf('\n');
-			const column = metaIndex + zoomMatch.index - (lastNl === -1 ? 0 : lastNl + 1) + 1;
-
-			results.push({
-				file: filePath,
-				line,
-				column,
-				rule: MOBILE_NO_ZOOM_RULE,
-				match: zoomMatch[0]
-			});
-		}
-	}
-
-	return results;
+interface ScannerConfig {
+	target: string;
+	noReport: boolean;
+	filterSeverity: Severity | null;
+	quiet: boolean;
+	selfTest: boolean;
 }
 
-// 파일 확장자 필터
-const VALID_EXTENSIONS = ['.svelte', '.html', '.css'];
-
-// 무시할 경로 패턴 (경로 세그먼트 기준, 시작/끝 케이스 포함)
-const IGNORE_PATTERNS = [
-	/(^|[/\\])node_modules([/\\]|$)/,
-	/(^|[/\\])\.svelte-kit([/\\]|$)/,
-	/(^|[/\\])dist([/\\]|$)/,
-	/(^|[/\\])build([/\\]|$)/,
-	/(^|[/\\])\.git([/\\]|$)/
-];
-
-// Svelte 파일에서 블록 추출
 interface CodeBlock {
 	content: string;
 	startLine: number;
 	endLine: number;
 }
 
-function extractMarkupBlocks(content: string): CodeBlock[] {
-	const lines = content.split(/\r?\n/);
-	const blocks: CodeBlock[] = [];
-	let inScript = false;
-	let inStyle = false;
-	let currentBlock: string[] = [];
-	let blockStartLine = 0;
+// ─────────────────────────────────────────────────────────────────────────────
+// 📏 Constants & Rules
+// ─────────────────────────────────────────────────────────────────────────────
 
-	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i];
-		const trimmed = line.trim();
+const SEVERITY_ICON: Record<Severity, string> = {
+	error: '❌',
+	warning: '⚠️',
+	info: '💡',
+};
 
-		if (trimmed.startsWith('<script')) {
-			inScript = true;
-			if (currentBlock.length > 0) {
-				blocks.push({
-					content: currentBlock.join('\n'),
-					startLine: blockStartLine,
-					endLine: i - 1
-				});
-				currentBlock = [];
+const VALID_EXTENSIONS = ['.svelte', '.html', '.css'];
+
+const IGNORE_PATTERNS = [
+	/(^|[/\\])node_modules([/\\]|$)/,
+	/(^|[/\\])\.svelte-kit([/\\]|$)/,
+	/(^|[/\\])dist([/\\]|$)/,
+	/(^|[/\\])build([/\\]|$)/,
+	/(^|[/\\])\.git([/\\]|$)/,
+];
+
+const RULES: LintRule[] = [
+	// Image A11y
+	{
+		id: 'a11y-img-alt-missing',
+		name: 'Missing Image Alt',
+		description: '<img> tags must have an alt attribute',
+		pattern: /<img(?=\s|>|\/>)(?![^>]*\salt\s*=)[^>]*>/gi,
+		suggestion: 'Add alt="description" (use alt="" for decorative images)',
+		severity: 'error',
+		scope: 'markup',
+	},
+
+	// Link/Button A11y
+	{
+		id: 'a11y-empty-link',
+		name: 'Empty Link',
+		description: '<a> tag with no text content',
+		pattern: /<a(?=\s|>)[^>]*>\s*<\/a>/gi,
+		suggestion: 'Add link text or aria-label',
+		severity: 'error',
+		scope: 'markup',
+	},
+	{
+		id: 'a11y-button-type',
+		name: 'Missing Button Type',
+		description: '<button> should have a type attribute',
+		pattern: /<button(?=\s|>)(?![^>]*\stype\s*=)[^>]*>/gi,
+		suggestion: 'Add type="button" to prevent accidental form submission',
+		severity: 'warning',
+		scope: 'markup',
+	},
+	{
+		id: 'a11y-icon-only-interactive',
+		name: 'Icon-only Interactive Element',
+		description: 'Icon-only buttons/links need aria-label',
+		pattern: /<(?:button|a)(?=\s|>)(?![^>]*\saria-label\s*=\s*)(?![^>]*\saria-labelledby\s*=\s*)[^>]*>\s*<(span|i|svg)(?=[\s/>])[^>]*\sclass\s*=\s*["'][^"']*\bi-[^"']*["'][^>]*(\/?>|>[\s\S]*?<\/\1>)\s*<\/(?:button|a)>/gi,
+		suggestion: 'Add aria-label or aria-labelledby',
+		severity: 'info',
+		scope: 'markup',
+	},
+
+	// ARIA
+	{
+		id: 'a11y-tabindex-positive',
+		name: 'Positive Tabindex',
+		description: 'tabindex > 0 disrupts navigation order',
+		pattern: /\btabindex\s*=\s*["']?[1-9]\d*["']?/gi,
+		suggestion: 'Use tabindex="0" or tabindex="-1"',
+		severity: 'warning',
+		scope: 'markup',
+	},
+	{
+		id: 'a11y-popup-no-expanded',
+		name: 'Popup without Expanded State',
+		description: 'aria-haspopup requires aria-expanded',
+		pattern: /<[a-z][\w:-]*\b(?=[^>]*\baria-haspopup\s*=)(?![^>]*\baria-expanded\s*=)[^>]*>/gi,
+		suggestion: 'Add aria-expanded={isOpen}',
+		severity: 'warning',
+		scope: 'markup',
+	},
+
+	// Forms
+	{
+		id: 'a11y-input-missing-label',
+		name: 'Possible Missing Input Label',
+		description: 'Input needs aria-label or aria-labelledby',
+		pattern: /<input(?=\s|>|\/>)(?![^>]*\stype\s*=\s*["']?(?:hidden|submit|button|image|reset)["']?)(?![^>]*\saria-label\s*=)(?![^>]*\saria-labelledby\s*=)[^>]*>/gi,
+		suggestion: 'Add aria-label or ensure <label for=...> is used',
+		severity: 'info',
+		scope: 'markup',
+	},
+
+	// RTL Support
+	{
+		id: 'rtl-position-class',
+		name: 'Physical Position Class',
+		description: 'Use logical properties for RTL support',
+		pattern: /\b(?:left|right)-(?:0|px|auto|\d+)\b/g,
+		suggestion: 'Use start-*, end-*',
+		severity: 'warning',
+		scope: 'markup',
+	},
+	{
+		id: 'rtl-margin-class',
+		name: 'Physical Margin Class',
+		description: 'Use logical properties for RTL support',
+		pattern: /\b(?:ml|mr)-(?:\d+|auto|px)\b/g,
+		suggestion: 'Use ms-*, me-*',
+		severity: 'info',
+		scope: 'markup',
+	},
+	{
+		id: 'rtl-padding-class',
+		name: 'Physical Padding Class',
+		description: 'Use logical properties for RTL support',
+		pattern: /\b(?:pl|pr)-(?:\d+|auto|px)\b/g,
+		suggestion: 'Use ps-*, pe-*',
+		severity: 'info',
+		scope: 'markup',
+	},
+	{
+		id: 'rtl-text-align-class',
+		name: 'Physical Text Align',
+		description: 'Use logical properties for RTL support',
+		pattern: /\btext-(?:left|right)\b/g,
+		suggestion: 'Use text-start, text-end',
+		severity: 'info',
+		scope: 'markup',
+	},
+
+	// CSS Patterns
+	{
+		id: 'mobile-tap-highlight-global',
+		name: 'Global Tap Highlight Removal',
+		description: 'Avoid removing tap highlight globally',
+		pattern: /\*\s*\{[^}]*-webkit-tap-highlight-color\s*:\s*transparent/gi,
+		suggestion: 'Limit to .interactive class and ensure :focus-visible is styled',
+		severity: 'warning',
+		scope: 'style',
+	},
+];
+
+const MULTIPLE_MAIN_RULE: LintRule = {
+	id: 'a11y-multiple-main',
+	name: 'Multiple Main Elements',
+	description: 'Only one main element allowed per page',
+	pattern: /<main\b/gi,
+	suggestion: 'Use only one <main> element',
+	severity: 'error',
+	scope: 'markup',
+};
+
+const MOBILE_NO_ZOOM_RULE: LintRule = {
+	id: 'mobile-no-zoom',
+	name: 'Zoom Blocking',
+	description: 'User scalability blocked in viewport',
+	pattern: /(?:user-scalable\s*=\s*["']?no["']?|maximum-scale\s*=\s*["']?1["']?)/gi,
+	suggestion: 'Allow zooming for accessibility',
+	severity: 'error',
+	scope: 'all',
+};
+
+const ZOOM_BLOCK_PATTERN = /(?:user-scalable\s*=\s*["']?no["']?|maximum-scale\s*=\s*["']?1["']?)/gi;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 💡 Services & Components
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Service to handle configuration and arguments */
+class AuditConfigService {
+	public static parseArgs(args: string[]): ScannerConfig {
+		return {
+			target: args.find(a => !a.startsWith('--')) || 'src',
+			noReport: args.includes('--no-report'),
+			filterSeverity: args.includes('--errors-only') ? 'error'
+				: args.includes('--warnings-only') ? 'warning'
+					: args.includes('--infos-only') ? 'info' : null,
+			quiet: args.includes('--quiet'),
+			selfTest: args.includes('--self-test'),
+		};
+	}
+}
+
+/** Logger for unified output handling */
+class ConsoleLogger {
+	constructor(private config: ScannerConfig) { }
+
+	log(message: string) {
+		if (!this.config.quiet) console.log(message);
+	}
+
+	error(message: string, ...args: any[]) {
+		console.error(message, ...args);
+	}
+}
+
+/** Service to scan files */
+class FileScanner {
+	constructor(private config: ScannerConfig) { }
+
+	public async getFiles(target: string): Promise<string[]> {
+		const statInfo = await stat(target);
+		if (statInfo.isFile()) {
+			const ext = extname(target);
+			return VALID_EXTENSIONS.includes(ext) ? [target] : [];
+		}
+		return this.walk(target);
+	}
+
+	private async walk(dir: string, files: string[] = []): Promise<string[]> {
+		const entries = await readdir(dir, { withFileTypes: true });
+
+		for (const entry of entries) {
+			const path = join(dir, entry.name);
+			const normalized = path.replace(/\\/g, '/');
+			if (IGNORE_PATTERNS.some((p) => p.test(normalized))) continue;
+
+			if (entry.isDirectory()) {
+				await this.walk(path, files); // accumulator 패턴: spread 대신 직접 push
+			} else if (entry.isFile()) {
+				if (VALID_EXTENSIONS.includes(extname(path))) files.push(path);
 			}
-			// 한 줄짜리 script 처리 - 공백 패딩으로 컬럼 위치 보존
-			const closePos = line.indexOf('</script>');
-			if (closePos !== -1) {
+		}
+		return files;
+	}
+}
+
+/** Service to lint content patterns */
+class PatternLinter {
+	public async lintFile(filePath: string): Promise<LintResult[]> {
+		const content = await readFile(filePath, 'utf-8');
+		return this.lintContent(content, filePath);
+	}
+
+	public runSelfTests() {
+		const rule = RULES.find((r) => r.id === 'a11y-icon-only-interactive');
+		if (!rule) throw new Error('Self-test failed: Rule not found');
+
+		const testRe = new RegExp(rule.pattern.source, rule.pattern.flags.replace(/[gy]/g, ''));
+
+		const passes = [
+			`<button><svg class="i-x"></svg></button>`,
+			`<a><span class="i-lucide"></span></a>`,
+			`<button>\n  <svg class="i-x"></svg>\n</button>`,
+		];
+		const fails = [
+			`<button aria-label="close"><svg class="i-x"/></button>`,
+			`<button><svg class="i-x"></svg><span>Close</span></button>`,
+		];
+
+		passes.forEach(p => { if (!testRe.test(p)) throw new Error(`Expected match failed: ${p}`); });
+		fails.forEach(f => { if (testRe.test(f)) throw new Error(`Expected no-match failed: ${f}`); });
+
+		console.log(`${c.green}✅ Self-test passed${c.reset}`);
+	}
+
+	private lintContent(content: string, filePath: string): LintResult[] {
+		const results: LintResult[] = [];
+		const isSvelte = filePath.endsWith('.svelte');
+		const isHtml = filePath.endsWith('.html');
+		const isCss = filePath.endsWith('.css');
+
+		const markupRules = RULES.filter((r) => r.scope === 'markup' || r.scope === 'all');
+		const styleRules = RULES.filter((r) => r.scope === 'style' || r.scope === 'all');
+
+		if (isSvelte) {
+			const markupBlocks = this.extractMarkupBlocks(content);
+			for (const block of markupBlocks) {
+				results.push(...this.lintBlockWhole(block.content, filePath, markupRules, block.startLine));
+			}
+
+			const styleBlocks = this.extractStyleBlocks(content);
+			for (const block of styleBlocks) {
+				results.push(...this.lintBlockWhole(block.content, filePath, styleRules, block.startLine));
+			}
+
+			const mainMatches = [...content.matchAll(/<main\b/gi)];
+			if (mainMatches.length > 1) {
+				results.push(this.createResult(filePath, MULTIPLE_MAIN_RULE, mainMatches[1], content));
+			}
+
+			const cleaned = this.stripScriptStyleBlocks(this.stripHtmlComments(content));
+			results.push(...this.checkViewportZoom(cleaned, filePath));
+
+		} else if (isHtml) {
+			const rules = RULES.filter((r) => ['markup', 'html', 'all'].includes(r.scope));
+			results.push(...this.lintBlockWhole(content, filePath, rules, 0, true));
+
+			const cleaned = this.stripScriptStyleBlocks(this.stripHtmlComments(content));
+			results.push(...this.checkViewportZoom(cleaned, filePath));
+
+		} else if (isCss) {
+			results.push(...this.lintBlockWhole(content, filePath, styleRules));
+		}
+
+		return results;
+	}
+
+	private lintBlockWhole(
+		content: string,
+		filePath: string,
+		rules: LintRule[],
+		lineOffset: number = 0,
+		skipScriptStyle: boolean = false
+	): LintResult[] {
+		let cleanContent = this.stripHtmlComments(content);
+		if (skipScriptStyle) cleanContent = this.stripScriptStyleBlocks(cleanContent);
+
+		const results: LintResult[] = [];
+		for (const rule of rules) {
+			// 정규식 재사용: new RegExp 대신 lastIndex 리셋
+			const regex = rule.pattern;
+			regex.lastIndex = 0;
+			let match;
+
+			while ((match = regex.exec(cleanContent)) !== null) {
+				const before = cleanContent.slice(0, match.index);
+				const lineInBlock = (before.match(/\n/g) || []).length + 1;
+				const lastNl = before.lastIndexOf('\n');
+				const colInBlock = match.index - (lastNl === -1 ? 0 : lastNl + 1) + 1;
+
+				const originalMatch = content.slice(match.index, match.index + match[0].length);
+				results.push({
+					file: filePath,
+					line: lineInBlock + lineOffset,
+					column: colInBlock,
+					rule,
+					match: originalMatch.slice(0, 40) + (originalMatch.length > 40 ? '...' : ''),
+				});
+			}
+		}
+		return results;
+	}
+
+	private checkViewportZoom(content: string, filePath: string): LintResult[] {
+		const results: LintResult[] = [];
+		const viewportRegex = /<meta\s+[^>]*name\s*=\s*(?:["']viewport["']|viewport(?=[\s/>]))[^>]*>/gi;
+		let match;
+
+		while ((match = viewportRegex.exec(content)) !== null) {
+			const metaTag = match[0];
+			const metaIndex = match.index;
+
+			const zoomPattern = new RegExp(ZOOM_BLOCK_PATTERN.source, 'gi');
+			let zoomMatch;
+
+			while ((zoomMatch = zoomPattern.exec(metaTag)) !== null) {
+				const before = content.slice(0, metaIndex + zoomMatch.index);
+				const line = (before.match(/\n/g) || []).length + 1;
+				const lastNl = before.lastIndexOf('\n');
+				const column = metaIndex + zoomMatch.index - (lastNl === -1 ? 0 : lastNl + 1) + 1;
+
+				results.push({
+					file: filePath,
+					line,
+					column,
+					rule: MOBILE_NO_ZOOM_RULE,
+					match: zoomMatch[0],
+				});
+			}
+		}
+		return results;
+	}
+
+	private createResult(filePath: string, rule: LintRule, match: RegExpMatchArray, fullContent: string): LintResult {
+		const idx = match.index ?? 0;
+		const before = fullContent.slice(0, idx);
+		const line = (before.match(/\n/g) || []).length + 1;
+		const lastNl = before.lastIndexOf('\n');
+		const column = idx - (lastNl === -1 ? 0 : lastNl + 1) + 1;
+
+		return {
+			file: filePath,
+			line,
+			column,
+			rule,
+			match: (match[0] || '').slice(0, 40) + ((match[0]?.length || 0) > 40 ? '...' : ''),
+		};
+	}
+
+	// Helpers
+	private extractMarkupBlocks(content: string): CodeBlock[] {
+		const lines = content.split(/\r?\n/);
+		const blocks: CodeBlock[] = [];
+		let inScript = false;
+		let inStyle = false;
+		let currentBlock: string[] = [];
+		let blockStartLine = 0;
+
+		for (let i = 0; i < lines.length; i++) {
+			const line = lines[i];
+			const trimmed = line.trim();
+
+			if (trimmed.startsWith('<script')) {
+				inScript = true;
+				if (currentBlock.length > 0) {
+					blocks.push({ content: currentBlock.join('\n'), startLine: blockStartLine, endLine: i - 1 });
+					currentBlock = [];
+				}
+				if (line.includes('</script>')) inScript = false;
+				continue;
+			}
+			if (trimmed.startsWith('</script>')) {
 				inScript = false;
-				const after = line.slice(closePos + 9);
-				if (after.trim()) {
-					blockStartLine = i;
-					currentBlock.push(' '.repeat(closePos + 9) + after);
-				} else {
-					blockStartLine = i + 1;
+				blockStartLine = i + 1;
+				continue;
+			}
+			if (trimmed.startsWith('<style')) {
+				inStyle = true;
+				if (currentBlock.length > 0) {
+					blocks.push({ content: currentBlock.join('\n'), startLine: blockStartLine, endLine: i - 1 });
+					currentBlock = [];
 				}
+				if (line.includes('</style>')) inStyle = false;
+				continue;
 			}
-			continue;
-		}
-		if (trimmed.startsWith('</script>')) {
-			inScript = false;
-			blockStartLine = i + 1;
-			continue;
-		}
-		if (trimmed.startsWith('<style')) {
-			inStyle = true;
-			if (currentBlock.length > 0) {
-				blocks.push({
-					content: currentBlock.join('\n'),
-					startLine: blockStartLine,
-					endLine: i - 1
-				});
-				currentBlock = [];
-			}
-			// 한 줄짜리 style 처리 - 공백 패딩으로 컬럼 위치 보존
-			const styleClosePos = line.indexOf('</style>');
-			if (styleClosePos !== -1) {
+			if (trimmed.startsWith('</style>')) {
 				inStyle = false;
-				const afterStyle = line.slice(styleClosePos + 8);
-				if (afterStyle.trim()) {
-					blockStartLine = i;
-					currentBlock.push(' '.repeat(styleClosePos + 8) + afterStyle);
-				} else {
-					blockStartLine = i + 1;
+				blockStartLine = i + 1;
+				continue;
+			}
+
+			if (!inScript && !inStyle) {
+				if (currentBlock.length === 0) blockStartLine = i;
+				currentBlock.push(line);
+			}
+		}
+
+		if (currentBlock.length > 0) {
+			blocks.push({ content: currentBlock.join('\n'), startLine: blockStartLine, endLine: lines.length - 1 });
+		}
+		return blocks;
+	}
+
+	private extractStyleBlocks(content: string): CodeBlock[] {
+		const blocks: CodeBlock[] = [];
+		const regex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+		let match;
+		while ((match = regex.exec(content)) !== null) {
+			const tagEndIndex = match.index + match[0].indexOf('>') + 1;
+			const beforeContent = content.slice(0, tagEndIndex);
+			const startLine = (beforeContent.match(/\n/g) || []).length;
+			const beforeMatchEnd = content.slice(0, match.index + match[0].length);
+			const endLine = (beforeMatchEnd.match(/\n/g) || []).length;
+			blocks.push({ content: match[1], startLine, endLine });
+		}
+		return blocks;
+	}
+
+	private stripHtmlComments(content: string): string {
+		return content.replace(/<!--[\s\S]*?-->/g, (match) => match.replace(/[^\n]/g, ' '));
+	}
+
+	private stripScriptStyleBlocks(content: string): string {
+		return content
+			.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, (match) => match.replace(/[^\n]/g, ' '))
+			.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, (match) => match.replace(/[^\n]/g, ' '));
+	}
+}
+
+/** Service to generate reports */
+class ReportGenerator {
+	constructor(
+		private config: ScannerConfig,
+		private logger: ConsoleLogger
+	) { }
+
+	public async processResults(results: LintResult[], elapsed: string) {
+		const errorCount = results.filter((r) => r.rule.severity === 'error').length;
+		const warningCount = results.filter((r) => r.rule.severity === 'warning').length;
+		const infoCount = results.filter((r) => r.rule.severity === 'info').length;
+
+		const byFile = new Map<string, LintResult[]>();
+		results.forEach((r) => {
+			const rel = relative(this.config.target.endsWith('.') ? process.cwd() : dirname(this.config.target), r.file);
+			const list = byFile.get(rel) || [];
+			list.push(r);
+			byFile.set(rel, list);
+		});
+
+		const lines: string[] = [];
+		if (results.length === 0) {
+			lines.push(`${c.green}✅ No issues found.${c.reset}`);
+		} else {
+			for (const [file, items] of byFile) {
+				lines.push(`\n${c.bold}📄 ${file}${c.reset}`);
+				const sorted = items.sort((a, b) => a.line - b.line || a.column - b.column);
+				for (const r of sorted) {
+					const icon = SEVERITY_ICON[r.rule.severity];
+					const color = r.rule.severity === 'error' ? c.red : r.rule.severity === 'warning' ? c.yellow : c.blue;
+					lines.push(`  ${icon} ${c.gray}L${r.line}:${r.column}${c.reset} ${color}[${r.rule.id}]${c.reset}`);
+					lines.push(`     ${c.dim}${r.rule.name}:${c.reset} "${r.match}"`);
+					lines.push(`     → ${c.green}${r.rule.suggestion}${c.reset}`);
 				}
 			}
-			continue;
-		}
-		if (trimmed.startsWith('</style>')) {
-			inStyle = false;
-			blockStartLine = i + 1;
-			continue;
+			lines.push(`\n${c.gray}────────────────────────────────────${c.reset}`);
+			lines.push(`Total: ${results.length} | ${c.red}❌ ${errorCount} Errors${c.reset}, ${c.yellow}⚠️  ${warningCount} Warnings${c.reset}, ${c.blue}💡 ${infoCount} Info${c.reset}`);
 		}
 
-		if (!inScript && !inStyle) {
-			if (currentBlock.length === 0) blockStartLine = i;
-			currentBlock.push(line);
-		}
-	}
-
-	if (currentBlock.length > 0) {
-		blocks.push({
-			content: currentBlock.join('\n'),
-			startLine: blockStartLine,
-			endLine: lines.length - 1
-		});
-	}
-
-	return blocks;
-}
-
-function extractStyleBlocks(content: string): CodeBlock[] {
-	const blocks: CodeBlock[] = [];
-	const regex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
-	let match: RegExpExecArray | null;
-
-	// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-	while ((match = regex.exec(content)) !== null) {
-		const tagEndIndex = match.index + match[0].indexOf('>') + 1;
-		const beforeContent = content.slice(0, tagEndIndex);
-		const startLine = (beforeContent.match(/\n/g) || []).length;
-		const beforeMatchEnd = content.slice(0, match.index + match[0].length);
-		const endLine = (beforeMatchEnd.match(/\n/g) || []).length;
-
-		blocks.push({
-			content: match[1],
-			startLine,
-			endLine
-		});
-	}
-
-	return blocks;
-}
-
-async function walk(dir: string): Promise<string[]> {
-	const files: string[] = [];
-	const entries = await readdir(dir, { withFileTypes: true });
-
-	for (const entry of entries) {
-		const path = join(dir, entry.name);
-		const normalizedPath = path.replace(/\\/g, '/');
-		if (IGNORE_PATTERNS.some((p) => p.test(normalizedPath))) continue;
-
-		if (entry.isDirectory()) {
-			files.push(...(await walk(path)));
-		} else if (entry.isFile()) {
-			const ext = extname(path);
-			if (VALID_EXTENSIONS.includes(ext)) files.push(path);
-		}
-	}
-	return files;
-}
-
-// 동시 실행 제한 유틸리티 (파일 핸들 한도 방지)
-async function runWithLimit<T, R>(
-	items: readonly T[],
-	limit: number,
-	worker: (item: T) => Promise<R>
-): Promise<R[]> {
-	const results: R[] = [];
-	let nextIndex = 0;
-
-	async function runner() {
-		while (true) {
-			const i = nextIndex++;
-			if (i >= items.length) return;
-			results[i] = await worker(items[i]);
-		}
-	}
-
-	const n = Math.max(1, Math.min(limit, items.length));
-	await Promise.all(Array.from({ length: n }, () => runner()));
-	return results;
-}
-
-// HTML 주석을 공백으로 치환 (줄바꿈은 유지하여 라인 넘버 보존)
-function stripHtmlComments(content: string): string {
-	return content.replace(/<!--[\s\S]*?-->/g, (match) => {
-		return match.replace(/[^\n]/g, ' ');
-	});
-}
-
-// HTML 파일에서 script, style 블록을 공백으로 치환 (라인 넘버 보존)
-function stripScriptStyleBlocks(content: string): string {
-	return content
-		.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, (match) => match.replace(/[^\n]/g, ' '))
-		.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, (match) => match.replace(/[^\n]/g, ' '));
-}
-
-// 블록 전체에서 패턴 검사 (여러 줄에 걸친 태그도 검출)
-function lintBlockWhole(
-	content: string,
-	filePath: string,
-	rules: LintRule[],
-	lineOffset: number = 0,
-	skipScriptStyle: boolean = false
-): LintResult[] {
-	let cleanContent = stripHtmlComments(content); // 주석 제거
-	if (skipScriptStyle) {
-		cleanContent = stripScriptStyleBlocks(cleanContent); // script, style 블록 제거
-	}
-	const results: LintResult[] = [];
-
-	for (const rule of rules) {
-		// g 플래그 방어막: g 없으면 강제 추가
-		const flags = rule.pattern.flags.includes('g') ? rule.pattern.flags : `${rule.pattern.flags}g`;
-		const regex = new RegExp(rule.pattern.source, flags);
-		let match: RegExpExecArray | null;
-
-		// biome-ignore lint/suspicious/noAssignInExpressions: standard regex loop pattern
-		while ((match = regex.exec(cleanContent)) !== null) {
-			const before = cleanContent.slice(0, match.index);
-			const lineInBlock = (before.match(/\n/g) || []).length + 1;
-			const lastNl = before.lastIndexOf('\n');
-			const colInBlock = match.index - (lastNl === -1 ? 0 : lastNl + 1) + 1;
-
-			// 원본 content에서 match 텍스트 추출 (디버깅용)
-			const originalMatch = content.slice(match.index, match.index + match[0].length);
-			results.push({
-				file: filePath,
-				line: lineInBlock + lineOffset,
-				column: colInBlock,
-				rule,
-				match: originalMatch.slice(0, 40) + (originalMatch.length > 40 ? '...' : '')
-			});
-		}
-	}
-
-	return results;
-}
-
-function lintContent(content: string, filePath: string): LintResult[] {
-	const results: LintResult[] = [];
-	const isSvelte = filePath.endsWith('.svelte');
-	const isHtml = filePath.endsWith('.html');
-	const isCss = filePath.endsWith('.css');
-
-	const markupRules = RULES.filter((r) => r.scope === 'markup' || r.scope === 'all');
-	const styleRules = RULES.filter((r) => r.scope === 'style' || r.scope === 'all');
-
-	if (isSvelte) {
-		// 마크업 검사 (블록 전체 검사로 여러 줄 태그도 검출)
-		const markupBlocks = extractMarkupBlocks(content);
-		for (const block of markupBlocks) {
-			results.push(...lintBlockWhole(block.content, filePath, markupRules, block.startLine));
+		if (!this.config.quiet) {
+			console.log(lines.join('\n'));
+			console.log(`\n${c.gray}⏱️  Elapsed: ${elapsed}${c.reset}`);
 		}
 
-		// 스타일 검사
-		const styleBlocks = extractStyleBlocks(content);
-		for (const block of styleBlocks) {
-			results.push(...lintBlockWhole(block.content, filePath, styleRules, block.startLine));
+		if (!this.config.noReport) {
+			await this.saveReport(lines.join('\n'), elapsed);
 		}
 
-		// main 중복 검사 - 두 번째 main의 정확한 위치 표시
-		const mainMatches = [...content.matchAll(/<main\b/gi)];
-		if (mainMatches.length > 1) {
-			const secondMain = mainMatches[1];
-			const idx = secondMain.index ?? 0;
-			const beforeSecond = content.slice(0, idx);
-			const line = (beforeSecond.match(/\n/g) || []).length + 1;
-			const lastNl = beforeSecond.lastIndexOf('\n');
-			const column = idx - (lastNl === -1 ? 0 : lastNl + 1) + 1;
-			results.push({
-				file: filePath,
-				line,
-				column,
-				rule: MULTIPLE_MAIN_RULE,
-				match: `<main> x ${mainMatches.length}`
-			});
+		if (errorCount > 0) process.exit(1);
+	}
+
+	private async saveReport(content: string, elapsed: string) {
+		const scriptDir = dirname(fileURLToPath(import.meta.url));
+		const reportsDir = join(scriptDir, 'reports');
+		await mkdir(reportsDir, { recursive: true });
+
+		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+		const reportPath = join(reportsDir, '04-a11y-ux-report.txt');
+		const plainContent = content.replace(/\x1b\[[0-9;]*m/g, '');
+		const header = `A11y/UX Report - ${timestamp}\nTarget: ${this.config.target}\nElapsed: ${elapsed}\n${'='.repeat(40)}\n`;
+
+		await writeFile(reportPath, header + plainContent, 'utf-8');
+		if (!this.config.quiet) {
+			console.log(`${c.gray}📝 Report saved: ${reportPath}${c.reset}`);
 		}
-
-		// viewport 메타 태그 줌 차단 검사 (script/style 제거하여 오탐 방지)
-		const cleanedContent = stripScriptStyleBlocks(stripHtmlComments(content));
-		results.push(...checkViewportZoom(cleanedContent, filePath));
-	} else if (isHtml) {
-		// HTML 파일은 markup + html + all 규칙을 한 번에 적용 (중복 방지)
-		// script, style 블록은 제외하여 오탐 방지
-		const htmlFileRules = RULES.filter(
-			(r) => r.scope === 'markup' || r.scope === 'html' || r.scope === 'all'
-		);
-		results.push(...lintBlockWhole(content, filePath, htmlFileRules, 0, true));
-
-		// viewport 메타 태그 줌 차단 검사 (script/style 제거하여 오탐 방지)
-		const cleanedHtml = stripScriptStyleBlocks(stripHtmlComments(content));
-		results.push(...checkViewportZoom(cleanedHtml, filePath));
-	} else if (isCss) {
-		// CSS 파일도 블록 전체 검사 (여러 줄 CSS 규칙 검출)
-		results.push(...lintBlockWhole(content, filePath, styleRules));
-	}
-
-	return results;
-}
-
-async function lintFile(path: string): Promise<LintResult[]> {
-	const content = await readFile(path, 'utf-8');
-	return lintContent(content, path);
-}
-
-function formatResults(results: LintResult[], basePath: string): string {
-	const lines: string[] = [];
-
-	if (results.length === 0) {
-		lines.push('✅ 접근성/UX 문제가 발견되지 않았습니다.');
-		return lines.join('\n');
-	}
-
-	// 파일별 그룹화
-	const byFile = new Map<string, LintResult[]>();
-	for (const r of results) {
-		const rel = relative(basePath, r.file);
-		if (!byFile.has(rel)) byFile.set(rel, []);
-		byFile.get(rel)?.push(r);
-	}
-
-	// 심각도별 카운트
-	const counts = { error: 0, warning: 0, info: 0 };
-
-	for (const [file, fileResults] of byFile) {
-		lines.push(`\n📄 ${file}`);
-		// 파일 내 결과를 line, column 기준 정렬
-		const sorted = fileResults.sort((a, b) => a.line - b.line || a.column - b.column);
-		for (const r of sorted) {
-			const icon = r.rule.severity === 'error' ? '❌' : r.rule.severity === 'warning' ? '⚠️' : '💡';
-			lines.push(`  ${icon} L${r.line}:${r.column} [${r.rule.id}]`);
-			lines.push(`     ${r.rule.name}: "${r.match}"`);
-			lines.push(`     → ${r.rule.suggestion}`);
-			counts[r.rule.severity]++;
-		}
-	}
-
-	lines.push('\n────────────────────────────────────');
-	lines.push(
-		`총 ${results.length}개 이슈: ❌ ${counts.error} 오류, ⚠️ ${counts.warning} 경고, 💡 ${counts.info} 정보`
-	);
-
-	return lines.join('\n');
-}
-
-// 회귀 방지용 미니 테스트 (--self-test 옵션으로 실행)
-function runSelfTests(): void {
-	const rule = RULES.find((r) => r.id === 'a11y-icon-only-interactive');
-	if (!rule) throw new Error('self-test failed: icon rule missing');
-
-	// g/y 플래그 제거 (lastIndex 문제 방지)
-	const testFlags = rule.pattern.flags.replaceAll('g', '').replaceAll('y', '');
-	const testRe = new RegExp(rule.pattern.source, testFlags);
-
-	const shouldMatch = [
-		`<button><svg class="i-x"></svg></button>`,
-		`<button><svg class="i-menu" /></button>`,
-		`<a><span class="i-lucide"></span></a>`,
-		// 개행 포함 케이스
-		`<button>\n  <svg class="i-x"></svg>\n</button>`,
-		// SVG 내부에 path가 있는 케이스 (실제 아이콘 형태)
-		`<button><svg class="i-x"><path d=""/></svg></button>`
-	];
-
-	const shouldNotMatch = [
-		`<button aria-label="닫기"><svg class="i-x"/></button>`,
-		`<button><svg class="i-x"></svg><span>닫기</span></button>`,
-		`<button><i class="bi-x"></i></button>`,
-		`<button><svg class="i-x"></span></button>`,
-		// sr-only 케이스 (접근성 정상)
-		`<button><svg class="i-x"></svg><span class="sr-only">닫기</span></button>`,
-		// aria-labelledby 케이스 (접근성 정상)
-		`<button aria-labelledby="x"><svg class="i-x"/></button>`,
-		// aria-labelledby 싱글쿼트 변형
-		`<button aria-labelledby='x'><svg class="i-x"/></button>`,
-		// aria-labelledby + 일반 SVG 형태 (내부 path 포함)
-		`<button aria-labelledby="x"><svg class="i-x"><path d=""/></svg></button>`,
-		// aria-labelledby 싱글쿼트 + 일반 SVG 형태
-		`<button aria-labelledby='x'><svg class="i-x"><path d=""/></svg></button>`,
-		// aria-labelledby 따옴표 없는 케이스
-		`<button aria-labelledby=x><svg class="i-x"><path d=""/></svg></button>`,
-		// aria-labelledby Svelte 바인딩 케이스
-		`<button aria-labelledby={id}><svg class="i-x"><path d=""/></svg></button>`,
-		`<button aria-labelledby={'x'}><svg class="i-x"><path d=""/></svg></button>`,
-		// aria-labelledby 다중 id 참조 케이스
-		`<button aria-labelledby="x y"><svg class="i-x"><path d=""/></svg></button>`
-	];
-
-	for (const s of shouldMatch) {
-		if (!testRe.test(s)) throw new Error(`self-test failed: expected match\n${s}`);
-	}
-	for (const s of shouldNotMatch) {
-		if (testRe.test(s)) throw new Error(`self-test failed: expected no match\n${s}`);
 	}
 }
 
-async function main() {
-	// self-test 모드
-	if (process.argv.includes('--self-test')) {
-		try {
-			runSelfTests();
-			console.log('✅ self-test passed');
-			process.exit(0);
-		} catch (error) {
-			console.error(error);
-			process.exit(1);
-		}
+// ─────────────────────────────────────────────────────────────────────────────
+// 🧠 Main Scanner Controller
+// ─────────────────────────────────────────────────────────────────────────────
+
+class A11yScanner {
+	private config: ScannerConfig;
+	private logger: ConsoleLogger;
+	private scanner: FileScanner;
+	private linter: PatternLinter;
+	private reporter: ReportGenerator;
+
+	constructor() {
+		this.config = AuditConfigService.parseArgs(process.argv.slice(2));
+		this.logger = new ConsoleLogger(this.config);
+		this.scanner = new FileScanner(this.config);
+		this.linter = new PatternLinter();
+		this.reporter = new ReportGenerator(this.config, this.logger);
 	}
 
-	const TARGET = process.argv.slice(2).find((arg) => !arg.startsWith('--')) || 'src';
-	const NO_REPORT = process.argv.includes('--no-report');
-	// severity 필터 확장: --errors-only, --warnings-only, --infos-only
-	const FILTER_SEVERITY = process.argv.includes('--errors-only')
-		? 'error'
-		: process.argv.includes('--warnings-only')
-			? 'warning'
-			: process.argv.includes('--infos-only')
-				? 'info'
-				: null;
+	public async run() {
+		if (this.config.selfTest) {
+			this.linter.runSelfTests();
+			return;
+		}
 
-	console.log(`🔍 접근성/UX 패턴 스캔: ${TARGET}`);
+		this.logger.log(`${c.cyan}🔍 A11y/UX Pattern Audit: ${c.bold}${this.config.target}${c.reset}`);
 
-	try {
 		const startTime = performance.now();
-		const targetStat = await stat(TARGET);
-		let files: string[];
+		const files = await this.scanner.getFiles(this.config.target);
 
-		if (targetStat.isFile()) {
-			const ext = extname(TARGET);
-			if (!VALID_EXTENSIONS.includes(ext)) {
-				console.log(`Error: 지원 확장자는 ${VALID_EXTENSIONS.join(', ')} 입니다.`);
-				return;
-			}
-			files = [TARGET];
-		} else {
-			files = await walk(TARGET);
-		}
+		this.logger.log(`${c.gray}📁 Found ${files.length} files${c.reset}\n`);
 
-		console.log(`📁 ${files.length}개 파일 발견\n`);
-
-		// 동시 실행 제한으로 안정성 향상 (파일 핸들 한도 방지)
-		const resultsArrays = await runWithLimit(files, 16, lintFile);
-		const allFound: LintResult[] = resultsArrays.flat();
+		// Parallel Scan
+		const resultsArrays = await this.runWithLimit(files, 16, (f) => this.linter.lintFile(f));
+		let allResults = resultsArrays.flat();
 
 		const elapsed = performance.now() - startTime;
 		const elapsedStr = elapsed < 1000 ? `${elapsed.toFixed(0)}ms` : `${(elapsed / 1000).toFixed(2)}s`;
 
-		// 필터링 전에 에러 카운트 계산 (CI exit code용)
-		const errorCount = allFound.filter((r) => r.rule.severity === 'error').length;
-
-		// 심각도 필터링 (출력용)
-		let allResults = allFound;
-		if (FILTER_SEVERITY) {
-			allResults = allFound.filter((r) => r.rule.severity === FILTER_SEVERITY);
+		// Filter
+		if (this.config.filterSeverity) {
+			allResults = allResults.filter((r) => r.rule.severity === this.config.filterSeverity);
 		}
 
-		// basePath 처리: 파일일 때는 디렉토리 기준
-		const basePath = targetStat.isFile() ? dirname(TARGET) : TARGET;
-		const report = formatResults(allResults, basePath);
-		console.log(report);
-		console.log(`\n⏱️ 소요 시간: ${elapsedStr}`);
+		// Report
+		await this.reporter.processResults(allResults, elapsedStr);
+	}
 
-		// 리포트 파일로 저장 (reports 디렉토리 자동 생성)
-		if (!NO_REPORT) {
-			const scriptDir = dirname(fileURLToPath(import.meta.url));
-			const reportsDir = join(scriptDir, 'reports');
-			await mkdir(reportsDir, { recursive: true });
-			const reportPath = join(reportsDir, '04-a11y-ux-report.txt');
-			const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-			const header = `A11y/UX Report - ${timestamp}\nTarget: ${TARGET}\nElapsed: ${elapsedStr}\n${'='.repeat(40)}\n`;
-			await writeFile(reportPath, header + report, 'utf-8');
-			console.log(`📝 리포트 저장됨: ${reportPath}`);
-		}
+	private async runWithLimit<T, R>(items: readonly T[], limit: number, worker: (item: T) => Promise<R>): Promise<R[]> {
+		const results: R[] = [];
+		let nextIndex = 0;
+		const runner = async () => {
+			while (true) {
+				const i = nextIndex++;
+				if (i >= items.length) return;
+				results[i] = await worker(items[i]);
+			}
+		};
+		await Promise.all(Array.from({ length: Math.min(limit, items.length) }, runner));
+		return results;
+	}
+}
 
-		// CI/CD 통합: 에러 발견 시 exit code 1 반환 (필터와 무관하게 원본 기준)
-		if (errorCount > 0) {
-			process.exit(1);
-		}
+// ─────────────────────────────────────────────────────────────────────────────
+// 🚀 Main Entry
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function main() {
+	try {
+		const scanner = new A11yScanner();
+		await scanner.run();
 	} catch (error) {
-		console.error('Error:', error);
+		console.error(`${c.red}Fatal Error:${c.reset}`, error);
 		process.exit(1);
 	}
 }

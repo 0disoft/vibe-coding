@@ -219,5 +219,7 @@
 	"ds_navigating": "جارٍ الانتقال…",
 	"ds_clear_value": "مسح القيمة",
 	"ds_toast_region": "الإشعارات",
-	"ds_toast_dismiss": "إغلاق الإشعار"
+	"ds_toast_dismiss": "إغلاق الإشعار",
+	"a11y_skip_to_main_content": "انتقل إلى المحتوى الرئيسي",
+	"form_error_summary_title": "يرجى تصحيح ما يلي"
 }

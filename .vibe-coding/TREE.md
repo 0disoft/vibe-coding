@@ -15,9 +15,17 @@
 ├── playwright.config.ts
 ├── bun.lock
 ├── .vibe-coding/
-│   └── PUBLIC_APIS/
-│       └── README.md               # Public API 카탈로그 (하위 구조는 이 파일 참조)
+│   ├── INSIGHTS/
+│   ├── KNOWLEDGE/
+│   ├── PUBLIC_APIS/
+│   ├── SOS/
+│   ├── TOOLS/
+│   ├── TROUBLE/
+│   ├── WEBNOVEL/
+│   └── TREE.md
 ├── e2e/                            # E2E 테스트 (Playwright)
+│   ├── a11y-skiplink-errorsummary.spec.ts
+│   └── markdown-rendering.spec.ts
 ├── messages/
 ├── project.inlang/
 │   └── settings.json
@@ -49,6 +57,7 @@
     │   ├── [[lang]]/
     │   ├── +error.svelte
     │   ├── +layout.svelte
+    │   ├── +layout.server.ts
     │   ├── +page.server.ts
     │   └── +page.svelte
     └── lib/
@@ -156,6 +165,7 @@
 
 | 파일 | 역할 |
 | --- | --- |
+| `a11y-skiplink-errorsummary.spec.ts` | a11y 패턴 회귀 테스트(SkipLink, ErrorSummary) |
 | `markdown-rendering.spec.ts` | 마크다운 렌더링 품질(볼드 표식 잔존) 회귀 테스트 |
 
 ### messages/
@@ -203,6 +213,7 @@
 | `routes/design-system/+page.svelte` | DS/Docs 컴포넌트 쇼케이스 (조립용, 임시) |
 | `routes/design-system/_sections/` | `/design-system` 섹션 컴포넌트 모음 |
 | `routes/[[lang]]/` | i18n 로케일 파라미터 루트 (Optional) |
+| `routes/+layout.server.ts` | 라우팅 옵션(예: trailingSlash) 등 서버 전용 설정 |
 | `routes/[[lang]]/terms/+page.svelte` | 이용약관 페이지 |
 | `routes/[[lang]]/privacy/+page.svelte` | 개인정보 처리방침 페이지 |
 | `routes/[[lang]]/cookie/+page.svelte` | 쿠키 정책 페이지 |
@@ -217,6 +228,7 @@
 | 파일 | 역할 |
 | --- | --- |
 | `postbuild-sitemap.ts` | `postbuild` 훅에서 sitemap 생성(도메인/출력폴더 안전가드 포함) |
+| `postbuild-preview-manifest.ts` | preview 환경에서 manifest 관련 이슈를 줄이기 위한 후처리(shim) |
 | `scaffold-pages.ts` | `src/lib/constants/pages.ts` 기반으로 `routes/[[lang]]/**/+page.svelte` 스텁 페이지 자동 생성 |
 
 ### src/lib/

@@ -2,6 +2,8 @@
   import {
     DsCard,
     DsCheckbox,
+    DsButton,
+    DsErrorSummary,
     DsField,
     DsFileUpload,
     DsInput,
@@ -36,12 +38,69 @@
   let sliderValue = $state(35);
   let rangeValue = $state<[number, number]>([20, 80]);
 
+  const errorSummaryEmailId = "ds-error-summary-email";
+  let errorSummaryEmail = $state("");
+  let errorSummarySubmitted = $state(false);
+
+  let errorSummaryFieldErrorText = $derived(
+    !errorSummarySubmitted
+      ? undefined
+      : !errorSummaryEmail
+        ? "이메일을 입력해 주세요."
+        : !errorSummaryEmail.includes("@")
+          ? "이메일 형식이 아닙니다."
+          : undefined,
+  );
+
+  let errorSummaryErrors = $derived(
+    errorSummaryFieldErrorText
+      ? [{ message: errorSummaryFieldErrorText, fieldId: errorSummaryEmailId }]
+      : [],
+  );
+
+  function submitErrorSummaryDemo() {
+    errorSummarySubmitted = true;
+    if (errorSummaryEmail && errorSummaryEmail.includes("@")) {
+      toast.success("OK", "No errors");
+    }
+  }
+
+  function resetErrorSummaryDemo() {
+    errorSummarySubmitted = false;
+    errorSummaryEmail = "";
+  }
+
   let progressValue = $derived(Math.min(100, Math.max(0, inputValue.length * 10)));
 </script>
 
 <section id="ds-forms" class="space-y-4">
   <h2 class="text-h2 font-semibold">Forms</h2>
   <DsCard class="space-y-6">
+    <div class="space-y-3">
+      <div class="text-label text-muted-foreground">ErrorSummary</div>
+      <DsErrorSummary errors={errorSummaryErrors} />
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <DsField
+          id={errorSummaryEmailId}
+          label="Email (ErrorSummary demo)"
+          helpText="제출 시 ErrorSummary로 포커스 이동 + 항목 클릭으로 필드 포커스"
+          invalid={!!errorSummaryFieldErrorText}
+          errorText={errorSummaryFieldErrorText}
+          announceError={errorSummarySubmitted}
+        >
+          {#snippet children(control)}
+            <DsInput {...control} placeholder="name@example.com" clearable bind:value={errorSummaryEmail} />
+          {/snippet}
+        </DsField>
+
+        <div class="flex flex-wrap items-end gap-2">
+          <DsButton intent="primary" onclick={submitErrorSummaryDemo}>Submit</DsButton>
+          <DsButton intent="secondary" variant="soft" onclick={resetErrorSummaryDemo}>Reset</DsButton>
+        </div>
+      </div>
+    </div>
+
     <div class="grid gap-4 md:grid-cols-2">
       <DsField
         label="Email"

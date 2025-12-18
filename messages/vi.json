@@ -219,5 +219,7 @@
 	"ds_navigating": "Đang điều hướng…",
 	"ds_clear_value": "Xóa giá trị",
 	"ds_toast_region": "Thông báo",
-	"ds_toast_dismiss": "Đóng thông báo"
+	"ds_toast_dismiss": "Đóng thông báo",
+	"a11y_skip_to_main_content": "Chuyển đến nội dung chính",
+	"form_error_summary_title": "Vui lòng sửa những mục sau"
 }
