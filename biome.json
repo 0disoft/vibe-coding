@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.9/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
@@ -61,9 +61,16 @@
 	},
 	"overrides": [
 		{
-			"includes": ["**/*.svelte"],
+			"includes": [
+				"**/*.svelte"
+			],
 			"javascript": {
-				"globals": ["$$Generic", "$$Slots", "$$Props", "$$Events"]
+				"globals": [
+					"$$Generic",
+					"$$Slots",
+					"$$Props",
+					"$$Events"
+				]
 			},
 			"linter": {
 				"enabled": false
@@ -73,7 +80,9 @@
 			}
 		},
 		{
-			"includes": ["src/lib/paraglide/**"],
+			"includes": [
+				"src/lib/paraglide/**"
+			],
 			"linter": {
 				"enabled": false
 			},
@@ -82,7 +91,9 @@
 			}
 		},
 		{
-			"includes": ["vite.config.ts"],
+			"includes": [
+				"vite.config.ts"
+			],
 			"linter": {
 				"rules": {
 					"suspicious": {
