@@ -4,7 +4,7 @@
 
 	import { useId } from "$lib/shared/utils/use-id";
 
-	import { DsInput, DsKpi } from "$lib/components/design-system";
+	import { DsInput } from "$lib/components/design-system";
 
 	export type SearchItem = {
 		id: string;
@@ -51,6 +51,10 @@
 		return s.trim().toLowerCase();
 	}
 
+	function escapeRegExp(value: string) {
+		return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+
 	function matches(item: SearchItem, q: string) {
 		if (!q) return true;
 		const hay = [item.title, item.description ?? "", item.meta ?? "", ...(item.keywords ?? [])]
@@ -60,6 +64,7 @@
 	}
 
 	let qNorm = $derived(normalize(query));
+	let queryText = $derived(query.trim());
 	let filtered = $derived(items.filter((it) => matches(it, qNorm)));
 	let limited = $derived(filtered.slice(0, maxResults));
 
@@ -94,6 +99,7 @@
 			idx = (idx + delta + limited.length) % limited.length;
 			if (!limited[idx]?.disabled) {
 				activeIndex = idx;
+				void scrollToOption(idx);
 				return;
 			}
 		}
@@ -106,8 +112,7 @@
 		onSelect?.(item.id);
 	}
 
-	async function focusOption(i: number) {
-		activeIndex = i;
+	async function scrollToOption(i: number) {
 		await tick();
 		const el = document.getElementById(optionId(i));
 		el?.scrollIntoView({ block: "nearest" });
@@ -139,6 +144,21 @@
 	}
 </script>
 
+{#snippet highlight(text: string)}
+	{#if !queryText}
+		{text}
+	{:else}
+		{@const parts = text.split(new RegExp(`(${escapeRegExp(queryText)})`, "gi"))}
+		{#each parts as part}
+			{#if part.toLowerCase() === queryText.toLowerCase()}
+				<span class="ds-search-highlight">{part}</span>
+			{:else}
+				{part}
+			{/if}
+		{/each}
+	{/if}
+{/snippet}
+
 <div {...rest} class={["ds-search-panel", className].filter(Boolean).join(" ")}>
 	<div class="ds-search-header">
 		<div class="ds-search-input">
@@ -164,12 +184,10 @@
 
 		{#if showCount}
 			<div class="ds-search-count">
-				<DsKpi
-					label="Results"
-					value={String(filtered.length)}
-					helper={qNorm ? `for “${qNorm}”` : "total"}
-					trend="neutral"
-				/>
+				<span class="ds-search-count-badge">{filtered.length}</span>
+				<span class="ds-search-count-label">
+					{qNorm ? `results for "${qNorm}"` : "results"}
+				</span>
 			</div>
 		{/if}
 	</div>
@@ -192,14 +210,18 @@
 								if (item.disabled) return;
 								onSelect?.(item.id);
 							}}
-							onmouseenter={() => focusOption(i)}
+							onmousemove={() => {
+								if (activeIndex !== i && !item.disabled) activeIndex = i;
+							}}
 							data-testid={`ds-search-option-${item.id}`}
 						>
 							<div class="ds-search-item-main">
-								<div class="ds-search-title">{item.title}</div>
+								<div class="ds-search-title">
+									{@render highlight(item.title)}
+								</div>
 								{#if item.description}
 									<div class="ds-search-desc text-helper text-muted-foreground">
-										{item.description}
+										{@render highlight(item.description)}
 									</div>
 								{/if}
 							</div>

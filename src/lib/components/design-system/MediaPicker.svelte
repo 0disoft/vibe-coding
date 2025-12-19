@@ -90,23 +90,22 @@
   />
 
   {#if previews.length}
-    <div class="ds-media-grid" aria-label="Selected images">
-      {#each previews as p (p.file.name + p.file.size)}
-        <div class="ds-media-item">
+    <ul class="ds-media-grid" aria-label="Selected images">
+      {#each previews as p (p.file.name + p.file.size + p.file.lastModified)}
+        <li class="ds-media-item">
           <img class="ds-media-thumb" src={p.url} alt={p.file.name} loading="lazy" />
           <div class="ds-media-remove">
             <DsIconButton
               icon="x"
-              label="Remove image"
+              label={`Remove image ${p.file.name}`}
               size="sm"
               variant="ghost"
               intent="neutral"
               onclick={() => removeFile(p.file)}
             />
           </div>
-        </div>
+        </li>
       {/each}
-    </div>
+    </ul>
   {/if}
 </div>
-

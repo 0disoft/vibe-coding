@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
 	import DsDropdown from "./Dropdown.svelte";
@@ -50,9 +51,9 @@
 	}
 
 	let {
-		blockType,
-		onBlockTypeChange,
 		defaultBlockType = "paragraph",
+		blockType = $bindable<EditorBlockType>(defaultBlockType),
+		onBlockTypeChange,
 		active = {},
 		disabled = {},
 		onCommand,
@@ -69,22 +70,20 @@
 		...rest
 	}: Props = $props();
 
-	let internalBlock = $state<EditorBlockType>(defaultBlockType);
-	let currentBlock = $derived((blockType ?? internalBlock) as EditorBlockType);
-	let selectValue = $state<EditorBlockType>(currentBlock);
-
-	function setBlock(next: EditorBlockType) {
-		if (blockType === undefined) internalBlock = next;
-		onBlockTypeChange?.(next);
-	}
+	let selectValue = $state(blockType);
 
 	$effect(() => {
-		if (selectValue !== currentBlock) selectValue = currentBlock;
+		const sv = selectValue;
+		untrack(() => {
+			if (sv !== blockType) handleBlockChange(sv);
+		});
 	});
 
 	$effect(() => {
-		if (selectValue === currentBlock) return;
-		setBlock(selectValue);
+		const bt = blockType;
+		untrack(() => {
+			if (selectValue !== bt) selectValue = bt;
+		});
 	});
 
 	const blockOptions = [
@@ -121,8 +120,23 @@
 		return Boolean(disabled?.[cmd]);
 	}
 
+	const simpleCommands = [
+		{ cmd: "bold", icon: "bold", label: "Bold" },
+		{ cmd: "italic", icon: "italic", label: "Italic" },
+		{ cmd: "link", icon: "link", label: "Link" },
+		{ separator: true },
+		{ cmd: "bulletList", icon: "list", label: "Bulleted list" },
+		{ cmd: "orderedList", icon: "list-ordered", label: "Numbered list" },
+		{ cmd: "codeBlock", icon: "code", label: "Code block" },
+	] as const;
+
 	function handleInsertImages(files: File[]) {
 		onCommand?.("insertImages", { files });
+	}
+
+	function handleBlockChange(next: string) {
+		blockType = next as EditorBlockType;
+		onBlockTypeChange?.(blockType);
 	}
 </script>
 
@@ -144,66 +158,22 @@
 			role="toolbar"
 			aria-label="Editor toolbar"
 		>
-			<DsIconButton
-				icon="bold"
-				label={cmdLabel("bold")}
-				size="sm"
-				variant="ghost"
-				intent="neutral"
-				pressed={isPressed("bold")}
-				disabled={isDisabled("bold")}
-				onclick={() => onCommand?.("bold")}
-			/>
-			<DsIconButton
-				icon="italic"
-				label={cmdLabel("italic")}
-				size="sm"
-				variant="ghost"
-				intent="neutral"
-				pressed={isPressed("italic")}
-				disabled={isDisabled("italic")}
-				onclick={() => onCommand?.("italic")}
-			/>
-			<DsIconButton
-				icon="link"
-				label={cmdLabel("link")}
-				size="sm"
-				variant="ghost"
-				intent="neutral"
-				pressed={isPressed("link")}
-				disabled={isDisabled("link")}
-				onclick={() => onCommand?.("link")}
-			/>
-			<DsIconButton
-				icon="list"
-				label={cmdLabel("bulletList")}
-				size="sm"
-				variant="ghost"
-				intent="neutral"
-				pressed={isPressed("bulletList")}
-				disabled={isDisabled("bulletList")}
-				onclick={() => onCommand?.("bulletList")}
-			/>
-			<DsIconButton
-				icon="list-ordered"
-				label={cmdLabel("orderedList")}
-				size="sm"
-				variant="ghost"
-				intent="neutral"
-				pressed={isPressed("orderedList")}
-				disabled={isDisabled("orderedList")}
-				onclick={() => onCommand?.("orderedList")}
-			/>
-			<DsIconButton
-				icon="code"
-				label={cmdLabel("codeBlock")}
-				size="sm"
-				variant="ghost"
-				intent="neutral"
-				pressed={isPressed("codeBlock")}
-				disabled={isDisabled("codeBlock")}
-				onclick={() => onCommand?.("codeBlock")}
-			/>
+			{#each simpleCommands as item}
+				{#if "separator" in item}
+					<div class="ds-editor-toolbar-sep" aria-hidden="true"></div>
+				{:else}
+					<DsIconButton
+						icon={item.icon}
+						label={cmdLabel(item.cmd)}
+						size="sm"
+						variant="ghost"
+						intent="neutral"
+						pressed={isPressed(item.cmd)}
+						disabled={isDisabled(item.cmd)}
+						onclick={() => onCommand?.(item.cmd)}
+					/>
+				{/if}
+			{/each}
 
 			<DsEditorImagesButton
 				disabled={isDisabled("insertImages")}

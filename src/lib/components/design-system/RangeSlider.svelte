@@ -67,8 +67,9 @@
     return ((high - min) / (max - min)) * 100;
   });
 
-  // thumbs overlap 시 높은 값을 가진 thumb가 위로 오도록
+  // thumbs overlap 시 조작 가능한 thumb가 위로 오도록
   let zLow = $derived(low >= max - step ? 3 : 2);
+  let zHigh = $derived(low >= max - step ? 2 : 3);
 </script>
 
 <div class={["ds-range-slider", className].filter(Boolean).join(" ")}>
@@ -76,7 +77,7 @@
     <div
       class="ds-slider-fill"
       style={`inset-inline-start: ${percentLow}%; width: ${Math.max(0, percentHigh - percentLow)}%;`}
-    />
+    ></div>
   </div>
 
   <div class="ds-range-slider-input">
@@ -105,9 +106,8 @@
       value={high}
       aria-label={maxLabel}
       aria-describedby={describedBy}
-      style="z-index: 1;"
+      style={`z-index: ${zHigh};`}
       oninput={(e) => setHigh(Number((e.currentTarget as HTMLInputElement).value))}
     />
   </div>
 </div>
-

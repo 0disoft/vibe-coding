@@ -29,10 +29,15 @@
   const group = getRadioGroupContext();
   const generatedId = useId("ds-radio");
   let id = $derived(rest.id ?? generatedId);
+  let descriptionId = $derived(description ? `${id}-desc` : undefined);
 
   let isDisabled = $derived(group.disabled || disabled);
-  let checked = $derived(group.value() === value);
-  let resolvedAriaLabel = $derived(rest["aria-label"] ?? label);
+  let checked = $derived(group.value === value);
+  let hasLabel = $derived(!!(label || children));
+  let resolvedAriaLabel = $derived(rest["aria-label"] ?? (hasLabel ? undefined : label));
+  let mergedDescribedBy = $derived(
+    [group.describedBy, descriptionId].filter(Boolean).join(" ") || undefined
+  );
 
   function onChange() {
     if (isDisabled) return;
@@ -55,7 +60,7 @@
     disabled={isDisabled}
     required={group.required}
     aria-label={resolvedAriaLabel}
-    aria-describedby={group.describedBy}
+    aria-describedby={mergedDescribedBy}
     onchange={onChange}
   />
 
@@ -74,7 +79,7 @@
           <span class="ds-radio-label">{label}</span>
         {/if}
         {#if description}
-          <span class="ds-radio-description">{description}</span>
+          <span id={descriptionId} class="ds-radio-description">{description}</span>
         {/if}
       {/if}
     </span>

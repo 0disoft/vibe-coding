@@ -5,10 +5,11 @@
   type Size = "sm" | "md" | "lg" | "xl";
 
   interface Props extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
-    src?: string;
+    src?: string | null;
     alt?: string;
     name?: string;
     size?: Size;
+    loading?: "eager" | "lazy";
     /** 이미지 로드 실패 시 표시할 fallback (미지정이면 name의 이니셜) */
     fallback?: Snippet;
   }
@@ -18,17 +19,18 @@
     alt = "",
     name,
     size = "md",
+    loading = "lazy",
     fallback,
     class: className = "",
     ...rest
   }: Props = $props();
 
-  let isImageOk = $state(true);
+  let imageStatus = $state<"loading" | "loaded" | "error">("error");
 
   $effect(() => {
     // src가 바뀌면 재시도
     src;
-    isImageOk = true;
+    imageStatus = src ? "loading" : "error";
   });
 
   function initialsFromName(n?: string) {
@@ -42,18 +44,29 @@
 
   let initials = $derived(initialsFromName(name));
   let rootClass = $derived(["ds-avatar", className].filter(Boolean).join(" "));
-  let shouldShowImage = $derived(!!src && isImageOk);
+  let shouldShowImage = $derived(!!src && imageStatus !== "error");
+  let label = $derived(name || alt || "Avatar");
 </script>
 
-<span {...rest} class={rootClass} data-ds-size={size} aria-label={name}>
+<span
+  {...rest}
+  class={rootClass}
+  data-ds-size={size}
+  data-state={imageStatus}
+  role={!shouldShowImage ? "img" : undefined}
+  aria-label={!shouldShowImage ? label : undefined}
+>
   {#if shouldShowImage}
     <img
       class="ds-avatar-image"
       src={src}
-      alt={alt || name || ""}
-      loading="lazy"
+      alt={label}
+      {loading}
+      onload={() => {
+        imageStatus = "loaded";
+      }}
       onerror={() => {
-        isImageOk = false;
+        imageStatus = "error";
       }}
     />
   {:else}

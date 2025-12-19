@@ -29,7 +29,8 @@
   let id = $derived(idProp ?? generatedId);
 
   let isDisabled = $derived(!!rest.disabled);
-  let resolvedAriaLabel = $derived(rest["aria-label"] ?? label);
+  let hasLabel = $derived(!!(label || children));
+  let resolvedAriaLabel = $derived(rest["aria-label"] ?? (hasLabel ? undefined : label));
   let rootClass = $derived(["ds-switch", className].filter(Boolean).join(" "));
 </script>
 
@@ -39,6 +40,7 @@
     bind:this={ref}
     id={id}
     type="checkbox"
+    role="switch"
     bind:checked
     class="ds-switch-native"
     aria-label={resolvedAriaLabel}

@@ -2,8 +2,6 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
-
 	import DsIcon from "./Icon.svelte";
 	import DsPopover from "./Popover.svelte";
 
@@ -63,7 +61,7 @@
 	let {
 		label = "Navigation",
 		items,
-		openId,
+		openId = $bindable(null),
 		onOpenIdChange,
 		align = "start",
 		offset = 10,
@@ -74,12 +72,6 @@
 		class: className = "",
 		...rest
 	}: Props = $props();
-
-	let openState = createControllableState<string | null>({
-		value: () => openId,
-		onChange: (next) => onOpenIdChange?.(next),
-		defaultValue: null,
-	});
 
 	function normalizeId(value: string) {
 		return value
@@ -97,7 +89,9 @@
 	);
 
 	function setOpenId(next: string | null) {
-		openState.value = next;
+		if (openId === next) return;
+		openId = next;
+		onOpenIdChange?.(next);
 	}
 
 	function openItem(id: string) {
@@ -112,14 +106,14 @@
 		return Boolean(item.sections?.length);
 	}
 
-	let triggerEls = $state<(HTMLButtonElement | null)[]>([]);
+	let triggerEls = $state<(HTMLButtonElement | HTMLAnchorElement | null)[]>([]);
 
 	function triggerAction(
-		node: HTMLButtonElement,
-		params: { refFn: (el: HTMLElement) => void; index: number },
+		node: HTMLElement,
+		params: { refFn?: (el: HTMLElement) => void; index: number },
 	) {
-		params.refFn(node);
-		triggerEls[params.index] = node;
+		params.refFn?.(node);
+		triggerEls[params.index] = node as HTMLButtonElement | HTMLAnchorElement;
 
 		return {
 			destroy() {
@@ -157,9 +151,9 @@
 	function handleTriggerKeyDown(
 		e: KeyboardEvent,
 		index: number,
-		popoverClick: () => void,
+		popoverClick?: () => void,
 	) {
-		if (e.key === "ArrowDown") {
+		if (e.key === "ArrowDown" && popoverClick) {
 			e.preventDefault();
 			popoverClick();
 			return;
@@ -197,9 +191,9 @@
 			{@const itemId = item.id ?? `${index}`}
 			{@const open = () => openItem(itemId)}
 			{@const close = () => {
-				if (openState.value === itemId) closeAll();
+				if (openId === itemId) closeAll();
 			}}
-			{@const isOpen = openState.value === itemId}
+			{@const isOpen = openId === itemId}
 
 			<li class="ds-nav-menu-item">
 				{#if renderItem}
@@ -276,9 +270,11 @@
 				{:else if item.href}
 					<a
 						href={item.href}
+						use:triggerAction={{ index }}
 						class={["ds-nav-menu-link-top ds-focus-ring", linkClass]
 							.filter(Boolean)
 							.join(" ")}
+						onkeydown={(e) => handleTriggerKeyDown(e, index)}
 					>
 						<span class="ds-nav-menu-trigger-label">{item.label}</span>
 					</a>

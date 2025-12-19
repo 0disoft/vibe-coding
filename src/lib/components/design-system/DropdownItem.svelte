@@ -14,6 +14,7 @@
     type?: "button" | "submit" | "reset";
     role?: string;
     intent?: DropdownItemIntent;
+    disabled?: boolean;
     children?: Snippet;
   }
 
@@ -22,29 +23,64 @@
     type = "button",
     role = "menuitem",
     intent,
+    disabled = false,
     class: className = "",
     children,
+    onclick,
     ...rest
   }: Props = $props();
 
-  let elementTag = $derived(href ? "a" : "button");
+  let isLink = $derived(!!href && !disabled);
+  let computedHref = $derived(isLink ? href : undefined);
+  let tabIndexValue = $derived(rest.tabindex ?? -1);
 
   let itemClass = $derived(
     ["ds-dropdown-item ds-focus-ring", className].filter(Boolean).join(" "),
   );
+
+  function handleClick(e: MouseEvent) {
+    if (disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    onclick?.(e as any);
+  }
 </script>
 
-<svelte:element
-  this={elementTag}
-  {...rest}
-  {...(href ? { href } : {})}
-  {...(href ? {} : { type })}
-  class={itemClass}
-  role={role}
-  data-ds-dropdown-item="true"
-  data-ds-intent={intent === "destructive" ? "destructive" : undefined}
->
-  {#if children}
-    {@render children()}
-  {/if}
-</svelte:element>
+{#if isLink}
+  <a
+    {...rest}
+    href={computedHref}
+    class={itemClass}
+    role={role}
+    tabindex={tabIndexValue}
+    aria-disabled={disabled || undefined}
+    data-ds-dropdown-item="true"
+    data-ds-intent={intent === "destructive" ? "destructive" : undefined}
+    data-disabled={disabled ? "true" : undefined}
+    onclick={handleClick}
+  >
+    {#if children}
+      {@render children()}
+    {/if}
+  </a>
+{:else}
+  <button
+    {...rest}
+    {type}
+    class={itemClass}
+    role={role}
+    tabindex={tabIndexValue}
+    disabled={disabled}
+    aria-disabled={disabled || undefined}
+    data-ds-dropdown-item="true"
+    data-ds-intent={intent === "destructive" ? "destructive" : undefined}
+    data-disabled={disabled ? "true" : undefined}
+    onclick={handleClick}
+  >
+    {#if children}
+      {@render children()}
+    {/if}
+  </button>
+{/if}

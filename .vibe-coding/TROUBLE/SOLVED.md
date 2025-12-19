@@ -78,6 +78,27 @@ pnpm dlx sv create ./
 ### 5. svelte:element에서 href 속성 전달 시 타입 오류
 
 - **증상:** `svelte:element`에 `{href}` 속성을 직접 전달하면 `Object literal may only specify known properties, and 'href' does not exist in type 'HTMLAttributes<any>'.` 오류 발생.
+
+### 6. Svelte 5: `state_referenced_locally` 경고 (prop을 `$state` 초기값에서 참조)
+
+- **증상:** `This reference only captures the initial value of 'type'. Did you mean to reference it inside a derived instead?` 경고 발생.
+- **원인:** `$state` 초기값 계산에 props(`type`)를 직접 사용하면 이후 props 변경이 반영되지 않아 경고가 뜸.
+- **해결:** `$state`는 안전한 기본값으로 두고, props 기반 정규화는 `$effect`나 `$derived`에서 수행.
+- **적용 시점:** props 값에 따라 초기 상태를 맞추려는 Svelte 5 컴포넌트.
+
+### 7. DataTable: `SortState` null 타입 오류 & 스크롤 영역 tabindex 경고
+
+- **증상:** `Type 'null' is not assignable to type 'SortState'` 타입 오류와 `a11y_no_noninteractive_tabindex` 경고 발생.
+- **원인:** `sort = $bindable(null)`인데 `SortState`가 null을 허용하지 않았고, 비상호작용 요소에 `tabindex="0"` 사용으로 lint 경고가 발생.
+- **해결:** `SortState`를 `null` 허용 타입으로 변경하고, 스크롤 영역은 `tabindex="0"` 유지 + `svelte-ignore` 주석과 `aria-label`로 의도 명시.
+- **적용 시점:** 테이블 정렬 상태가 `null`을 갖는 컴포넌트와 가로 스크롤 접근성 확보가 필요한 경우.
+
+### 8. DataTable: `sort` null 경고(`sortAnnouncement` 내부)
+
+- **증상:** `sort`가 `null`일 수 있다는 TS 경고가 `columns.find((c) => c.id === sort.columnId)` 라인에서 발생.
+- **원인:** 함수 스코프에서 `sort`가 변경될 수 있다고 분석되어 null 체크 이후에도 경고가 남음.
+- **해결:** `const currentSort = sort;`로 로컬 캡처 후 null 체크하여 안정화.
+- **적용 시점:** `$bindable` 상태를 참조하는 함수에서 null 가능성 경고가 반복될 때.
 - **원인:** `HTMLAttributes<HTMLElement>`에는 `href`가 정의되어 있지 않음. `href`는 `HTMLAnchorElement`에만 존재하는 속성임.
 - **해결:**
 
@@ -202,6 +223,74 @@ pnpm dlx sv create ./
   ```
 
 - **적용 시점:** 그리드 레이아웃의 드롭다운 메뉴에서 커스텀 키보드 탐색을 구현할 때.
+
+### 11. Svelte 5: `$derived` vs `$derived.by` 혼동으로 인한 타입 에러
+
+- **증상:** `$derived(() => ...)` 형태로 정의한 변수를 사용할 때 `Argument of type '() => string | undefined' is not assignable to parameter of type 'string'` 타입 에러 발생.
+- **원인:** `$derived(expression)`은 표현식의 결과를 반환하지만, `$derived(() => ...)`처럼 화살표 함수를 전달하면 **함수 자체**가 $derived의 결과가 됨. 즉, `$derived(() => value)`의 타입은 () => T이지 T가 아님.
+- **해결:** 복잡한 계산이 필요하면 `$derived.by(() => ...)`를 사용해야 함. `.by`가 함수를 실행하고 그 반환값을 반응형 값으로 만듦.
+
+  ```svelte
+  <!-- Before (오류): 함수 자체가 반환됨 -->
+  let activeId = $derived(() => {
+    const item = items[index];
+    return item ? item.id : undefined;
+  });
+  // activeId의 타입: () => string | undefined
+
+  <!-- After (해결): 함수 실행 결과가 반환됨 -->
+  let activeId = $derived.by(() => {
+    const item = items[index];
+    return item ? item.id : undefined;
+  });
+  // activeId의 타입: string | undefined
+  ```
+
+- **적용 시점:** `$derived` 내에서 조건문, 변수 할당 등 복잡한 로직이 필요할 때.
+
+### 12. DsDropdown trigger snippet의 ref 콜백과 컴포넌트 bindable ref 타입 불일치
+
+- **증상:** `DsDropdown`의 `trigger` snippet에 `DsIconButton`을 사용할 때 다음과 같은 타입 오류 발생:
+
+  ```plaintext
+  Type '{ ...; ref: (node: HTMLElement) => void; ... }' is not assignable to type 'Props'.
+  Types of property 'ref' are incompatible.
+  Type '(node: HTMLElement) => void' is not assignable to type 'HTMLButtonElement'.
+  ```
+
+- **원인:** `DsDropdown`의 `trigger` snippet이 전달하는 `props` 객체에는 `ref: (node: HTMLElement) => void` 형태의 **콜백 함수**가 포함되어 있음. 그러나 `DsIconButton`의 `Props`에서는 `ref?: HTMLButtonElement | null` 형태의 **bindable 요소 참조**를 기대함. 두 타입이 호환되지 않아 오류 발생.
+- **해결:** `props`에서 `ref`를 분리(destructuring)하고, `use:` 액션 디렉티브를 통해 래퍼 요소에 적용.
+
+  ```svelte
+  <!-- Before (오류) -->
+  {#snippet trigger(props)}
+    <DsIconButton {...props} label="Menu">
+      <span class="i-lucide-menu"></span>
+    </DsIconButton>
+  {/snippet}
+
+  <!-- After (해결) -->
+  {#snippet trigger({ ref, ...props })}
+    <span class="contents" use:ref>
+      <DsIconButton {...props} label="Menu">
+        <span class="i-lucide-menu"></span>
+      </DsIconButton>
+    </span>
+  {/snippet}
+  ```
+
+- **원리:**
+  - `{ ref, ...props }` 구문으로 `ref` 콜백을 분리하여 `DsIconButton`에 전달되지 않게 함.
+  - `<span class="contents">` 래퍼에 `use:ref`로 콜백을 적용. `display: contents`는 레이아웃에 영향을 주지 않으면서 DOM 노드를 제공.
+  - `DsDropdown`은 해당 노드를 통해 포지셔닝 등 필요한 작업을 수행할 수 있음.
+- **적용 시점:** `DsDropdown` 등 snippet으로 `ref` 콜백을 전달하는 컴포넌트에서, bindable ref를 사용하는 자식 컴포넌트를 트리거로 사용할 때.
+
+### 13. Union 타입 반환 함수의 타입 추론 불일치 (Intent 타입)
+
+- **증상:** `Intent`와 같은 유니온 타입을 기대하는 prop에 helper 함수의 반환값을 전달할 때 `Type 'string' is not assignable to type 'Intent...'` 오류 발생.
+- **원인:** helper 함수가 문자열 리터럴을 반환하더라도, 명시적 반환 타입이 없으면 TS가 넓은 `string`으로 추론하여 엄격한 유니온 타입과 호환되지 않음.
+- **해결:** helper 함수에 명시적 반환 타입(예: `: IntentWithNeutral`)을 추가하여 TS가 정확한 유니온 타입을 보장하게 함.
+- **적용 시점:** 문자열 리터럴을 반환하여 유니온 타입 prop에 전달하는 helper 함수 작성 시.
 
 ---
 
@@ -513,3 +602,158 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
   ```
 
 - **적용 시점:** 리팩토링으로 변수명이 변경되었을 때, 모든 참조가 업데이트되었는지 확인.
+
+### 4. RangeSlider 썸(Thumb) 수직 정렬 어긋남 (Floating Issue)
+
+- **증상:** `RangeSlider`에서 썸(동그라미)이 트랙 트랙 중앙에 위치하지 않고, 미묘하게 위쪽으로 붕 떠서 비대칭적으로 보임.
+- **원인:**
+  1. 트랙과 입력(Input) 요소를 `flexbox`와 `absolute`로 혼용하여 배치함에 따라, 브라우저가 height를 계산하고 정렬하는 기준점이 미세하게 어긋남.
+  2. 트랙(`height: 6px`)과 썸(`height: 18px`)의 높이 차이를 고려한 `margin-top` 보정이 정확하지 않음(특히 WebKit 계열).
+- **해결:** **완전한 절대 위치(Absolute Positioning) 모델**로 전환.
+  1. 컨테이너(`ds-range-slider`)에 썸 크기만큼 높이 할당.
+  2. 트랙(`ds-slider-track`)을 `absolute`, `top: 50%`, `transform: translateY(-50%)`로 강제 중앙 정렬.
+  3. 입력(`ds-slider-input`)을 `inset: 0`으로 컨테이너를 가득 채우게 하여 트랙과 동일한 무게중심 공유.
+  4. WebKit 썸에 `calc((var(--slider-track-height) - var(--slider-thumb-size)) / 2)` 마진 적용.
+- **적용 시점:** 커스텀 슬라이더 구현 시 트랙과 썸의 높이가 다르고, 미세한 픽셀 단위 정렬이 필요할 때.
+
+### 5. EditorToolbar: `DsSelect`의 `onValueChange` 타입 오류 (Svelte 5 반응성 패턴)
+
+- **증상:** `EditorToolbar.svelte`에서 `DSSelect`에 `onValueChange`를 전달할 때 `Object literal may only specify known properties` 오류 발생.
+- **원인:** `DsSelect`는 `bind:value`를 통해 양방향 바인딩을 지원하며, 별도의 이벤트 핸들러(`onValueChange`) prop을 정의하지 않음.
+- **해결:** `untrack`을 사용하여 안전한 양방향 동기화 패턴 구현.
+
+  ```typescript
+  // Before (오류)
+  <DsSelect bind:value={selectValue} onValueChange={handleBlockChange} />
+
+  // After (해결)
+  // 1. prop 제거
+  <DsSelect bind:value={selectValue} />
+
+  // 2. untrack으로 순환 참조 없는 양방향 동기사 구현
+  $effect(() => {
+    const sv = selectValue;
+    untrack(() => {
+      if (sv !== blockType) handleBlockChange(sv);
+    });
+  });
+  ```
+
+- **적용 시점:** Svelte 5에서 `bindable` prop과 내부 상태를 동기화할 때, 이벤트 핸들러 대신 `$effect`와 `untrack`을 사용해야 하는 경우.
+
+### 6. Svelte 5 Runes: `export type` 및 `$bindable` 문법 오류
+
+- **증상:**
+  1. `Modifiers cannot appear here` (일반 `<script>`에서 `export type` 사용 시)
+  2. `$bindable() can only be used inside a $props() declaration` (중간 변수를 거쳐 구조분해 시)
+  3. `context="module" is deprecated` 경고
+- **원인:** Svelte 5의 엄격해진 룬(Runes) 규칙 및 모듈 스크립트 문법 변경.
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  <script context="module"> ... </script> <!-- Deprecated -->
+  <script>
+    export type MyType = ...; // Error: Modifiers cannot appear here
+    let props = $props();
+    let { value = $bindable() } = props; // Error: bindable location
+  </script>
+
+  <!-- After (해결) -->
+  <script module>
+    export type MyType = ...; // OK
+  </script>
+
+  <script>
+    let { value = $bindable() } = $props(); // OK
+  </script>
+  ```
+
+- **적용 시점:** Svelte 5 컴포넌트 마이그레이션 또는 신규 작성 시.
+
+### 7. Wizard 완료 시 마지막 단계 체크 표시 미적용
+
+- **증상:** `Wizard`에서 마지막 단계(Done)에서 `Finish`를 눌러 `onFinish`가 호출되어도, 단계 표시기(Steps)의 숫자가 체크 표시(Completed)로 바뀌지 않음.
+- **원인:**
+  1. `Wizard`의 `completedIds` 로직이 `currentIndex` 이전의 단계들만 포함(`slice(0, currentIndex)`)하고 있어서, 현재 단계(마지막 단계)는 "진행 중"으로만 간주됨.
+  2. `Steps` 컴포넌트가 "현재 단계" 상태를 "완료됨" 상태보다 우선하여 렌더링함.
+- **해결:**
+  - `Wizard`: `isFinished` 상태를 도입하여 `onFinish` 호출 시 `true`로 설정하고, 이때는 모든 단계를 `completedIds`에 포함시킴.
+  - `Steps`: `stateFor` 함수에서 `isCompleted` 체크를 `activeId` 체크보다 우선순위를 높여, 현재 단계라도 완료 목록에 있다면 체크 표시가 뜨도록 변경.
+- **적용 시점:** Wizard나 Step 프로세스 UI에서 "완료" 상태를 시각적으로 명확히 표현해야 할 때.
+
+### 8. 기본 Table의 정렬 기능 부재로 인한 DataTable로의 업그레이드
+
+- **증상:** 데이터 테이블을 클릭하여 데이터를 확인하는 UI에서, 사용자가 컬럼(Month, Value)을 클릭해 정렬하고 싶어하지만 기본 `DsTable`은 이를 지원하지 않음.
+- **해결:** `DsTable`을 정렬 기능 `sortable`을 지원하는 `DsDataTable`로 교체. 이를 위해 `chartValues` 배열을 객체 배열(`{id, month, value}`)로 변환하고, `DsDataTable`에 `caption` 속성을 추가하여 디자인 정합성 유지.
+- **적용 시점:** 단순 데이터 나열에서 정렬/필터 등 인터랙션이 필요한 경우 `DsDataTable` 사용 권장.
+
+### 9. 라이트 모드에서 Semantic Text Color 가독성 개선
+
+- **증상:** 라이트 모드에서 `text-success`, `text-warning` 등의 시맨틱 컬러가 배경색(버튼 등)으로 쓰일 때와 동일한 밝기(파스텔톤, L=82~85%)를 사용하여, 흰 배경 위의 텍스트/아이콘으로 쓰일 때 가독성이 떨어짐.
+- **해결:**
+  1. `design-system.tokens.css`에 텍스트 전용 시맨틱 변수(`--raw-color-success-text` 등)를 추가. 라이트 모드에서는 기존보다 명도(Lightness)를 낮춰(L=50~60%) 가독성을 높이고, 다크 모드에서는 기존 색상을 유지.
+  2. `uno.config.ts`에서 `text-{color}` 유틸리티 생성 시, `bg-{color}`와 달리 텍스트 전용 변수(`--color-success-text`)를 참조하도록 매핑(`semanticTextColorVarMap`)을 분리하여 적용.
+- **적용 시점:** `text-success`, `text-warning`, `text-destructive` 유틸리티 사용 시 자동으로 적용됨. 버튼 배경색(`bg-success` 등)은 기존 파스텔톤 유지.
+
+### 10. 기본 테마(Mode) 및 팔레트(Palette) 변경 (Cozy Coral)
+
+- **증상:** 초기 방문 사용자에게 기본적으로 적용되는 테마가 `system` 모드, `airy-blue` 팔레트로 설정되어 있어, 원하는 브랜드 분위기(따뜻함/친근함)를 바로 전달하지 못함.
+- **해결:** `src/lib/shared/utils/theme.ts`의 `DEFAULT_THEME_MODE`를 `light`로, `DEFAULT_THEME_PALETTE`를 `cozy-coral`로 변경.
+- **적용 시점:** 신규 방문자 또는 쿠키/로컬스토리지에 테마 설정이 없는 사용자에게 적용됨.
+
+### 11. Locale Switcher 아이콘 크기 불일치 수정
+
+- **증상:** Header에서 `ThemeToggle`, `UserMenu` 아이콘은 16px(`h-4 w-4`)로 렌더링되나, `LocaleSwitcher`만 `icon` prop을 사용하여 기본 `md` 사이즈(20px)로 렌더링되어 크기가 튐.
+- **해결:** `LocaleSwitcher`도 다른 헤더 액션 컴포넌트(`ThemeToggle` 등)와 동일하게 `DsIconButton` 내부에서 직접 `<span class="h-4 w-4 ...">` 스니펫을 사용하여 아이콘 크기를 16px로 통일.
+- **적용 시점:** 헤더 영역의 아이콘 크기 일관성 확보.
+
+### 12. 부드러운 스크롤 (Lenis) 적용
+
+- **증상:** 기본 브라우저 휠 스크롤이 단계별로 끊겨서(Instant) 부자연스러운 느낌("0.1초만에 순간이동"). 사용자 요청: "0.25초 정도로 부드럽게".
+- **해결:** `Lenis` 라이브러리를 도입하여 Inertia Scroll(관성 스크롤) 적용.
+  - `src/lib/interaction/SmoothScroll.svelte`: Lenis 초기화 및 RAF 루프 관리 컴포넌트 생성.
+  - `src/routes/+layout.svelte`: 전역 레이아웃에 `<SmoothScroll duration={0.6} />` 추가. (0.25s는 너무 빨라 효과가 미미하므로, 0.6s로 설정하여 "빠르면서도 부드러운" 프리미엄 감도 구현)
+- **적용 시점:** 사이트 전역 스크롤 경험 개선.
+
+### 13. Combobox 비활성화 항목 선택 문제
+
+- **증상:** `disabled: true`인 항목("Casey")이 흐리게 보이지 않고, 선택 불가능해야 하는데 클릭되는 것처럼 보임(실제로는 선택 안 됨).
+- **원인:** `design-system.css`에서 `.ds-combobox-option:disabled` 선택자를 사용했으나, 해당 요소는 `<div>`이므로 `:disabled` 의사 클래스가 적용되지 않음.
+- **해결:** `.ds-combobox-option[aria-disabled="true"]` 속성 선택자로 변경하여 스타일 적용.
+
+### 14. FilterBar 검색어 입력 불가 (Focus/Input Reset)
+
+- **증상:** "Search posts" 입력창을 클릭하고 타이핑하려 하면 입력값이 즉시 초기화되어 입력이 불가능함.
+- **원인:** `FilterBar.svelte` 내의 `$effect`가 `query`와 `inputValue`를 동기화하는 과정에서, `query` 변화가 디바운스되는 동안 타자 입력으로 변한 `inputValue`가 이전 `query` 값으로 덮어씌워지는 무한 루프 발생.
+- **해결:** `$effect` 내부에서 `inputValue`를 읽을 때 `untrack(() => inputValue)`를 사용하여 의존성을 제거, 내부 입력에 의한 재실행을 방지.
+
+### 15. 북마크 아이콘 깨짐 (네모로 표시)
+
+- **증상:** `DsContentCard` 등에서 북마크 아이콘(`i-lucide-bookmark`)이 네모박스로 표시됨.
+- **원인:** `ContentActions.svelte`에서 `icon={bookmarked ? ...}` 형태로 동적 할당하여 UnoCSS 정적 분석기가 아이콘 이름을 감지하지 못함.
+- **해결:** `uno.config.ts`의 `safelist`에 `i-lucide-bookmark`, `i-lucide-bookmark-check` 명시적 추가.
+
+### 16. 드롭다운 스크롤 연쇄 (Scroll Chaining) 방지
+
+- **증상:** 언어 변경 메뉴나 콤보박스 목록 스크롤이 끝에 도달하면 부모 페이지(body)가 스크롤됨.
+- **해결:**
+  - `LocaleSwitcher.svelte`: `menuClass`에 `overscroll-contain` 유틸리티 추가.
+  - `design-system.css`: `.ds-combobox-list` 클래스에 `overscroll-behavior: contain` CSS 속성 추가.
+
+### 17. FilterBar 검색창 초기화(X) 버튼 추가
+
+- **증상:** `LocaleSwitcher` 검색창과 달리 `FilterBar` 검색창에는 입력값 일괄 삭제(X) 버튼이 없음.
+- **해결:** `FilterBar.svelte` 내부 `DsInput` 컴포넌트에 `clearable={true}` 속성 추가.
+
+### 18. 코드 블록 복사 버튼 위치 오류
+
+- **증상:** 코드 블록 위에 마우스를 올리면 나타나는 "Copy code" 버튼이 블록 내부가 아닌 왼쪽 화면 밖(또는 엉뚱한 위치)에 표시됨.
+- **원인:** `DsTooltip` 컴포넌트(`span` wrapper) 내부에 `absolute`로 위치한 버튼이 배치되는데, `DsTooltip` wrapper 자체가 정적(static) 위치를 가지거나 인라인 요소여서 위치 기준점(containing block) 설정이 꼬임 (특히 LTR/RTL 및 인라인 컨텍스트).
+- **해결:** `CodeBlock.svelte` 컨테이너에 `w-full`을 명시하고, `DsTooltip` wrapper(as="div")에 **인라인 스타일**(`style="position: absolute; right: 1rem; top: 1rem; z-index: 10;"`)을 적용하여 CSS 유틸리티 로드 우선순위나 방향성 설정(RTL/LTR) 관련 문제를 원천 차단. 또한 `focus` 트리거를 `focus-within`으로 변경하여 접근성 유지.
+
+### 19. 체크박스 선택 시 크기 변화 (Layout Shift)
+
+- **증상:** 체크박스를 선택(Checked)하면 박스 크기가 미세하게 커지거나 주변 레이아웃이 밀림.
+- **원인:** 체크박스 크기가 `1.1rem`(~17.6px)로 설정되어 있는데, 내부 아이콘(`check`) 크기는 `1rem`(16px)임. `border-width`(1px * 2)를 제외한 내부 공간은 약 15.6px이고, 아이콘(16px)이 더 크기 때문에 박스가 강제로 늘어남.
+- **해결:** `design-system.css`에서 `.ds-checkbox-control`의 크기를 `1.25rem`(~20px)으로 증가시켜, 아이콘이 내부 여백 안에 안전하게 배치되도록 수정.

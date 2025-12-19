@@ -42,8 +42,7 @@
   id="ds-dialog"
   title="Dialog"
   description="DsDialog 동작 확인"
-  open={dialogOpen}
-  onOpenChange={(next) => (dialogOpen = next)}
+  bind:open={dialogOpen}
 >
   <p class="text-body-secondary text-muted-foreground">ESC/외부 클릭/포커스 복귀 등을 확인합니다.</p>
 </DsDialog>
@@ -72,8 +71,7 @@
 </DsDrawer>
 
 <DsCommandPalette
-  open={commandOpen}
-  onOpenChange={(next) => (commandOpen = next)}
+  bind:open={commandOpen}
   title="Command"
   items={[
     { id: "docs", label: "Go to Docs", description: "문서로 이동", shortcut: "Ctrl+K" },

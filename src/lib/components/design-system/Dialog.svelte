@@ -9,7 +9,7 @@
 		id: string;
 		title: string;
 		description?: string;
-		open: boolean;
+		open?: boolean;
 		onOpenChange?: (next: boolean) => void;
 		size?: "sm" | "md" | "lg" | "xl" | "full";
 		scrollable?: boolean;
@@ -28,7 +28,7 @@
 		id,
 		title,
 		description,
-		open,
+		open = $bindable(false),
 		onOpenChange,
 		size = "md",
 		scrollable = false,
@@ -46,6 +46,7 @@
 	let dialogEl = $state<HTMLDialogElement | null>(null);
 	let isClosing = $state(false);
 	let previousActiveElement: HTMLElement | null = null;
+	let mouseDownTarget: EventTarget | null = null;
 
 	let titleId = $derived(`${id}-title`);
 	let descId = $derived(`${id}-desc`);
@@ -54,8 +55,14 @@
 	let prevBodyOverflow = "";
 	let prevBodyPaddingRight = "";
 
+	function setOpen(next: boolean) {
+		if (open === next) return;
+		open = next;
+		onOpenChange?.(next);
+	}
+
 	function requestClose() {
-		onOpenChange?.(false);
+		setOpen(false);
 	}
 
 	function prefersReducedMotion() {
@@ -181,17 +188,24 @@
 
 	function onCancel(e: Event) {
 		e.preventDefault();
-		if (closeOnEscape) requestClose();
+		if (closeOnEscape) setOpen(false);
 	}
 
 	/** 외부 close/form method="dialog" 등으로 닫혀도 상태 동기화 */
 	function onClose() {
-		if (open) onOpenChange?.(false);
+		if (open) setOpen(false);
 	}
 
-	function onBackdropClick(e: MouseEvent) {
+	function onMouseDown(e: MouseEvent) {
+		mouseDownTarget = e.target;
+	}
+
+	function onMouseUp(e: MouseEvent) {
 		if (!closeOnOutsideClick || !dialogEl) return;
-		if (e.target !== dialogEl) return;
+		if (mouseDownTarget !== dialogEl || e.target !== dialogEl) {
+			mouseDownTarget = null;
+			return;
+		}
 
 		const rect = dialogEl.getBoundingClientRect();
 		const inDialog =
@@ -200,7 +214,8 @@
 			e.clientY >= rect.top &&
 			e.clientY <= rect.bottom;
 
-		if (!inDialog) requestClose();
+		if (!inDialog) setOpen(false);
+		mouseDownTarget = null;
 	}
 </script>
 
@@ -216,7 +231,8 @@
 	data-ds-size={size}
 	oncancel={onCancel}
 	onclose={onClose}
-	onclick={onBackdropClick}
+	onmousedown={onMouseDown}
+	onmouseup={onMouseUp}
 	onanimationend={onAnimationEnd}
 	{...rest}
 >

@@ -61,6 +61,7 @@
   let rootEl = $state<HTMLDivElement | null>(null);
   let itemsEl = $state<HTMLDivElement | null>(null);
   let triggerEl = $state<HTMLElement | null>(null);
+  let anchorPos = $state<{ x: number; y: number } | null>(null);
 
   const triggerId = useId("ds-context-menu");
   const panelId = `${triggerId}-panel`;
@@ -72,6 +73,10 @@
   });
 
   let isOpen = $derived(openState.value);
+  let anchorStyle = $derived.by(() => {
+    const pos = anchorPos ?? { x: -9999, y: -9999 };
+    return `position: fixed; left: ${pos.x}px; top: ${pos.y}px; width: 0; height: 0;`;
+  });
 
   function setOpen(next: boolean) {
     openState.value = next;
@@ -133,26 +138,45 @@
   function handleTriggerContextMenu(e: MouseEvent) {
     if (disabled) return;
     e.preventDefault();
+    anchorPos = { x: e.clientX, y: e.clientY };
     openMenu();
+  }
+
+  function handleTriggerClick(original: () => void) {
+    if (disabled) return;
+    if (triggerEl) {
+      const rect = triggerEl.getBoundingClientRect();
+      anchorPos = { x: rect.left, y: rect.bottom };
+    } else if (rootEl) {
+      const rect = rootEl.getBoundingClientRect();
+      anchorPos = { x: rect.left, y: rect.bottom };
+    }
+    original();
   }
 
   function handleTriggerKeyDown(e: KeyboardEvent, original: (e: KeyboardEvent) => void) {
     if (disabled) return original(e);
     if (e.key === "ContextMenu" || (e.shiftKey && e.key === "F10")) {
       e.preventDefault();
+      if (triggerEl) {
+        const rect = triggerEl.getBoundingClientRect();
+        anchorPos = { x: rect.left, y: rect.bottom };
+      } else if (rootEl) {
+        const rect = rootEl.getBoundingClientRect();
+        anchorPos = { x: rect.left, y: rect.bottom };
+      }
       openMenu();
       return;
     }
     original(e);
   }
 
-  function captureTriggerRef(node: HTMLElement, original: (node: HTMLElement) => void) {
+  function captureTriggerRef(node: HTMLElement) {
     triggerEl = node;
-    original(node);
   }
 
-  function triggerAction(node: HTMLElement, refFn: (node: HTMLElement) => void) {
-    captureTriggerRef(node, refFn);
+  function triggerAction(node: HTMLElement) {
+    captureTriggerRef(node);
 
     return {
       destroy() {
@@ -160,6 +184,25 @@
       },
     };
   }
+
+  function anchorAction(node: HTMLElement, refFn: (node: HTMLElement) => void) {
+    refFn(node);
+    return {
+      destroy() {},
+    };
+  }
+
+  $effect(() => {
+    if (isOpen && !anchorPos) {
+      if (triggerEl) {
+        const rect = triggerEl.getBoundingClientRect();
+        anchorPos = { x: rect.left, y: rect.bottom };
+      } else if (rootEl) {
+        const rect = rootEl.getBoundingClientRect();
+        anchorPos = { x: rect.left, y: rect.bottom };
+      }
+    }
+  });
 </script>
 
 <div
@@ -181,6 +224,12 @@
     returnFocusTo={triggerEl}
   >
     {#snippet trigger(props)}
+      <span
+        aria-hidden="true"
+        class="ds-context-menu-anchor"
+        style={anchorStyle}
+        use:anchorAction={props.ref}
+      ></span>
       {#if triggerContent}
         {@render triggerContent({
           id: props.id,
@@ -188,9 +237,9 @@
           "aria-haspopup": "menu",
           "aria-expanded": props["aria-expanded"],
           disabled,
-          onclick: props.onclick,
+          onclick: () => handleTriggerClick(props.onclick),
           onkeydown: (e) => handleTriggerKeyDown(e, props.onkeydown),
-          ref: (node) => captureTriggerRef(node, props.ref),
+          ref: (node) => captureTriggerRef(node),
         })}
       {:else}
         <button
@@ -199,10 +248,10 @@
           aria-controls={props["aria-controls"]}
           aria-haspopup="menu"
           aria-expanded={props["aria-expanded"]}
-          use:triggerAction={props.ref}
+          use:triggerAction
           class="ds-context-menu-trigger ds-focus-ring"
           disabled={disabled}
-          onclick={props.onclick}
+          onclick={() => handleTriggerClick(props.onclick)}
           onkeydown={(e) => handleTriggerKeyDown(e, props.onkeydown)}
         >
           Open
@@ -214,7 +263,11 @@
       {#if menuContent}
         {@render menuContent({ close })}
       {:else}
-        <div class="ds-context-menu-items" bind:this={itemsEl} onkeydown={onPanelKeyDown}>
+        <div
+          class="ds-context-menu-items"
+          bind:this={itemsEl}
+          role="menu"
+        >
           {#each items as item (item.id)}
             <button
               type="button"
@@ -223,6 +276,7 @@
               aria-disabled={item.disabled || undefined}
               tabindex="-1"
               data-ds-context-item="true"
+              onkeydown={onPanelKeyDown}
               onclick={() => {
                 if (item.disabled) return;
                 item.onSelect?.();

@@ -3,7 +3,7 @@
 	import type { BundledLanguage, BundledTheme, Highlighter } from "shiki";
 	import { SvelteSet } from "svelte/reactivity";
 
-	import { DsCopyButton } from "$lib/components/design-system";
+	import { DsCopyButton, DsTooltip } from "$lib/components/design-system";
 
 	interface Props {
 		code: string;
@@ -152,18 +152,26 @@
 	// 스타일은 src/styles/design-system.css 에서 디자인 시스템으로 관리합니다.
 </script>
 
-<div class="relative group">
-	<DsCopyButton
-		size="sm"
-		variant="ghost"
-		intent="neutral"
-		label="Copy code"
-		copiedLabel="Copied to clipboard"
-		text={code}
-		showTitle
-		class="absolute end-4 top-4 z-10 transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-		style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
-	/>
+<div class="relative group w-full">
+	<DsTooltip
+		as="div"
+		content="Copy code"
+		class="transition-opacity opacity-0 group-hover:opacity-100 focus-within:opacity-100"
+		style="position: absolute; right: 0.5rem; top: 0.5rem; z-index: 10;"
+	>
+		{#snippet children(trigger)}
+			<DsCopyButton
+				size="sm"
+				variant="ghost"
+				intent="neutral"
+				label="Copy code"
+				copiedLabel="Copied to clipboard"
+				text={code}
+				describedBy={trigger["aria-describedby"]}
+				style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
+			/>
+		{/snippet}
+	</DsTooltip>
 
 	{#if highlightedHtml}
 		<!-- Shiki wrapper color override -->
@@ -175,7 +183,9 @@
 	{:else}
 		<!-- Fallback: 하이라이팅 로딩 중에도 코드는 즉시 노출 (테스트/UX 안정성) -->
 		<div class="ds-code-block overflow-hidden" aria-busy="true">
-			<pre class="!m-0 !p-4 !bg-transparent !rounded-[inherit]"><code>{code}</code></pre>
+			<pre class="!m-0 !p-4 !bg-transparent !rounded-[inherit]"><code
+					>{code}</code
+				></pre>
 		</div>
 	{/if}
 </div>

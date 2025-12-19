@@ -661,6 +661,8 @@ bun .vibe-coding/TOOLS/stale-files.ts --no-report
 | `--days <N>` | N일 이상 수정되지 않은 파일 검색 (기본: 30) |
 | `--all` | 결과 개수 제한 해제 (기본: 상위 50개) |
 | `--json` | JSON 형식으로 출력 |
+| `--include-absolute, --absolute` | JSON 출력에 absolutePath 포함 (기본: 제외) |
+| `--exclude-ext <exts>` | 제외할 확장자 목록 (쉼표 구분, 기본: md,txt) |
 | `--no-report` | 리포트 파일 생성 생략 |
 | `--help, -h` | 도움말 표시 |
 

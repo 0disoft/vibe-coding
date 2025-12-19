@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import { tick } from "svelte";
+	import { scale } from "svelte/transition";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
 	import { useId } from "$lib/shared/utils/use-id";
 
 	export type PopoverSide = "top" | "bottom" | "left" | "right";
@@ -41,7 +41,7 @@
 	}
 
 	let {
-		open,
+		open = $bindable(false),
 		onOpenChange,
 		disabled = false,
 		side = "bottom",
@@ -67,16 +67,12 @@
 	const triggerId = useId("ds-popover");
 	const panelId = `${triggerId}-panel`;
 
-	let openState = createControllableState({
-		value: () => open,
-		onChange: (next) => onOpenChange?.(next),
-		defaultValue: false,
-	});
-
-	let isOpen = $derived(openState.value);
+	let isOpen = $derived(open);
 
 	function setOpen(next: boolean): void {
-		openState.value = next;
+		if (open === next) return;
+		open = next;
+		onOpenChange?.(next);
 	}
 
 	function triggerRef(node: HTMLElement) {
@@ -92,11 +88,7 @@
 
 	function toggle(): void {
 		if (disabled) return;
-		const next = !isOpen;
-		if (next)
-			previousActiveElement = (document.activeElement as HTMLElement) ?? null;
-		setOpen(next);
-		if (next) tick().then(focusOnOpen);
+		setOpen(!isOpen);
 	}
 
 	function focusOnOpen() {
@@ -163,8 +155,9 @@
 		return Math.min(Math.max(v, min), max);
 	}
 
-	$effect(() => {
+	function updatePosition() {
 		if (!isOpen || !panelEl || !triggerEl) return;
+		if (typeof window === "undefined") return;
 
 		const rect = triggerEl.getBoundingClientRect();
 		const panelRect = panelEl.getBoundingClientRect();
@@ -200,21 +193,29 @@
 		top = clamp(top, padding, window.innerHeight - panelRect.height - padding);
 
 		placementStyles = `position: fixed; left: ${left}px; top: ${top}px;`;
-	});
+	}
 
 	$effect(() => {
 		if (isOpen) {
+			updatePosition();
+			if (typeof window === "undefined") return;
+			window.addEventListener("scroll", updatePosition, true);
+			window.addEventListener("resize", updatePosition);
 			document.addEventListener("pointerdown", onDocumentPointerDown, true);
-			return () =>
-				document.removeEventListener(
-					"pointerdown",
-					onDocumentPointerDown,
-					true,
-				);
+			return () => {
+				window.removeEventListener("scroll", updatePosition, true);
+				window.removeEventListener("resize", updatePosition);
+				document.removeEventListener("pointerdown", onDocumentPointerDown, true);
+			};
 		}
 	});
 
 	$effect(() => {
+		if (isOpen) {
+			previousActiveElement = (document.activeElement as HTMLElement) ?? null;
+			tick().then(focusOnOpen);
+		}
+
 		if (!isOpen) {
 			const target = returnFocusTo ?? previousActiveElement;
 			if (target && document.body.contains(target)) {
@@ -265,6 +266,7 @@
 			class={["ds-popover-panel ds-elevation-2", panelClass]
 				.filter(Boolean)
 				.join(" ")}
+			transition:scale={{ duration: 140, start: 0.97, opacity: 0 }}
 			style={placementStyles}
 			role="dialog"
 			aria-label={label}

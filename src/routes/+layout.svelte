@@ -7,13 +7,18 @@
 	import "@fontsource/pacifico";
 	import "@fontsource/righteous";
 	// app.css 보다 먼저 불러와야 함
-	import "../app.css";
 	import "virtual:uno.css";
+	import "../app.css";
 	// 공통 레이아웃 컴포넌트
 	import { page } from "$app/state";
 	import Footer from "$lib/components/Footer.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import { DsDirectionProvider, DsSkipLink, DsToastRegion } from "$lib/components/design-system";
+	import {
+		DsDirectionProvider,
+		DsSkipLink,
+		DsToastRegion,
+	} from "$lib/components/design-system";
+	import SmoothScroll from "$lib/interaction/SmoothScroll.svelte";
 	// 사이트 설정
 	import { site } from "$lib/constants";
 	// 전역 테마 스토어
@@ -34,7 +39,8 @@
 	// View Transitions API 활성화 (부드러운 페이지 전환)
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
-		if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
+		if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)
+			return;
 
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {
@@ -91,34 +97,27 @@
 	-->
 <DsDirectionProvider>
 	{#snippet children()}
-		<div
-			class="flex min-h-screen flex-col bg-background text-foreground"
-		>
-	{#if !isOfflinePage}
-		<DsSkipLink label={m.a11y_skip_to_main_content()} />
-		<Header siteName={site.name} />
-		<main
-			id="main-content"
-			tabindex="-1"
-			class={mainClass}
-		>
-			{#if routeChildren}
+		<SmoothScroll duration={0.6} />
+		<div class="flex min-h-screen flex-col bg-background text-foreground">
+			{#if !isOfflinePage}
+				<DsSkipLink label={m.a11y_skip_to_main_content()} />
+				<Header siteName={site.name} />
+				<main id="main-content" tabindex="-1" class={mainClass}>
+					{#if routeChildren}
+						{@render routeChildren()}
+					{/if}
+				</main>
+				<Footer siteName={site.name} />
+				<DsToastRegion
+					toasts={toast.toasts}
+					onDismiss={(id) => toast.remove(id)}
+					onPause={() => toast.pause()}
+					onResume={() => toast.resume()}
+					position="bottom-right"
+				/>
+			{:else if routeChildren}
 				{@render routeChildren()}
 			{/if}
-		</main>
-		<Footer siteName={site.name} />
-		<DsToastRegion
-			toasts={toast.toasts}
-			onDismiss={(id) => toast.remove(id)}
-			onPause={() => toast.pause()}
-			onResume={() => toast.resume()}
-			position="bottom-right"
-		/>
-	{:else}
-		{#if routeChildren}
-			{@render routeChildren()}
-		{/if}
-	{/if}
-</div>
+		</div>
 	{/snippet}
 </DsDirectionProvider>

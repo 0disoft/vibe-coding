@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
+  import { slide } from "svelte/transition";
 
   import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
   import { useId } from "$lib/shared/utils/use-id";
@@ -47,7 +48,7 @@
   let showTableState = createControllableState<boolean>({
     value: () => showTable ?? undefined,
     onChange: (next) => onShowTableChange?.(next),
-    defaultValue: defaultShowTable,
+    defaultValue: () => defaultShowTable,
   });
 
   let canShowTable = $derived(Boolean(table));
@@ -60,7 +61,7 @@
 >
   <header class="ds-chart-header">
     <div class="ds-chart-heading">
-      <div class="ds-chart-title">{title}</div>
+      <h3 class="ds-chart-title">{title}</h3>
       {#if description}
         <div class="ds-chart-desc">{description}</div>
       {/if}
@@ -100,7 +101,7 @@
     </div>
 
     {#if showTableState.value}
-      <div class="ds-chart-table" id={tableId}>
+      <div class="ds-chart-table" id={tableId} transition:slide={{ duration: 200 }}>
         {@render table?.()}
       </div>
     {/if}

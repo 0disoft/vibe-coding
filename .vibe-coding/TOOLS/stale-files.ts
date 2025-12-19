@@ -5,13 +5,6 @@
  *
  * 사용법:
  *   bun .vibe-coding/TOOLS/stale-files.ts [경로] [옵션]
- *
- * 옵션:
- *   --days <N>    N일 이상 수정되지 않은 파일 검색 (기본: 30)
- *   --all         결과 개수 제한 해제 (기본: 상위 50개)
- *   --json        JSON 형식으로 출력
- *   --no-report   리포트 파일 생성 생략
- *   --help, -h    도움말 표시
  */
 
 import { mkdir, readdir, stat, writeFile } from "node:fs/promises";
@@ -45,6 +38,8 @@ interface StaleConfig {
 	all: boolean;
 	json: boolean;
 	noReport: boolean;
+	includeAbsolute: boolean;
+	excludeExtensions: Set<string>;
 }
 
 interface StaleFile {
@@ -64,13 +59,21 @@ interface StaleResult {
 	files: StaleFile[];
 }
 
+type StaleFileJson = Omit<StaleFile, "absolutePath">;
+type StaleResultJson = Omit<StaleResult, "files"> & { files: StaleFileJson[] };
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 📏 Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
 const DEFAULT_DAYS = 30;
 const DEFAULT_LIMIT = 50;
+const STAT_CHUNK_SIZE = 50;
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+const DEFAULT_EXCLUDE_EXTENSIONS = new Set([
+	".md", ".txt",
+]);
 
 const TARGET_EXTENSIONS = new Set([
 	".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
@@ -94,38 +97,50 @@ const IGNORE_PATTERNS = new Set([
 ]);
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 💡 Services & Components
+// 💡 Services & Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Service to handle configuration and arguments */
-class ConfigService {
-	public static parseArgs(args: string[]): StaleConfig {
-		const json = args.includes("--json");
-		const noReport = args.includes("--no-report");
-		const all = args.includes("--all");
+function parseArgs(args: string[]): StaleConfig {
+	const json = args.includes("--json");
+	const noReport = args.includes("--no-report");
+	const all = args.includes("--all");
+	const includeAbsolute = args.includes("--include-absolute") || args.includes("--absolute");
+	const excludeExtensions = new Set(DEFAULT_EXCLUDE_EXTENSIONS);
 
-		// --days 파싱
-		const daysIdx = args.indexOf("--days");
-		let days = DEFAULT_DAYS;
-		if (daysIdx !== -1 && args[daysIdx + 1]) {
-			const parsed = parseInt(args[daysIdx + 1], 10);
-			if (!isNaN(parsed) && parsed > 0) days = parsed;
-		}
-
-		// 위치 인자 (경로)
-		const positional = args.filter(
-			(arg, i) =>
-				!arg.startsWith("--") &&
-				!arg.startsWith("-") &&
-				!(args[i - 1] === "--days")
-		);
-		const target = positional[0] ?? "src";
-
-		return { target, days, all, json, noReport };
+	// --days 파싱
+	const daysIdx = args.indexOf("--days");
+	let days = DEFAULT_DAYS;
+	if (daysIdx !== -1 && args[daysIdx + 1]) {
+		const parsed = parseInt(args[daysIdx + 1], 10);
+		if (!isNaN(parsed) && parsed > 0) days = parsed;
 	}
+
+	// --exclude-ext 파싱 (쉼표 구분)
+	const excludeIdx = args.indexOf("--exclude-ext");
+	if (excludeIdx !== -1 && args[excludeIdx + 1]) {
+		const raw = args[excludeIdx + 1]
+			.split(",")
+			.map((ext) => ext.trim())
+			.filter(Boolean);
+		for (const ext of raw) {
+			const normalized = ext.startsWith(".") ? ext.toLowerCase() : `.${ext.toLowerCase()}`;
+			excludeExtensions.add(normalized);
+		}
+	}
+
+	// 위치 인자 (경로)
+	const positional = args.filter(
+		(arg, i) =>
+			!arg.startsWith("--") &&
+			!arg.startsWith("-") &&
+			!(args[i - 1] === "--days") &&
+			!(args[i - 1] === "--exclude-ext")
+	);
+	const target = positional[0] ?? "src";
+
+	return { target, days, all, json, noReport, includeAbsolute, excludeExtensions };
 }
 
-/** Logger for unified output handling */
 class ConsoleLogger {
 	log(message: string) {
 		console.log(message);
@@ -135,12 +150,13 @@ class ConsoleLogger {
 	}
 }
 
-/** Service to scan files and check staleness */
 class StaleFileScanner {
 	private now: Date;
+	private cwd: string;
 
-	constructor() {
+	constructor(private excludeExtensions: Set<string>) {
 		this.now = new Date();
+		this.cwd = process.cwd();
 	}
 
 	public async scan(target: string, thresholdDays: number): Promise<{ files: StaleFile[]; totalScanned: number; }> {
@@ -149,32 +165,23 @@ class StaleFileScanner {
 			throw new Error(`대상 경로를 찾을 수 없습니다: ${target}`);
 		}
 
-		const allFiles: string[] = [];
+		let allFiles: string[] = [];
 		if (targetStat.isFile()) {
 			if (this.isTargetFile(target)) allFiles.push(target);
 		} else {
-			await this.walk(target, allFiles);
+			allFiles = await this.walk(target);
 		}
 
 		const thresholdMs = thresholdDays * MS_PER_DAY;
 		const staleFiles: StaleFile[] = [];
 
-		for (const filePath of allFiles) {
-			const fileStat = await stat(filePath).catch(() => null);
-			if (!fileStat) continue;
-
-			const mtime = fileStat.mtime;
-			const ageMs = this.now.getTime() - mtime.getTime();
-
-			if (ageMs >= thresholdMs) {
-				const daysOld = Math.floor(ageMs / MS_PER_DAY);
-				staleFiles.push({
-					relativePath: relative(process.cwd(), filePath).replace(/\\/g, "/"),
-					absolutePath: filePath,
-					mtime,
-					daysOld,
-					sizeBytes: fileStat.size,
-				});
+		for (let i = 0; i < allFiles.length; i += STAT_CHUNK_SIZE) {
+			const chunk = allFiles.slice(i, i + STAT_CHUNK_SIZE);
+			const results = await Promise.all(
+				chunk.map((filePath) => this.inspectFile(filePath, thresholdMs))
+			);
+			for (const file of results) {
+				if (file) staleFiles.push(file);
 			}
 		}
 
@@ -184,36 +191,56 @@ class StaleFileScanner {
 		return { files: staleFiles, totalScanned: allFiles.length };
 	}
 
-	private async walk(dir: string, fileList: string[]): Promise<void> {
+	private async walk(dir: string): Promise<string[]> {
+		const results: string[] = [];
 		try {
 			const entries = await readdir(dir, { withFileTypes: true });
 			for (const entry of entries) {
+				// IGNORE 패턴 체크 (현재 디렉토리 이름 또는 파일 이름만 확인)
+				if (IGNORE_PATTERNS.has(entry.name)) continue;
+
 				const fullPath = join(dir, entry.name);
-				if (this.shouldIgnore(fullPath)) continue;
 
 				if (entry.isDirectory()) {
-					await this.walk(fullPath, fileList);
+					const subFiles = await this.walk(fullPath);
+					results.push(...subFiles);
 				} else if (entry.isFile() && this.isTargetFile(entry.name)) {
-					fileList.push(fullPath);
+					results.push(fullPath);
 				}
 			}
-		} catch {
-			// 읽기 실패 시 무시
+		} catch (error) {
+			// 권한 에러 등은 무시하고 진행
+			const code = (error as NodeJS.ErrnoException).code;
+			if (code === "EACCES" || code === "EPERM" || code === "ENOENT") return results;
+			throw error;
 		}
+		return results;
 	}
 
-	private shouldIgnore(path: string): boolean {
-		const segments = path.split(/[\\/]/);
-		return segments.some((seg) => IGNORE_PATTERNS.has(seg));
+	private async inspectFile(filePath: string, thresholdMs: number): Promise<StaleFile | null> {
+		const fileStat = await stat(filePath).catch(() => null);
+		if (!fileStat) return null;
+
+		const ageMs = this.now.getTime() - fileStat.mtime.getTime();
+		if (ageMs < thresholdMs) return null;
+
+		const daysOld = Math.floor(ageMs / MS_PER_DAY);
+		return {
+			relativePath: relative(this.cwd, filePath).replace(/\\/g, "/"),
+			absolutePath: filePath,
+			mtime: fileStat.mtime,
+			daysOld,
+			sizeBytes: fileStat.size,
+		};
 	}
 
 	private isTargetFile(path: string): boolean {
 		const ext = extname(path).toLowerCase();
+		if (this.excludeExtensions.has(ext)) return false;
 		return TARGET_EXTENSIONS.has(ext);
 	}
 }
 
-/** Service to generate reports */
 class ReportGenerator {
 	constructor(
 		private config: StaleConfig,
@@ -222,12 +249,15 @@ class ReportGenerator {
 
 	public async processResults(result: StaleResult, elapsed: string) {
 		if (this.config.json) {
-			this.logger.log(JSON.stringify(result, null, 2));
+			const jsonResult = this.config.includeAbsolute
+				? result
+				: this.stripAbsolutePaths(result);
+			this.logger.log(JSON.stringify(jsonResult, null, 2));
 		} else {
 			this.printConsole(result, elapsed);
 		}
 
-		if (!this.config.noReport && result.files.length > 0) {
+		if (!this.config.noReport) {
 			await this.saveReport(result, elapsed);
 		}
 	}
@@ -303,6 +333,22 @@ class ReportGenerator {
 		this.logger.log(`${c.gray}📝 리포트 저장됨: ${reportPath}${c.reset}`);
 	}
 
+	private stripAbsolutePaths(result: StaleResult): StaleResultJson {
+		return {
+			threshold: result.threshold,
+			scanDate: result.scanDate,
+			target: result.target,
+			totalFilesScanned: result.totalFilesScanned,
+			staleFilesFound: result.staleFilesFound,
+			files: result.files.map((file) => ({
+				relativePath: file.relativePath,
+				mtime: file.mtime,
+				daysOld: file.daysOld,
+				sizeBytes: file.sizeBytes,
+			})),
+		};
+	}
+
 	private formatSize(bytes: number): string {
 		if (bytes < 1024) return `${bytes}B`;
 		if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`;
@@ -327,9 +373,9 @@ class StaleFilesTool {
 			process.exit(0);
 		}
 
-		this.config = ConfigService.parseArgs(args);
+		this.config = parseArgs(args);
 		this.logger = new ConsoleLogger();
-		this.scanner = new StaleFileScanner();
+		this.scanner = new StaleFileScanner(this.config.excludeExtensions);
 		this.reporter = new ReportGenerator(this.config, this.logger);
 	}
 
@@ -373,6 +419,10 @@ ${c.bold}옵션:${c.reset}
   --days <N>    N일 이상 수정되지 않은 파일 검색 (기본: 30)
   --all         결과 개수 제한 해제 (기본: 상위 50개)
   --json        JSON 형식으로 출력
+  --include-absolute, --absolute
+               JSON 출력에 absolutePath 포함 (기본: 제외)
+  --exclude-ext <exts>
+               제외할 확장자 목록 (쉼표 구분, 기본: md,txt)
   --no-report   리포트 파일 생성 생략
   --help, -h    도움말 표시
 

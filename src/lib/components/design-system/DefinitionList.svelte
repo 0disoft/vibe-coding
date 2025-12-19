@@ -4,18 +4,20 @@
 
   export type DefinitionItem = {
     term: string;
-    description: string;
+    description: string | number | null | undefined;
   };
 
   interface Props extends Omit<HTMLAttributes<HTMLDListElement>, "children"> {
     items?: DefinitionItem[];
     variant?: "stacked" | "columns";
+    renderDescription?: Snippet<[DefinitionItem]>;
     children?: Snippet;
   }
 
   let {
     items,
     variant = "stacked",
+    renderDescription,
     children,
     class: className = "",
     ...rest
@@ -31,11 +33,16 @@
     {#each items as item, index (item.term + index)}
       <div class="ds-definition-item">
         <dt class="ds-definition-term">{item.term}</dt>
-        <dd class="ds-definition-desc">{item.description}</dd>
+        <dd class="ds-definition-desc">
+          {#if renderDescription}
+            {@render renderDescription(item)}
+          {:else}
+            {item.description ?? "-"}
+          {/if}
+        </dd>
       </div>
     {/each}
   {:else if children}
     {@render children()}
   {/if}
 </dl>
-

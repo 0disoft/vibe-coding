@@ -8,6 +8,8 @@
 		disabled?: boolean;
 	};
 
+	type Size = "sm" | "md" | "lg";
+
 	interface Props {
 		options: Option[];
 		value?: string;
@@ -16,6 +18,7 @@
 		disabled?: boolean;
 		invalid?: boolean;
 		required?: boolean;
+		size?: Size;
 		/** Field와 연결용 */
 		id?: string;
 		/** aria-describedby (Field에서 전달) */
@@ -31,6 +34,7 @@
 		disabled = false,
 		invalid = false,
 		required = false,
+		size = "md",
 		id: idProp,
 		describedBy,
 		class: className = "",
@@ -88,6 +92,7 @@
 				.filter(Boolean)
 				.join(" ")}
 			{...a11y}
+			data-ds-size={size}
 			data-placeholder={isPlaceholder}
 			data-invalid={invalid || undefined}
 			data-required={required || undefined}

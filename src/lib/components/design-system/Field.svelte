@@ -3,6 +3,8 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
+	import { DsIcon } from "$lib/components/design-system";
+
 	type ControlProps = {
 		id: string;
 		"aria-describedby"?: string;
@@ -68,14 +70,12 @@
 	});
 </script>
 
-<div {...rest} class={`ds-field ${className}`.trim()}>
+<div {...rest} class={["ds-field", className].filter(Boolean).join(" ")}>
 	<label class={`ds-field-label ${hideLabel ? "sr-only" : ""}`.trim()} for={id}>
-		{label}{#if required && !hideLabel}<span
-				aria-hidden="true"
-				class="text-destructive"
-			>
-				*</span
-			>{/if}
+		{label}
+		{#if required && !hideLabel}
+			<span aria-hidden="true" class="ds-field-required">*</span>
+		{/if}
 	</label>
 
 	{#if children}
@@ -88,8 +88,8 @@
 			id={errorId}
 			role={announceError ? "alert" : undefined}
 		>
-			<span class="ds-icon i-lucide-circle-alert" aria-hidden="true"></span>
-			{errorText}
+			<DsIcon name="circle-alert" size="xs" aria-hidden="true" />
+			<span>{errorText}</span>
 		</div>
 	{/if}
 

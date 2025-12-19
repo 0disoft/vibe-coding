@@ -2,7 +2,7 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	import { DsIconButton, DsSheet } from "$lib/components/design-system";
+	import { DsIconButton, DsSheet, DsSkipLink } from "$lib/components/design-system";
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
 		title?: string;
@@ -14,6 +14,9 @@
 		children?: Snippet;
 
 		openSidebarLabel?: string;
+		mainId?: string;
+		skipLinkLabel?: string;
+		sidebarOpen?: boolean;
 	}
 
 	let {
@@ -23,25 +26,28 @@
 		sidebar,
 		actions,
 		openSidebarLabel = "Open sidebar",
+		mainId = "main-content",
+		skipLinkLabel,
+		sidebarOpen = $bindable(false),
 		class: className = "",
 		children,
 		...rest
 	}: Props = $props();
-
-	let sidebarOpen = $state(false);
 </script>
+
+<DsSkipLink href={`#${mainId}`} label={skipLinkLabel} />
 
 <div
 	{...rest}
 	class={["ds-app-shell", className].filter(Boolean).join(" ")}
 >
 	{#if sidebar}
-		<div class="ds-app-shell-sidebar hidden lg:block">
+		<aside class="ds-app-shell-sidebar hidden lg:block">
 			{@render sidebar()}
-		</div>
+		</aside>
 	{/if}
 
-	<section class="ds-app-shell-main min-w-0">
+	<main id={mainId} class="ds-app-shell-main min-w-0" tabindex="-1">
 		<header class="ds-app-shell-header">
 			<div class="flex items-start justify-between gap-3">
 				<div class="min-w-0">
@@ -53,6 +59,7 @@
 								label={openSidebarLabel}
 								variant="outline"
 								intent="secondary"
+								aria-expanded={sidebarOpen}
 								onclick={() => (sidebarOpen = true)}
 							/>
 						{/if}
@@ -80,7 +87,7 @@
 				{@render children()}
 			{/if}
 		</div>
-	</section>
+	</main>
 </div>
 
 {#if sidebar}
@@ -95,7 +102,9 @@
 		closeOnEscape
 		class="lg:hidden"
 	>
-		{@render sidebar()}
+		{#if sidebarOpen}
+			{@render sidebar()}
+		{/if}
 	</DsSheet>
 {/if}
 

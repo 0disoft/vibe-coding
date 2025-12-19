@@ -122,6 +122,14 @@ const semanticColorVarMap: Record<(typeof semanticColors)[number], string> = {
 	overlay: '--color-overlay'
 };
 
+const semanticTextColorVarMap: Record<(typeof semanticColors)[number], string> = {
+	...semanticColorVarMap,
+	// Text-specific overrides (Darker in light mode for contrast)
+	success: '--color-success-text',
+	warning: '--color-warning-text',
+	destructive: '--color-error-text' // Maps to error-text
+};
+
 // 커스텀 룰 생성: bg-primary, text-primary 등
 // preset-wind4의 기본 색상 시스템을 우회하여 직접 OKLCH CSS 변수 사용
 const colorRules: Rule<object>[] = [];
@@ -135,9 +143,9 @@ const toAlpha = (opacity?: string) => {
 };
 
 for (const color of semanticColors) {
-	const gradientColor = (opacity?: string) => {
+	const gradientColor = (opacity?: string, isText = false) => {
 		const alpha = toAlpha(opacity);
-		const cssVar = semanticColorVarMap[color];
+		const cssVar = isText ? semanticTextColorVarMap[color] : semanticColorVarMap[color];
 		return alpha ? `oklch(var(${cssVar}) / ${alpha})` : `oklch(var(${cssVar}))`;
 	};
 
@@ -153,7 +161,7 @@ for (const color of semanticColors) {
 	colorRules.push([
 		new RegExp(`^text-${color}(?:\\/(\\d+))?$`),
 		([, opacity]) => ({
-			color: gradientColor(opacity)
+			color: gradientColor(opacity, true)
 		})
 	]);
 
@@ -551,7 +559,8 @@ export default defineConfig({
 		'i-lucide-trending-up',
 		'i-lucide-trending-down',
 		'i-lucide-users',
-		'i-lucide-sparkles',
+		'i-lucide-star',
+		'i-lucide-zap',
 		'i-lucide-shield-check',
 		'i-lucide-bell',
 		'i-lucide-circle-check',
@@ -571,6 +580,9 @@ export default defineConfig({
 		'i-lucide-quote',
 		'i-lucide-remove-formatting',
 		'i-lucide-check',
+		'i-lucide-bookmark',
+		'i-lucide-bookmark-check',
+		'i-lucide-inbox',
 		...semanticColors.flatMap((c) => [
 			`bg-${c}`,
 			`text-${c}`,

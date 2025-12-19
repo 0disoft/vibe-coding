@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
 
-	import { DsButton, DsCalendar, DsPopover } from "$lib/components/design-system";
+	import { DsButton, DsCalendar, DsIcon, DsPopover } from "$lib/components/design-system";
 
 	import { parseIsoDate } from "./date-utils";
 
@@ -42,13 +42,23 @@
 		onValueChange?.(next);
 	}
 
-	function display(v: string | null) {
-		if (!v) return placeholder;
-		const d = parseIsoDate(v);
-		if (!d) return v;
-		const fmt = new Intl.DateTimeFormat(locale, { year: "numeric", month: "short", day: "2-digit" });
-		return fmt.format(d);
-	}
+	let displayValue = $derived.by(() => {
+		if (!value) return placeholder;
+		const d = parseIsoDate(value);
+		if (!d) return value;
+		try {
+			const fmt = new Intl.DateTimeFormat(locale, {
+				year: "numeric",
+				month: "short",
+				day: "2-digit",
+			});
+			return fmt.format(d);
+		} catch {
+			return value;
+		}
+	});
+
+	let buttonAriaLabel = $derived.by(() => (value ? `${label}: ${displayValue}` : label));
 
 	function applyRef(node: HTMLElement, refFn: (node: HTMLElement) => void) {
 		refFn(node);
@@ -79,7 +89,7 @@
 				type="button"
 				class="ds-combobox-trigger ds-focus-ring"
 				id={props.id}
-				aria-label={label}
+				aria-label={buttonAriaLabel}
 				aria-controls={props["aria-controls"]}
 				aria-haspopup="dialog"
 				aria-expanded={props["aria-expanded"]}
@@ -88,8 +98,8 @@
 				onkeydown={props.onkeydown}
 				use:applyRef={props.ref}
 			>
-				<span class={value ? "truncate" : "truncate text-muted-foreground"}>{display(value)}</span>
-				<span class="i-lucide-calendar h-4 w-4 opacity-60"></span>
+				<span class={value ? "truncate" : "truncate text-muted-foreground"}>{displayValue}</span>
+				<DsIcon name="calendar" size="sm" class="opacity-60" />
 			</button>
 		{/snippet}
 

@@ -122,24 +122,26 @@
       onclick={() => go(current - 1)}
     />
 
-    <div class="ds-pagination-pages" role="list">
+    <ul class="ds-pagination-pages">
       {#each items as it (it.type === "ellipsis" ? it.key : it.page)}
-        {#if it.type === "ellipsis"}
-          <span class="ds-pagination-ellipsis" aria-hidden="true">…</span>
-        {:else}
-          <button
-            type="button"
-            class="ds-pagination-page ds-focus-ring"
-            data-current={it.current ? "true" : undefined}
-            disabled={disabled}
-            aria-current={it.current ? "page" : undefined}
-            onclick={() => go(it.page)}
-          >
-            {it.page}
-          </button>
-        {/if}
+        <li>
+          {#if it.type === "ellipsis"}
+            <span class="ds-pagination-ellipsis" aria-hidden="true">…</span>
+          {:else}
+            <button
+              type="button"
+              class="ds-pagination-page ds-focus-ring"
+              data-current={it.current ? "true" : undefined}
+              disabled={disabled}
+              aria-current={it.current ? "page" : undefined}
+              onclick={() => go(it.page)}
+            >
+              {it.page}
+            </button>
+          {/if}
+        </li>
       {/each}
-    </div>
+    </ul>
 
     <DsIconButton
       icon="chevron-right"

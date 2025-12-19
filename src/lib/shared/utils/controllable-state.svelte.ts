@@ -28,7 +28,7 @@ type ControllableStateOptions<T> = {
 	/** 값 변경 시 호출되는 콜백 */
 	onChange?: (value: T) => void;
 	/** uncontrolled 모드의 초기값 */
-	defaultValue: T;
+	defaultValue: T | (() => T);
 };
 
 type ControllableStateReturn<T> = {
@@ -44,7 +44,11 @@ type ControllableStateReturn<T> = {
 export function createControllableState<T>(
 	options: ControllableStateOptions<T>
 ): ControllableStateReturn<T> {
-	let internal = $state(options.defaultValue);
+	const initialValue =
+		typeof options.defaultValue === 'function'
+			? (options.defaultValue as () => T)()
+			: options.defaultValue;
+	let internal = $state(initialValue);
 
 	return {
 		get value(): T {

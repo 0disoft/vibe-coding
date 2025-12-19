@@ -59,10 +59,32 @@ export function isSameMonth(a: Date, b: Date): boolean {
 	return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
 }
 
+export function isDateDisabled(date: Date, min?: Date | null, max?: Date | null): boolean {
+	if (min && date < min && !isSameDay(date, min)) return true;
+	if (max && date > max && !isSameDay(date, max)) return true;
+	return false;
+}
+
 export function startOfWeek(date: Date, weekStartsOn: WeekdayIndex): Date {
 	const weekday = date.getDay();
 	const delta = (weekday - weekStartsOn + 7) % 7;
 	return addDays(date, -delta);
+}
+
+export function getCalendarGrid(monthDate: Date, weekStartsOn: WeekdayIndex = 0): Date[] {
+	const monthStart = startOfMonth(monthDate);
+	const startDate = startOfWeek(monthStart, weekStartsOn);
+	return Array.from({ length: 42 }, (_, i) => addDays(startDate, i));
+}
+
+export function getWeekdayNames(
+	locale: string | undefined,
+	weekStartsOn: WeekdayIndex = 0,
+	format: 'short' | 'narrow' | 'long' = 'short',
+): string[] {
+	const base = startOfWeek(new Date(2025, 0, 5, 12, 0, 0, 0), weekStartsOn);
+	const formatter = new Intl.DateTimeFormat(locale, { weekday: format });
+	return Array.from({ length: 7 }, (_, i) => formatter.format(addDays(base, i)));
 }
 
 export function clampToMonthDay(target: Date, preferredDay: number): Date {

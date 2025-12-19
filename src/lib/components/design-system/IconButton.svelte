@@ -8,8 +8,12 @@
 	import type { IconButtonVariant, IntentWithNeutral, Size } from "./types";
 	import { toIntentCss } from "./types";
 
-	type ButtonClickEvent = Parameters<NonNullable<HTMLButtonAttributes["onclick"]>>[0];
-	type ButtonKeyDownEvent = Parameters<NonNullable<HTMLButtonAttributes["onkeydown"]>>[0];
+	type ButtonClickEvent = Parameters<
+		NonNullable<HTMLButtonAttributes["onclick"]>
+	>[0];
+	type ButtonKeyDownEvent = Parameters<
+		NonNullable<HTMLButtonAttributes["onkeydown"]>
+	>[0];
 
 	interface Props extends HTMLButtonAttributes {
 		label: string;
@@ -22,12 +26,12 @@
 		disabled?: boolean;
 		loading?: boolean;
 		flipInRtl?: boolean;
-		/** 툴팁 표시 여부 */
-		showTitle?: boolean;
 		/** 로딩 SR 텍스트 */
 		loadingLabel?: string;
-		// Support both binding and callback (for actions)
+		/** Svelte 5 ref 바인딩 (액션 콜백 포함) */
 		ref?: HTMLButtonElement | null | ((node: HTMLElement) => void);
+		/** 터치 타겟(44px) 적용 여부 (기본값 true) */
+		touchTarget?: boolean;
 		children?: Snippet;
 	}
 
@@ -41,7 +45,6 @@
 		loading = false,
 		disabled = false,
 		flipInRtl = false,
-		showTitle = false,
 		loadingLabel = m.ds_loading(),
 		type = "button",
 		ref = $bindable(null),
@@ -49,6 +52,7 @@
 		children,
 		onclick,
 		onkeydown,
+		touchTarget = true,
 		...rest
 	}: Props = $props();
 
@@ -56,11 +60,15 @@
 	// 로딩 중에도 포커스 유지를 위해 native disabled는 disabled prop만 반영
 	let isNativeDisabled = $derived(disabled);
 	let isSoftDisabled = $derived(disabled || loading);
+	let computedAriaLabel = $derived(
+		loading ? `${label} (${loadingLabel})` : label,
+	);
 
 	// 클래스 조합
 	let buttonClass = $derived(
 		[
-			"ds-icon-button ds-focus-ring ds-touch-target",
+			"ds-icon-button ds-focus-ring",
+			touchTarget ? "ds-touch-target" : "",
 			isSoftDisabled ? "is-disabled" : "",
 			className,
 		]
@@ -80,14 +88,15 @@
 
 	function handleKeyDown(e: ButtonKeyDownEvent) {
 		if (loading) {
-			e.preventDefault();
-			e.stopPropagation();
+			if (e.key !== "Tab") {
+				e.preventDefault();
+				e.stopPropagation();
+			}
 			return;
 		}
 		onkeydown?.(e);
 	}
 
-	/** Ref Action to handle both binding and callback */
 	function refAction(node: HTMLButtonElement) {
 		if (typeof ref === "function") {
 			ref(node);
@@ -98,11 +107,7 @@
 		return {
 			destroy() {
 				if (typeof ref === "function") {
-					// @ts-ignore - Callback might expect an element, but here we explicitly destroy
-					// Some callbacks might assume unmounting if called with null/undefined?
-					// But usually 'destroy' means the element is gone.
-					// We'll leave it be or call with null if type allows.
-					// ref(null); // Type mismatch potentially.
+					// noop
 				} else if (ref === node) {
 					ref = null;
 				}
@@ -114,13 +119,12 @@
 <button
 	{...rest}
 	use:refAction
-	type={type}
+	{type}
 	class={buttonClass}
 	disabled={isNativeDisabled}
 	aria-disabled={isSoftDisabled || undefined}
 	aria-busy={loading || undefined}
-	aria-label={label}
-	title={showTitle ? label : undefined}
+	aria-label={computedAriaLabel}
 	aria-pressed={pressed === undefined ? undefined : pressed}
 	data-ds-size={size}
 	data-ds-variant={variant}
@@ -130,7 +134,6 @@
 >
 	{#if loading}
 		<DsIcon name="loader-circle" {size} class="animate-spin" />
-		<span class="sr-only" aria-live="polite">{loadingLabel}</span>
 	{:else}
 		{#if icon}
 			<DsIcon name={icon} {size} {flipInRtl} />

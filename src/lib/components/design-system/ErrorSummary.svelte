@@ -1,5 +1,8 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
+  import { slide } from "svelte/transition";
+
+  import { DsIcon } from "$lib/components/design-system";
 
   export type ErrorItem = {
     message: string;
@@ -19,6 +22,7 @@
     autoFocus?: boolean;
     /** 기본: region(포커스로 안내). 필요 시 alert로 강제 낭독 */
     role?: SummaryRole;
+    headingLevel?: "h2" | "h3" | "h4" | "h5";
   }
 
   let {
@@ -27,6 +31,7 @@
     errors = [],
     autoFocus = true,
     role = "region",
+    headingLevel = "h2",
     class: className = "",
     ...rest
   }: Props = $props();
@@ -98,13 +103,16 @@
     bind:this={rootEl}
     id={id}
     class={rootClass}
+    transition:slide={{ duration: 200 }}
     role={role}
     aria-labelledby={titleId}
     tabindex="-1"
   >
     <div class="ds-error-summary__header">
-      <span class="ds-icon i-lucide-triangle-alert" aria-hidden="true"></span>
-      <h2 id={titleId} class="ds-error-summary__title">{title}</h2>
+      <DsIcon name="triangle-alert" size="sm" aria-hidden="true" />
+      <svelte:element this={headingLevel} id={titleId} class="ds-error-summary__title">
+        {title}
+      </svelte:element>
     </div>
 
     <ul class="ds-error-summary__list">

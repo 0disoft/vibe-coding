@@ -9,6 +9,7 @@
     copyLabel?: string;
     copiedLabel?: string;
     bookmarkLabel?: string;
+    openLabel?: string;
     bookmarked?: boolean;
     onBookmarkedChange?: (next: boolean) => void;
     showOpen?: boolean;
@@ -19,12 +20,19 @@
     copyLabel = "Copy link",
     copiedLabel = "Copied",
     bookmarkLabel = "Bookmark",
-    bookmarked = false,
+    openLabel = "Open",
+    bookmarked = $bindable(false),
     onBookmarkedChange,
     showOpen = false,
     class: className = "",
     ...rest
   }: Props = $props();
+
+  function handleBookmark() {
+    const next = !bookmarked;
+    bookmarked = next;
+    onBookmarkedChange?.(next);
+  }
 </script>
 
 <div {...rest} class={["ds-content-actions", className].filter(Boolean).join(" ")}>
@@ -43,18 +51,19 @@
 
   <DsIconButton
     icon={bookmarked ? "bookmark-check" : "bookmark"}
-    label={bookmarkLabel}
+    label={bookmarked ? "Remove bookmark" : bookmarkLabel}
     size="sm"
     variant="ghost"
-    intent="neutral"
+    intent={bookmarked ? "primary" : "neutral"}
     pressed={bookmarked}
-    onclick={() => onBookmarkedChange?.(!bookmarked)}
+    aria-pressed={bookmarked}
+    onclick={handleBookmark}
   />
 
   {#if url && showOpen}
     <DsIconButton
       icon="external-link"
-      label="Open"
+      label={openLabel}
       size="sm"
       variant="ghost"
       intent="neutral"
@@ -62,4 +71,3 @@
     />
   {/if}
 </div>
-

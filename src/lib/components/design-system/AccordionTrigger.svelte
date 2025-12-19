@@ -3,10 +3,9 @@
   import type { HTMLButtonAttributes } from "svelte/elements";
 
   import { DsIcon } from "$lib/components/design-system";
-  import { getAccordionContext } from "./accordion-context";
+  import { getAccordionContext, getAccordionItemContext } from "./accordion-context";
 
-  interface Props extends Omit<HTMLButtonAttributes, "children" | "type"> {
-    value: string;
+  interface Props extends Omit<HTMLButtonAttributes, "children" | "type" | "value"> {
     disabled?: boolean;
     children?: Snippet;
   }
@@ -15,7 +14,6 @@
   type ButtonKeyDownEvent = Parameters<NonNullable<HTMLButtonAttributes["onkeydown"]>>[0];
 
   let {
-    value,
     disabled = false,
     class: className = "",
     children,
@@ -25,47 +23,39 @@
   }: Props = $props();
 
   const accordion = getAccordionContext();
+  const item = getAccordionItemContext();
 
-  let isOpen = $derived(accordion.isOpen(value));
-  let triggerId = $derived(
-    `${accordion.baseId}-trigger-${encodeURIComponent(value).replace(/%/g, "_")}`,
-  );
-  let contentId = $derived(
-    `${accordion.baseId}-content-${encodeURIComponent(value).replace(/%/g, "_")}`,
-  );
+  let isOpen = $derived(item.isOpen);
+  let triggerId = $derived(item.triggerId);
+  let contentId = $derived(item.contentId);
+  let isTriggerDisabled = $derived(item.disabled || disabled);
 
   function handleClick(e: ButtonClickEvent) {
-    if (disabled) {
+    if (isTriggerDisabled) {
       e.preventDefault();
       return;
     }
-    accordion.toggle(value);
+    accordion.toggle(item.value);
     onclick?.(e);
   }
 
   function handleKeyDown(e: ButtonKeyDownEvent) {
+    onkeydown?.(e);
+    if (e.defaultPrevented) return;
+
     const currentTarget = e.currentTarget;
     const root =
       currentTarget.closest('[data-ds-accordion-root="true"]') ??
       currentTarget.closest(".ds-accordion");
-    if (!root) {
-      onkeydown?.(e);
-      return;
-    }
+    if (!root) return;
 
     const triggers = Array.from(
-      root.querySelectorAll<HTMLElement>('[data-ds-accordion-trigger="true"]:not([aria-disabled="true"])'),
+      root.querySelectorAll<HTMLElement>('[data-ds-accordion-trigger="true"]:not([disabled])'),
     );
-    if (!triggers.length) {
-      onkeydown?.(e);
-      return;
-    }
+    if (!triggers.length) return;
 
     const currentIndex = triggers.indexOf(currentTarget);
-    if (currentIndex < 0) {
-      onkeydown?.(e);
-      return;
-    }
+    if (currentIndex < 0) return;
 
     let nextIndex = currentIndex;
     if (e.key === "ArrowDown") nextIndex = (currentIndex + 1) % triggers.length;
@@ -91,7 +81,9 @@
   id={triggerId}
   aria-controls={contentId}
   aria-expanded={isOpen}
-  aria-disabled={disabled || undefined}
+  aria-disabled={isTriggerDisabled || undefined}
+  disabled={isTriggerDisabled || undefined}
+  data-state={isOpen ? "open" : "closed"}
   data-ds-accordion-trigger="true"
   onclick={handleClick}
   onkeydown={handleKeyDown}
@@ -102,7 +94,7 @@
     {/if}
   </span>
   <span class="ds-accordion-trigger-icon" aria-hidden="true">
-    <DsIcon name="chevron-down" size="sm" class={isOpen ? "is-open" : ""} />
+    <DsIcon name="chevron-down" size="sm" />
   </span>
 </button>
 

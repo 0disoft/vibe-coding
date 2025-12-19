@@ -32,6 +32,8 @@
 
   const generatedId = useId("ds-radio-group");
   let id = $derived(idProp ?? generatedId);
+  const generatedName = useId("ds-radio-name");
+  let groupName = $derived(name ?? generatedName);
 
   function setValue(next: string) {
     if (disabled) return;
@@ -41,7 +43,7 @@
 
   setRadioGroupContext({
     get name() {
-      return name;
+      return groupName;
     },
     get disabled() {
       return disabled;
@@ -52,7 +54,9 @@
     get describedBy() {
       return describedBy;
     },
-    value: () => value,
+    get value() {
+      return value;
+    },
     setValue,
   });
 

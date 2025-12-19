@@ -10,6 +10,12 @@
     stickyHeader?: boolean;
     /** 가로 스크롤 래퍼 제공 */
     scroll?: boolean;
+    /** 좁은 간격 모드 */
+    dense?: boolean;
+    /** 줄무늬 패턴 */
+    striped?: boolean;
+    /** hover 효과 비활성화 */
+    noHover?: boolean;
     children?: Snippet;
   }
 
@@ -18,6 +24,9 @@
     captionSide = "top",
     stickyHeader = false,
     scroll = true,
+    dense = false,
+    striped = false,
+    noHover = false,
     children,
     class: className = "",
     ...rest
@@ -30,7 +39,12 @@
     .filter(Boolean)
     .join(" ")}
 >
-  <div class={["ds-table", stickyHeader ? "is-sticky" : ""].filter(Boolean).join(" ")}>
+  <div
+    class={["ds-table", stickyHeader ? "is-sticky" : ""].filter(Boolean).join(" ")}
+    data-ds-density={dense ? "compact" : undefined}
+    data-ds-striped={striped ? "true" : undefined}
+    data-ds-no-hover={noHover ? "true" : undefined}
+  >
     <table class="ds-table-native">
       {#if caption}
         <caption class="ds-table-caption" data-side={captionSide}>
@@ -44,4 +58,3 @@
     </table>
   </div>
 </div>
-

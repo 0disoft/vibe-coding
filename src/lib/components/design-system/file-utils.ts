@@ -1,5 +1,5 @@
 export function formatBytes(bytes: number): string {
-	const units = ['B', 'KB', 'MB', 'GB'] as const;
+	const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'] as const;
 	let value = bytes;
 	let unitIndex = 0;
 	while (value >= 1024 && unitIndex < units.length - 1) {
@@ -8,11 +8,15 @@ export function formatBytes(bytes: number): string {
 	}
 	const unit = units[unitIndex] ?? 'B';
 	const precision = unitIndex === 0 ? 0 : value < 10 ? 2 : 1;
-	return `${value.toFixed(precision)} ${unit}`;
+	const formatted = new Intl.NumberFormat(undefined, {
+		minimumFractionDigits: precision,
+		maximumFractionDigits: precision,
+	}).format(value);
+	return `${formatted} ${unit}`;
 }
 
 export function fileKey(file: File): string {
-	return `${file.name}:${file.size}:${file.lastModified}`;
+	return `${file.name}:${file.type}:${file.size}:${file.lastModified}`;
 }
 
 export function dedupeFiles(files: File[]): File[] {

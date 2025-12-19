@@ -8,6 +8,7 @@
     icon?: string;
     title: string;
     description?: string;
+    headingLevel?: "h1" | "h2" | "h3" | "h4" | "h5" | "div";
     children?: Snippet;
     actions?: Snippet;
   }
@@ -16,6 +17,7 @@
     icon = "inbox",
     title,
     description,
+    headingLevel = "h3",
     class: className = "",
     children,
     actions,
@@ -31,7 +33,9 @@
   </div>
 
   <div class="ds-empty-state-body">
-    <h2 class="ds-empty-state-title">{title}</h2>
+    <svelte:element this={headingLevel} class="ds-empty-state-title">
+      {title}
+    </svelte:element>
     {#if description}
       <p class="ds-empty-state-description">{description}</p>
     {/if}

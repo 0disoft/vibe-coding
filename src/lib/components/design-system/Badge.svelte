@@ -52,7 +52,7 @@
   {/if}
 
   {#if end}
-    <span class="ds-badge-end" aria-hidden="true">
+    <span class="ds-badge-end">
       {@render end()}
     </span>
   {/if}

@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { page } from '$app/state';
   import * as m from '$lib/paraglide/messages.js';
   import { localizeUrl } from '$lib/paraglide/runtime.js';
+  import { getLocaleFromUrl, type Locale } from '$lib/shared/utils/locale';
 
   import { DsDropdown, DsDropdownItem, DsIconButton } from '$lib/components/design-system';
 
@@ -24,20 +26,22 @@
   type MenuKey = (typeof menuItems)[number]['key'];
 
   // 메뉴 키 → i18n 메시지 매핑 (타입 안전)
-  const MENU_LABELS: Record<MenuKey, () => string> = {
-    donate: m.footer_donate,
-    terms: m.footer_terms,
-    privacy: m.footer_privacy,
-    cookie: m.footer_cookie_policy,
-    security: m.footer_security,
-    gdpr: m.footer_gdpr,
-    sitemap: m.footer_sitemap,
-    accessibility: m.footer_accessibility,
-    'bug-bounty': m.footer_bug_bounty,
+  const MENU_LABELS: Record<MenuKey, (locale: Locale) => string> = {
+    donate: (locale) => m.footer_donate({}, { locale }),
+    terms: (locale) => m.footer_terms({}, { locale }),
+    privacy: (locale) => m.footer_privacy({}, { locale }),
+    cookie: (locale) => m.footer_cookie_policy({}, { locale }),
+    security: (locale) => m.footer_security({}, { locale }),
+    gdpr: (locale) => m.footer_gdpr({}, { locale }),
+    sitemap: (locale) => m.footer_sitemap({}, { locale }),
+    accessibility: (locale) => m.footer_accessibility({}, { locale }),
+    'bug-bounty': (locale) => m.footer_bug_bounty({}, { locale }),
   };
 
+  let currentLocale = $derived<Locale>(getLocaleFromUrl(page.url));
+
   function getMenuLabel(key: MenuKey): string {
-    return MENU_LABELS[key]();
+    return MENU_LABELS[key](currentLocale);
   }
 </script>
 
@@ -49,7 +53,7 @@
     <DsIconButton
       {...props}
       size="sm"
-      label={m.footer_more_menu()}
+      label={m.footer_more_menu({}, { locale: currentLocale })}
       data-testid="footer-more-menu"
     >
       <span class="i-lucide-ellipsis h-4 w-4"></span>
@@ -59,8 +63,10 @@
   {#snippet children({ close })}
     {#each menuItems as item (item.key)}
       <DsDropdownItem
-        href={localizeUrl(item.href).href}
-        class="text-menu-sm {item.mobileOnly ? 'sm:hidden' : ''}"
+        href={localizeUrl(item.href, { locale: currentLocale }).href}
+        class={["text-menu-sm", item.mobileOnly ? "sm:!hidden" : ""]
+          .filter(Boolean)
+          .join(" ")}
         onclick={() => close()}
       >
         <span class="{item.icon} h-3 w-3 shrink-0"></span>

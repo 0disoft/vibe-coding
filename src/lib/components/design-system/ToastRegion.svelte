@@ -57,8 +57,15 @@
 	let isTop = $derived(position.startsWith("top"));
 
 	function toastRole(t: ToastItem) {
-		const intent = (t.intent ?? "neutral") as "error" | "warning";
-		return assertiveIntents.includes(intent) ? "alert" : undefined;
+		const intent = (t.intent ?? "neutral") as
+			| "neutral"
+			| "success"
+			| "warning"
+			| "error";
+		if (intent === "error" || intent === "warning") {
+			return assertiveIntents.includes(intent) ? "alert" : "status";
+		}
+		return "status";
 	}
 
 	function onRegionFocusOut(e: FocusEvent) {
@@ -95,8 +102,6 @@
 	{...rest}
 	class={`ds-toast-region ${className}`.trim()}
 	aria-label={regionLabel}
-	aria-live="polite"
-	aria-relevant="additions text"
 	data-ds-position={position}
 	onmouseenter={onPause}
 	onmouseleave={onResume}
@@ -114,7 +119,6 @@
 					class="ds-toast ds-elevation-3"
 					data-intent={t.intent ?? "neutral"}
 					role={toastRole(t)}
-					tabindex="-1"
 					onkeydown={(e) => onToastKeyDown(e, t.id)}
 				>
 					<div class="ds-toast-icon" aria-hidden="true">

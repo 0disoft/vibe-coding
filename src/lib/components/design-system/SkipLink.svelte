@@ -31,6 +31,7 @@
     const id = href.slice(1);
     const target = document.getElementById(id) as HTMLElement | null;
     if (!target) return;
+    if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
     target.scrollIntoView({ block: "start" });
     queueMicrotask(() => target.focus());
   }

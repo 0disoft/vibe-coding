@@ -6,6 +6,8 @@
   interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
     /** 상단 미디어(썸네일) 블록 표시 */
     showMedia?: boolean;
+    /** 미디어 비율 */
+    mediaAspect?: "video" | "square" | "wide";
     /** 아바타(원형) 표시 */
     showAvatar?: boolean;
     /** 본문 라인 개수 */
@@ -14,22 +16,31 @@
 
   let {
     showMedia = false,
+    mediaAspect = "video",
     showAvatar = true,
     lines = 3,
     class: className = "",
     ...rest
   }: Props = $props();
+
+  let mediaClass = $derived(
+    mediaAspect === "square"
+      ? "aspect-square"
+      : mediaAspect === "wide"
+        ? "aspect-[2/1]"
+        : "aspect-video",
+  );
 </script>
 
 <div
   {...rest}
-  class={["rounded-md border border-border bg-surface p-4", className]
+  class={["rounded-md border border-border bg-card p-4", className]
     .filter(Boolean)
     .join(" ")}
   aria-hidden="true"
 >
   {#if showMedia}
-    <DsSkeleton class="mb-4 w-full" height={140} />
+    <DsSkeleton class={`mb-4 w-full ${mediaClass}`.trim()} />
   {/if}
 
   <div class="flex items-start gap-3">
@@ -44,4 +55,3 @@
     </div>
   </div>
 </div>
-

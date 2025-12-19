@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
+  import { fade } from "svelte/transition";
 
   import DsIconButton from "./IconButton.svelte";
 
@@ -40,6 +41,16 @@
     ...rest
   }: Props = $props();
 
+  const commands = [
+    { id: "bold", icon: "bold", label: "Bold" },
+    { id: "italic", icon: "italic", label: "Italic" },
+    { id: "link", icon: "link", label: "Link" },
+  ] as const satisfies ReadonlyArray<{
+    id: EditorInlineCommand;
+    icon: string;
+    label: string;
+  }>;
+
   function cmdLabel(cmd: EditorInlineCommand) {
     return (
       labels[cmd] ??
@@ -72,43 +83,33 @@
       .filter(Boolean)
       .join("; ");
   });
+
+  function handleMouseDown(e: MouseEvent) {
+    e.preventDefault();
+  }
 </script>
 
-<div
-  {...rest}
-  class={["ds-editor-inline", className].filter(Boolean).join(" ")}
-  style={computedStyle}
-  role="toolbar"
-  aria-label="Inline formatting"
->
-  <DsIconButton
-    icon="bold"
-    label={cmdLabel("bold")}
-    size="sm"
-    variant="ghost"
-    intent="neutral"
-    pressed={Boolean(active?.bold)}
-    disabled={Boolean(disabled?.bold)}
-    onclick={() => onCommand?.("bold")}
-  />
-  <DsIconButton
-    icon="italic"
-    label={cmdLabel("italic")}
-    size="sm"
-    variant="ghost"
-    intent="neutral"
-    pressed={Boolean(active?.italic)}
-    disabled={Boolean(disabled?.italic)}
-    onclick={() => onCommand?.("italic")}
-  />
-  <DsIconButton
-    icon="link"
-    label={cmdLabel("link")}
-    size="sm"
-    variant="ghost"
-    intent="neutral"
-    pressed={Boolean(active?.link)}
-    disabled={Boolean(disabled?.link)}
-    onclick={() => onCommand?.("link")}
-  />
-</div>
+{#if open && anchorRect}
+  <div
+    {...rest}
+    class={["ds-editor-inline", className].filter(Boolean).join(" ")}
+    style={computedStyle}
+    role="toolbar"
+    aria-label="Inline formatting"
+    transition:fade={{ duration: 150 }}
+    onmousedown={handleMouseDown}
+  >
+    {#each commands as cmd (cmd.id)}
+      <DsIconButton
+        icon={cmd.icon}
+        label={cmdLabel(cmd.id)}
+        size="sm"
+        variant="ghost"
+        intent="neutral"
+        pressed={Boolean(active?.[cmd.id])}
+        disabled={Boolean(disabled?.[cmd.id])}
+        onclick={() => onCommand?.(cmd.id)}
+      />
+    {/each}
+  </div>
+{/if}

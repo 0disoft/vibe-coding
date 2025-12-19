@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
   import { useId } from "$lib/shared/utils/use-id";
@@ -13,6 +14,7 @@
     name?: string;
     label?: string;
     ref?: Array<HTMLInputElement | null>;
+    separator?: Snippet<[{ index: number }]>;
   }
 
   let {
@@ -24,6 +26,7 @@
     name,
     label = "One-time password",
     ref = $bindable([]),
+    separator,
     class: className = "",
     ...rest
   }: Props = $props();
@@ -57,7 +60,10 @@
 
   function focusIndex(i: number) {
     const el = ref[i];
-    if (el) el.focus();
+    if (el) {
+      el.focus();
+      el.select();
+    }
   }
 
   function onInput(e: InputEvent, index: number) {
@@ -134,6 +140,9 @@
 
   <div class="ds-otp-grid" role="group" aria-label={label}>
     {#each slots as i (i)}
+      {#if i > 0 && separator}
+        {@render separator({ index: i - 1 })}
+      {/if}
       {@const current = chars()[i] ?? ""}
       <input
         bind:this={ref[i]}
@@ -148,6 +157,7 @@
         oninput={(e) => onInput(e as any, i)}
         onkeydown={(e) => onKeyDown(e, i)}
         onpaste={(e) => onPaste(e, i)}
+        onfocus={(e) => (e.target as HTMLInputElement).select()}
       />
     {/each}
   </div>

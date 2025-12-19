@@ -16,11 +16,11 @@
 		disabled?: boolean;
 		style?: string;
 		flipInRtl?: boolean;
-		showTitle?: boolean;
 		loadingLabel?: string;
 		type?: "button" | "submit" | "reset";
-		ref?: HTMLButtonElement | null | ((node: HTMLElement) => void);
+		ref?: HTMLButtonElement | null;
 		class?: string;
+		describedBy?: string;
 		/** 기본 상태 aria-label */
 		label?: string;
 		/** 복사 완료 상태 aria-label */
@@ -47,10 +47,10 @@
 		disabled = false,
 		style,
 		flipInRtl = false,
-		showTitle = false,
 		loadingLabel,
 		type = "button",
 		ref = $bindable(null),
+		describedBy,
 		label = "Copy to clipboard",
 		copiedLabel = "Copied to clipboard",
 		icon = "copy",
@@ -101,12 +101,12 @@
 	{size}
 	{variant}
 	{intent}
-		{disabled}
+	{disabled}
 	style={style}
 	{flipInRtl}
-	{showTitle}
 	{loadingLabel}
 	class={className}
+	aria-describedby={describedBy}
 	label={copied ? copiedLabel : label}
 	icon={copied ? copiedIcon : icon}
 	onclick={handleClick}

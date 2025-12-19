@@ -1,5 +1,0 @@
-A11y/UX Report - 2025-12-18T05-14-25
-Target: src
-Elapsed: 124ms
-========================================
-✅ No issues found.

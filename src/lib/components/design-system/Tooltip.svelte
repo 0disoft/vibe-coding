@@ -9,13 +9,16 @@
 		"aria-describedby"?: string;
 	};
 
-	interface Props extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+	type As = "span" | "div";
+
+	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
 		content?: string;
 		disabled?: boolean;
 		delayMs?: number;
 		closeDelayMs?: number;
 		placement?: TooltipPlacement;
 		arrow?: boolean;
+		as?: As;
 
 		/** 터치 환경에서 툴팁을 기본 비활성(권장) */
 		disableOnCoarsePointer?: boolean;
@@ -31,6 +34,7 @@
 		closeDelayMs = 150,
 		placement = "top",
 		arrow = true,
+		as = "span",
 		disableOnCoarsePointer = true,
 		class: className = "",
 		children,
@@ -130,7 +134,8 @@
 	);
 </script>
 
-<span
+<svelte:element
+	this={as}
 	{...rest}
 	class={`ds-tooltip-wrapper ${className}`.trim()}
 	onpointerenter={onPointerEnter}
@@ -165,4 +170,4 @@
 			</div>
 		</div>
 	{/if}
-</span>
+</svelte:element>

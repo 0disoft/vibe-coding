@@ -1,15 +1,13 @@
-# Biome 변경 이력 (2024-09 ~ 2025-12)
+# Biome (문서 갱신: 2025-12-19)
 
 ## 1. 기간 내 주요 Biome 릴리스 타임라인
-
-2024-09-13 ~ 2025-12-08 동안, 개발자가 신경 써야 할 Biome 버전들만 뽑은 타임라인입니다.
 
 | 날짜       | 버전    | 구분  | 한 줄 요약                                                                 |
 | ---------- | ------ | ---- | ------------------------------------------------------------------------ |
 | 2024-09-15 | 1.9.1  | 패치 | `nursery/noProcessEnv` 추가, `noUndeclaredDependencies` Bun·@types 개선    |
 | 2024-09-19 | 1.9.2  | 패치 | React Refresh 스타일용 rule 추가, GritQL 커스텀 정의 지원                    |
 | 2024-10-01 | 1.9.3  | 패치 | 여러 새 린트 룰 추가, `useExhaustiveDependencies` 옵션 확장                  |
-| 2024-10-17 | 1.9.4  | 패치 | 주로 버그픽스, 새 규칙·중요 deprecate 없음                                    |
+| 2024-10-17 | 1.9.4  | 패치 | 버그픽스 중심, 2개 규칙 deprecate (`noInvalidNewBuiltin` → `noInvalidBuiltinInstantiation` 등) |
 | 2025-06-17 | 2.0.0  | 메이저 | Biome v2 출범, 타입 인식 린터·플러그인·글롭 엔진·임포트 정리 전면 개편       |
 | 2025-07-08 | 2.1.x  | 마이너 | 스캐너·타입 추론 강화, 일부 룰 업데이트                                       |
 | 2025-09경  | 2.2.0  | 마이너 | 폴더 ignore 방식 변경, 다수 룰 stable 승격, 스캐너 지능 개선                  |
@@ -82,7 +80,12 @@
 
 #### 1.9.4 (2024-10-17)
 
-1.9.4는 거의 순수 버그픽스 버전이라, 새 규칙이나 deprecate, 의미 있는 옵션 변화는 없습니다. 실제 코드 작성 관점에서는 "업데이트하면 더 정확해진다" 정도로 이해하면 충분합니다.
+1.9.4는 거의 버그픽스 중심 버전이지만, 다음 2개 규칙이 deprecate되었습니다:
+
+- `correctness/noInvalidNewBuiltin` → `correctness/noInvalidBuiltinInstantiation`로 대체
+- `style/useSingleCaseStatement` → `correctness/noSwitchDeclarations`로 대체
+
+실제 코드 작성 관점에서는 "업데이트하면 더 정확해진다" 정도로 이해하면 충분합니다.
 
 ---
 
@@ -147,7 +150,7 @@
 
 | 버전  | 범주            | 변경 내용                                                              | 코드 영향                                                                 |
 | ----- | --------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| 2.3.0 | 프론트엔드 프레임워크 | Vue, Svelte, Astro 파일에 대한 포맷팅·린트 정식 지원.                   | `.svelte`, `.astro` 파일에서 Prettier 대신 Biome 하나로 통합 가능.        |
+| 2.3.0 | 프론트엔드 프레임워크 | Vue, Svelte, Astro 파일에 대한 포맷팅·린트 **실험적 지원(옵트인 필요)**. | `.svelte`, `.astro` 파일에서 `html.experimentalFullSupportEnabled` 활성화 필요. |
 | 2.3.0 | Tailwind        | Tailwind v4 구성 요소에 맞춘 린트·포맷 지원 추가.                       | Tailwind v4로 넘어갈 계획이면 Biome도 2.3 계열로 올려야 함.               |
 | 2.3.0 | ignore 문법     | 새 ignore 문법 도입. CLI의 `--skip`, `--only`도 더 유연해짐.            | 룰/도메인 선택이 쉬워짐. monorepo에서 서브패키지별로 다른 룰 세트 구성 가능. |
 | 2.3.x | Formatter       | `lineEnding` 옵션 도입 및 개선으로, CRLF/LF 통일 전략을 Biome에서 통제 가능. | Windows와 Linux CI가 섞인 팀에서 줄바꿈 혼선 감소.                        |
@@ -160,7 +163,7 @@
 ### 지금 새로 세팅한다면
 
 - **최소 Biome v2.3 계열**이 사실상 정답
-- 이유: Svelte·Astro 정식 지원, Tailwind v4 대응, Vue·Astro까지 고려한 에코시스템 지원이 이 버전부터 제대로 들어갔기 때문
+- 이유: Svelte·Astro 실험적 지원(옵트인), Tailwind v4 대응, Vue·Astro까지 고려한 에코시스템 지원이 이 버전부터 들어갔기 때문
 
 ### Biome 1.x에서 바로 2.x로 올릴 때는
 
@@ -175,3 +178,13 @@
 
 - **Svelte 5 + SvelteKit 2를 Biome 하나로 관리하려면** → v2.3.x
 - **기존 1.x 프로젝트를 끌고 간다** → v2.0 마이그레이션 가이드에 나온 breaking change들만 정확히 이해하면, 나머지는 대부분 품질·경험 개선
+
+---
+
+## 4. 버전 정보 (2025-12-19 기준)
+
+| 항목         | 버전   |
+| :----------- | :----- |
+| Biome Latest | 2.3.10 |
+
+> **참조:** [Biome Releases](https://github.com/biomejs/biome/releases)

@@ -63,8 +63,12 @@
 		lastSyncedSelectedIso = nextIso;
 
 		if (!selectedDate) return;
-		view = startOfMonth(selectedDate);
-		focused = selectedDate;
+		if (!isSameMonth(selectedDate, view)) {
+			view = startOfMonth(selectedDate);
+		}
+		if (!isSameDay(selectedDate, focused)) {
+			focused = selectedDate;
+		}
 	});
 
 	let minDate = $derived(min ? parseIsoDate(min) : null);
@@ -193,7 +197,14 @@
 	bind:this={root}
 >
 	<div class="ds-calendar-header">
-		<div class="ds-calendar-caption" data-testid="ds-calendar-caption">{caption}</div>
+		<div
+			class="ds-calendar-caption"
+			data-testid="ds-calendar-caption"
+			aria-live="polite"
+			aria-atomic="true"
+		>
+			{caption}
+		</div>
 		<div class="ds-calendar-nav">
 			<DsIconButton
 				type="button"
@@ -248,6 +259,7 @@
 										aria-label={dayAriaLabel(day)}
 										aria-selected={selected ? "true" : "false"}
 										aria-current={isToday ? "date" : undefined}
+										aria-disabled={dayDisabled ? "true" : undefined}
 										disabled={dayDisabled}
 										tabindex={tabIndex}
 										data-testid={`ds-calendar-day-${iso}`}

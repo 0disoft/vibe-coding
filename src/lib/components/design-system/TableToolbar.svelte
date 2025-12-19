@@ -2,7 +2,7 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	import { DsInput } from "$lib/components/design-system";
+	import { DsIcon, DsInput } from "$lib/components/design-system";
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
 		title?: string;
@@ -22,7 +22,7 @@
 		title,
 		description,
 		count,
-		query,
+		query = $bindable(""),
 		onQueryChange,
 		placeholder = "Search…",
 		start,
@@ -31,14 +31,8 @@
 		...rest
 	}: Props = $props();
 
-	let localQuery = $state("");
-
-	$effect(() => {
-		if (query !== undefined) localQuery = query;
-	});
-
 	function update(next: string) {
-		localQuery = next;
+		query = next;
 		onQueryChange?.(next);
 	}
 </script>
@@ -68,14 +62,14 @@
 
 	<div class="ds-table-toolbar-controls">
 		<DsInput
-			value={localQuery}
+			value={query}
 			oninput={(e) => update((e.currentTarget as HTMLInputElement).value)}
 			placeholder={placeholder}
 			clearable
 			class="w-full"
 		>
 			{#snippet start()}
-				<span class="i-lucide-search h-4 w-4 text-muted-foreground"></span>
+				<DsIcon name="search" size="sm" class="text-muted-foreground" />
 			{/snippet}
 		</DsInput>
 

@@ -3,6 +3,7 @@
 	import type { HTMLButtonAttributes } from "svelte/elements";
 
 	import * as m from "$lib/paraglide/messages.js";
+	import { DsIcon } from "$lib/components/design-system";
 
 	import type { ButtonVariant, Intent, Size } from "./types";
 	import { toIntentCss } from "./types";
@@ -19,7 +20,7 @@
 		/** 로딩 시 SR에 읽힐 텍스트 */
 		loadingLabel?: string;
 		// Support both binding and callback (for actions)
-		ref?: HTMLButtonElement | null | ((node: HTMLElement) => void);
+		ref?: HTMLButtonElement | null | ((node: HTMLButtonElement) => void);
 		children?: Snippet;
 		start?: Snippet;
 		end?: Snippet;
@@ -115,16 +116,18 @@
 	data-ds-intent={intentCss}
 	data-ds-full-width={fullWidth ? "true" : undefined}
 	data-ds-loading={loading || undefined}
+	data-ds-disabled={isSoftDisabled ? "true" : undefined}
 	onclick={handleClick}
 	onkeydown={handleKeyDown}
 >
 	{#if loading}
-		<span
-			class="ds-icon i-lucide-loader-circle animate-spin"
+		<DsIcon
+			name="loader-circle"
+			size="inherit"
+			class="animate-spin"
+			style={`width: ${iconSize}; height: ${iconSize};`}
 			aria-hidden="true"
-			style:width={iconSize}
-			style:height={iconSize}
-		></span>
+		/>
 		<!-- SR용 로딩 상태 안내 -->
 		<span class="sr-only" aria-live="polite">{loadingLabel}</span>
 	{:else if start}

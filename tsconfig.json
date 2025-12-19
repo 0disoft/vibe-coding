@@ -22,7 +22,17 @@
 		"strict": true,
 		// import type 구문 강제 (런타임 번들 최적화)
 		"verbatimModuleSyntax": true
-	}
+	},
+	"exclude": [
+		"node_modules/**",
+		"src/service-worker.js",
+		"src/service-worker/**/*.js",
+		"src/service-worker.ts",
+		"src/service-worker/**/*.ts",
+		"src/service-worker.d.ts",
+		"src/service-worker/**/*.d.ts",
+		"src/lib/components/design-system/__test__/**"
+	]
 	// 경로 별칭은 SvelteKit이 자동 관리
 	// $lib: src/lib (기본 제공)
 	// 추가 별칭은 svelte.config.js의 kit.alias에서 설정

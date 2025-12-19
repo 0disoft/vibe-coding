@@ -46,7 +46,7 @@
 </script>
 
 <article {...rest} class={["ds-content-card", className].filter(Boolean).join(" ")}>
-  <DsCard tag={href ? "a" : "div"} href={href} padding="none" class="ds-content-card-inner">
+  <DsCard tag="div" padding="none" class="ds-content-card-inner">
     {#snippet header()}
       {#if imageSrc}
         <div class="ds-content-card-media" aria-hidden="true">
@@ -70,7 +70,13 @@
           </div>
         </div>
 
-        <div class="ds-content-card-title">{title}</div>
+        <div class="ds-content-card-title">
+          {#if href}
+            <a class="ds-content-card-link" href={href}>{title}</a>
+          {:else}
+            {title}
+          {/if}
+        </div>
         {#if excerpt}
           <div class="ds-content-card-excerpt">{excerpt}</div>
         {/if}

@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
 
-  import { DsButton, DsPopover } from "$lib/components/design-system";
+  import { DsButton, DsIcon, DsPopover } from "$lib/components/design-system";
+
+  import { parseIsoDate } from "./date-utils";
 
   export type DateRange = {
     start: string;
@@ -13,6 +15,8 @@
     onValueChange?: (next: DateRange) => void;
     disabled?: boolean;
     label?: string;
+    placeholder?: string;
+    locale?: string;
   }
 
   let {
@@ -20,6 +24,8 @@
     onValueChange,
     disabled = false,
     label = "Date range",
+    placeholder = "Select range…",
+    locale,
     class: className = "",
     ...rest
   }: Props = $props();
@@ -31,12 +37,27 @@
     onValueChange?.(next);
   }
 
-  function display(v: DateRange) {
-    if (!v.start && !v.end) return "Select range…";
-    if (v.start && !v.end) return `${v.start} – …`;
-    if (!v.start && v.end) return `… – ${v.end}`;
-    return `${v.start} – ${v.end}`;
+  function formatDate(value: string) {
+    const d = parseIsoDate(value);
+    if (!d) return value;
+    try {
+      const fmt = new Intl.DateTimeFormat(locale, {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      });
+      return fmt.format(d);
+    } catch {
+      return value;
+    }
   }
+
+  let displayValue = $derived.by(() => {
+    if (!value.start && !value.end) return placeholder;
+    const startLabel = value.start ? formatDate(value.start) : "…";
+    const endLabel = value.end ? formatDate(value.end) : "…";
+    return `${startLabel} – ${endLabel}`;
+  });
 
   function applyRef(node: HTMLElement, refFn: (node: HTMLElement) => void) {
     refFn(node);
@@ -72,9 +93,9 @@
         use:applyRef={props.ref}
       >
         <span class={value.start || value.end ? "truncate" : "truncate text-muted-foreground"}>
-          {display(value)}
+          {displayValue}
         </span>
-        <span class="i-lucide-calendar h-4 w-4 opacity-60"></span>
+        <DsIcon name="calendar" size="sm" class="opacity-60" />
       </button>
     {/snippet}
 
@@ -87,6 +108,7 @@
             class="ds-date-range-input"
             aria-label="Start"
             value={value.start}
+            max={value.end || undefined}
             oninput={(e) => set({ start: (e.target as HTMLInputElement).value, end: value.end })}
           />
         </label>
@@ -98,6 +120,7 @@
             class="ds-date-range-input"
             aria-label="End"
             value={value.end}
+            min={value.start || undefined}
             oninput={(e) => set({ start: value.start, end: (e.target as HTMLInputElement).value })}
           />
         </label>

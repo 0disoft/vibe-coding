@@ -4,8 +4,12 @@
 
 	import * as m from "$lib/paraglide/messages.js";
 
+	import { DsIcon } from "$lib/components/design-system";
+
 	import type { ButtonVariant, Intent, Size } from "./types";
 	import { toIntentCss } from "./types";
+
+	type AnchorClickEvent = Parameters<NonNullable<HTMLAnchorAttributes["onclick"]>>[0];
 
 	interface Props extends HTMLAnchorAttributes {
 		size?: Size;
@@ -35,6 +39,7 @@
 		children,
 		start,
 		end,
+		onclick,
 		...rest
 	}: Props = $props();
 
@@ -49,8 +54,7 @@
 			e.stopPropagation();
 			return;
 		}
-		// @ts-ignore
-		rest.onclick?.(e);
+		onclick?.(e as AnchorClickEvent);
 	}
 
 	// 클래스 조합
@@ -81,12 +85,11 @@
 	data-ds-disabled={isDisabled ? "true" : undefined}
 >
 	{#if loading}
-		<span
-			class="ds-icon i-lucide-loader-circle animate-spin"
-			aria-hidden="true"
-			style:width={iconSize}
-			style:height={iconSize}
-		></span>
+		<DsIcon
+			name="loader-circle"
+			size={size === "lg" ? "md" : "sm"}
+			class="animate-spin"
+		/>
 		<span class="sr-only" aria-live="polite">{loadingLabel}</span>
 	{:else if start}
 		{@render start()}

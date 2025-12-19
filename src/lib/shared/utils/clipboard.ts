@@ -38,7 +38,7 @@ export async function writeToClipboard(text: string): Promise<void> {
 		el.style.pointerEvents = 'none';
 		el.style.fontSize = '16px'; // iOS zoom 방지
 		document.body.appendChild(el);
-		el.focus();
+		el.focus({ preventScroll: true });
 		el.select();
 		el.setSelectionRange(0, el.value.length);
 
@@ -54,7 +54,7 @@ export async function writeToClipboard(text: string): Promise<void> {
 				// 일부 환경에서 selection 복구가 실패해도 치명적이지 않음
 			}
 		}
-		activeElement?.focus?.();
+		activeElement?.focus?.({ preventScroll: true });
 
 		if (ok) return;
 	}

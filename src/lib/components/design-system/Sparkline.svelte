@@ -12,6 +12,8 @@
     strokeWidth?: number;
     intent?: IntentWithNeutral;
     label?: string;
+    filled?: boolean;
+    showLastPoint?: boolean;
   };
 
   let {
@@ -22,6 +24,8 @@
     strokeWidth = 2,
     intent = "neutral",
     label,
+    filled = false,
+    showLastPoint = true,
     class: className = "",
     ...rest
   }: Props = $props();
@@ -65,6 +69,21 @@
     return [`M ${first.x} ${first.y}`, ...pts.slice(1).map((p) => `L ${p.x} ${p.y}`)].join(" ");
   });
 
+  let areaD = $derived.by(() => {
+    if (!filled || values.length === 0) return "";
+    const pts = values.map((_, i) => pointAt(i));
+    const first = pts[0];
+    const last = pts[pts.length - 1];
+    if (!first || !last) return "";
+    const bottom = height - padding;
+    return `${d} L ${last.x} ${bottom} L ${first.x} ${bottom} Z`;
+  });
+
+  let lastPoint = $derived.by(() => {
+    if (!showLastPoint || values.length === 0) return null;
+    return pointAt(values.length - 1);
+  });
+
   let ariaHidden = $derived(label ? undefined : true);
   let role = $derived(label ? "img" : undefined);
 </script>
@@ -84,6 +103,9 @@
     <title>{label}</title>
     <desc>min {min}, max {max}</desc>
   {/if}
+  {#if filled && areaD}
+    <path d={areaD} fill="currentColor" class="ds-sparkline-fill" stroke="none" />
+  {/if}
   <path
     d={d}
     fill="none"
@@ -93,5 +115,12 @@
     stroke-linejoin="round"
     vector-effect="non-scaling-stroke"
   />
+  {#if lastPoint}
+    <circle
+      cx={lastPoint.x}
+      cy={lastPoint.y}
+      r={strokeWidth + 1.5}
+      fill="currentColor"
+    />
+  {/if}
 </svg>
-

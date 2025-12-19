@@ -4,7 +4,7 @@
 
   import DsSheet from "./Sheet.svelte";
 
-  interface Props extends Omit<HTMLAttributes<HTMLDialogElement>, "children"> {
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
     id: string;
     title: string;
     description?: string;

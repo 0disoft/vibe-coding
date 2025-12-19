@@ -34,7 +34,7 @@
 
 	const defaultIconByIntent: Record<string, string> = {
 		neutral: "info",
-		primary: "sparkles",
+		primary: "star",
 		secondary: "info",
 		success: "circle-check",
 		warning: "triangle-alert",
@@ -67,7 +67,7 @@
 
 	<div class="ds-alert-body">
 		{#if title}
-			<div class="ds-alert-title">{title}</div>
+			<h5 class="ds-alert-title">{title}</h5>
 		{/if}
 
 		{#if description}

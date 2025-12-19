@@ -19,6 +19,14 @@
 
   let safeCols = $derived(Math.min(8, Math.max(1, Math.floor(columns))));
   let safeRows = $derived(Math.min(12, Math.max(1, Math.floor(rows))));
+
+  function headerWidth(index: number) {
+    return `${45 + (index * 11) % 35}%`;
+  }
+
+  function cellWidth(row: number, col: number) {
+    return `${40 + ((row + col) * 13) % 50}%`;
+  }
 </script>
 
 <div {...rest} class={["ds-table-scroll", className].filter(Boolean).join(" ")}>
@@ -30,7 +38,7 @@
             {#each Array.from({ length: safeCols }) as _, i (i)}
               <th class="ds-table-th">
                 <div class="px-[0.9rem] py-[0.7rem]">
-                  <DsSkeleton width="70%" height={12} />
+                  <DsSkeleton width={headerWidth(i)} height={12} />
                 </div>
               </th>
             {/each}
@@ -42,7 +50,7 @@
           <tr class="ds-table-tr">
             {#each Array.from({ length: safeCols }) as __, c (c)}
               <td class="ds-table-td">
-                <DsSkeleton width={c === 0 ? "55%" : "80%"} height={12} />
+                <DsSkeleton width={cellWidth(r, c)} height={12} />
               </td>
             {/each}
           </tr>
@@ -51,4 +59,3 @@
     </table>
   </div>
 </div>
-

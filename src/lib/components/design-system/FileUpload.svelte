@@ -158,6 +158,7 @@
 		bind:this={inputEl}
 		id={inputId}
 		class="sr-only"
+		tabindex="-1"
 		type="file"
 		{name}
 		{accept}
@@ -176,7 +177,11 @@
 		aria-disabled={disabled ? "true" : undefined}
 		aria-describedby={describedBy}
 		data-active={isDragActive ? "true" : undefined}
-		onclick={openPicker}
+		onclick={(e) => {
+			const target = e.target as HTMLElement | null;
+			if (target?.closest(".ds-file-dropzone-actions")) return;
+			openPicker();
+		}}
 		onkeydown={(e) => {
 			if (e.key === "Enter" || e.key === " ") {
 				e.preventDefault();
@@ -221,9 +226,11 @@
 					variant="ghost"
 					intent="secondary"
 					disabled={disabled || files.length === 0}
+					aria-disabled={disabled || files.length === 0 ? "true" : undefined}
 					onclick={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
+						if (files.length === 0) return;
 						clearAll();
 					}}
 				>

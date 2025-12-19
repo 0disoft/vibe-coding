@@ -10,8 +10,8 @@
   export const DS_DIRECTION_CONTEXT = Symbol("ds-direction");
 
   export type DirectionContext = {
-    locale: Locale;
-    dir: Direction;
+    readonly locale: Locale;
+    readonly dir: Direction;
   };
 
   interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
@@ -33,17 +33,16 @@
   let resolvedLocale = $derived<Locale>(locale ?? getLocaleFromUrl(page.url));
   let resolvedDir = $derived<Direction>(getDirForLocale(resolvedLocale));
 
-  let ctx = $state<DirectionContext>({
-    locale: resolvedLocale,
-    dir: resolvedDir,
-  });
+  const ctx: DirectionContext = {
+    get locale() {
+      return resolvedLocale;
+    },
+    get dir() {
+      return resolvedDir;
+    },
+  };
 
   setContext(DS_DIRECTION_CONTEXT, ctx);
-
-  $effect(() => {
-    ctx.locale = resolvedLocale;
-    ctx.dir = resolvedDir;
-  });
 
   $effect(() => {
     if (!applyToDocument) return;
@@ -55,8 +54,21 @@
   });
 </script>
 
-<div {...rest} class={["contents", className].filter(Boolean).join(" ")}>
-  {#if children}
-    {@render children()}
-  {/if}
-</div>
+{#if applyToDocument}
+  <div {...rest} class={["contents", className].filter(Boolean).join(" ")}>
+    {#if children}
+      {@render children()}
+    {/if}
+  </div>
+{:else}
+  <div
+    {...rest}
+    class={className}
+    dir={resolvedDir}
+    lang={resolvedLocale}
+  >
+    {#if children}
+      {@render children()}
+    {/if}
+  </div>
+{/if}

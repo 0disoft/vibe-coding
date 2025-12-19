@@ -4,7 +4,6 @@
 
 	import { page } from "$app/state";
 
-	import { setLocale } from "$lib/paraglide/runtime.js";
 	import {
 		buildLocalizedUrl,
 		getLocaleFromUrl,
@@ -17,6 +16,7 @@
 
 	import DsDropdown from "./Dropdown.svelte";
 	import DsDropdownItem from "./DropdownItem.svelte";
+	import DsIcon from "./Icon.svelte";
 	import DsIconButton from "./IconButton.svelte";
 	import DsInput from "./Input.svelte";
 
@@ -97,7 +97,6 @@
 
 	function changeLocale(next: Locale) {
 		if (next === currentLocale) return;
-		setLocale(next, { reload: false });
 		// Paraglide가 쿠키를 굽더라도 옵션(Path/SameSite/Secure/Max-Age)을 SSOT로 한 번 더 고정
 		writeLocaleCookie(next);
 		onValueChange?.(next);
@@ -131,17 +130,19 @@
 		align="end"
 		{open}
 		onOpenChange={handleOpenChange}
-		menuClass="!min-w-fit w-max max-h-[360px] overflow-y-auto thin-scrollbar p-1"
+		menuClass="!min-w-fit w-max max-h-[360px] overflow-y-auto overscroll-contain thin-scrollbar p-1"
 		itemSelector={'[role="menuitemradio"]'}
 	>
-		{#snippet trigger(props)}
-			<DsIconButton
-				{...props}
-				{label}
-				data-testid={triggerTestId ?? "ds-locale-switcher"}
-			>
-				<span class="i-lucide-languages h-4 w-4"></span>
-			</DsIconButton>
+		{#snippet trigger({ ref, ...props })}
+			<span class="contents" use:ref>
+				<DsIconButton
+					{...props}
+					{label}
+					data-testid={triggerTestId ?? "ds-locale-switcher"}
+				>
+					<span class="i-lucide-languages h-4 w-4"></span>
+				</DsIconButton>
+			</span>
 		{/snippet}
 
 		{#snippet header()}
@@ -155,10 +156,7 @@
 						aria-label={searchPlaceholder}
 					>
 						{#snippet start()}
-							<span
-								class="i-lucide-search h-4 w-4 text-muted-foreground"
-								aria-hidden="true"
-							></span>
+							<DsIcon name="search" size="sm" class="text-muted-foreground" />
 						{/snippet}
 					</DsInput>
 				</div>
@@ -166,36 +164,47 @@
 		{/snippet}
 
 		{#snippet children({ close })}
-			{#each filtered as item (item.locale)}
-				{@const isCurrent = item.locale === currentLocale}
-				{@const isDisabled = disableCurrent && isCurrent}
+			{#if filtered.length === 0}
+				<div class="px-3 py-2 text-sm text-muted-foreground">
+					No languages found.
+				</div>
+			{:else}
+				{#each filtered as item (item.locale)}
+					{@const isCurrent = item.locale === currentLocale}
+					{@const isDisabled = disableCurrent && isCurrent}
 
-				<DsDropdownItem
-					href={isDisabled ? undefined : hrefFor(item.locale)}
-					type="button"
-					role="menuitemradio"
-					aria-checked={isCurrent}
-					aria-current={isCurrent ? "page" : undefined}
-					hreflang={item.locale}
-					disabled={isDisabled}
-					class="whitespace-nowrap"
-					onclick={(e) => {
-						if (isDisabled) return;
-						// SvelteKit가 a 클릭을 가로채기 전에 쿠키(선호 언어)를 먼저 갱신
-						changeLocale(item.locale);
-						close();
-					}}
-				>
-					{#snippet children()}
-						<span class="flex min-w-0 items-center justify-between gap-3">
-							<span class="min-w-0 truncate">{item.info.selfName}</span>
-							<span class="text-xs text-muted-foreground"
-								>{item.locale.toUpperCase()}</span
-							>
-						</span>
-					{/snippet}
-				</DsDropdownItem>
-			{/each}
+					<DsDropdownItem
+						href={isDisabled ? undefined : hrefFor(item.locale)}
+						type="button"
+						role="menuitemradio"
+						aria-checked={isCurrent}
+						aria-current={isCurrent ? "page" : undefined}
+						hreflang={item.locale}
+						disabled={isDisabled}
+						class="whitespace-nowrap"
+						onclick={(e) => {
+							if (isDisabled) return;
+							// SvelteKit가 a 클릭을 가로채기 전에 쿠키(선호 언어)를 먼저 갱신
+							changeLocale(item.locale);
+							close();
+						}}
+					>
+						{#snippet children()}
+							<span class="flex min-w-0 items-center justify-between gap-3">
+								<span class="min-w-0 truncate">{item.info.selfName}</span>
+								<span
+									class="flex items-center gap-1 text-xs text-muted-foreground"
+								>
+									<span>{item.locale.toUpperCase()}</span>
+									{#if isCurrent}
+										<DsIcon name="check" size="sm" class="text-primary" />
+									{/if}
+								</span>
+							</span>
+						{/snippet}
+					</DsDropdownItem>
+				{/each}
+			{/if}
 		{/snippet}
 	</DsDropdown>
 </div>

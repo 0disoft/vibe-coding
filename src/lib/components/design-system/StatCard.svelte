@@ -12,6 +12,7 @@
 		helper?: string;
 		delta?: string;
 		trend?: Trend;
+		reverseTrend?: boolean;
 		icon?: string;
 		action?: Snippet;
 		bottom?: Snippet;
@@ -26,6 +27,7 @@
 		helper,
 		delta,
 		trend = "neutral",
+		reverseTrend = false,
 		icon,
 		action,
 		bottom,
@@ -40,6 +42,12 @@
 	let trendIcon = $derived(
 		trend === "up" ? "trending-up" : trend === "down" ? "trending-down" : "minus",
 	);
+	let effectiveTrend = $derived(() => {
+		if (!reverseTrend) return trend;
+		if (trend === "up") return "down";
+		if (trend === "down") return "up";
+		return trend;
+	});
 
 	// Spread 타입 추론 비용을 줄이기 위한 forwarding
 	let forwarded = $derived(rest as Record<string, any>);
@@ -71,12 +79,12 @@
 
 		{#if hasDelta || helper}
 			<div class="ds-stat-card-meta">
-				{#if hasDelta}
-					<div class="ds-stat-card-delta" data-ds-trend={trend}>
-						<DsIcon name={trendIcon} size="sm" />
-						<span>{delta}</span>
-					</div>
-				{/if}
+		{#if hasDelta}
+			<div class="ds-stat-card-delta" data-ds-trend={effectiveTrend}>
+				<DsIcon name={trendIcon} size="sm" />
+				<span>{delta}</span>
+			</div>
+		{/if}
 				{#if helper}
 					<div class="ds-stat-card-helper">{helper}</div>
 				{/if}

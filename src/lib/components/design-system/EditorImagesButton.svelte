@@ -39,10 +39,13 @@
   let open = $state(false);
   let files = $state<File[]>([]);
 
+  $effect(() => {
+    if (!open) files = [];
+  });
+
   function insert() {
     if (!files.length) return;
     onInsert?.(files);
-    files = [];
     open = false;
   }
 </script>
@@ -50,10 +53,7 @@
 <div {...rest} class={["inline-flex", className].filter(Boolean).join(" ")}>
   <DsPopover
     open={open}
-    onOpenChange={(next) => {
-      open = next;
-      if (!next) files = [];
-    }}
+    onOpenChange={(next) => (open = next)}
     side="bottom"
     align="start"
     label={label}
@@ -69,21 +69,12 @@
         intent="neutral"
         pressed={pressed || open}
         disabled={disabled}
-        onclick={() => (open = !open)}
       />
     {/snippet}
 
     {#snippet children({ close })}
       <div class="grid gap-3">
-        <DsMediaPicker
-          files={files}
-          onFilesChange={(next) => (files = next)}
-          {accept}
-          {multiple}
-          {maxFiles}
-          {maxSizeBytes}
-          {disabled}
-        />
+        <DsMediaPicker bind:files {accept} {multiple} {maxFiles} {maxSizeBytes} {disabled} />
 
         <div class="flex items-center justify-end gap-2">
           <DsButton
@@ -92,7 +83,6 @@
             intent="secondary"
             {disabled}
             onclick={() => {
-              files = [];
               close({ focusButton: true });
             }}
           >
@@ -114,4 +104,3 @@
     {/snippet}
   </DsPopover>
 </div>
-

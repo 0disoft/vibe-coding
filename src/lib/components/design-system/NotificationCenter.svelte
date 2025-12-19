@@ -60,14 +60,11 @@
 	let filterState = createControllableState<"all" | "unread">({
 		value: () => filter ?? undefined,
 		onChange: (next) => onFilterChange?.(next),
-		defaultValue: defaultFilter,
+		defaultValue: () => defaultFilter,
 	});
 
-	let unreadCount = $derived(items.filter((i) => !i.read).length);
-	let visibleItems = $derived.by(() => {
-		if (filterState.value === "unread") return items.filter((i) => !i.read);
-		return items;
-	});
+	let unreadItems = $derived(items.filter((i) => !i.read));
+	let unreadCount = $derived(unreadItems.length);
 
 	const intentIcon: Record<string, string> = {
 		neutral: "bell",
@@ -81,6 +78,69 @@
 		onOpen?.(item.id);
 	}
 </script>
+
+{#snippet notificationList(list: NotificationItem[], label: string)}
+	<ul class="ds-notification-list" aria-label={label}>
+		{#if list.length === 0}
+			<li class="ds-notification-empty">{emptyText}</li>
+		{:else}
+			{#each list as item (item.id)}
+				<li
+					class="ds-notification-item"
+					data-read={item.read ? "true" : undefined}
+					data-disabled={item.disabled ? "true" : undefined}
+				>
+					<button
+						type="button"
+						class="ds-notification-main ds-focus-ring flex items-start text-start gap-3 py-2"
+						onclick={() => openItem(item)}
+						disabled={item.disabled}
+					>
+						<span class="ds-notification-icon mt-1 shrink-0" aria-hidden="true">
+							<DsIcon
+								name={intentIcon[item.intent ?? "neutral"] ?? "bell"}
+								size="sm"
+							/>
+						</span>
+						<span class="ds-notification-text">
+							<span class="ds-notification-item-title">{item.title}</span>
+							{#if item.message}
+								<span class="ds-notification-item-message">{item.message}</span>
+							{/if}
+							{#if item.meta}
+								<span class="ds-notification-item-meta">{item.meta}</span>
+							{/if}
+						</span>
+					</button>
+
+					<div class="ds-notification-item-actions">
+						{#if action}
+							{@render action(item)}
+						{/if}
+						<DsIconButton
+							icon="check"
+							label="Mark read"
+							size="sm"
+							variant="ghost"
+							intent="neutral"
+							disabled={item.read || item.disabled}
+							onclick={() => onMarkRead?.(item.id)}
+						/>
+						<DsIconButton
+							icon="x"
+							label="Dismiss"
+							size="sm"
+							variant="ghost"
+							intent="neutral"
+							disabled={item.disabled}
+							onclick={() => onDismiss?.(item.id)}
+						/>
+					</div>
+				</li>
+			{/each}
+		{/if}
+	</ul>
+{/snippet}
 
 <div
 	{...rest}
@@ -114,139 +174,14 @@
 		<DsTabsList class="w-full justify-start">
 			<DsTabsTrigger value="all">All</DsTabsTrigger>
 			<DsTabsTrigger value="unread">Unread</DsTabsTrigger>
-		</DsTabsList>
+	</DsTabsList>
 
-		<DsTabsContent value="all">
-			<ul class="ds-notification-list" aria-label="Notification list">
-				{#if visibleItems.length === 0}
-					<li class="ds-notification-empty">{emptyText}</li>
-				{:else}
-					{#each visibleItems as item (item.id)}
-						<li
-							class="ds-notification-item"
-							data-read={item.read ? "true" : undefined}
-							data-disabled={item.disabled ? "true" : undefined}
-						>
-							<button
-								type="button"
-								class="ds-notification-main ds-focus-ring flex items-start text-start gap-3 py-2"
-								onclick={() => openItem(item)}
-								disabled={item.disabled}
-							>
-								<span
-									class="ds-notification-icon mt-1 shrink-0"
-									aria-hidden="true"
-								>
-									<DsIcon
-										name={intentIcon[item.intent ?? "neutral"] ?? "bell"}
-										size="sm"
-									/>
-								</span>
-								<span class="ds-notification-text">
-									<span class="ds-notification-item-title">{item.title}</span>
-									{#if item.message}
-										<span class="ds-notification-item-message"
-											>{item.message}</span
-										>
-									{/if}
-									{#if item.meta}
-										<span class="ds-notification-item-meta">{item.meta}</span>
-									{/if}
-								</span>
-							</button>
+	<DsTabsContent value="all">
+		{@render notificationList(items, "Notification list")}
+	</DsTabsContent>
 
-							<div class="ds-notification-item-actions">
-								{#if action}
-									{@render action(item)}
-								{/if}
-								<DsIconButton
-									icon="check"
-									label="Mark read"
-									size="sm"
-									variant="ghost"
-									intent="neutral"
-									disabled={item.read || item.disabled}
-									onclick={() => onMarkRead?.(item.id)}
-								/>
-								<DsIconButton
-									icon="x"
-									label="Dismiss"
-									size="sm"
-									variant="ghost"
-									intent="neutral"
-									disabled={item.disabled}
-									onclick={() => onDismiss?.(item.id)}
-								/>
-							</div>
-						</li>
-					{/each}
-				{/if}
-			</ul>
-		</DsTabsContent>
-
-		<DsTabsContent value="unread">
-			<ul class="ds-notification-list" aria-label="Unread notification list">
-				{#if visibleItems.length === 0}
-					<li class="ds-notification-empty">{emptyText}</li>
-				{:else}
-					{#each visibleItems as item (item.id)}
-						<li
-							class="ds-notification-item"
-							data-read={item.read ? "true" : undefined}
-							data-disabled={item.disabled ? "true" : undefined}
-						>
-							<button
-								type="button"
-								class="ds-notification-main ds-focus-ring"
-								onclick={() => openItem(item)}
-								disabled={item.disabled}
-							>
-								<span class="ds-notification-icon" aria-hidden="true">
-									<DsIcon
-										name={intentIcon[item.intent ?? "neutral"] ?? "bell"}
-										size="sm"
-									/>
-								</span>
-								<span class="ds-notification-text">
-									<span class="ds-notification-item-title">{item.title}</span>
-									{#if item.message}
-										<span class="ds-notification-item-message"
-											>{item.message}</span
-										>
-									{/if}
-									{#if item.meta}
-										<span class="ds-notification-item-meta">{item.meta}</span>
-									{/if}
-								</span>
-							</button>
-
-							<div class="ds-notification-item-actions">
-								{#if action}
-									{@render action(item)}
-								{/if}
-								<DsIconButton
-									icon="check"
-									label="Mark read"
-									size="sm"
-									variant="ghost"
-									intent="neutral"
-									disabled={item.read || item.disabled}
-									onclick={() => onMarkRead?.(item.id)}
-								/>
-								<DsIconButton
-									icon="x"
-									label="Dismiss"
-									size="sm"
-									variant="ghost"
-									intent="neutral"
-									disabled={item.disabled}
-									onclick={() => onDismiss?.(item.id)}
-								/>
-							</div>
-						</li>
-					{/each}
-				{/if}
-			</ul>
-		</DsTabsContent>
+	<DsTabsContent value="unread">
+		{@render notificationList(unreadItems, "Unread notification list")}
+	</DsTabsContent>
 	</DsTabs>
 </div>

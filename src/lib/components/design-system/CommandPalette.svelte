@@ -15,7 +15,7 @@
   };
 
   interface Props {
-    open: boolean;
+    open?: boolean;
     onOpenChange?: (next: boolean) => void;
     title?: string;
     description?: string;
@@ -27,7 +27,7 @@
   }
 
   let {
-    open,
+    open = $bindable(false),
     onOpenChange,
     title = "Command Palette",
     description,
@@ -113,7 +113,10 @@
   function choose(item: CommandItem) {
     if (item.disabled) return;
     onSelect?.(item.id);
-    onOpenChange?.(false);
+    if (open !== false) {
+      open = false;
+      onOpenChange?.(false);
+    }
   }
 
   function onKeyDown(e: KeyboardEvent) {
@@ -139,7 +142,7 @@
   id="ds-command-palette"
   title={title}
   {description}
-  {open}
+  bind:open
   onOpenChange={onOpenChange}
   size="lg"
   closeOnOutsideClick

@@ -1,4 +1,4 @@
-# Svelte 5 & SvelteKit 2
+# Svelte 5 & SvelteKit 2 (문서 갱신: 2025-12-19)
 
 ---
 
@@ -43,13 +43,14 @@
 | :-------- | :----- | :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
 | **25.01** | 2.10.0 | **`init` Hook**         | **[성능]** 서버 시작 시 단 1회 실행 보장. DB 연결, 캐시 웜업 등 고비용 초기화 로직을 `handle` 훅에서 분리하여 요청 처리 지연 제거.        |
 | **25.01** | 2.11.0 | `transport` Hook        | 비 POJO 데이터(Date, Map 등)의 직렬화/역직렬화 표준화. 데이터 무결성 보장.                                                                |
-| **25.01** | 2.12.0 | **State Migration**     | **[중요]** `$app/stores`가 `$app/state`로 대체됨. 신규 프로젝트는 `$app/state` 사용이 강제되며, 기존 프로젝트는 점진적 마이그레이션 필수. |
+| **25.01** | 2.12.0 | **State Migration**     | **[중요]** `$app/stores`는 deprecated이며 SvelteKit 3에서 제거 예정. 신규/유지보수 관점에서 `$app/state`로 조기 전환 권장.                  |
 | **25.01** | 2.13+  | `bundleStrategy`        | Edge/Serverless 환경에 맞춰 번들링 전략(Split/Single/Inline) 세분화 제어 가능.                                                            |
 | **25.03** | 2.17.0 | Server Route Resolution | 라우팅 로직을 서버로 위임하여 클라이언트 초기 JS 페이로드 감소. 대규모 앱의 초기 로딩 성능 최적화 옵션.                                   |
-| **25.03** | Pre    | Native WebSocket        | SvelteKit 내장 WebSocket 지원(실험적). 별도 소켓 서버 구축 비용 절감 및 통합 개발 환경 제공.                                              |
+| **25.03** | Pre    | Native WebSocket        | SvelteKit 내장 WebSocket 지원 **(실험/프리뷰로 테스트 가능)**. 정식 포함 여부는 릴리스 노트 기준 확인 필요.                               |
 | **25.04** | 2.18+  | Async `reroute`         | 리다이렉트 로직의 비동기 처리 허용. 복잡한 인증/권한 검사 로직을 라우팅 단계에서 효율적으로 처리 가능.                                    |
 | **25.11** | 2.44.0 | Remote Func Context     | Remote function 내 `event.route`, `event.url` 접근 허용. 호출 컨텍스트 기반의 정밀한 로깅 및 보안 검사 가능.                              |
 | **25.11** | 2.47.0 | `request.signal`        | `AbortSignal` 연동을 통해 요청 취소 시 백엔드 리소스 점유 즉시 해제(Resource Cleanup).                                                    |
+| **25.12** | 2.49.2 | (Latest)                | 2.47.0 이후 패치 릴리스들이 추가됨. 안정성 및 버그 수정 포함.                                                                             |
 
 ### 3-2. 인프라 및 어댑터
 
@@ -65,17 +66,28 @@
 
 ### 4-1. 신규 프로젝트 (Greenfield)
 
-- **상태 관리:** `$app/stores` 사용을 금지하고 전적으로 `$app/state` 기반 설계를 채택하십시오.
+- **상태 관리:** `$app/stores`는 deprecated(SvelteKit 3에서 제거 예정)이므로 `$app/state` 기반 설계를 채택하십시오.
 - **에러 제어:** 최상위 레이아웃 및 주요 컴포넌트 래퍼에 `<svelte:boundary>`를 적용하여 장애 전파를 차단하십시오.
 - **초기화 최적화:** DB 연결 등 전역 리소스는 반드시 `init` 훅에 배치하여 요청 당 오버헤드를 제거하십시오.
 - **보안 및 식별:** SSR 환경에서의 ID 충돌 방지를 위해 `$props.id()` 사용을 표준화하십시오.
 
 ### 4-2. 운영 중인 프로젝트 (Legacy Migration)
 
-1. **스토어 점검:** `$app/stores` 의존성을 파악하고 CLI 마이그레이션 도구를 활용하여 `$app/state`로 전환 계획을 수립하십시오. 이는 장기적 유지보수를 위해 필수적입니다.
+1. **스토어 점검:** `$app/stores`는 deprecated이며 SvelteKit 3에서 제거 예정이므로, CLI 마이그레이션 도구를 활용하여 `$app/state`로 전환 계획을 수립하십시오.
 2. **배포 환경 업데이트:**
    - **Cloudflare:** 레거시 어댑터를 제거하고 통합 어댑터(`adapter-cloudflare`)로 교체하십시오.
    - **Vercel:** 모니터링 가시성 확보를 위해 최신 어댑터로 업데이트하십시오.
 3. **CI/CD 수정:** pnpm 10 도입 시 `package.json`의 scripts 섹션에 `"prepare": "svelte-kit sync"`가 누락되지 않았는지 검증하십시오.
 
 본 리포트는 불확실한 예측을 배제하고 검증된 변경 사항만을 다루었습니다. Svelte 5와 SvelteKit 2는 더 이상 실험적인 프레임워크가 아니며, 명확한 아키텍처 원칙을 요구하는 성숙한 플랫폼으로 진화했습니다. 지금이 바로 기술 부채를 청산하고 모던 아키텍처로 전환할 적기입니다.
+
+---
+
+## 5. 버전 정보 (2025-12-19 기준)
+
+| 패키지    | 최신 버전 |
+| :-------- | :-------- |
+| Svelte    | 5.45.10   |
+| SvelteKit | 2.49.2    |
+
+> **참조:** [Svelte Releases](https://github.com/sveltejs/svelte/releases), [SvelteKit Releases](https://github.com/sveltejs/kit/releases)

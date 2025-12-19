@@ -29,10 +29,12 @@
 		header,
 		children,
 		footer,
+		onclick,
+		onkeydown,
 		...rest
 	}: Props = $props();
 
-	let hasOnClick = $derived(!!rest.onclick);
+	let hasOnClick = $derived(!!onclick);
 	let isLink = $derived(!!href);
 	let isInteractive = $derived(isLink || hasOnClick);
 
@@ -61,9 +63,12 @@
 
 	/** role=button 패턴: Enter/Space로 클릭 활성화 */
 	function handleKeyDown(e: KeyboardEvent) {
+		onkeydown?.(e as KeyboardEvent & { currentTarget: EventTarget & HTMLElement });
+		if (e.defaultPrevented) return;
 		if (!needsButtonSemantics) return;
 		if (e.key === "Enter" || e.key === " ") {
 			e.preventDefault(); // Space 스크롤 방지
+			e.stopPropagation();
 			(e.currentTarget as HTMLElement).click();
 		}
 	}
@@ -81,6 +86,7 @@
 	data-ds-interactive={isInteractive || undefined}
 	role={computedRole}
 	tabindex={computedTabIndex}
+	onclick={onclick}
 	onkeydown={handleKeyDown}
 >
 	{#if header}

@@ -19,6 +19,7 @@
 		end?: Snippet;
 		/** 지우기 버튼 레이블 (i18n) */
 		clearLabel?: string;
+		onkeydown?: (e: KeyboardEvent) => void;
 	}
 
 	let {
@@ -34,12 +35,9 @@
 		class: className = "",
 		start,
 		end,
+		onkeydown,
 		...rest
 	}: Props = $props();
-
-	// onkeydown은 Props(HTMLInputAttributes)에 포함되어 있으나,
-	// rest로 넘어올 때 Svelte 5의 이벤트 바인딩 처리와 충돌할 수 있으므로 명시적으로 추출하여 사용 권장
-	let { onkeydown } = rest as { onkeydown?: (e: KeyboardEvent) => void };
 
 	async function handleClear(e?: Event) {
 		e?.stopPropagation();
@@ -120,6 +118,19 @@
 	{#if end}
 		<div class="ds-input-adornment end">
 			{@render end()}
+			{#if showClearBtn}
+				<DsIconButton
+					type="button"
+					icon="x"
+					size="sm"
+					variant="ghost"
+					intent="secondary"
+					label={clearLabel}
+					onclick={handleClear}
+					onmousedown={(e) => e.preventDefault()}
+					tabindex={-1}
+				/>
+			{/if}
 		</div>
 	{:else if showClearBtn}
 		<div class="ds-input-adornment end">
@@ -132,6 +143,7 @@
 				label={clearLabel}
 				onclick={handleClear}
 				onmousedown={(e) => e.preventDefault()}
+				tabindex={-1}
 			/>
 		</div>
 	{/if}

@@ -34,8 +34,11 @@
 
   let isDisabled = $derived(!!rest.disabled);
   let isMixed = $derived(indeterminate);
+  let hasVisibleLabel = $derived(!!(label || children));
   let ariaChecked = $derived<"mixed" | undefined>(isMixed ? "mixed" : undefined);
-  let resolvedAriaLabel = $derived(rest["aria-label"] ?? label);
+  let resolvedAriaLabel = $derived(
+    hasVisibleLabel ? undefined : rest["aria-label"] ?? label,
+  );
 
   let rootClass = $derived(["ds-checkbox", className].filter(Boolean).join(" "));
 </script>
@@ -54,7 +57,7 @@
 
   <span class="ds-checkbox-control" aria-hidden="true">
     {#if isMixed}
-      <span class="ds-checkbox-indeterminate"></span>
+      <DsIcon name="minus" size="sm" />
     {:else if checked}
       <DsIcon name="check" size="sm" />
     {/if}

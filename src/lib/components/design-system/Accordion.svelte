@@ -13,6 +13,7 @@
     onValueChange?: (next: Value) => void;
     /** type="single"일 때, 열린 항목을 닫을 수 있게 허용 */
     collapsible?: boolean;
+    disabled?: boolean;
     id?: string;
     children?: Snippet;
   }
@@ -22,6 +23,7 @@
     value,
     onValueChange,
     collapsible = true,
+    disabled = false,
     id: idProp,
     class: className = "",
     children,
@@ -33,15 +35,21 @@
 
   let uncontrolledValue = $state<Value>("");
 
+  function normalizeValue(next: Value): Value {
+    if (type === "multiple") {
+      if (Array.isArray(next)) return next;
+      return next ? [next] : [];
+    }
+    if (Array.isArray(next)) return next[0] ?? "";
+    return next;
+  }
+
   $effect(() => {
     // controlled 모드에서는 내부 값을 건드리지 않음
     if (value !== undefined) return;
 
-    if (type === "multiple" && !Array.isArray(uncontrolledValue)) {
-      uncontrolledValue = [];
-    } else if (type === "single" && Array.isArray(uncontrolledValue)) {
-      uncontrolledValue = "";
-    }
+    const normalized = normalizeValue(uncontrolledValue);
+    if (normalized !== uncontrolledValue) uncontrolledValue = normalized;
   });
 
   function currentValue(): Value {
@@ -49,8 +57,9 @@
   }
 
   function setValue(next: Value) {
-    if (value === undefined) uncontrolledValue = next;
-    onValueChange?.(next);
+    const normalized = normalizeValue(next);
+    if (value === undefined) uncontrolledValue = normalized;
+    onValueChange?.(normalized);
   }
 
   function isOpen(itemValue: string) {
@@ -84,6 +93,9 @@
     get type() {
       return type;
     },
+    get disabled() {
+      return disabled;
+    },
     isOpen,
     toggle,
     get baseId() {
@@ -94,7 +106,12 @@
   let rootClass = $derived(["ds-accordion", className].filter(Boolean).join(" "));
 </script>
 
-<div {...rest} class={rootClass} data-ds-accordion-root="true">
+<div
+  {...rest}
+  class={rootClass}
+  data-ds-accordion-root="true"
+  data-disabled={disabled ? "true" : undefined}
+>
   {#if children}
     {@render children()}
   {/if}

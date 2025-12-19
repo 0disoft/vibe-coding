@@ -6,11 +6,12 @@
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
 		title?: string;
+		header?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
 	}
 
-	let { title, children, footer, class: className = "", ...rest }: Props =
+	let { title, header, children, footer, class: className = "", ...rest }: Props =
 		$props();
 </script>
 
@@ -18,9 +19,13 @@
 	{...rest}
 	class={["ds-sidebar", className].filter(Boolean).join(" ")}
 >
-	{#if title}
+	{#if header || title}
 		<div class="ds-sidebar-header">
-			<div class="text-menu-sm font-semibold text-foreground">{title}</div>
+			{#if header}
+				{@render header()}
+			{:else if title}
+				<div class="text-menu-sm font-semibold text-foreground">{title}</div>
+			{/if}
 		</div>
 		<DsSeparator class="my-3" />
 	{/if}

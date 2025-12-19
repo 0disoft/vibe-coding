@@ -1,11 +1,11 @@
 import { getContext, setContext } from 'svelte';
 
 export type RadioGroupContext = {
-	name?: string;
-	disabled: boolean;
-	required: boolean;
-	describedBy?: string;
-	value: () => string;
+	readonly name?: string;
+	readonly disabled: boolean;
+	readonly required: boolean;
+	readonly describedBy?: string;
+	readonly value: string;
 	setValue: (next: string) => void;
 };
 
@@ -16,5 +16,9 @@ export function setRadioGroupContext(ctx: RadioGroupContext): void {
 }
 
 export function getRadioGroupContext(): RadioGroupContext {
-	return getContext(radioGroupContextKey);
+	const ctx = getContext<RadioGroupContext | undefined>(radioGroupContextKey);
+	if (!ctx) {
+		throw new Error('DsRadioItem must be used within DsRadioGroup.');
+	}
+	return ctx;
 }

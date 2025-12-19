@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import { tick } from "svelte";
+	import { fade, fly } from "svelte/transition";
 	import type { HTMLAttributes } from "svelte/elements";
 
 	import { DsIconButton } from "$lib/components/design-system";
@@ -8,11 +9,11 @@
 	type Side = "right" | "left" | "bottom";
 	type Size = "sm" | "md" | "lg";
 
-	interface Props extends Omit<HTMLAttributes<HTMLDialogElement>, "children"> {
+	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
 		id: string;
 		title: string;
 		description?: string;
-		open: boolean;
+		open?: boolean;
 		onOpenChange?: (next: boolean) => void;
 		side?: Side;
 		size?: Size;
@@ -29,7 +30,7 @@
 		id,
 		title,
 		description,
-		open,
+		open = $bindable(false),
 		onOpenChange,
 		side = "right",
 		size = "md",
@@ -44,7 +45,7 @@
 		...rest
 	}: Props = $props();
 
-	let dialogEl = $state<HTMLDialogElement | null>(null);
+	let panelEl = $state<HTMLDivElement | null>(null);
 	let previousActiveElement: HTMLElement | null = null;
 
 	let titleId = $derived(`${id}-title`);
@@ -53,8 +54,14 @@
 	let prevBodyOverflow = "";
 	let prevBodyPaddingRight = "";
 
+	function setOpen(next: boolean) {
+		if (open === next) return;
+		open = next;
+		onOpenChange?.(next);
+	}
+
 	function requestClose() {
-		onOpenChange?.(false);
+		setOpen(false);
 	}
 
 	function lockScroll() {
@@ -75,12 +82,8 @@
 	}
 
 	function focusOnOpen() {
-		const el = dialogEl;
-		if (!el) return;
-
-		const panel = el.querySelector<HTMLElement>(".ds-sheet-panel");
+		const panel = panelEl;
 		if (!panel) {
-			el.focus();
 			return;
 		}
 
@@ -90,7 +93,7 @@
 		}
 
 		if (typeof initialFocus === "string") {
-			const target = el.querySelector<HTMLElement>(initialFocus);
+			const target = panel.querySelector<HTMLElement>(initialFocus);
 			(target ?? panel).focus();
 			return;
 		}
@@ -99,32 +102,17 @@
 		else panel.focus();
 	}
 
-	function closeNow() {
-		const el = dialogEl;
-		if (!el || !el.open) return;
-		el.close();
-		unlockScroll();
-
-		const target = returnFocusTo ?? previousActiveElement;
-		if (target && document.body.contains(target)) {
-			tick().then(() => target.focus());
-		}
-	}
-
 	$effect(() => {
-		const el = dialogEl;
-		if (!el) return;
-
 		if (open) {
-			if (!el.open) {
-				previousActiveElement = (document.activeElement as HTMLElement) ?? null;
-				el.showModal();
-				lockScroll();
-				tick().then(() => focusOnOpen());
-			}
+			previousActiveElement = (document.activeElement as HTMLElement) ?? null;
+			lockScroll();
+			tick().then(() => focusOnOpen());
 		} else {
-			if (el.open) tick().then(closeNow);
-			else unlockScroll();
+			unlockScroll();
+			const target = returnFocusTo ?? previousActiveElement;
+			if (target && document.body.contains(target)) {
+				tick().then(() => target.focus());
+			}
 		}
 	});
 
@@ -134,75 +122,88 @@
 		};
 	});
 
-	function onCancel(e: Event) {
-		e.preventDefault();
-		if (closeOnEscape) requestClose();
+	function onPanelKeydown(e: KeyboardEvent) {
+		if (e.key === "Escape" && closeOnEscape) {
+			e.preventDefault();
+			requestClose();
+		}
 	}
 
-	function onClose() {
-		if (open) onOpenChange?.(false);
+	function onBackdropClick() {
+		if (closeOnOutsideClick) requestClose();
 	}
 
-	function onBackdropClick(e: MouseEvent) {
-		if (!closeOnOutsideClick || !dialogEl) return;
-		if (e.target !== dialogEl) return;
-
-		const panel = dialogEl.querySelector<HTMLElement>(".ds-sheet-panel");
-		if (!panel) return;
-		const rect = panel.getBoundingClientRect();
-		const inPanel =
-			e.clientX >= rect.left &&
-			e.clientX <= rect.right &&
-			e.clientY >= rect.top &&
-			e.clientY <= rect.bottom;
-		if (!inPanel) requestClose();
+	function portal(node: HTMLElement) {
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				if (node.parentNode) node.parentNode.removeChild(node);
+			},
+		};
 	}
 </script>
 
-<dialog
-	bind:this={dialogEl}
-	{id}
-	class={["ds-sheet", className].filter(Boolean).join(" ")}
-	aria-labelledby={titleId}
-	aria-describedby={description ? descId : undefined}
-	aria-modal="true"
-	data-ds-side={side}
-	data-ds-size={size}
-	oncancel={onCancel}
-	onclose={onClose}
-	onclick={onBackdropClick}
-	{...rest}
->
-	<div class="ds-sheet-panel" tabindex="-1">
-		<header class="ds-sheet-header">
-			<div class="min-w-0">
-				<h2 class="text-h3 font-semibold" id={titleId}>{title}</h2>
-				{#if description}
-					<p class="text-body-secondary text-muted-foreground" id={descId}>
-						{description}
-					</p>
+{#if open}
+	<div
+		use:portal
+		class={["ds-sheet", className].filter(Boolean).join(" ")}
+		data-ds-side={side}
+		data-ds-size={size}
+	>
+		<div
+			class="ds-sheet-backdrop"
+			transition:fade={{ duration: 160 }}
+			onclick={onBackdropClick}
+			aria-hidden="true"
+		></div>
+		<div
+			{...rest}
+			bind:this={panelEl}
+			id={id}
+			class="ds-sheet-panel"
+			transition:fly={{
+				duration: 200,
+				x: side === "right" ? 260 : side === "left" ? -260 : 0,
+				y: side === "bottom" ? 260 : 0,
+				opacity: 1,
+			}}
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby={titleId}
+			aria-describedby={description ? descId : undefined}
+			onkeydown={onPanelKeydown}
+			tabindex="-1"
+		>
+			<header class="ds-sheet-header">
+				<div class="min-w-0">
+					<h2 class="text-h3 font-semibold" id={titleId}>{title}</h2>
+					{#if description}
+						<p class="text-body-secondary text-muted-foreground" id={descId}>
+							{description}
+						</p>
+					{/if}
+				</div>
+				<DsIconButton
+					icon="x"
+					label={closeLabel}
+					intent="secondary"
+					variant="ghost"
+					size="sm"
+					onclick={requestClose}
+				/>
+			</header>
+
+			<div class="ds-sheet-body">
+				{#if children}
+					{@render children()}
 				{/if}
 			</div>
-			<DsIconButton
-				icon="x"
-				label={closeLabel}
-				intent="secondary"
-				variant="ghost"
-				size="sm"
-				onclick={requestClose}
-			/>
-		</header>
 
-		<div class="ds-sheet-body">
-			{#if children}
-				{@render children()}
+			{#if footer}
+				<footer class="ds-sheet-footer">
+					{@render footer()}
+				</footer>
 			{/if}
 		</div>
-
-		{#if footer}
-			<footer class="ds-sheet-footer">
-				{@render footer()}
-			</footer>
-		{/if}
 	</div>
-</dialog>
+{/if}

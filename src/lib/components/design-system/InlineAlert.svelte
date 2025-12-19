@@ -1,5 +1,7 @@
 <script lang="ts">
+	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
+	import { slide } from "svelte/transition";
 
 	import { DsIcon } from "$lib/components/design-system";
 	import type { IntentWithNeutral } from "./types";
@@ -14,7 +16,9 @@
 		/** 아이콘 커스터마이즈 (null이면 숨김) */
 		icon?: string | null;
 		/** 텍스트 */
-		message: string;
+		message?: string;
+		/** 리치 컨텐츠 */
+		children?: Snippet;
 	}
 
 	let {
@@ -22,6 +26,7 @@
 		role,
 		icon,
 		message,
+		children,
 		class: className = "",
 		...rest
 	}: Props = $props();
@@ -53,7 +58,8 @@
 
 <div
 	{...rest}
-	class={`${rootClass} flex items-start gap-2`}
+	class={`${rootClass} flex items-start gap-2 text-sm`}
+	transition:slide={{ duration: 200, axis: "y" }}
 	data-ds-intent={intentCss}
 	role={computedRole}
 >
@@ -63,5 +69,11 @@
 		</span>
 	{/if}
 
-	<span class="min-w-0">{message}</span>
+	<span class="min-w-0">
+		{#if children}
+			{@render children()}
+		{:else}
+			{message}
+		{/if}
+	</span>
 </div>
