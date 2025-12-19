@@ -4,7 +4,7 @@ import { DEFAULT_THEME_PALETTE, isThemePalette, type ThemePalette } from '$lib/s
 import { createPersistedState } from './persisted-state.svelte';
 
 const store = createPersistedState<ThemePalette>(THEME_PALETTE_COOKIE, DEFAULT_THEME_PALETTE, {
-	allowedValues: ['classic', 'linen', 'sage', 'midnight'] as const,
+	allowedValues: ['airy-blue', 'misty-lavender', 'sage-breeze', 'cozy-coral'] as const,
 	domUpdater: (v) => {
 		if (!document?.documentElement) return;
 		document.documentElement.setAttribute('data-theme-palette', v);

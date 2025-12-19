@@ -77,14 +77,14 @@ export function createDropdownKeyHandlers(opts: {
 	getDisabled: () => boolean;
 	getIsOpen: () => boolean;
 	setOpen: (next: boolean) => void;
-	close: (options?: { focusButton?: boolean }) => void;
+	close: (options?: { focusButton?: boolean; }) => void;
 	afterOpen: (fn: () => void) => void;
 	getItemSelector: () => string;
 	focusSelectedOrFirstItem: () => void;
 	focusFirstItem: () => void;
 	focusLastItem: () => void;
 	focusNext: (current: HTMLElement, dir: 1 | -1) => void;
-	typeahead: { handleKey: (key: string) => void };
+	typeahead: { handleKey: (key: string) => void; };
 }) {
 	function onTriggerKeyDown(e: KeyboardEvent): void {
 		if (opts.getDisabled()) return;
@@ -135,6 +135,23 @@ export function createDropdownKeyHandlers(opts: {
 
 		if (e.key === 'Tab') {
 			queueMicrotask(() => opts.close());
+			return;
+		}
+
+		// 검색 입력창에서 ArrowDown/ArrowUp 키를 누른 경우 메뉴 아이템으로 포커스 이동
+		const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
+		if (isInput) {
+			if (e.key === 'ArrowDown') {
+				e.preventDefault();
+				opts.focusFirstItem();
+				return;
+			}
+			if (e.key === 'ArrowUp') {
+				e.preventDefault();
+				opts.focusLastItem();
+				return;
+			}
+			// 입력창에서는 typeahead 무시 (일반 타이핑)
 			return;
 		}
 

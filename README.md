@@ -101,7 +101,7 @@ src/
 | 팔레트            | 쿠키 `themePalette` | `data-theme-palette` |
 | 폰트 크기 (1~9)   | 쿠키 `fontSize` | `data-font-size` |
 
-첫 방문 기본 팔레트는 `linen` 입니다(쿠키가 없을 때).
+첫 방문 기본 팔레트는 `airy-blue` 입니다(쿠키가 없을 때).
 
 ## 테스트
 

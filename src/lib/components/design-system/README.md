@@ -16,9 +16,9 @@
 
 ## 테마 팔레트
 
-- 팔레트 값: `classic` / `linen` / `sage` / `midnight`
+- 팔레트 값: `airy-blue` / `misty-lavender` / `sage-breeze` / `cozy-coral`
 - 적용 방식: `<html data-theme-palette="...">` + CSS 토큰(`src/styles/design-system.tokens.css`)에서 분위기(배경/서피스/텍스트/포인트) 토큰을 override
-- 첫 방문 기본값: `src/app.html` 의 `data-theme-palette` (현재 `linen`)
+- 첫 방문 기본값: `src/app.html` 의 `data-theme-palette` (현재 `airy-blue`)
 
 ## 설치/적용(스타일 로딩)
 

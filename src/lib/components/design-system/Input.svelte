@@ -37,7 +37,12 @@
 		...rest
 	}: Props = $props();
 
-	async function handleClear() {
+	// onkeydown은 Props(HTMLInputAttributes)에 포함되어 있으나,
+	// rest로 넘어올 때 Svelte 5의 이벤트 바인딩 처리와 충돌할 수 있으므로 명시적으로 추출하여 사용 권장
+	let { onkeydown } = rest as { onkeydown?: (e: KeyboardEvent) => void };
+
+	async function handleClear(e?: Event) {
+		e?.stopPropagation();
 		value = "";
 		await tick();
 
@@ -55,9 +60,8 @@
 			handleClear();
 			return;
 		}
-		// onkeydown prop 전달 지원
-		// @ts-ignore - Svelte HTML attributes typing issue
-		if (!e.defaultPrevented) rest.onkeydown?.(e);
+
+		if (!e.defaultPrevented) onkeydown?.(e);
 	}
 
 	function triggerFocus(node: HTMLElement) {
@@ -127,6 +131,7 @@
 				intent="secondary"
 				label={clearLabel}
 				onclick={handleClear}
+				onmousedown={(e) => e.preventDefault()}
 			/>
 		</div>
 	{/if}

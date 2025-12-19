@@ -237,6 +237,7 @@
 				label={closeLabel}
 				intent="secondary"
 				variant="ghost"
+				size="sm"
 				onclick={requestClose}
 			/>
 		</header>

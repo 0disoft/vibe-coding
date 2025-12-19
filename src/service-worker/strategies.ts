@@ -75,22 +75,11 @@ export function createStrategies(args: {
 		try {
 			const response = await fetch(request);
 
-			const contentType = response.headers.get('content-type')?.toLowerCase() || '';
-			const isHtml = contentType.includes('text/html');
-			const cacheControl = response.headers.get('cache-control')?.toLowerCase() || '';
-			const vary = response.headers.get('vary')?.toLowerCase() || ''; // [MODIFIED] Added vary check
-			const sensitiveVary = vary.includes('cookie') || vary.includes('authorization'); // [MODIFIED] Added sensitive vary check
-			const shouldSkipCache =
-				cacheControl.includes('no-store') ||
-				cacheControl.includes('private') ||
-				cacheControl.includes('no-cache') ||
-				cacheControl.includes('must-revalidate');
-
-			if (isNavigation && response.ok && isHtml && !shouldSkipCache && !sensitiveVary) {
-				// [MODIFIED] Added !sensitiveVary
-				const cache = await caches.open(args.cacheName);
-				await cache.put(request, response.clone());
-			}
+			// NOTE:
+			// Navigation(HTML) 응답은 캐시하지 않습니다.
+			// - 언어/로그인/AB 등 쿠키 기반 변형이 있는 앱에서, SW가 URL만으로 HTML을 캐싱하면
+			//   F5(일반 새로고침) 시 이전 언어의 문서가 재사용되는 문제가 발생할 수 있습니다.
+			// - 오프라인 UX는 offlinePath(프리캐시)로 커버합니다.
 
 			return response;
 		} catch {

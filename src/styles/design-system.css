@@ -4,7 +4,8 @@
    - 토큰 선언은 src/styles/design-system.tokens.css (SSOT)에서 관리합니다.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.ds-focus-ring:focus-visible {
+.ds-focus-ring:focus-visible,
+.ds-dropdown-item:focus {
   outline: none;
   box-shadow:
     0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
@@ -309,42 +310,42 @@
 
 .ds-button[data-ds-intent="secondary"] {
   --ds-btn-bg: var(--color-secondary);
-  --ds-btn-bg-hover: var(--color-secondary);
+  --ds-btn-bg-hover: var(--color-secondary-hover);
   --ds-btn-fg: var(--color-on-secondary);
   --ds-btn-border: var(--color-border);
   --ds-btn-text: var(--color-text);
-  --ds-btn-hover-alpha: 0.92;
-  --ds-btn-active-alpha: 0.85;
+  --ds-btn-hover-alpha: 1;
+  --ds-btn-active-alpha: 0.92;
 }
 
 .ds-button[data-ds-intent="success"] {
   --ds-btn-bg: var(--color-success);
-  --ds-btn-bg-hover: var(--color-success);
+  --ds-btn-bg-hover: var(--color-success-hover);
   --ds-btn-fg: var(--color-on-success);
   --ds-btn-border: var(--color-success);
   --ds-btn-text: var(--color-success);
-  --ds-btn-hover-alpha: 0.92;
-  --ds-btn-active-alpha: 0.85;
+  --ds-btn-hover-alpha: 1;
+  --ds-btn-active-alpha: 0.92;
 }
 
 .ds-button[data-ds-intent="warning"] {
   --ds-btn-bg: var(--color-warning);
-  --ds-btn-bg-hover: var(--color-warning);
+  --ds-btn-bg-hover: var(--color-warning-hover);
   --ds-btn-fg: var(--color-on-warning);
   --ds-btn-border: var(--color-warning);
   --ds-btn-text: var(--color-warning);
-  --ds-btn-hover-alpha: 0.92;
-  --ds-btn-active-alpha: 0.85;
+  --ds-btn-hover-alpha: 1;
+  --ds-btn-active-alpha: 0.92;
 }
 
 .ds-button[data-ds-intent="error"] {
   --ds-btn-bg: var(--color-error);
-  --ds-btn-bg-hover: var(--color-error);
+  --ds-btn-bg-hover: var(--color-error-hover);
   --ds-btn-fg: var(--color-on-error);
   --ds-btn-border: var(--color-error);
   --ds-btn-text: var(--color-error);
-  --ds-btn-hover-alpha: 0.92;
-  --ds-btn-active-alpha: 0.85;
+  --ds-btn-hover-alpha: 1;
+  --ds-btn-active-alpha: 0.92;
 }
 
 .ds-button[data-ds-variant="solid"] {
@@ -915,6 +916,9 @@
 .ds-range-slider {
   position: relative;
   width: 100%;
+  height: var(--slider-thumb-size);
+  display: flex;
+  align-items: center;
 }
 
 .ds-range-slider-input {
@@ -2293,6 +2297,11 @@
 .ds-dropdown-item:focus-visible:not(:disabled) {
   background: oklch(var(--dropdown-item-hover));
   outline: none;
+  box-shadow:
+    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
+    0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
+  position: relative;
+  z-index: 1;
 }
 
 .ds-dropdown-item[aria-checked="true"],
@@ -2616,7 +2625,7 @@
   color: oklch(var(--color-text-muted));
 }
 
-.ds-stat-card-label > span {
+.ds-stat-card-label>span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3005,14 +3014,14 @@
     box-shadow var(--motion-duration-fast) var(--motion-ease);
 }
 
-.ds-checkbox-native:focus-visible + .ds-checkbox-control {
+.ds-checkbox-native:focus-visible+.ds-checkbox-control {
   outline: none;
   box-shadow:
     0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
     0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
 }
 
-.ds-checkbox-native:checked + .ds-checkbox-control {
+.ds-checkbox-native:checked+.ds-checkbox-control {
   background: oklch(var(--color-primary));
   border-color: oklch(var(--color-primary));
 }
@@ -3089,18 +3098,18 @@
   transition: transform var(--motion-duration-fast) var(--motion-ease);
 }
 
-.ds-switch-native:focus-visible + .ds-switch-track {
+.ds-switch-native:focus-visible+.ds-switch-track {
   outline: none;
   box-shadow:
     0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
     0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
 }
 
-.ds-switch-native:checked + .ds-switch-track {
+.ds-switch-native:checked+.ds-switch-track {
   background: oklch(var(--color-primary));
 }
 
-.ds-switch-native:checked + .ds-switch-track .ds-switch-thumb {
+.ds-switch-native:checked+.ds-switch-track .ds-switch-thumb {
   transform: translateX(calc(var(--switch-track-w) - var(--switch-track-h)));
 }
 
@@ -3403,14 +3412,14 @@
     box-shadow var(--motion-duration-fast) var(--motion-ease);
 }
 
-.ds-radio-native:focus-visible ~ .ds-radio-control {
+.ds-radio-native:focus-visible~.ds-radio-control {
   outline: none;
   box-shadow:
     0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
     0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
 }
 
-.ds-radio-native:checked ~ .ds-radio-control {
+.ds-radio-native:checked~.ds-radio-control {
   border-color: oklch(var(--color-primary));
 }
 
@@ -3566,6 +3575,7 @@
   0% {
     transform: translateX(-60%);
   }
+
   100% {
     transform: translateX(160%);
   }
@@ -3580,6 +3590,7 @@
   .ds-progress-indicator {
     transition: none;
   }
+
   .ds-progress-indicator.is-indeterminate {
     animation-duration: 1.8s;
   }
@@ -4072,7 +4083,7 @@
   min-width: 0;
 }
 
-.ds-context-menu-item-leading > :global(.ds-icon) {
+.ds-context-menu-item-leading> :global(.ds-icon) {
   flex-shrink: 0;
 }
 

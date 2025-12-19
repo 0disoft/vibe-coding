@@ -1,10 +1,11 @@
+import lucideIcons from '@iconify-json/lucide/icons.json';
 import presetTypography from '@unocss/preset-typography';
 import presetWind4 from '@unocss/preset-wind4';
 import {
 	defineConfig,
+	type Extractor,
 	presetAttributify,
 	presetIcons,
-	type Extractor,
 	type Rule,
 	transformerVariantGroup
 } from 'unocss';
@@ -12,7 +13,8 @@ import {
 const dsLucideIconExtractor: Extractor = {
 	name: 'ds-lucide-icon-props',
 	order: 0,
-	extract(code) {
+	extract(ctx) {
+		const code = ctx.code;
 		const tokens = new Set<string>();
 
 		const add = (raw: string) => {
@@ -27,12 +29,12 @@ const dsLucideIconExtractor: Extractor = {
 
 		// Component props -> icon classes
 		for (const re of [
-			/<DsIcon\b[^>]*\bname=["']([a-z0-9-]+)["']/g,
-			/<DsInlineIcon\b[^>]*\bname=["']([a-z0-9-]+)["']/g,
-			/<DsIconButton\b[^>]*\bicon=["']([a-z0-9-]+)["']/g,
-			/<DsIconButton\b[^>]*\bcopiedIcon=["']([a-z0-9-]+)["']/g
+			/<Ds[A-Z][a-zA-Z]*\b[^>]*\bname=["']([a-z0-9-]+)["']/g,
+			/<Ds[A-Z][a-zA-Z]*\b[^>]*\bicon=["']([a-z0-9-]+)["']/g,
+			/<Ds[A-Z][a-zA-Z]*\b[^>]*\bcopiedIcon=["']([a-z0-9-]+)["']/g
 		]) {
 			let m: RegExpExecArray | null;
+			// biome-ignore lint/suspicious/noAssignInExpressions: loop logic
 			while ((m = re.exec(code))) add(m[1]);
 		}
 
@@ -42,6 +44,7 @@ const dsLucideIconExtractor: Extractor = {
 			/\bcopiedIcon\s*:\s*["']([a-z0-9-]+|i-[a-z0-9-]+)["']/g
 		]) {
 			let m: RegExpExecArray | null;
+			// biome-ignore lint/suspicious/noAssignInExpressions: loop logic
 			while ((m = re.exec(code))) add(m[1]);
 		}
 
@@ -508,10 +511,10 @@ export default defineConfig({
 		presetAttributify(),
 		presetIcons({
 			collections: {
-				lucide: () => import('@iconify-json/lucide/icons.json').then((m) => m.default)
+				// @ts-expect-error: IconifyJSON type mismatch with explicit import
+				lucide: lucideIcons
 			},
-			scale: 1.2,
-			cdn: 'https://esm.sh/'
+			scale: 1.2
 		}),
 		// prose 클래스 제공 (블로그, 문서 등 긴 글용). UI에는 typographyRules 유틸 사용.
 		presetTypography()
@@ -537,6 +540,37 @@ export default defineConfig({
 	extractors: [dsLucideIconExtractor],
 	// 동적 클래스 사용 대비(예: CMS에서 bg-primary 문자열 주입)
 	safelist: [
+		'i-lucide-chevron-right',
+		'i-lucide-chevron-left',
+		'i-lucide-info',
+		'i-lucide-check',
+		'i-lucide-x',
+		'i-lucide-palette',
+		'i-lucide-triangle-alert',
+		'i-lucide-dollar-sign',
+		'i-lucide-trending-up',
+		'i-lucide-trending-down',
+		'i-lucide-users',
+		'i-lucide-sparkles',
+		'i-lucide-shield-check',
+		'i-lucide-bell',
+		'i-lucide-circle-check',
+		'i-lucide-circle-alert',
+		'i-lucide-info',
+		'i-lucide-eye',
+		'i-lucide-eye-off',
+		'i-lucide-search',
+		'i-lucide-plus',
+		'i-lucide-minus',
+		'i-lucide-bold',
+		'i-lucide-italic',
+		'i-lucide-link',
+		'i-lucide-list',
+		'i-lucide-list-ordered',
+		'i-lucide-code',
+		'i-lucide-quote',
+		'i-lucide-remove-formatting',
+		'i-lucide-check',
 		...semanticColors.flatMap((c) => [
 			`bg-${c}`,
 			`text-${c}`,

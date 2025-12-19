@@ -1,14 +1,15 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import { page } from "$app/state";
 	import FontSizePicker from "$lib/components/header-actions/FontSizePicker.svelte";
 	import LanguagePicker from "$lib/components/header-actions/LanguagePicker.svelte";
 	import ThemeToggle from "$lib/components/header-actions/ThemeToggle.svelte";
 	import UserMenu from "$lib/components/header-actions/UserMenu.svelte";
+	import { onMount } from "svelte";
 
 	import { DsIconButton, DsSheet } from "$lib/components/design-system";
 	import * as m from "$lib/paraglide/messages.js";
 	import { localizeUrl } from "$lib/paraglide/runtime.js";
+	import { getLocaleFromUrl, type Locale } from "$lib/shared/utils/locale";
 	import type { Snippet } from "svelte";
 
 	interface Props {
@@ -30,48 +31,52 @@
 	let mobileMenuOpen = $state(false);
 	let mobileMenuButtonRef = $state<HTMLButtonElement | null>(null);
 
+	// locale/page 변경에 반응하도록 신호로 끌어올림
+	let currentLocale = $derived<Locale>(getLocaleFromUrl(page.url));
+	let currentPathname = $derived(page.url.pathname);
+
 	// 네비게이션 항목 배열화 (유지보수 용이)
 	// 필요한 항목만 주석 해제하여 사용. 새 프로젝트 시작 시 필요한 것만 활성화.
 	const navItems = [
 		// ─── 소개 (About) ────────────────────────────────────────
-		// { href: '/about', label: () => m.nav_about() },
-		// { href: '/team', label: () => m.nav_team() },
-		// { href: '/careers', label: () => m.nav_careers() },
+		// { href: '/about', label: (locale: Locale) => m.nav_about({}, { locale }) },
+		// { href: '/team', label: (locale: Locale) => m.nav_team({}, { locale }) },
+		// { href: '/careers', label: (locale: Locale) => m.nav_careers({}, { locale }) },
 		// ─── 제품/서비스 (Products & Services) ───────────────────
-		{ href: "/products", label: () => m.nav_products() },
-		// { href: '/services', label: () => m.nav_services() },
-		// { href: '/enterprise', label: () => m.nav_enterprise() },
-		// { href: '/compare', label: () => m.nav_compare() },
-		// { href: '/demo', label: () => m.nav_demo() },
-		// { href: '/download', label: () => m.nav_download() },
+		{ href: "/products", label: (locale: Locale) => m.nav_products({}, { locale }) },
+		// { href: '/services', label: (locale: Locale) => m.nav_services({}, { locale }) },
+		// { href: '/enterprise', label: (locale: Locale) => m.nav_enterprise({}, { locale }) },
+		// { href: '/compare', label: (locale: Locale) => m.nav_compare({}, { locale }) },
+		// { href: '/demo', label: (locale: Locale) => m.nav_demo({}, { locale }) },
+		// { href: '/download', label: (locale: Locale) => m.nav_download({}, { locale }) },
 		// ─── 비즈니스 (Business) ─────────────────────────────────
-		// { href: '/pricing', label: () => m.nav_pricing() },
-		// { href: '/booking', label: () => m.nav_booking() },
-		// { href: '/seller', label: () => m.nav_seller() },
-		// { href: '/membership', label: () => m.nav_membership() },
+		// { href: '/pricing', label: (locale: Locale) => m.nav_pricing({}, { locale }) },
+		// { href: '/booking', label: (locale: Locale) => m.nav_booking({}, { locale }) },
+		// { href: '/seller', label: (locale: Locale) => m.nav_seller({}, { locale }) },
+		// { href: '/membership', label: (locale: Locale) => m.nav_membership({}, { locale }) },
 		// ─── 콘텐츠 (Content) ────────────────────────────────────
-		// { href: '/docs', label: () => m.nav_docs() },
-		// { href: '/blog', label: () => m.nav_blog() },
-		// { href: '/portfolio', label: () => m.nav_portfolio() },
-		{ href: "/gallery", label: () => m.nav_gallery() },
-		// { href: '/resources', label: () => m.nav_resources() },
-		// { href: '/research', label: () => m.nav_research() },
+		// { href: '/docs', label: (locale: Locale) => m.nav_docs({}, { locale }) },
+		// { href: '/blog', label: (locale: Locale) => m.nav_blog({}, { locale }) },
+		// { href: '/portfolio', label: (locale: Locale) => m.nav_portfolio({}, { locale }) },
+		{ href: "/gallery", label: (locale: Locale) => m.nav_gallery({}, { locale }) },
+		// { href: '/resources', label: (locale: Locale) => m.nav_resources({}, { locale }) },
+		// { href: '/research', label: (locale: Locale) => m.nav_research({}, { locale }) },
 		// ─── 뉴스/이벤트 (News & Events) ─────────────────────────
-		{ href: "/news", label: () => m.nav_news() },
-		// { href: '/events', label: () => m.nav_events() },
-		{ href: "/changelog", label: () => m.nav_changelog() },
+		{ href: "/news", label: (locale: Locale) => m.nav_news({}, { locale }) },
+		// { href: '/events', label: (locale: Locale) => m.nav_events({}, { locale }) },
+		{ href: "/changelog", label: (locale: Locale) => m.nav_changelog({}, { locale }) },
 		// ─── 커뮤니티 (Community) ────────────────────────────────
-		{ href: "/community", label: () => m.nav_community() },
+		{ href: "/community", label: (locale: Locale) => m.nav_community({}, { locale }) },
 		// ─── 사용자 영역 (User) ──────────────────────────────────
-		// { href: '/dashboard', label: () => m.nav_dashboard() },
+		// { href: '/dashboard', label: (locale: Locale) => m.nav_dashboard({}, { locale }) },
 	];
 
 	// 현재 경로와 일치하는지 확인
 	function isActive(path: string): boolean {
-		const localizedPath = localizeUrl(path).pathname;
+		const localizedPath = localizeUrl(path, { locale: currentLocale }).pathname;
 		return (
-			page.url.pathname === localizedPath ||
-			page.url.pathname.startsWith(`${localizedPath}/`)
+			currentPathname === localizedPath ||
+			currentPathname.startsWith(`${localizedPath}/`)
 		);
 	}
 
@@ -98,8 +103,8 @@
 	>
 		<!-- 로고/사이트명 -->
 		<a
-			href={localizeUrl("/").href}
-			aria-label={m.header_home_label({ siteName })}
+			href={localizeUrl("/", { locale: currentLocale }).href}
+			aria-label={m.header_home_label({ siteName }, { locale: currentLocale })}
 			class="ds-no-select flex items-center gap-2 text-logo font-pacifico text-foreground"
 		>
 			{siteName}
@@ -107,8 +112,8 @@
 
 		<!-- 데스크톱 네비게이션 -->
 		<nav
-			aria-label={m.header_main_nav_label()}
-			class="hidden items-center gap-8 text-menu-lg md:flex"
+			aria-label={m.header_main_nav_label({}, { locale: currentLocale })}
+			class="hidden items-center gap-8 text-menu md:flex"
 		>
 			{#if nav}
 				{@render nav()}
@@ -116,11 +121,11 @@
 				{#each navItems as item (item.href)}
 					{@const active = isActive(item.href)}
 					<a
-						href={localizeUrl(item.href).href}
+						href={localizeUrl(item.href, { locale: currentLocale }).href}
 						aria-current={active ? "page" : undefined}
 						class="ds-no-select ds-focus-ring rounded-md px-1 py-1 transition-colors hover:text-foreground focus-visible:text-foreground {active
 							? 'text-foreground font-medium'
-							: 'text-muted-foreground'}">{item.label()}</a
+							: 'text-muted-foreground'}">{item.label(currentLocale)}</a
 					>
 				{/each}
 			{/if}
@@ -137,7 +142,11 @@
 				<DsIconButton
 					bind:ref={mobileMenuButtonRef}
 					onclick={toggleMobileMenu}
-					label={mobileMenuOpen ? m.header_menu_close() : m.header_menu_open()}
+					label={
+						mobileMenuOpen
+							? m.header_menu_close({}, { locale: currentLocale })
+							: m.header_menu_open({}, { locale: currentLocale })
+					}
 					aria-expanded={mobileMenuOpen}
 					class="md:hidden"
 				>
@@ -161,7 +170,7 @@
 {#if mounted}
 	<DsSheet
 		id="ds-mobile-nav"
-		title={m.header_menu_title()}
+		title={m.header_menu_title({}, { locale: currentLocale })}
 		open={mobileMenuOpen}
 		onOpenChange={(next) => (mobileMenuOpen = next)}
 		returnFocusTo={mobileMenuButtonRef}
@@ -172,20 +181,23 @@
 		closeOnEscape
 		class="md:hidden"
 	>
-		<nav aria-label={m.header_mobile_nav_label()} class="flex flex-col gap-1">
+		<nav
+			aria-label={m.header_mobile_nav_label({}, { locale: currentLocale })}
+			class="flex flex-col gap-1"
+		>
 			<ul class="flex flex-col gap-1">
 				{#each navItems as item (item.href)}
 					{@const active = isActive(item.href)}
 					<li>
 						<a
-							href={localizeUrl(item.href).href}
+							href={localizeUrl(item.href, { locale: currentLocale }).href}
 							onclick={() => closeMobileMenu()}
 							aria-current={active ? "page" : undefined}
 							class="ds-no-select ds-focus-ring ds-touch-target block rounded-md px-3 py-2 text-menu transition-colors hover:bg-accent focus-visible:bg-accent {active
 								? 'bg-accent text-foreground font-medium'
 								: 'text-muted-foreground'}"
 						>
-							{item.label()}
+							{item.label(currentLocale)}
 						</a>
 					</li>
 				{/each}

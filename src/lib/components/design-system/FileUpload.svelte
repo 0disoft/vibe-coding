@@ -147,7 +147,9 @@
 	}
 
 	let describedBy = $derived(
-		[rest["aria-describedby"], helpId, errors.length ? errorId : ""].filter(Boolean).join(" "),
+		[rest["aria-describedby"], helpId, errors.length ? errorId : ""]
+			.filter(Boolean)
+			.join(" "),
 	);
 </script>
 
@@ -201,7 +203,16 @@
 		</div>
 
 		<div class="ds-file-dropzone-actions">
-			<DsButton size="sm" variant="outline" intent="secondary" disabled={disabled} onclick={openPicker}>
+			<DsButton
+				size="sm"
+				variant="outline"
+				intent="secondary"
+				{disabled}
+				onclick={(e) => {
+					e.stopPropagation();
+					openPicker();
+				}}
+			>
 				Choose files
 			</DsButton>
 			{#if clearable}
@@ -233,7 +244,9 @@
 	{#if showList}
 		<div class="ds-file-list">
 			{#if files.length === 0}
-				<div class="ds-file-empty text-helper text-muted-foreground">No files selected.</div>
+				<div class="ds-file-empty text-helper text-muted-foreground">
+					No files selected.
+				</div>
 			{:else}
 				{#each files as f (fileKey(f))}
 					<div class="ds-file-item">
@@ -251,7 +264,7 @@
 								size="sm"
 								variant="ghost"
 								intent="secondary"
-								disabled={disabled}
+								{disabled}
 								onclick={() => removeFile(fileKey(f))}
 							/>
 						</div>
@@ -261,4 +274,3 @@
 		</div>
 	{/if}
 </div>
-
