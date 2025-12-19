@@ -20,6 +20,8 @@
 		type?: "button" | "submit" | "reset";
 		ref?: HTMLButtonElement | null;
 		class?: string;
+		/** 터치 타겟(44px) 적용 여부 (기본값 true) */
+		touchTarget?: boolean;
 		describedBy?: string;
 		/** 기본 상태 aria-label */
 		label?: string;
@@ -50,6 +52,7 @@
 		loadingLabel,
 		type = "button",
 		ref = $bindable(null),
+		touchTarget = true,
 		describedBy,
 		label = "Copy to clipboard",
 		copiedLabel = "Copied to clipboard",
@@ -105,6 +108,7 @@
 	style={style}
 	{flipInRtl}
 	{loadingLabel}
+	{touchTarget}
 	class={className}
 	aria-describedby={describedBy}
 	label={copied ? copiedLabel : label}

@@ -4,5 +4,8 @@
   import { DsLocaleSwitcher } from "$lib/components/design-system";
 </script>
 
-<DsLocaleSwitcher label={m.language_picker_label()} triggerTestId="header-language-picker" />
-
+<DsLocaleSwitcher
+  label={m.language_picker_label()}
+  triggerTestId="header-language-picker"
+  disableCurrent={false}
+/>

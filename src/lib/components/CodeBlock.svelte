@@ -1,9 +1,9 @@
 <script lang="ts">
 	// 동적 import를 위해 타입만 import (런타임 번들에 포함되지 않음)
-	import type { BundledLanguage, BundledTheme, Highlighter } from "shiki";
-	import { SvelteSet } from "svelte/reactivity";
+	import type { BundledLanguage, BundledTheme } from "shiki";
 
 	import { DsCopyButton, DsTooltip } from "$lib/components/design-system";
+	import { getHighlighterForLanguage } from "$lib/components/code-block/shiki";
 
 	interface Props {
 		code: string;
@@ -18,42 +18,6 @@
 	}: Props = $props();
 
 	let highlightedHtml = $state("");
-
-	// 싱글톤 highlighter 인스턴스 (언어 추가 시 재사용)
-	let highlighterPromise: Promise<Highlighter> | null = null;
-	const loadedLanguages = new SvelteSet<string>();
-
-	// 프로젝트에서 주로 사용하는 언어들만 초기 로드
-	const INITIAL_LANGUAGES: BundledLanguage[] = [
-		"typescript",
-		"javascript",
-		"json",
-		"html",
-		"css",
-		"svelte",
-		"bash",
-		"markdown",
-	];
-
-	// 사용 가능한 테마
-	const THEMES: BundledTheme[] = ["catppuccin-mocha"];
-
-	// highlighter 인스턴스 가져오기 (동적 import로 코드 스플리팅)
-	async function getHighlighter(): Promise<Highlighter> {
-		if (!highlighterPromise) {
-			// 동적 import: Shiki가 별도 청크로 분리됨
-			const { createHighlighter } = await import("shiki");
-			highlighterPromise = createHighlighter({
-				themes: THEMES,
-				langs: INITIAL_LANGUAGES,
-			});
-			// 초기 언어들을 로드된 것으로 표시
-			INITIAL_LANGUAGES.forEach((lang) => {
-				loadedLanguages.add(lang);
-			});
-		}
-		return highlighterPromise;
-	}
 
 	// 언어 이름 정규화 (Shiki에서 지원하는 이름으로 변환)
 	function normalizeLanguage(lang: string): BundledLanguage {
@@ -110,13 +74,7 @@
 		// 하이라이팅 실행
 		(async () => {
 			try {
-				const highlighter = await getHighlighter();
-
-				// 아직 로드되지 않은 언어면 동적 로드
-				if (!loadedLanguages.has(currentLang)) {
-					await highlighter.loadLanguage(currentLang);
-					loadedLanguages.add(currentLang);
-				}
+				const highlighter = await getHighlighterForLanguage(currentLang);
 
 				const html = highlighter.codeToHtml(currentCode, {
 					lang: currentLang,
@@ -157,13 +115,14 @@
 		as="div"
 		content="Copy code"
 		class="transition-opacity opacity-0 group-hover:opacity-100 focus-within:opacity-100"
-		style="position: absolute; right: 0.5rem; top: 0.5rem; z-index: 10;"
+		style="position: absolute; right: 0.75rem; top: 0.75rem; z-index: 10;"
 	>
 		{#snippet children(trigger)}
 			<DsCopyButton
 				size="sm"
 				variant="ghost"
 				intent="neutral"
+				touchTarget={false}
 				label="Copy code"
 				copiedLabel="Copied to clipboard"
 				text={code}
@@ -176,14 +135,14 @@
 	{#if highlightedHtml}
 		<!-- Shiki wrapper color override -->
 		<div
-			class="ds-code-block overflow-hidden [&>pre]:!m-0 [&>pre]:!p-4 [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
+			class="ds-code-block overflow-hidden [&>pre]:!m-0 [&>pre]:!p-[1.125rem] [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
 		>
 			{@html highlightedHtml}<!-- security-ignore: xss-svelte-html -->
 		</div>
 	{:else}
 		<!-- Fallback: 하이라이팅 로딩 중에도 코드는 즉시 노출 (테스트/UX 안정성) -->
 		<div class="ds-code-block overflow-hidden" aria-busy="true">
-			<pre class="!m-0 !p-4 !bg-transparent !rounded-[inherit]"><code
+			<pre class="!m-0 !p-[1.125rem] !bg-transparent !rounded-[inherit]"><code
 					>{code}</code
 				></pre>
 		</div>

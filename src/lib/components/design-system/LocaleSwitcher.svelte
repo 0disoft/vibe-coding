@@ -58,7 +58,21 @@
 	let liveText = $state("");
 	let liveClearTimer = $state<number | null>(null);
 
-	let currentLocale = $derived<Locale>(value ?? getLocaleFromUrl(page.url));
+	function resolveLocale(): Locale {
+		if (value) return value;
+		if (typeof window !== "undefined") {
+			return getLocaleFromUrl(new URL(window.location.href));
+		}
+		return getLocaleFromUrl(page.url);
+	}
+
+	let currentLocale = $state<Locale>(resolveLocale());
+
+	$effect(() => {
+		// page.url 변화를 신호로 사용해 locale을 갱신
+		void page.url;
+		currentLocale = resolveLocale();
+	});
 
 	let shouldShowSearch = $derived(showSearch ?? locales.length >= 8);
 
@@ -97,6 +111,7 @@
 
 	function changeLocale(next: Locale) {
 		if (next === currentLocale) return;
+		currentLocale = next;
 		// Paraglide가 쿠키를 굽더라도 옵션(Path/SameSite/Secure/Max-Age)을 SSOT로 한 번 더 고정
 		writeLocaleCookie(next);
 		onValueChange?.(next);

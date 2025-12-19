@@ -39,9 +39,15 @@
   };
 
   let currentLocale = $derived<Locale>(getLocaleFromUrl(page.url));
+  let currentPathname = $derived(page.url.pathname);
 
   function getMenuLabel(key: MenuKey): string {
     return MENU_LABELS[key](currentLocale);
+  }
+
+  function isActive(item: (typeof menuItems)[number]): boolean {
+    const target = localizeUrl(item.href, { locale: currentLocale }).pathname;
+    return currentPathname === target || currentPathname.startsWith(`${target}/`);
   }
 </script>
 
@@ -64,6 +70,8 @@
     {#each menuItems as item (item.key)}
       <DsDropdownItem
         href={localizeUrl(item.href, { locale: currentLocale }).href}
+        aria-checked={isActive(item)}
+        role="menuitemradio"
         class={["text-menu-sm", item.mobileOnly ? "sm:!hidden" : ""]
           .filter(Boolean)
           .join(" ")}

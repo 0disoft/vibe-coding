@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { DsLinkButton } from "$lib/components/design-system";
+	import { MarketingHero } from "$lib/components/marketing";
 
 	import { site } from "$lib/constants";
 	import * as m from "$lib/paraglide/messages.js";
+	import { localizeUrl } from "$lib/paraglide/runtime.js";
 </script>
 
 <svelte:head>
@@ -14,21 +15,14 @@
 </svelte:head>
 
 <div class="container py-16">
-	<div class="mx-auto max-w-2xl space-y-6 text-center">
-		<p class="text-label text-muted-foreground">Local Template Sandbox</p>
-		<h1 class="text-h1 font-semibold">
-			{m.meta_site_title({ siteName: site.name })}
-		</h1>
-		<p class="text-body-secondary text-muted-foreground">
-			{m.meta_site_description({ siteDescription: site.description })}
-		</p>
-		<div class="flex justify-center gap-2">
-			<DsLinkButton href="/design-system" intent="primary">
-				Design System
-			</DsLinkButton>
-			<DsLinkButton href="/design-system#coverage" variant="outline" intent="secondary">
-				Coverage
-			</DsLinkButton>
-		</div>
-	</div>
+	<MarketingHero
+		kicker="Local Template Sandbox"
+		title={m.meta_site_title({ siteName: site.name })}
+		description={m.meta_site_description({ siteDescription: site.description })}
+		primary={{ label: "Design System", href: localizeUrl("/design-system").href }}
+		secondary={{
+			label: "Coverage",
+			href: localizeUrl("/design-system#coverage").href,
+		}}
+	/>
 </div>

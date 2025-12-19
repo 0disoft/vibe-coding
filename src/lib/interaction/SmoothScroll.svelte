@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { pushState } from "$app/navigation";
+	import { page } from "$app/state";
 	import Lenis from "lenis";
 	import "lenis/dist/lenis.css";
 	import { onMount } from "svelte";
@@ -99,7 +101,7 @@
 
 			event.preventDefault();
 			if (window.location.hash !== url.hash) {
-				history.pushState(null, "", url.hash);
+				pushState(url.toString(), page.state);
 				window.dispatchEvent(new HashChangeEvent("hashchange"));
 			}
 			lenis.scrollTo(el, { duration });

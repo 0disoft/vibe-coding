@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { replaceState } from "$app/navigation";
+  import { page } from "$app/state";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
@@ -38,7 +40,7 @@
 
     const url = new URL(window.location.href);
     url.hash = id;
-    history.replaceState(null, "", url.toString());
+    replaceState(url.toString(), page.state);
 
     try {
       await navigator.clipboard?.writeText?.(url.toString());

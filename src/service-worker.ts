@@ -1,7 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 /// <reference lib="webworker" />
 
-import { base, build, files, prerendered, version } from '$service-worker';
+import { build, files, prerendered, version } from '$service-worker';
 
 import { createSwConfig } from './service-worker/config';
 import { registerServiceWorker } from './service-worker/register';
@@ -10,9 +10,11 @@ import { registerServiceWorker } from './service-worker/register';
 declare const __APP_NAME__: string;
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
+const appName = typeof __APP_NAME__ === 'string' ? __APP_NAME__ : 'app';
+const base = sw.location.pathname.replace(/\/service-worker\.js$/, '');
 
 const config = createSwConfig({
-	appName: __APP_NAME__,
+	appName,
 	base,
 	build,
 	files,

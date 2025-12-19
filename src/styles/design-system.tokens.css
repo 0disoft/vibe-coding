@@ -9,7 +9,7 @@
   color-scheme: light dark;
 
   /* A11y / Touch */
-  --touch-target-min: 44px;
+  --touch-target-min: 2.75rem;
 
   /* Safe Area (iOS notch / home indicator) */
   --safe-area-top: env(safe-area-inset-top);
@@ -52,10 +52,10 @@
   --elevation-3: var(--shadow-lg);
 
   /* Icon Size */
-  --size-icon-lg: 24px;
-  --size-icon-md: 20px;
-  --size-icon-sm: 16px;
-  --size-icon-xs: 12px;
+  --size-icon-lg: 1.5rem;
+  --size-icon-md: 1.25rem;
+  --size-icon-sm: 1rem;
+  --size-icon-xs: 0.75rem;
 
   /* Icon */
   --icon-gap: var(--spacing-2);
@@ -186,8 +186,8 @@
   --nav-menu-panel-radius: var(--radius-lg);
   --nav-menu-panel-shadow: var(--elevation-3);
   --nav-menu-panel-surface: var(--color-surface);
-  --nav-menu-panel-min-width: 520px;
-  --nav-menu-panel-max-width: 760px;
+  --nav-menu-panel-min-width: clamp(18rem, 70vw, 32.5rem);
+  --nav-menu-panel-max-width: clamp(24rem, 80vw, 47.5rem);
   --nav-menu-link-hover: var(--color-surface-hover);
   --nav-menu-link-radius: var(--radius-md);
   --nav-menu-link-padding-x: var(--spacing-3);
@@ -206,7 +206,7 @@
   --banner-surface: var(--color-surface);
 
   /* Component: ContextMenu */
-  --context-menu-min-width: 220px;
+  --context-menu-min-width: 13.75rem;
   --context-menu-padding-x: var(--spacing-2);
   --context-menu-padding-y: var(--spacing-2);
   --context-menu-radius: var(--radius-md);
@@ -221,35 +221,35 @@
   /* Component: MultiSelect */
   --multiselect-chip-gap: var(--spacing-1);
   --multiselect-chip-radius: var(--radius-sm);
-  --multiselect-chip-padding-x: 0.4rem;
-  --multiselect-chip-padding-y: 0.15rem;
+  --multiselect-chip-padding-x: 0.5rem;
+  --multiselect-chip-padding-y: 0.25rem;
   --multiselect-chip-bg: var(--color-surface-hover);
   --multiselect-chip-fg: var(--color-text);
 
   /* Component: NumberInput */
-  --number-input-step-gap: 0.15rem;
+  --number-input-step-gap: 0.25rem;
   --number-input-stepper-bg: var(--color-surface-hover);
 
   /* Component: Slider */
-  --slider-track-height: 0.4rem;
-  --slider-thumb-size: 1.1rem;
+  --slider-track-height: 0.5rem;
+  --slider-thumb-size: 1.25rem;
   --slider-track-bg: var(--color-border);
   --slider-fill-bg: var(--color-primary);
 
   /* Component: TagInput */
   --tag-input-gap: var(--spacing-2);
   --tag-input-padding-x: 0.5rem;
-  --tag-input-padding-y: 0.35rem;
+  --tag-input-padding-y: 0.375rem;
   --tag-input-chip-gap: var(--spacing-1);
   --tag-input-chip-radius: var(--radius-sm);
   --tag-input-chip-bg: var(--color-surface-hover);
   --tag-input-chip-fg: var(--color-text);
-  --tag-input-chip-padding-x: 0.4rem;
-  --tag-input-chip-padding-y: 0.15rem;
+  --tag-input-chip-padding-x: 0.5rem;
+  --tag-input-chip-padding-y: 0.25rem;
 
   /* Component: Steps */
   --steps-gap: var(--spacing-3);
-  --steps-dot-size: 1.6rem;
+  --steps-dot-size: 1.5rem;
   --steps-dot-border: var(--color-border);
   --steps-dot-bg: var(--color-surface);
   --steps-dot-active: var(--color-primary);
@@ -260,10 +260,10 @@
   --wizard-footer-gap: var(--spacing-2);
 
   /* Component: TreeView */
-  --treeview-indent: 1.1rem;
+  --treeview-indent: 1.25rem;
   --treeview-gap: var(--spacing-2);
   --treeview-padding-x: var(--spacing-3);
-  --treeview-padding-y: 0.45rem;
+  --treeview-padding-y: 0.5rem;
   --treeview-radius: var(--radius-md);
   --treeview-item-hover: var(--color-surface-hover);
   --treeview-item-selected: var(--color-surface-hover);
@@ -272,9 +272,9 @@
   /* Component: Carousel */
   --carousel-gap: var(--spacing-3);
   --carousel-padding: var(--spacing-2);
-  --carousel-slide-width: min(360px, 80vw);
+  --carousel-slide-width: min(22.5rem, 80vw);
   --carousel-slide-radius: var(--radius-lg);
-  --carousel-dot-size: 0.55rem;
+  --carousel-dot-size: 0.5rem;
   --carousel-dot-gap: var(--spacing-2);
   --carousel-control-gap: var(--spacing-1);
 
@@ -323,7 +323,7 @@
 
   /* Component: ContentCard */
   --content-card-gap: var(--spacing-3);
-  --content-card-media-height: 180px;
+  --content-card-media-height: 11.25rem;
   --content-card-excerpt-color: var(--color-text-muted);
 
   /* Component: ContentActions */
@@ -342,7 +342,7 @@
 
   /* Component: MediaPicker */
   --media-picker-gap: var(--spacing-3);
-  --media-thumb-size: 96px;
+  --media-thumb-size: 6rem;
   --media-thumb-radius: var(--radius-md);
 
   /* Component: Quote */
@@ -376,8 +376,8 @@
   --dropdown-surface: var(--color-surface);
 
   /* Pattern: Tooltip */
-  --tooltip-arrow-size: 8px;
-  --tooltip-max-width: min(320px, 80vw);
+  --tooltip-arrow-size: 0.5rem;
+  --tooltip-max-width: min(20rem, 80vw);
   --tooltip-offset: var(--spacing-2);
   --tooltip-padding-x: var(--spacing-3);
   --tooltip-padding-y: var(--spacing-2);
@@ -392,7 +392,7 @@
   --toast-padding-y: var(--spacing-3);
   --toast-radius: var(--radius-md);
   --toast-surface: var(--color-surface);
-  --toast-width: min(420px, calc(100vw - (var(--spacing-4) * 2)));
+  --toast-width: min(26.25rem, calc(100vw - (var(--spacing-4) * 2)));
 
   /* Pattern: Card */
   --component-card-padding-lg: var(--spacing-6);
@@ -658,12 +658,12 @@
 
   /* Primitive (Raw) */
   --raw-color-accent: 42% 0.06 240;
-  --raw-color-background: 15% 0.02 240;
+  --raw-color-background: 22% 0.01 240;
   --raw-color-border: 30% 0.012 240;
   --raw-color-code-card: 27% 0.0314 274;
   --raw-color-danger: 72% 0.18 25;
   --raw-color-error: 72% 0.18 25;
-  --raw-color-input: 26% 0.012 240;
+  --raw-color-input: 34% 0.012 240;
   --raw-color-link: 88% 0.1 240;
   --raw-color-neutral-100: 85% 0.004 255;
   --raw-color-neutral-200: 72% 0.004 255;
@@ -687,16 +687,16 @@
   --raw-color-on-sidebar: 85% 0.01 255;
   --raw-color-on-success: 18% 0.02 150;
   --raw-color-on-warning: 18% 0.02 70;
-  --raw-color-overlay: 8% 0.012 240;
+  --raw-color-overlay: 15% 0.01 240;
   --raw-color-primary: 84% 0.1 240;
   --raw-color-primary-hover: 88% 0.1 240;
-  --raw-color-scrim: 8% 0.012 240;
+  --raw-color-scrim: 15% 0.01 240;
   --raw-color-secondary: 90% 0.04 240;
   --raw-color-selected: 50% 0.08 240;
-  --raw-color-sidebar: 13% 0.02 240;
+  --raw-color-sidebar: 20% 0.012 240;
   --raw-color-success: 75% 0.1 150;
-  --raw-color-surface: 19% 0.02 240;
-  --raw-color-surface-hover: 24% 0.02 240;
+  --raw-color-surface: 27% 0.015 240;
+  --raw-color-surface-hover: 32% 0.02 240;
   --raw-color-text: 96% 0.01 240;
   --raw-color-text-muted: 82% 0.01 240;
   --raw-color-success-text: 75% 0.1 150;
@@ -716,17 +716,17 @@
 
 [data-theme="dark"][data-theme-palette="airy-blue"] {
   /* Airy Blue: 심해의 차분한 블루 - Hue 240 */
-  --raw-color-background: 14% 0.03 240;
-  --raw-color-surface: 18% 0.03 240;
-  --raw-color-surface-hover: 22% 0.04 240;
-  --raw-color-border: 25% 0.03 240;
-  --raw-color-input: 20% 0.03 240;
-  --raw-color-sidebar: 14% 0.03 240;
-  --raw-color-overlay: 10% 0.02 240;
-  --raw-color-scrim: 10% 0.02 240;
+  --raw-color-background: 22% 0.02 240;
+  --raw-color-surface: 27% 0.025 240;
+  --raw-color-surface-hover: 32% 0.03 240;
+  --raw-color-border: 30% 0.02 240;
+  --raw-color-input: 34% 0.02 240;
+  --raw-color-sidebar: 20% 0.02 240;
+  --raw-color-overlay: 15% 0.02 240;
+  --raw-color-scrim: 15% 0.02 240;
 
-  --raw-color-text: 94% 0.02 240;
-  --raw-color-text-muted: 75% 0.03 240;
+  --raw-color-text: 96% 0.01 240;
+  --raw-color-text-muted: 82% 0.02 240;
 
   --raw-color-accent: 30% 0.05 240;
   --raw-color-on-accent: 94% 0.02 240;
@@ -747,17 +747,17 @@
 
 [data-theme="dark"][data-theme-palette="misty-lavender"] {
   /* Misty Lavender: 짙은 밤하늘의 보라 - Hue 290 */
-  --raw-color-background: 14% 0.03 290;
-  --raw-color-surface: 18% 0.03 290;
-  --raw-color-surface-hover: 22% 0.04 290;
-  --raw-color-border: 25% 0.03 290;
-  --raw-color-input: 20% 0.03 290;
-  --raw-color-sidebar: 14% 0.03 290;
-  --raw-color-overlay: 10% 0.02 290;
-  --raw-color-scrim: 10% 0.02 290;
+  --raw-color-background: 22% 0.02 290;
+  --raw-color-surface: 27% 0.025 290;
+  --raw-color-surface-hover: 32% 0.03 290;
+  --raw-color-border: 30% 0.02 290;
+  --raw-color-input: 34% 0.02 290;
+  --raw-color-sidebar: 20% 0.02 290;
+  --raw-color-overlay: 15% 0.02 290;
+  --raw-color-scrim: 15% 0.02 290;
 
-  --raw-color-text: 94% 0.02 290;
-  --raw-color-text-muted: 75% 0.03 290;
+  --raw-color-text: 96% 0.01 290;
+  --raw-color-text-muted: 82% 0.02 290;
 
   --raw-color-accent: 30% 0.05 290;
   --raw-color-on-accent: 94% 0.02 290;
@@ -778,17 +778,17 @@
 
 [data-theme="dark"][data-theme-palette="sage-breeze"] {
   /* Sage Breeze: 깊은 숲/세이지 (sage/teal) - Hue 150 */
-  --raw-color-background: 14% 0.03 150;
-  --raw-color-surface: 18% 0.03 150;
-  --raw-color-surface-hover: 22% 0.04 150;
-  --raw-color-border: 25% 0.03 150;
-  --raw-color-input: 20% 0.03 150;
-  --raw-color-sidebar: 14% 0.03 150;
-  --raw-color-overlay: 10% 0.02 150;
-  --raw-color-scrim: 10% 0.02 150;
+  --raw-color-background: 22% 0.02 150;
+  --raw-color-surface: 27% 0.025 150;
+  --raw-color-surface-hover: 32% 0.03 150;
+  --raw-color-border: 30% 0.02 150;
+  --raw-color-input: 34% 0.02 150;
+  --raw-color-sidebar: 20% 0.02 150;
+  --raw-color-overlay: 15% 0.02 150;
+  --raw-color-scrim: 15% 0.02 150;
 
-  --raw-color-text: 94% 0.02 150;
-  --raw-color-text-muted: 75% 0.03 150;
+  --raw-color-text: 96% 0.01 150;
+  --raw-color-text-muted: 82% 0.02 150;
 
   --raw-color-accent: 30% 0.05 150;
   --raw-color-on-accent: 94% 0.02 150;
@@ -809,17 +809,17 @@
 
 [data-theme="dark"][data-theme-palette="cozy-coral"] {
   /* Cozy Coral: 따뜻한 모닥불 - Hue 35 */
-  --raw-color-background: 14% 0.03 35;
-  --raw-color-surface: 18% 0.03 35;
-  --raw-color-surface-hover: 22% 0.04 35;
-  --raw-color-border: 25% 0.03 35;
-  --raw-color-input: 20% 0.03 35;
-  --raw-color-sidebar: 14% 0.03 35;
-  --raw-color-overlay: 10% 0.02 35;
-  --raw-color-scrim: 10% 0.02 35;
+  --raw-color-background: 22% 0.02 35;
+  --raw-color-surface: 27% 0.025 35;
+  --raw-color-surface-hover: 32% 0.03 35;
+  --raw-color-border: 30% 0.02 35;
+  --raw-color-input: 34% 0.02 35;
+  --raw-color-sidebar: 20% 0.02 35;
+  --raw-color-overlay: 15% 0.02 35;
+  --raw-color-scrim: 15% 0.02 35;
 
-  --raw-color-text: 94% 0.02 35;
-  --raw-color-text-muted: 75% 0.03 35;
+  --raw-color-text: 96% 0.01 35;
+  --raw-color-text-muted: 82% 0.02 35;
 
   --raw-color-accent: 30% 0.05 35;
   --raw-color-on-accent: 94% 0.02 35;

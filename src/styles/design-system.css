@@ -3858,6 +3858,22 @@
   color: oklch(var(--ds-tag-fg));
 }
 
+/* Dark Mode Accessibility Overrides */
+[data-theme="dark"] .ds-tag[data-ds-intent="neutral"] {
+  --ds-tag-bg: var(--color-neutral-950);
+}
+
+[data-theme="dark"] .ds-tag[data-ds-intent="secondary"] {
+  --ds-tag-bg: var(--color-surface-hover);
+}
+
+[data-theme="dark"] .ds-tag[data-ds-variant="soft"][data-ds-intent="neutral"],
+[data-theme="dark"] .ds-tag[data-ds-variant="soft"][data-ds-intent="secondary"],
+[data-theme="dark"] .ds-tag[data-ds-variant="outline"][data-ds-intent="neutral"],
+[data-theme="dark"] .ds-tag[data-ds-variant="outline"][data-ds-intent="secondary"] {
+  color: oklch(var(--color-text-muted));
+}
+
 /* ───────────────────────────────────────────────────────────
    Component: DsProgress
    ─────────────────────────────────────────────────────────── */

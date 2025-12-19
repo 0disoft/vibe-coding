@@ -261,11 +261,18 @@
 | `stores/font-size.svelte.ts`                      | 글자 크기 1~9단계 관리                                         |
 | `paraglide/`                                      | Paraglide 자동 생성 파일 (messages, runtime, registry, server) |
 | `components/CodeBlock.svelte`                     | Shiki 기반 코드 하이라이팅 + 복사 버튼 컴포넌트                |
+| `components/code-block/shiki.ts`                  | Shiki 하이라이터 싱글톤/언어 로더                              |
 | `components/Header.svelte`                        | 공통 헤더 컴포넌트 (사이트명, 네비게이션, Action 슬롯)         |
 | `components/Footer.svelte`                        | 공통 푸터 컴포넌트 (카피라이트, 약관 링크)                     |
 | `components/docs/`                                | 문서/가이드/API 문서 전용 패턴 컴포넌트                        |
 | `components/design-system/`                       | 디자인 시스템 UI 컴포넌트 폴더 (세부 목록/사용법은 README 참조) |
 | `components/design-system/README.md`              | DS 컴포넌트 레퍼런스 (Props/예제/패턴 요약)                    |
+| `components/marketing/`                           | 마케팅 전용 조립 컴포넌트                                      |
+| `components/marketing/MarketingHero.svelte`       | 랜딩 히어로 섹션 컴포넌트                                      |
+| `components/policy/`                              | 정책/컴플라이언스 전용 컴포넌트                               |
+| `components/policy/PolicyLayout.svelte`           | 정책 페이지 레이아웃(타이틀/메타/콘텐츠 래퍼)                  |
+| `components/search/`                              | 검색 경험 전용 컴포넌트                                        |
+| `components/search/SearchPanelSection.svelte`     | 검색 패널 섹션 컴포넌트                                        |
 | `components/header-actions/ThemeToggle.svelte`    | 테마 토글 버튼                                                 |
 | `components/header-actions/LanguagePicker.svelte` | 언어 변경 버튼 및 모달                                         |
 | `components/header-actions/FontSizePicker.svelte` | 폰트 크기 조절 버튼 및 모달                                    |

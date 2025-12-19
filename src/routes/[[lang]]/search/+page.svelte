@@ -1,7 +1,8 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
 
-  import { DsCard, DsLinkButton, DsSearchPanel } from "$lib/components/design-system";
+  import { DsCard, DsLinkButton } from "$lib/components/design-system";
+  import { SearchPanelSection } from "$lib/components/search";
   import { site } from "$lib/constants";
   import { pages } from "$lib/constants/pages";
   import { localizeUrl } from "$lib/paraglide/runtime.js";
@@ -47,20 +48,15 @@
       </div>
 
       <div class="pt-4">
-        <div class="text-label text-muted-foreground">Demo</div>
-        <div class="mt-2">
-          <DsSearchPanel
-            label="Search pages"
-            placeholder="Type to filter pages…"
-            {items}
-            bind:query
-            onSelect={(id) => {
-              const next = pages.find((p) => p.id === id);
-              if (!next) return;
-              goto(localizeUrl(next.path).href);
-            }}
-          />
-        </div>
+        <SearchPanelSection
+          {items}
+          bind:query
+          onSelect={(id) => {
+            const next = pages.find((p) => p.id === id);
+            if (!next) return;
+            goto(localizeUrl(next.path).href);
+          }}
+        />
       </div>
 
       <div class="text-label text-muted-foreground pt-4">Next</div>

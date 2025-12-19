@@ -164,7 +164,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/CopyButton.svelte`
 - 역할: 클립보드 복사 버튼(복사 성공 시 상태 전환)
-- Props: `text`, `label`, `copiedLabel`, `icon`, `copiedIcon`, `resetMs`, `onCopied`, `onCopyError`, `describedBy` (+ IconButton 공통 props)
+- Props: `text`, `label`, `copiedLabel`, `icon`, `copiedIcon`, `resetMs`, `onCopied`, `onCopyError`, `describedBy`, `touchTarget` (+ IconButton 공통 props)
 
 ### Forms
 

@@ -93,40 +93,26 @@
 			<div class="grid gap-4">
 				<div class="text-label font-semibold text-foreground px-1">{title}</div>
 
-				<div class="grid grid-cols-2 gap-6">
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<!-- Mode Column -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<section
-						class="grid gap-2 content-start"
+						class="border border-border rounded-lg p-4 flex flex-col gap-3"
 						onkeydown={handleModeKeyDown}
 						role="group"
 						aria-label="Mode Selection"
 					>
-						<div class="text-menu-sm font-semibold text-foreground px-1">
-							Mode
-						</div>
+						<div class="text-menu-sm font-semibold text-foreground">Mode</div>
 						<DsRadioGroup
 							value={mode}
 							onValueChange={setMode}
 							name="theme-mode"
 							data-group="mode"
 						>
-							<DsRadioItem
-								value="system"
-								label="System"
-								description="OS 설정을 따릅니다"
-							/>
-							<DsRadioItem
-								value="light"
-								label="Light"
-								description="항상 라이트로 고정"
-							/>
-							<DsRadioItem
-								value="dark"
-								label="Dark"
-								description="항상 다크로 고정"
-							/>
+							<DsRadioItem value="system" label="System" class="items-center" />
+							<DsRadioItem value="light" label="Light" class="items-center" />
+							<DsRadioItem value="dark" label="Dark" class="items-center" />
 						</DsRadioGroup>
 					</section>
 
@@ -134,24 +120,54 @@
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<section
-						class="grid gap-2 content-start"
+						class="border border-border rounded-lg p-4 flex flex-col gap-3"
 						onkeydown={handlePaletteKeyDown}
 						role="group"
 						aria-label="Palette Selection"
 					>
-						<div class="text-menu-sm font-semibold text-foreground px-1">
-							Palette
-						</div>
+						<div class="text-menu-sm font-semibold text-foreground">Palette</div>
 						<DsRadioGroup
 							value={palette}
 							onValueChange={setPalette}
 							name="theme-palette"
 							data-group="palette"
 						>
-							<DsRadioItem value="airy-blue" label="Airy Blue" />
-							<DsRadioItem value="misty-lavender" label="Misty Lavender" />
-							<DsRadioItem value="sage-breeze" label="Sage Breeze" />
-							<DsRadioItem value="cozy-coral" label="Cozy Coral" />
+							<DsRadioItem value="airy-blue" class="items-center">
+								<div class="flex items-center gap-2">
+									<span
+										class="w-3 h-3 rounded-full shadow-sm"
+										style="background-color: oklch(60% 0.16 240)"
+									></span>
+									<span>Airy Blue</span>
+								</div>
+							</DsRadioItem>
+							<DsRadioItem value="misty-lavender" class="items-center">
+								<div class="flex items-center gap-2">
+									<span
+										class="w-3 h-3 rounded-full shadow-sm"
+										style="background-color: oklch(60% 0.16 290)"
+									></span>
+									<span>Misty Lavender</span>
+								</div>
+							</DsRadioItem>
+							<DsRadioItem value="sage-breeze" class="items-center">
+								<div class="flex items-center gap-2">
+									<span
+										class="w-3 h-3 rounded-full shadow-sm"
+										style="background-color: oklch(60% 0.16 150)"
+									></span>
+									<span>Sage Breeze</span>
+								</div>
+							</DsRadioItem>
+							<DsRadioItem value="cozy-coral" class="items-center">
+								<div class="flex items-center gap-2">
+									<span
+										class="w-3 h-3 rounded-full shadow-sm"
+										style="background-color: oklch(60% 0.16 35)"
+									></span>
+									<span>Cozy Coral</span>
+								</div>
+							</DsRadioItem>
 						</DsRadioGroup>
 					</section>
 				</div>
