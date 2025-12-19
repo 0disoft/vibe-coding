@@ -16,6 +16,7 @@
 | [lint-patterns](#lint-patterns) | 타입스크립트 안티패턴 감지 | `bun .vibe-coding/TOOLS/02-lint-patterns.ts` |
 | [security-patterns](#security-patterns) | 보안 취약점 패턴 탐지 | `bun .vibe-coding/TOOLS/01-security-patterns.ts` |
 | [route-audit](#route-audit) | 라우트/내부 링크 정적 점검 | `bun .vibe-coding/TOOLS/03-route-audit.ts` |
+| [stale-files](#stale-files) | 오래된 파일 검색 | `bun .vibe-coding/TOOLS/stale-files.ts` |
 
 ---
 
@@ -32,6 +33,7 @@
 - `05-file-size-report.txt`
 - `06-fix-bold-report.txt`
 - `find-word-report.txt`
+- `stale-files-report.txt`
 
 ---
 
@@ -623,3 +625,56 @@ bun .vibe-coding/TOOLS/03-route-audit.ts --verbose
 ### 상대 링크 지원
 
 `./foo`, `../bar` 형태의 상대 링크는 `src/routes/**` 내부 파일에서만 제한적으로 해석하여 검사합니다.
+
+---
+
+## stale-files
+
+오래된 파일을 검색하여 주기적으로 코드를 점검할 수 있도록 돕는 도구입니다.
+
+### stale-files 실행 방법
+
+```bash
+# 기본: src에서 30일 이상 수정되지 않은 파일 검색
+bun .vibe-coding/TOOLS/stale-files.ts
+
+# 60일 이상 된 파일 검색
+bun .vibe-coding/TOOLS/stale-files.ts --days 60
+
+# 특정 디렉토리에서 검색
+bun .vibe-coding/TOOLS/stale-files.ts src/lib --days 90
+
+# 모든 결과 표시 (기본: 상위 50개)
+bun .vibe-coding/TOOLS/stale-files.ts --all
+
+# JSON 형식 출력
+bun .vibe-coding/TOOLS/stale-files.ts --json
+
+# 리포트 파일 생성 생략
+bun .vibe-coding/TOOLS/stale-files.ts --no-report
+```
+
+### stale-files 옵션
+
+| 옵션 | 설명 |
+|------|------|
+| `--days <N>` | N일 이상 수정되지 않은 파일 검색 (기본: 30) |
+| `--all` | 결과 개수 제한 해제 (기본: 상위 50개) |
+| `--json` | JSON 형식으로 출력 |
+| `--no-report` | 리포트 파일 생성 생략 |
+| `--help, -h` | 도움말 표시 |
+
+### stale-files 출력 예시
+
+```plaintext
+📅 Stale Files Report
+──────────────────────────────────────
+기준일: 60일 이상 수정되지 않은 파일
+검색 대상: src
+검색일: 2025-12-19 10:05:52
+
+검색: 449개 파일 | 발견: 12개
+
+  90일 │ 2025-09-20 │   2.3KB │ src/lib/old-util.ts
+  75일 │ 2025-10-05 │   1.1KB │ src/routes/legacy/+page.svelte
+```

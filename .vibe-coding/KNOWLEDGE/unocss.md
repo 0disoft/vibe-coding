@@ -1,8 +1,4 @@
-# UnoCSS v65-v66 아키텍처 리포트: Epoch SemVer 도입과 프리셋 통합 전략
-
-2024년 11월부터 2025년 11월까지 UnoCSS의 변화는 단순한 기능 추가가 아닌, **엔터프라이즈급 안정성 확보를 위한 구조적 재설계**로 정의됩니다. 버전 체계의 근본적 변화(Epoch SemVer)와 프리셋 생태계의 통폐합(`preset-wind3/4`)은 기술 부채를 청산하고 Tailwind 4 및 최신 CSS 스펙에 대응하기 위한 필수적인 전환점입니다.
-
-본 리포트는 해당 기간의 변경 사항을 분석하여, 개발 조직이 수행해야 할 아키텍처 마이그레이션 전략을 제시합니다.
+# UnoCSS
 
 ---
 
@@ -50,10 +46,10 @@ UnoCSS는 '세대(Epoch)'와 '버전(SemVer)'을 결합한 독자적인 버저�
   ```ts
   // uno.config.ts
   presetWind4({
-  	dark: {
-  		light: '[data-theme="light"]', // 속성 기반 제어
-  		dark: '[data-theme="dark"]'
-  	}
+    dark: {
+      light: '[data-theme="light"]', // 속성 기반 제어
+      dark: '[data-theme="dark"]'
+    }
   });
   ```
 
