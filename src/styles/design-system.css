@@ -1939,6 +1939,18 @@ input[type="range"]::-moz-focus-inner {
   gap: var(--spacing-2);
 }
 
+.ds-filter-bar-clear {
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 160ms ease;
+}
+
+.ds-filter-bar-clear[data-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @media (min-width: 768px) {
 
   .ds-filter-bar {

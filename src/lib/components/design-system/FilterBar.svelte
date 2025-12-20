@@ -3,6 +3,8 @@
 	import { tick, untrack } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
+	import { createDebouncedRunner } from "$lib/shared/utils/debounce";
+
 	import DsButton from "./Button.svelte";
 	import DsInput from "./Input.svelte";
 	import DsSelect from "./Select.svelte";
@@ -46,22 +48,22 @@
 		...rest
 	}: Props = $props();
 
+	const queryDebouncer = createDebouncedRunner();
 	let inputRef = $state<HTMLInputElement | null>(null);
 	let inputValue = $state(query);
-	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+	let liveMessage = $state("");
+	let shouldAnnounce = $state(false);
 
 	let hasSort = $derived(sortOptions.length > 0);
-	let canClear = $derived(
-		showClear && (inputValue.trim().length > 0 || (sort ?? null) !== null),
+	let hasActiveFilters = $derived(
+		inputValue.trim().length > 0 || (sort ?? null) !== null,
 	);
+	let canClear = $derived(showClear && hasActiveFilters);
 
 	$effect(() => {
 		const currentInput = untrack(() => inputValue);
 		if (query !== currentInput) {
-			if (debounceTimer) {
-				clearTimeout(debounceTimer);
-				debounceTimer = null;
-			}
+			queryDebouncer.cancel();
 			inputValue = query;
 		}
 	});
@@ -70,6 +72,7 @@
 		if (next === query) return;
 		query = next;
 		onQueryChange?.(next);
+		shouldAnnounce = true;
 	}
 
 	function setSort(next: string) {
@@ -78,6 +81,7 @@
 		if (v === sort) return;
 		sort = v;
 		onSortChange?.(v);
+		shouldAnnounce = true;
 	}
 
 	let sortProxy = $derived({
@@ -89,24 +93,48 @@
 		},
 	});
 
-	function handleInput(e: Event) {
-		const next = (e.currentTarget as HTMLInputElement).value;
-		inputValue = next;
-		if (debounceTimer) clearTimeout(debounceTimer);
-		if (debounceMs <= 0) {
-			setQuery(next);
-			return;
-		}
-		debounceTimer = setTimeout(() => {
-			setQuery(next);
-		}, debounceMs);
+	function scheduleQuery(next: string) {
+		queryDebouncer.run(() => setQuery(next), debounceMs);
 	}
 
+	function handleInputValue(next: string) {
+		inputValue = next;
+		scheduleQuery(next);
+	}
+
+	let inputProxy = $derived({
+		get value() {
+			return inputValue;
+		},
+		set value(next: string) {
+			handleInputValue(next);
+		},
+	});
+
+	function getSortLabel(value: string | null) {
+		if (!value) return "";
+		const match = sortOptions.find((option) => option.value === value);
+		return match?.label ?? value;
+	}
+
+	function buildLiveMessage(nextQuery: string, nextSort: string | null) {
+		const trimmedQuery = nextQuery.trim();
+		const sortLabel = getSortLabel(nextSort);
+		if (!trimmedQuery && !sortLabel) return "Filters cleared.";
+		const parts: string[] = [];
+		if (trimmedQuery) parts.push(`Query: ${trimmedQuery}`);
+		if (sortLabel) parts.push(`Sort: ${sortLabel}`);
+		return `Filters updated. ${parts.join(". ")}`;
+	}
+
+	$effect(() => {
+		if (!shouldAnnounce) return;
+		liveMessage = buildLiveMessage(query, sort ?? null);
+		shouldAnnounce = false;
+	});
+
 	function clearAll() {
-		if (debounceTimer) {
-			clearTimeout(debounceTimer);
-			debounceTimer = null;
-		}
+		queryDebouncer.cancel();
 		inputValue = "";
 		setQuery("");
 		setSort("");
@@ -123,11 +151,10 @@
 	<div class="ds-filter-bar-main">
 		<DsInput
 			bind:ref={inputRef}
-			value={inputValue}
+			bind:value={inputProxy.value}
 			{placeholder}
 			clearable={true}
 			class="ds-filter-bar-query"
-			oninput={handleInput}
 		>
 			{#snippet start()}
 				<span
@@ -155,18 +182,29 @@
 	</div>
 
 	<div class="ds-filter-bar-actions">
-		{#if canClear}
-			<DsButton
-				size="sm"
-				variant="outline"
-				intent="secondary"
-				onclick={clearAll}
+		{#if showClear}
+			<div
+				class="ds-filter-bar-clear"
+				data-hidden={!canClear ? "true" : undefined}
+				aria-hidden={!canClear ? "true" : undefined}
 			>
-				{clearLabel}
-			</DsButton>
+				<DsButton
+					size="sm"
+					variant="outline"
+					intent="secondary"
+					disabled={!canClear}
+					tabindex={!canClear ? -1 : undefined}
+					onclick={clearAll}
+				>
+					{clearLabel}
+				</DsButton>
+			</div>
 		{/if}
 		{#if actions}
 			{@render actions()}
 		{/if}
 	</div>
+	<span class="sr-only" aria-live="polite" aria-atomic="true">
+		{liveMessage}
+	</span>
 </div>
