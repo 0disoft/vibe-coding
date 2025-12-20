@@ -7,6 +7,12 @@
 	type Size = "sm" | "md" | "lg";
 	type Variant = "outline" | "filled" | "ghost";
 
+	type ParseState =
+		| { kind: "empty" }
+		| { kind: "partial" }
+		| { kind: "invalid" }
+		| { kind: "number"; value: number };
+
 	interface Props extends Omit<
 		HTMLInputAttributes,
 		"size" | "type" | "value" | "min" | "max" | "step" | "name"
@@ -29,6 +35,7 @@
 		incrementLabel?: string;
 		onkeydown?: HTMLInputAttributes["onkeydown"];
 		inputPattern?: string;
+		invalidMessage?: string;
 	}
 
 	let {
@@ -47,6 +54,7 @@
 		ref = $bindable(null),
 		decrementLabel = "값 감소",
 		incrementLabel = "값 증가",
+		invalidMessage = "유효한 숫자를 입력하세요.",
 		class: className = "",
 		onkeydown,
 		inputPattern = "[0-9]*",
@@ -55,6 +63,8 @@
 
 	let raw = $state("");
 	let isFocused = $state(false);
+	let localInvalid = $state(false);
+	let liveMessage = $state("");
 
 	function decimals(n: number): number {
 		const s = String(n);
@@ -82,15 +92,15 @@
 		return roundToPrecision(snapped, precision);
 	}
 
-	function parseRaw(v: string): number | null | undefined {
+	function parseRaw(v: string): ParseState {
 		const trimmed = v.trim();
-		if (trimmed === "") return null;
+		if (trimmed === "") return { kind: "empty" };
 		// 사용자가 -, . 등을 입력하는 중이면 보류
 		if (trimmed === "-" || trimmed === "." || trimmed === "-.")
-			return undefined;
+			return { kind: "partial" };
 		const n = Number(trimmed);
-		if (!Number.isFinite(n)) return undefined;
-		return n;
+		if (!Number.isFinite(n)) return { kind: "invalid" };
+		return { kind: "number", value: n };
 	}
 
 	$effect(() => {
@@ -106,28 +116,35 @@
 		const el = e.currentTarget as HTMLInputElement;
 		raw = el.value;
 		const parsed = parseRaw(raw);
-		if (parsed === undefined) return;
-		if (parsed === null) {
+		if (parsed.kind === "invalid") {
+			localInvalid = true;
+			liveMessage = invalidMessage;
+			return;
+		}
+		localInvalid = false;
+		liveMessage = "";
+		if (parsed.kind === "partial") return;
+		if (parsed.kind === "empty") {
 			setValue(null);
 			return;
 		}
-		setValue(clamp(parsed));
+		setValue(clamp(parsed.value));
 	}
 
 	function handleBlur() {
 		isFocused = false;
 		if (!clampOnBlur) return;
 		const parsed = parseRaw(raw);
-		if (parsed === undefined) {
+		if (parsed.kind === "invalid" || parsed.kind === "partial") {
 			raw = value === null || value === undefined ? "" : String(value);
 			return;
 		}
-		if (parsed === null) {
+		if (parsed.kind === "empty") {
 			setValue(null);
 			raw = "";
 			return;
 		}
-		const next = clamp(snap(parsed));
+		const next = clamp(snap(parsed.value));
 		setValue(next);
 		raw = String(next);
 	}
@@ -161,7 +178,12 @@
 		}
 
 		// onkeydown prop 전달 지원
-		if (!e.defaultPrevented) onkeydown?.(e as any);
+		if (!e.defaultPrevented) {
+			const handler = onkeydown as unknown;
+			if (typeof handler === "function") {
+				(handler as (event: KeyboardEvent) => void)(e);
+			}
+		}
 	}
 
 	function triggerFocus(node: HTMLElement) {
@@ -186,6 +208,7 @@
 	let inputMode = $derived<"numeric" | "decimal">(
 		decimals(step) === 0 ? "numeric" : "decimal",
 	);
+	let isInvalid = $derived(invalid || localInvalid);
 </script>
 
 {#if name}
@@ -201,7 +224,7 @@
 	class={`ds-input-group ${className}`.trim()}
 	data-ds-size={size}
 	data-ds-variant={variant}
-	data-invalid={invalid ? "true" : undefined}
+	data-invalid={isInvalid ? "true" : undefined}
 	data-disabled={rest.disabled ? "true" : undefined}
 	use:triggerFocus
 >
@@ -212,7 +235,7 @@
 		class="ds-input-native"
 		aria-label={ariaLabel}
 		aria-labelledby={ariaLabelledby}
-		aria-invalid={invalid ? "true" : undefined}
+		aria-invalid={isInvalid ? "true" : undefined}
 		role="spinbutton"
 		aria-valuenow={value ?? undefined}
 		aria-valuemin={min ?? undefined}
@@ -224,6 +247,10 @@
 		onblur={handleBlur}
 		onkeydown={handleKeydown}
 	/>
+
+	<span class="sr-only" aria-live="polite" aria-atomic="true">
+		{liveMessage}
+	</span>
 
 	{#if showStepper}
 		<div class="ds-input-adornment end">

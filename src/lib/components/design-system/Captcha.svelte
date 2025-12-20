@@ -3,6 +3,8 @@
 
 	import { onMount } from "svelte";
 
+	import DsLiveRegion from "./LiveRegion.svelte";
+
 	export type CapStatus = "idle" | "solving" | "solved" | "error";
 
 	export type CapI18n = {
@@ -102,6 +104,7 @@
 	});
 
 	let isReady = $state(false);
+	let liveRegion: { announce: (message: string) => void } | null = null;
 
 	onMount(async () => {
 		await import("@cap.js/widget");
@@ -128,6 +131,9 @@
 		token = null;
 		onTokenChange?.(token);
 		setStatus("error");
+		const fallbackMessage = i18n?.errorLabel ?? "Captcha error.";
+		const message = i18n?.errorLabel ?? event.detail?.message ?? fallbackMessage;
+		liveRegion?.announce(message);
 		onError?.(event.detail);
 	}
 
@@ -138,6 +144,8 @@
 		onReset?.();
 	}
 </script>
+
+<DsLiveRegion bind:this={liveRegion} politeness="polite" duration={4000} />
 
 <div
 	{...rest}

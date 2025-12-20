@@ -31,7 +31,10 @@
 			return;
 		}
 		tabs.setValue(value);
-		onclick?.(e as any);
+		const handler = onclick as unknown;
+		if (typeof handler === "function") {
+			(handler as (event: MouseEvent) => void)(e);
+		}
 	}
 
 	function onKeyDown(e: KeyboardEvent) {

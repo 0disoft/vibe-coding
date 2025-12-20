@@ -133,7 +133,48 @@
           },
         ]}
       >
-        <CodeBlock language="json" code={`{\n  "data": [{ "id": "u_123" }]\n}`} />
+        <CodeBlock
+          language="json"
+          code={`{
+  "meta": {
+    "requestId": "req_9f3c",
+    "generatedAt": "2025-12-20T10:30:00Z"
+  },
+  "data": [
+    { "id": "u_123", "name": "Avery", "role": "admin" },
+    { "id": "u_124", "name": "Jules", "role": "editor" },
+    { "id": "u_125", "name": "Casey", "role": "viewer" },
+    { "id": "u_126", "name": "Morgan", "role": "viewer" },
+    { "id": "u_127", "name": "Reese", "role": "editor" },
+    { "id": "u_128", "name": "Sky", "role": "viewer" },
+    { "id": "u_129", "name": "Rowan", "role": "admin" },
+    { "id": "u_130", "name": "Quinn", "role": "viewer" },
+    { "id": "u_131", "name": "Parker", "role": "viewer" },
+    { "id": "u_132", "name": "Elliot", "role": "editor" },
+    { "id": "u_133", "name": "Harper", "role": "admin" },
+    { "id": "u_134", "name": "Riley", "role": "viewer" },
+    { "id": "u_135", "name": "Sawyer", "role": "editor" },
+    { "id": "u_136", "name": "Kendall", "role": "viewer" },
+    { "id": "u_137", "name": "Emerson", "role": "viewer" },
+    { "id": "u_138", "name": "Jordan", "role": "admin" },
+    { "id": "u_139", "name": "Rowe", "role": "viewer" },
+    { "id": "u_140", "name": "Alex", "role": "editor" },
+    { "id": "u_141", "name": "Taylor", "role": "viewer" },
+    { "id": "u_142", "name": "Cameron", "role": "viewer" },
+    { "id": "u_143", "name": "Finley", "role": "editor" },
+    { "id": "u_144", "name": "Peyton", "role": "viewer" },
+    { "id": "u_145", "name": "Phoenix", "role": "admin" },
+    { "id": "u_146", "name": "Dakota", "role": "viewer" },
+    { "id": "u_147", "name": "Ari", "role": "viewer" },
+    { "id": "u_148", "name": "Nova", "role": "editor" },
+    { "id": "u_149", "name": "River", "role": "viewer" }
+  ],
+  "paging": {
+    "nextCursor": "cur_7b1d",
+    "hasMore": true
+  }
+}`}
+        />
       </ApiEndpointCard>
     </div>
 

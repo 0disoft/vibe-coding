@@ -50,10 +50,7 @@ export type IntentWithNeutral = Intent | 'neutral';
 export type IntentCssWithNeutral = IntentCss | 'neutral';
 
 const INTENT_WITH_NEUTRAL_SET = new Set<IntentWithNeutral>([...INTENTS, 'neutral']);
-const INTENT_CSS_WITH_NEUTRAL_SET = new Set<IntentCssWithNeutral>([
-	...INTENTS_CSS,
-	'neutral'
-]);
+const INTENT_CSS_WITH_NEUTRAL_SET = new Set<IntentCssWithNeutral>([...INTENTS_CSS, 'neutral']);
 
 export function isIntent(value: unknown): value is Intent {
 	return typeof value === 'string' && INTENT_SET.has(value as Intent);

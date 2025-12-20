@@ -10,6 +10,7 @@
 
   /* A11y / Touch */
   --touch-target-min: 2.75rem;
+  --touch-target-dense: 2.25rem;
 
   /* Safe Area (iOS notch / home indicator) */
   --safe-area-top: env(safe-area-inset-top);
@@ -77,9 +78,14 @@
   --focus-ring-offset: 2px;
   --focus-ring-offset-color: var(--color-background);
   --focus-ring-width: 2px;
+  --focus-ring-style: solid;
+  --focus-ring-style-contrast: dashed;
 
   /* Motion */
+  --motion-duration-instant: 0ms;
   --motion-duration-fast: 180ms;
+  --motion-duration-normal: 240ms;
+  --motion-duration-slow: 360ms;
   --motion-ease: ease;
 
   /* Typography */
@@ -447,8 +453,10 @@
   --raw-color-success: 82% 0.14 150;
   --raw-color-surface: 99.2% 0.012 240;
   --raw-color-surface-hover: 97.5% 0.016 240;
+  --raw-color-surface-1: var(--raw-color-surface);
+  --raw-color-surface-2: var(--raw-color-surface-hover);
   --raw-color-text: 21% 0.02 240;
-  --raw-color-text-muted: 44% 0.02 240;
+  --raw-color-text-muted: 40% 0.02 240;
   --raw-color-warning: 85% 0.16 70;
 
   /* Text Colors (Light Mode: Darker for contrast) */
@@ -504,7 +512,9 @@
   --color-selected: var(--raw-color-selected);
   --color-sidebar: var(--raw-color-sidebar);
   --color-success: var(--raw-color-success);
-  --color-surface: var(--raw-color-surface);
+  --color-surface-1: var(--raw-color-surface-1);
+  --color-surface-2: var(--raw-color-surface-2);
+  --color-surface: var(--raw-color-surface-1);
   --color-surface-hover: var(--raw-color-surface-hover);
   --color-text: var(--raw-color-text);
   --color-text-muted: var(--raw-color-text-muted);
@@ -542,7 +552,7 @@
   --raw-color-scrim: 22% 0.02 240;
 
   --raw-color-text: 25% 0.05 240;
-  --raw-color-text-muted: 45% 0.05 240;
+  --raw-color-text-muted: 40% 0.05 240;
 
   --raw-color-accent: 94% 0.04 240;
   --raw-color-on-accent: 25% 0.05 240;
@@ -573,7 +583,7 @@
   --raw-color-scrim: 22% 0.02 290;
 
   --raw-color-text: 25% 0.05 290;
-  --raw-color-text-muted: 45% 0.05 290;
+  --raw-color-text-muted: 40% 0.05 290;
 
   --raw-color-accent: 94% 0.04 290;
   --raw-color-on-accent: 25% 0.05 290;
@@ -604,7 +614,7 @@
   --raw-color-scrim: 22% 0.02 150;
 
   --raw-color-text: 25% 0.05 150;
-  --raw-color-text-muted: 45% 0.05 150;
+  --raw-color-text-muted: 40% 0.05 150;
 
   --raw-color-accent: 94% 0.04 150;
   --raw-color-on-accent: 25% 0.05 150;
@@ -635,7 +645,7 @@
   --raw-color-scrim: 22% 0.02 35;
 
   --raw-color-text: 25% 0.05 35;
-  --raw-color-text-muted: 45% 0.05 35;
+  --raw-color-text-muted: 40% 0.05 35;
 
   --raw-color-accent: 94% 0.04 35;
   --raw-color-on-accent: 25% 0.05 35;
@@ -850,6 +860,7 @@
     --raw-color-border: 0% 0 0;
     --focus-ring-color: var(--color-text);
     --focus-ring-width: 3px;
+    --focus-ring-style: var(--focus-ring-style-contrast);
     --alpha-scrim: 0.75;
   }
 
@@ -857,7 +868,17 @@
     --raw-color-border: 100% 0 0;
     --focus-ring-color: var(--color-text);
     --focus-ring-width: 3px;
+    --focus-ring-style: var(--focus-ring-style-contrast);
     --alpha-scrim: 0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  :root {
+    --motion-duration-fast: var(--motion-duration-instant);
+    --motion-duration-normal: var(--motion-duration-instant);
+    --motion-duration-slow: var(--motion-duration-instant);
   }
 }
 

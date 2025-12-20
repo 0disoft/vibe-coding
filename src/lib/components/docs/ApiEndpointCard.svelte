@@ -80,7 +80,7 @@
   {/if}
 
   {#if examples.length}
-    <DsDropdown align="end" menuClass="w-64" itemSelector='[role="menuitemradio"]'>
+    <DsDropdown align="start" menuClass="w-64" itemSelector='[role="menuitemradio"]'>
       {#snippet trigger(props)}
         <DsButton {...props} variant="outline" intent="secondary">
           {exampleLabel}
