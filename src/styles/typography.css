@@ -29,6 +29,9 @@
 :root {
 	color-scheme: light dark;
 
+	/* 영문(Manrope)과 한글(Pretendard)의 시각적 균형을 위해 x-height 기준 보정 */
+	font-size-adjust: 0.50;
+
 	/* Font stacks */
 	/* 기본(라틴 문자 기반) - 현재 테스트: Manrope */
 	--font-sans:
