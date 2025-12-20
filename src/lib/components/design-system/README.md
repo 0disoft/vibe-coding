@@ -457,8 +457,11 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/AdSlot.svelte`
 - 역할: 광고 영역 레이아웃/CLS 방지용 슬롯(실제 광고 스크립트는 외부 주입)
-- Props: `variant`, `minHeight`, `height`, `ratio`, `sticky`, `stickyTop`, `label`, `showLabel`, `showPlaceholder`, `children`
+- Props: `variant`, `minHeight`, `height`, `ratio`, `reserveRatio`, `sticky`, `stickyTop`, `label`, `showLabel`, `showPlaceholder`, `infoHref`, `infoLabel`, `infoTarget`, `infoRel`, `lazy`, `lazyMargin`, `children`
 - Variant: `banner`, `infeed`, `infeed-wide`, `sidebar`, `native`
+- 참고:
+  - `reserveRatio`는 `ratio`가 없을 때 기본 광고 비율을 적용해 빈 공간 붕괴를 완화합니다(기본값: `showPlaceholder`와 동일).
+  - `lazy`는 뷰포트 진입 시점에만 `children`을 렌더링합니다.
 
 #### `DsFilterBar`
 

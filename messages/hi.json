@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "मुख्य सामग्री पर जाएँ",
 	"form_error_summary_title": "कृपया निम्नलिखित ठीक करें",
 	"common_advertisement": "विज्ञापन",
-	"common_ad_placeholder": "विज्ञापन के लिए स्थान"
+	"common_ad_placeholder": "विज्ञापन के लिए स्थान",
+	"search_panel_demo_title": "डेमो",
+	"search_panel_label": "खोजें",
+	"search_panel_label_pages": "पेज खोजें",
+	"search_panel_placeholder": "खोजें…",
+	"search_panel_placeholder_pages": "पेज फ़िल्टर करने के लिए टाइप करें…",
+	"search_panel_empty": "कोई परिणाम नहीं।",
+	"search_panel_results": "परिणाम"
 }

@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "Ana içeriğe atla",
 	"form_error_summary_title": "Lütfen aşağıdakileri düzeltin",
 	"common_advertisement": "Reklam",
-	"common_ad_placeholder": "Reklam alanı"
+	"common_ad_placeholder": "Reklam alanı",
+	"search_panel_demo_title": "Demo",
+	"search_panel_label": "Ara",
+	"search_panel_label_pages": "Sayfalarda ara",
+	"search_panel_placeholder": "Ara…",
+	"search_panel_placeholder_pages": "Sayfaları filtrelemek için yazın…",
+	"search_panel_empty": "Sonuç bulunamadı.",
+	"search_panel_results": "sonuçlar"
 }

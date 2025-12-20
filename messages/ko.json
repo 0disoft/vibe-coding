@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "본문으로 바로가기",
 	"form_error_summary_title": "다음을 확인해 주세요",
 	"common_advertisement": "광고",
-	"common_ad_placeholder": "광고 게재 영역"
+	"common_ad_placeholder": "광고 게재 영역",
+	"search_panel_demo_title": "데모",
+	"search_panel_label": "검색",
+	"search_panel_label_pages": "페이지 검색",
+	"search_panel_placeholder": "검색…",
+	"search_panel_placeholder_pages": "페이지를 찾으려면 입력하세요…",
+	"search_panel_empty": "결과가 없습니다.",
+	"search_panel_results": "결과"
 }

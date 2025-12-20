@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "Skip to main content",
 	"form_error_summary_title": "Please fix the following",
 	"common_advertisement": "Advertisement",
-	"common_ad_placeholder": "Space for Advertisement"
+	"common_ad_placeholder": "Space for Advertisement",
+	"search_panel_demo_title": "Demo",
+	"search_panel_label": "Search",
+	"search_panel_label_pages": "Search pages",
+	"search_panel_placeholder": "Search…",
+	"search_panel_placeholder_pages": "Type to filter pages…",
+	"search_panel_empty": "No results.",
+	"search_panel_results": "results"
 }

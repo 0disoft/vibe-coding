@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "انتقل إلى المحتوى الرئيسي",
 	"form_error_summary_title": "يرجى تصحيح ما يلي",
 	"common_advertisement": "إعلان",
-	"common_ad_placeholder": "مساحة للإعلان"
+	"common_ad_placeholder": "مساحة للإعلان",
+	"search_panel_demo_title": "عرض توضيحي",
+	"search_panel_label": "بحث",
+	"search_panel_label_pages": "بحث في الصفحات",
+	"search_panel_placeholder": "بحث…",
+	"search_panel_placeholder_pages": "اكتب لتصفية الصفحات…",
+	"search_panel_empty": "لا توجد نتائج.",
+	"search_panel_results": "نتائج"
 }

@@ -189,6 +189,30 @@ input[type="range"]::-moz-focus-inner {
 	line-height: 1.2;
 }
 
+.ds-ad-slot-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-2);
+}
+
+.ds-ad-slot-info {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--spacing-6);
+	height: var(--spacing-6);
+	border-radius: var(--radius-sm);
+	color: oklch(var(--color-text-muted));
+	background: transparent;
+	text-decoration: none;
+}
+
+.ds-ad-slot-info:hover {
+	color: oklch(var(--color-text));
+	background-color: oklch(var(--color-surface-hover));
+}
+
 .ds-ad-slot-body {
 	flex: 1;
 	width: 100%;
@@ -196,6 +220,10 @@ input[type="range"]::-moz-focus-inner {
 	aspect-ratio: var(--ad-slot-ratio, auto);
 	display: flex;
 	flex-direction: column;
+}
+
+.ds-ad-slot[data-placeholder="true"] .ds-ad-slot-body {
+	min-height: var(--ad-slot-min-height, 10rem);
 }
 
 .ds-ad-slot-placeholder-box {

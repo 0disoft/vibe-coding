@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "ข้ามไปยังเนื้อหาหลัก",
 	"form_error_summary_title": "โปรดแก้ไขรายการต่อไปนี้",
 	"common_advertisement": "โฆษณา",
-	"common_ad_placeholder": "พื้นที่สำหรับโฆษณา"
+	"common_ad_placeholder": "พื้นที่สำหรับโฆษณา",
+	"search_panel_demo_title": "สาธิต",
+	"search_panel_label": "ค้นหา",
+	"search_panel_label_pages": "ค้นหาหน้า",
+	"search_panel_placeholder": "ค้นหา…",
+	"search_panel_placeholder_pages": "พิมพ์เพื่อกรองหน้า…",
+	"search_panel_empty": "ไม่พบผลลัพธ์",
+	"search_panel_results": "รายการ"
 }

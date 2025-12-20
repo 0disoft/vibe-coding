@@ -39,6 +39,7 @@
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | 코드 개선 제안 | `src/lib/components/design-system/FilterBar.svelte` | ✅ 완료 | [상세 보기](#1-filterbar-리팩토링) |
 | 2 | 코드 개선 제안 | `src/lib/components/design-system/AdSlot.svelte` | ✅ 완료 | [상세 보기](#2-adslot-리팩토링) |
+| 3 | 코드 개선 제안 | `src/lib/components/search/SearchPanelSection.svelte` | ✅ 완료 | [상세 보기](#3-searchpanelsection-리팩토링) |
 
 ---
 
@@ -77,3 +78,20 @@
   - ✅ **접근성 보강**: `role`을 `region`으로 조정하고 `aria-roledescription`을 추가하여 광고 영역임을 명확히 인지하도록 개선했습니다.
   - ✅ **UX 개선**: 플레이스홀더에 은은한 배경색과 대시 테두리를 적용하여 시각적 완성도를 높였습니다.
   - ✅ **검증**: `bun run lint` 실행 완료.
+
+### 3. SearchPanelSection 리팩토링
+
+- **대상**: `src/lib/components/search/SearchPanelSection.svelte`
+- **관점**: `A11Y_UX_COPILOT` (시맨틱 웹 및 다국어 환경 최적화)
+- **제안 내용**:
+  - **시맨틱 헤딩 적용**: 현재 `title`이 단순 `div`로 구현되어 있어 정보 계층 파악이 어렵습니다. 이를 `h3` 등 적절한 헤딩 태그로 변경하거나, `as` prop을 통해 태그를 선택할 수 있게 개선하고 검색 영역과 `aria-labelledby`로 연결할 것을 제안합니다.
+  - **로컬라이징 전면 도입**: 하드코딩된 "Demo", "Search pages", "results" 등의 영어 문자열을 Paraglide 메시지(`m.*`)로 교체하여 다국어 환경에서의 UX 일관성을 확보합니다.
+  - **ID 관리 및 ARIA 연결 최적화**: Svelte 5의 `$props.id()`를 사용하여 컴포넌트 내부 요소 간의 ARIA 연결(label <-> input)을 더 견고하게 관리합니다.
+  - **레이아웃 일관성**: 부모의 `space-y-2`와 자식의 `mt-2`가 중첩되어 발생하는 간격 불일치를 정리합니다.
+  - **랜드마크 역할 검토**: 검색 섹션으로서의 의미를 명확히 하기 위해 컨테이너에 `role="search"` 또는 적절한 라벨이 포함된 `role="region"` 적용을 검토합니다.
+- **처리 결과**:
+  - ✅ **시맨틱 헤딩 적용**: `titleAs`(기본 `h3`)를 도입하고 타이틀을 시맨틱 헤딩으로 렌더링하도록 개선했습니다.
+  - ✅ **로컬라이징 전면 도입**: `title`, `label`, `placeholder`, `emptyText` 및 `results` 라벨을 Paraglide 메시지로 전환했습니다.
+  - ✅ **ID 관리 및 ARIA 연결 최적화**: `$props.id()` 기반 `titleId`를 생성해 `aria-labelledby`로 연결하고, 타이틀이 없는 경우 `aria-label`로 대체했습니다.
+  - ✅ **레이아웃 일관성**: 중복 간격을 유발하던 `mt-2`를 제거했습니다.
+  - ✅ **랜드마크 역할**: 컨테이너에 `role="search"`를 적용했습니다.

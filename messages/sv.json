@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "Hoppa till huvudinnehåll",
 	"form_error_summary_title": "Åtgärda följande",
 	"common_advertisement": "Annons",
-	"common_ad_placeholder": "Utrymme för annons"
+	"common_ad_placeholder": "Utrymme för annons",
+	"search_panel_demo_title": "Demo",
+	"search_panel_label": "Sök",
+	"search_panel_label_pages": "Sök sidor",
+	"search_panel_placeholder": "Sök…",
+	"search_panel_placeholder_pages": "Skriv för att filtrera sidor…",
+	"search_panel_empty": "Inga resultat.",
+	"search_panel_results": "resultat"
 }

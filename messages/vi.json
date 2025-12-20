@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "Chuyển đến nội dung chính",
 	"form_error_summary_title": "Vui lòng sửa những mục sau",
 	"common_advertisement": "Quảng cáo",
-	"common_ad_placeholder": "Không gian quảng cáo"
+	"common_ad_placeholder": "Không gian quảng cáo",
+	"search_panel_demo_title": "Bản thử nghiệm",
+	"search_panel_label": "Tìm kiếm",
+	"search_panel_label_pages": "Tìm kiếm trang",
+	"search_panel_placeholder": "Tìm kiếm…",
+	"search_panel_placeholder_pages": "Nhập để lọc trang…",
+	"search_panel_empty": "Không có kết quả.",
+	"search_panel_results": "kết quả"
 }

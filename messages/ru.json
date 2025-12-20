@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "Перейти к основному содержанию",
 	"form_error_summary_title": "Пожалуйста, исправьте следующее",
 	"common_advertisement": "Реклама",
-	"common_ad_placeholder": "Место для рекламы"
+	"common_ad_placeholder": "Место для рекламы",
+	"search_panel_demo_title": "Демо",
+	"search_panel_label": "Поиск",
+	"search_panel_label_pages": "Поиск страниц",
+	"search_panel_placeholder": "Поиск…",
+	"search_panel_placeholder_pages": "Введите для фильтрации страниц…",
+	"search_panel_empty": "Нет результатов.",
+	"search_panel_results": "результатов"
 }

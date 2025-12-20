@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "跳到主要内容",
 	"form_error_summary_title": "请修正以下内容",
 	"common_advertisement": "广告",
-	"common_ad_placeholder": "广告位"
+	"common_ad_placeholder": "广告位",
+	"search_panel_demo_title": "演示",
+	"search_panel_label": "搜索",
+	"search_panel_label_pages": "搜索页面",
+	"search_panel_placeholder": "搜索…",
+	"search_panel_placeholder_pages": "输入以过滤页面…",
+	"search_panel_empty": "无结果。",
+	"search_panel_results": "条结果"
 }

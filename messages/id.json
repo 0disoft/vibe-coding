@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "Lewati ke konten utama",
 	"form_error_summary_title": "Mohon perbaiki hal berikut",
 	"common_advertisement": "Iklan",
-	"common_ad_placeholder": "Ruang untuk Iklan"
+	"common_ad_placeholder": "Ruang untuk Iklan",
+	"search_panel_demo_title": "Demo",
+	"search_panel_label": "Cari",
+	"search_panel_label_pages": "Cari halaman",
+	"search_panel_placeholder": "Cari…",
+	"search_panel_placeholder_pages": "Ketik untuk memfilter halaman…",
+	"search_panel_empty": "Tidak ada hasil.",
+	"search_panel_results": "hasil"
 }

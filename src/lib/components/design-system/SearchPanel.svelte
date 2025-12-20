@@ -3,6 +3,7 @@
 	import type { HTMLAttributes } from "svelte/elements";
 
 	import { DsInput } from "$lib/components/design-system";
+	import * as m from "$lib/paraglide/messages.js";
 
 	export type SearchItem = {
 		id: string;
@@ -30,9 +31,9 @@
 		onQueryChange,
 		items,
 		onSelect,
-		label = "Search",
-		placeholder = "Search…",
-		emptyText = "No results.",
+		label = m.search_panel_label(),
+		placeholder = m.search_panel_placeholder(),
+		emptyText = m.search_panel_empty(),
 		maxResults = 30,
 		showCount = true,
 		class: className = "",
@@ -200,7 +201,7 @@
 					class="ds-search-count-badge rounded-full bg-surface-hover px-2 py-0.5 text-xs font-semibold text-text"
 					>{filtered.length.toLocaleString()}</span
 				>
-				<span class="ds-search-count-label">results</span>
+				<span class="ds-search-count-label">{m.search_panel_results()}</span>
 			</div>
 		{/if}
 	</div>
@@ -217,7 +218,7 @@
 				id={listboxId}
 				class="ds-search-list"
 				role="listbox"
-				aria-label={`${label} results`}
+				aria-label={`${label} ${m.search_panel_results()}`}
 				onpointermove={() => {
 					lastInteraction = "pointer";
 				}}

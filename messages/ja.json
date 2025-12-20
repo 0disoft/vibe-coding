@@ -223,5 +223,12 @@
 	"a11y_skip_to_main_content": "本文へスキップ",
 	"form_error_summary_title": "次の内容を修正してください",
 	"common_advertisement": "広告",
-	"common_ad_placeholder": "広告掲載エリア"
+	"common_ad_placeholder": "広告掲載エリア",
+	"search_panel_demo_title": "デモ",
+	"search_panel_label": "検索",
+	"search_panel_label_pages": "ページを検索",
+	"search_panel_placeholder": "検索…",
+	"search_panel_placeholder_pages": "入力してページを絞り込む…",
+	"search_panel_empty": "結果がありません。",
+	"search_panel_results": "件の結果"
 }
