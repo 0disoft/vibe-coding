@@ -22,6 +22,8 @@
     tags?: string[];
     /** 우측 상단 액션 영역 (기본: ContentActions) */
     actions?: Snippet;
+    /** 이미지 로딩 힌트 */
+    imageLoading?: "eager" | "lazy";
     /** 카드 본문 커스터마이즈 */
     children?: Snippet;
   }
@@ -32,6 +34,7 @@
     excerpt,
     imageSrc,
     imageAlt = "",
+    imageLoading = "lazy",
     status,
     author,
     category,
@@ -50,7 +53,12 @@
     {#snippet header()}
       {#if imageSrc}
         <div class="ds-content-card-media" aria-hidden="true">
-          <img class="ds-content-card-image" src={imageSrc} alt={imageAlt} loading="lazy" />
+          <img
+            class="ds-content-card-image"
+            src={imageSrc}
+            alt={imageAlt}
+            loading={imageLoading}
+          />
         </div>
       {/if}
     {/snippet}

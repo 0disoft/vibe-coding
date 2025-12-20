@@ -13,6 +13,7 @@
     hideLabel?: boolean;
     showValue?: boolean;
     formatValue?: (value: number, percent: number) => string;
+    loadingLabel?: string;
   }
 
   let {
@@ -24,6 +25,7 @@
     hideLabel = false,
     showValue = false,
     formatValue = (_value, percent) => `${Math.round(percent)}%`,
+    loadingLabel = "Loading",
     class: className = "",
     ...rest
   }: Props = $props();
@@ -45,7 +47,7 @@
   aria-valuemin={indeterminate ? undefined : 0}
   aria-valuemax={indeterminate ? undefined : safeMax}
   aria-valuenow={indeterminate ? undefined : safeValue ?? undefined}
-  aria-valuetext={indeterminate ? "Loading" : `${Math.round(percent)}%`}
+  aria-valuetext={indeterminate ? loadingLabel : `${Math.round(percent)}%`}
 >
   {#if label || showValue}
     <div class="ds-progress-meta">
@@ -53,8 +55,6 @@
         <span class={["ds-progress-label", hideLabel ? "sr-only" : ""].join(" ")}>
           {label}
         </span>
-      {:else}
-        <span class="ds-progress-label" aria-hidden="true"></span>
       {/if}
 
       {#if showValue && !indeterminate}

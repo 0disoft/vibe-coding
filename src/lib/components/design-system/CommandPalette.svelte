@@ -3,7 +3,6 @@
   import { tick } from "svelte";
 
   import { DsDialog, DsIcon, DsInput } from "$lib/components/design-system";
-  import { useId } from "$lib/shared/utils/use-id";
 
   export type CommandItem = {
     id: string;
@@ -37,7 +36,7 @@
     emptyText = "No results",
   }: Props = $props();
 
-  const inputId = useId("ds-cmd");
+  const inputId = $props.id();
   const listboxId = `${inputId}-listbox`;
 
   let query = $state("");

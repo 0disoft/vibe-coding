@@ -30,6 +30,7 @@
   class={["ds-pricing-grid grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3", className]
     .filter(Boolean)
     .join(" ")}
+  role="list"
 >
   {#each plans as plan (plan.id)}
     {@const isHighlighted = plan.highlighted}
@@ -41,6 +42,7 @@
       ]
         .filter(Boolean)
         .join(" ")}
+      role="listitem"
     >
       {#snippet header()}
         <div class="ds-pricing-header">

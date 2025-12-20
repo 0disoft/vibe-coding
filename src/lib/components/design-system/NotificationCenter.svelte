@@ -80,10 +80,12 @@
 </script>
 
 {#snippet notificationList(list: NotificationItem[], label: string)}
-	<ul class="ds-notification-list" aria-label={label}>
-		{#if list.length === 0}
-			<li class="ds-notification-empty">{emptyText}</li>
-		{:else}
+	{#if list.length === 0}
+		<div class="ds-notification-empty" role="status" aria-live="polite">
+			{emptyText}
+		</div>
+	{:else}
+		<ul class="ds-notification-list" aria-label={label} aria-live="polite">
 			{#each list as item (item.id)}
 				<li
 					class="ds-notification-item"
@@ -138,8 +140,8 @@
 					</div>
 				</li>
 			{/each}
-		{/if}
-	</ul>
+		</ul>
+	{/if}
 {/snippet}
 
 <div

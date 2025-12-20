@@ -4,6 +4,8 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
+  import { DsLiveRegion } from "$lib/components/design-system";
+
   type HeadingLevel = 2 | 3 | 4;
 
   interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
@@ -30,6 +32,7 @@
 
   let copied = $state(false);
   let timer: number | null = null;
+  let liveRegion: { announce: (message: string) => void } | null = null;
 
   function headingTag(): string {
     return `h${level}`;
@@ -45,6 +48,7 @@
     try {
       await navigator.clipboard?.writeText?.(url.toString());
       copied = true;
+      liveRegion?.announce(copiedLabel);
       if (timer) window.clearTimeout(timer);
       timer = window.setTimeout(() => (copied = false), 1200);
     } catch {
@@ -53,6 +57,8 @@
     }
   }
 </script>
+
+<DsLiveRegion bind:this={liveRegion} politeness="polite" duration={1200} />
 
 <svelte:element
   this={headingTag()}

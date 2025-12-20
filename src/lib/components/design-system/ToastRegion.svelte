@@ -84,9 +84,28 @@
 		}
 	}
 
-	const reduceMotion =
-		typeof window !== "undefined" &&
-		window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+	let reduceMotion = $state(false);
+
+	$effect(() => {
+		if (typeof window === "undefined" || !window.matchMedia) return;
+		const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+		const update = () => {
+			reduceMotion = mql.matches;
+		};
+		update();
+		if (mql.addEventListener) {
+			mql.addEventListener("change", update);
+		} else {
+			mql.addListener(update);
+		}
+		return () => {
+			if (mql.removeEventListener) {
+				mql.removeEventListener("change", update);
+			} else {
+				mql.removeListener(update);
+			}
+		};
+	});
 
 	let flyParams = $derived(
 		reduceMotion

@@ -211,7 +211,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/RadioGroup.svelte`, `src/lib/components/design-system/RadioItem.svelte`
 - 역할: 라디오 선택 그룹
-- `DsRadioGroup` Props: `value`, `onValueChange`, `name`, `disabled`, `required`, `describedBy`, `id`, `children`
+- `DsRadioGroup` Props: `value`, `onValueChange`, `name`, `disabled`, `required`, `describedBy`, `id`, `ariaLabel`, `ariaLabelledby`, `children`
 - `DsRadioItem` Props: `value`, `disabled`, `label`, `description`, `ref`, `children`
 - 참고: `name` 미지정 시 내부에서 자동 생성되어 화살표 키 내비게이션이 유지됩니다.
 
@@ -243,19 +243,19 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/NumberInput.svelte`
 - 역할: 숫자 입력(키보드 ArrowUp/Down 증감 + +/- 버튼)
-- Props: `size`, `variant`, `invalid`, `value`, `name`, `min`, `max`, `step`, `showStepper`, `clampOnBlur`, `ref`, `decrementLabel`, `incrementLabel`
+- Props: `size`, `variant`, `invalid`, `value`, `name`, `min`, `max`, `step`, `showStepper`, `clampOnBlur`, `ref`, `decrementLabel`, `incrementLabel`, `inputPattern`
 
 #### `DsPasswordInput`
 
 - 파일: `src/lib/components/design-system/PasswordInput.svelte`
 - 역할: 비밀번호 입력(표시/숨김, 강도 표시 옵션)
-- Props: `size`, `variant`, `invalid`, `clearable`, `value`, `ref`, `start`, `showStrength`, `revealable`, `revealLabel`, `hideLabel`, `clearLabel`
+- Props: `size`, `variant`, `invalid`, `clearable`, `value`, `ref`, `start`, `showStrength`, `revealable`, `revealLabel`, `hideLabel`, `clearLabel`, `captcha`
 
 #### `DsOtpInput`
 
 - 파일: `src/lib/components/design-system/OtpInput.svelte`
 - 역할: OTP 입력 슬롯
-- Props: `length`, `value`, `onComplete`, `disabled`, `numeric`, `name`, `label`, `ref`
+- Props: `length`, `value`, `onComplete`, `disabled`, `numeric`, `name`, `label`, `ref`, `describedBy`, `invalid`, `captcha`
 
 #### `DsFileUpload`
 
@@ -394,13 +394,13 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Pagination.svelte`
 - 역할: 페이지네이션
-- Props: `page`, `pageCount`, `onPageChange`, `siblingCount`, `boundaryCount`, `disabled`, `label`
+- Props: `page`, `pageCount`, `onPageChange`, `siblingCount`, `boundaryCount`, `disabled`, `label`, `prevLabel`, `nextLabel`
 
 #### `DsSidebar`
 
 - 파일: `src/lib/components/design-system/Sidebar.svelte`
 - 역할: 사이드바 컨테이너(타이틀/푸터 슬롯)
-- Props: `title`, `children`, `footer`
+- Props: `title`, `children`, `footer`, `ariaLabel`, `ariaLabelledby`
 
 #### `DsAppShell`
 
@@ -427,7 +427,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/ContentCard.svelte`
 - 역할: 블로그/가이드/커뮤니티 같은 “콘텐츠 카드” 조립(이미지/메타/태그/액션 포함)
-- Props: `title`, `href`, `excerpt`, `imageSrc`, `imageAlt`, `status`, `author`, `category`, `date`, `readingMinutes`, `tags`, `actions`, `children`
+- Props: `title`, `href`, `excerpt`, `imageSrc`, `imageAlt`, `imageLoading`, `status`, `author`, `category`, `date`, `readingMinutes`, `tags`, `actions`, `children`
 
 #### `DsContentMeta`
 
@@ -497,7 +497,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Wizard.svelte`
 - 역할: Steps + 본문 + 기본 Prev/Next footer로 흐름 구성
-- Props: `steps`, `currentId`, `onCurrentIdChange`, `defaultCurrentId`, `allowNavigation`, `onFinish`, `children`, `footer`
+- Props: `steps`, `currentId`, `onCurrentIdChange`, `defaultCurrentId`, `allowNavigation`, `onFinish`, `previousLabel`, `nextLabel`, `finishLabel`, `children`, `footer`
 
 ### Data & Display
 
@@ -518,7 +518,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/ChartFrame.svelte`
 - 역할: 차트 컨테이너(제목/설명/액션/범례 + “데이터 표 토글”)
-- Props: `title`, `description`, `actions`, `legend`, `table`, `tableToggleLabel`, `showTable`, `onShowTableChange`, `defaultShowTable`, `children`
+- Props: `title`, `description`, `headingLevel`, `actions`, `legend`, `table`, `tableToggleLabel`, `showTable`, `onShowTableChange`, `defaultShowTable`, `children`
 
 #### `DsSparkline`
 
@@ -543,7 +543,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Progress.svelte`
 - 역할: 진행률 표시(불확정 indeterminate)
-- Props: `value`, `max`, `size`, `indeterminate`, `label`
+- Props: `value`, `max`, `size`, `indeterminate`, `label`, `hideLabel`, `showValue`, `formatValue`, `loadingLabel`
 
 #### `DsSlider` / `DsRangeSlider`
 
@@ -582,7 +582,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Table.svelte`
 - 역할: 문서/정책 페이지 등에서 쓰는 시맨틱 테이블 래퍼(스크롤/캡션)
-- Props: `caption`, `captionSide`, `stickyHeader`, `scroll`, `children`
+- Props: `caption`, `captionSide`, `stickyHeader`, `scroll`, `scrollLabel`, `children`
 
 #### `DsDefinitionList`
 
@@ -601,7 +601,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Calendar.svelte`
 - 역할: 달력(단일 날짜)
-- Props: `value`, `onValueChange`, `locale`, `label`, `disabled`, `min`, `max`, `weekStartsOn`, `showOutsideDays`, `isDateDisabled`
+- Props: `value`, `onValueChange`, `locale`, `label`, `disabled`, `min`, `max`, `weekStartsOn`, `showOutsideDays`, `isDateDisabled`, `prevMonthLabel`, `nextMonthLabel`
 
 #### `DsDatePicker` / `DsDateRangePicker`
 
@@ -622,6 +622,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/Timeline.svelte`
 - 역할: 타임라인 리스트
 - Props: `items`, `label`
+- 참고: `items[].isoDate`를 제공하면 `time datetime`으로 렌더되어 기계 판독이 가능합니다.
 
 #### `DsKpi` / `DsStatCard`
 

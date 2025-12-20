@@ -23,33 +23,40 @@
 		next: () => void;
 	};
 
-	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-		steps: ReadonlyArray<WizardStep>;
-		currentId?: string | null;
-		onCurrentIdChange?: (next: string | null) => void;
-		defaultCurrentId?: string | null;
-		/** steps에서 클릭 이동 허용 */
-		allowNavigation?: boolean;
-		/** 마지막 step에서 next 누를 때 호출 */
-		onFinish?: () => void;
-		/** 본문 렌더링 */
-		children?: Snippet<[WizardCtx]>;
-		/** footer 렌더링(선택, 없으면 기본 Prev/Next) */
-		footer?: Snippet<[WizardCtx]>;
-	}
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+    steps: ReadonlyArray<WizardStep>;
+    currentId?: string | null;
+    onCurrentIdChange?: (next: string | null) => void;
+    defaultCurrentId?: string | null;
+    /** steps에서 클릭 이동 허용 */
+    allowNavigation?: boolean;
+    /** 마지막 step에서 next 누를 때 호출 */
+    onFinish?: () => void;
+    /** 이전/다음/완료 버튼 레이블 (i18n) */
+    previousLabel?: string;
+    nextLabel?: string;
+    finishLabel?: string;
+    /** 본문 렌더링 */
+    children?: Snippet<[WizardCtx]>;
+    /** footer 렌더링(선택, 없으면 기본 Prev/Next) */
+    footer?: Snippet<[WizardCtx]>;
+  }
 
 	let {
 		steps,
 		currentId = $bindable<string | null | undefined>(undefined),
 		onCurrentIdChange,
 		defaultCurrentId = null,
-		allowNavigation = false,
-		onFinish,
-		children,
-		footer,
-		class: className = "",
-		...rest
-	}: Props = $props();
+    allowNavigation = false,
+    onFinish,
+    previousLabel = "Previous",
+    nextLabel = "Next",
+    finishLabel = "Finish",
+    children,
+    footer,
+    class: className = "",
+    ...rest
+  }: Props = $props();
 
 	function findFirstEnabledId(list: ReadonlyArray<WizardStep>): string | null {
 		for (const step of list) {
@@ -166,11 +173,11 @@
 				disabled={!ctx.canBack}
 				onclick={ctx.back}
 			>
-				Previous
+				{previousLabel}
 			</DsButton>
 
 			<DsButton type="button" onclick={ctx.next}>
-				{ctx.canNext ? "Next" : "Finish"}
+				{ctx.canNext ? nextLabel : finishLabel}
 			</DsButton>
 		{/if}
 	</div>

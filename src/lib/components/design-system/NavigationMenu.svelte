@@ -73,6 +73,8 @@
 		...rest
 	}: Props = $props();
 
+	const baseId = $props.id();
+
 	function normalizeId(value: string) {
 		return value
 			.toLowerCase()
@@ -83,7 +85,7 @@
 
 	let normalizedItems = $derived(
 		items.map((item, index) => {
-			const fallbackId = `${normalizeId(item.label) || "item"}-${index + 1}`;
+			const fallbackId = `${baseId}-${normalizeId(item.label) || "item"}-${index + 1}`;
 			return { ...item, id: item.id ?? fallbackId };
 		}),
 	);

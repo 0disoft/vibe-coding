@@ -30,8 +30,8 @@
     ...rest
   }: Props = $props();
 
-  let resolvedLocale = $derived<Locale>(locale ?? getLocaleFromUrl(page.url));
-  let resolvedDir = $derived<Direction>(getDirForLocale(resolvedLocale));
+  let resolvedLocale = $derived(locale ?? getLocaleFromUrl(page.url));
+  let resolvedDir = $derived(getDirForLocale(resolvedLocale));
 
   const ctx: DirectionContext = {
     get locale() {

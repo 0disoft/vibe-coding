@@ -1,9 +1,24 @@
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const WEEKDAY_BASE_DATE = createSafeDate(2025, 0, 5); // 2025-01-05 (Sunday)
+
+// All helpers here return new Date objects and do not mutate inputs.
 
 function pad2(n: number) {
 	return String(n).padStart(2, '0');
+}
+
+function createSafeDate(
+	year: number,
+	monthIndex: number,
+	day: number,
+	hour = 12,
+	minute = 0,
+	second = 0,
+	ms = 0
+): Date {
+	return new Date(year, monthIndex, day, hour, minute, second, ms);
 }
 
 export function isIsoDate(value: string): boolean {
@@ -15,7 +30,7 @@ export function parseIsoDate(value: string): Date | null {
 	const [y, m, d] = value.split('-').map(Number);
 	if (!y || !m || !d) return null;
 	// DST 경계에서도 안전하게 "날짜"로만 취급하기 위해 정오로 고정
-	const date = new Date(y, m - 1, d, 12, 0, 0, 0);
+	const date = createSafeDate(y, m - 1, d);
 	// 유효하지 않은 날짜(예: 2025-02-30) 방어
 	if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return null;
 	return date;
@@ -26,7 +41,7 @@ export function formatIsoDate(date: Date): string {
 }
 
 export function startOfMonth(date: Date): Date {
-	return new Date(date.getFullYear(), date.getMonth(), 1, 12, 0, 0, 0);
+	return createSafeDate(date.getFullYear(), date.getMonth(), 1);
 }
 
 export function addDays(date: Date, days: number): Date {
@@ -38,12 +53,12 @@ export function addDays(date: Date, days: number): Date {
 export function addMonths(date: Date, months: number): Date {
 	// JS Date의 setMonth는 1/31 + 1month = 3/3처럼 오버플로가 발생할 수 있어
 	// "목표 월"을 먼저 만들고, day-of-month는 clamp 해서 유지합니다.
-	const target = new Date(date.getFullYear(), date.getMonth() + months, 1, 12, 0, 0, 0);
+	const target = createSafeDate(date.getFullYear(), date.getMonth() + months, 1);
 	return clampToMonthDay(target, date.getDate());
 }
 
 export function addYears(date: Date, years: number): Date {
-	const target = new Date(date.getFullYear() + years, date.getMonth(), 1, 12, 0, 0, 0);
+	const target = createSafeDate(date.getFullYear() + years, date.getMonth(), 1);
 	return clampToMonthDay(target, date.getDate());
 }
 
@@ -80,9 +95,9 @@ export function getCalendarGrid(monthDate: Date, weekStartsOn: WeekdayIndex = 0)
 export function getWeekdayNames(
 	locale: string | undefined,
 	weekStartsOn: WeekdayIndex = 0,
-	format: 'short' | 'narrow' | 'long' = 'short',
+	format: 'short' | 'narrow' | 'long' = 'short'
 ): string[] {
-	const base = startOfWeek(new Date(2025, 0, 5, 12, 0, 0, 0), weekStartsOn);
+	const base = startOfWeek(WEEKDAY_BASE_DATE, weekStartsOn);
 	const formatter = new Intl.DateTimeFormat(locale, { weekday: format });
 	return Array.from({ length: 7 }, (_, i) => formatter.format(addDays(base, i)));
 }
@@ -90,7 +105,7 @@ export function getWeekdayNames(
 export function clampToMonthDay(target: Date, preferredDay: number): Date {
 	const y = target.getFullYear();
 	const m = target.getMonth();
-	const end = new Date(y, m + 1, 0, 12, 0, 0, 0).getDate();
+	const end = createSafeDate(y, m + 1, 0).getDate();
 	const day = Math.max(1, Math.min(end, preferredDay));
-	return new Date(y, m, day, 12, 0, 0, 0);
+	return createSafeDate(y, m, day);
 }

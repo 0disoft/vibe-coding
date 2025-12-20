@@ -2,8 +2,6 @@
   import type { Snippet } from "svelte";
   import type { HTMLInputAttributes } from "svelte/elements";
 
-  import { useId } from "$lib/shared/utils/use-id";
-
   type Size = "sm" | "md";
 
   interface Props extends Omit<HTMLInputAttributes, "type" | "size" | "checked"> {
@@ -25,7 +23,7 @@
     ...rest
   }: Props = $props();
 
-  const generatedId = useId("ds-switch");
+  const generatedId = $props.id();
   let id = $derived(idProp ?? generatedId);
 
   let isDisabled = $derived(!!rest.disabled);
@@ -44,6 +42,7 @@
     bind:checked
     class="ds-switch-native"
     aria-label={resolvedAriaLabel}
+    aria-checked={checked}
   />
 
   <span class="ds-switch-track" aria-hidden="true">

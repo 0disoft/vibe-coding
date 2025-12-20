@@ -87,8 +87,9 @@
 	{#if loading}
 		<DsIcon
 			name="loader-circle"
-			size={size === "lg" ? "md" : "sm"}
-			class="animate-spin"
+			size="inherit"
+			class="ds-link-button__loader animate-spin"
+			aria-hidden="true"
 		/>
 		<span class="sr-only" aria-live="polite">{loadingLabel}</span>
 	{:else if start}

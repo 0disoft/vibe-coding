@@ -2,7 +2,6 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
-  import { useId } from "$lib/shared/utils/use-id";
   import { setAccordionContext, type AccordionType } from "./accordion-context";
 
   type Value = string | string[];
@@ -30,7 +29,7 @@
     ...rest
   }: Props = $props();
 
-  const generatedId = useId("ds-accordion");
+  const generatedId = $props.id();
   let baseId = $derived(idProp ?? generatedId);
 
   let uncontrolledValue = $state<Value>("");

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
   import { DsLinkButton } from "$lib/components/design-system";
@@ -8,23 +9,31 @@
     href: string;
   };
 
+  type HeadingLevel = 1 | 2;
+
   interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
     kicker?: string;
     title: string;
     description?: string;
+    headingLevel?: HeadingLevel;
     primary?: Cta;
     secondary?: Cta;
+    actions?: Snippet;
   }
 
   let {
     kicker,
     title,
     description,
+    headingLevel = 1,
     primary,
     secondary,
+    actions,
     class: className = "",
     ...rest
   }: Props = $props();
+
+  let headingTag = $derived(`h${headingLevel}`);
 </script>
 
 <div
@@ -36,12 +45,18 @@
   {#if kicker}
     <p class="text-label text-muted-foreground">{kicker}</p>
   {/if}
-  <h1 class="text-h1 font-semibold">{title}</h1>
+  <svelte:element this={headingTag} class="text-h1 font-semibold">
+    {title}
+  </svelte:element>
   {#if description}
     <p class="text-body-secondary text-muted-foreground">{description}</p>
   {/if}
 
-  {#if primary || secondary}
+  {#if actions}
+    <div class="flex justify-center gap-2">
+      {@render actions()}
+    </div>
+  {:else if primary || secondary}
     <div class="flex justify-center gap-2">
       {#if primary}
         <DsLinkButton href={primary.href} intent="primary">

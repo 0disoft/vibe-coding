@@ -9,15 +9,27 @@
 		header?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
+		ariaLabel?: string;
+		ariaLabelledby?: string;
 	}
 
-	let { title, header, children, footer, class: className = "", ...rest }: Props =
-		$props();
+	let {
+		title,
+		header,
+		children,
+		footer,
+		ariaLabel,
+		ariaLabelledby,
+		class: className = "",
+		...rest
+	}: Props = $props();
 </script>
 
 <aside
 	{...rest}
 	class={["ds-sidebar", className].filter(Boolean).join(" ")}
+	aria-label={ariaLabel}
+	aria-labelledby={ariaLabelledby}
 >
 	{#if header || title}
 		<div class="ds-sidebar-header">

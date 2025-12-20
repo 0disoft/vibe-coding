@@ -50,6 +50,7 @@
             "w-full justify-start rounded-md px-2 py-1 text-menu-sm",
             isActive(item.href) ? "bg-surface-hover text-foreground" : "text-muted-foreground"
           ].join(" ")}
+          aria-current={isActive(item.href) ? "page" : undefined}
         >
           {item.label}
         </DsLinkButton>
@@ -65,6 +66,7 @@
                     "w-full justify-start rounded-md px-2 py-1 text-menu-sm",
                     isActive(sub.href) ? "bg-surface-hover text-foreground" : "text-muted-foreground"
                   ].join(" ")}
+                  aria-current={isActive(sub.href) ? "page" : undefined}
                 >
                   {sub.label}
                 </DsLinkButton>

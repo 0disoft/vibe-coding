@@ -15,6 +15,8 @@
     boundaryCount?: number;
     disabled?: boolean;
     label?: string;
+    prevLabel?: string;
+    nextLabel?: string;
   }
 
   let {
@@ -25,6 +27,8 @@
     boundaryCount = 1,
     disabled = false,
     label = "Pagination",
+    prevLabel = "Previous page",
+    nextLabel = "Next page",
     class: className = "",
     ...rest
   }: Props = $props();
@@ -114,7 +118,7 @@
   <div class="ds-pagination-inner">
     <DsIconButton
       icon="chevron-left"
-      label="Previous page"
+      label={prevLabel}
       size="sm"
       variant="ghost"
       intent="secondary"
@@ -145,7 +149,7 @@
 
     <DsIconButton
       icon="chevron-right"
-      label="Next page"
+      label={nextLabel}
       size="sm"
       variant="ghost"
       intent="secondary"

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from "svelte";
+	import { onDestroy, tick } from "svelte";
 	import type { HTMLTextareaAttributes } from "svelte/elements";
 
 	interface Props extends HTMLTextareaAttributes {
@@ -8,6 +8,7 @@
 		autoResize?: boolean;
 		maxHeight?: string;
 		ref?: HTMLTextAreaElement | null;
+		oninput?: HTMLTextareaAttributes["oninput"];
 	}
 
 	let {
@@ -67,6 +68,11 @@
 		}
 	});
 
+	onDestroy(() => {
+		if (rafId) cancelAnimationFrame(rafId);
+		rafId = null;
+	});
+
 	let mergedStyle = $derived(
 		[maxHeight ? `max-height: ${maxHeight}` : "", style]
 			.map((s) => (s || "").trim())
@@ -91,7 +97,6 @@
 	aria-invalid={invalid ? "true" : undefined}
 	oninput={(e) => {
 		if (autoResize) scheduleAdjust();
-		// @ts-ignore
 		rest.oninput?.(e);
 	}}
 	data-ds-variant={variant}

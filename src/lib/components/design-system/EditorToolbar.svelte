@@ -5,6 +5,7 @@
 	import DsDropdown from "./Dropdown.svelte";
 	import DsDropdownItem from "./DropdownItem.svelte";
 	import DsEditorImagesButton from "./EditorImagesButton.svelte";
+	import DsIcon from "./Icon.svelte";
 	import DsIconButton from "./IconButton.svelte";
 	import DsSelect from "./Select.svelte";
 
@@ -211,7 +212,14 @@
 						}}
 					>
 						{#snippet children()}
-							{cmdLabel("blockquote")}
+							<span class="inline-flex items-center gap-2">
+								<span class="inline-flex h-4 w-4 items-center justify-center">
+									{#if isPressed("blockquote")}
+										<DsIcon name="check" size="sm" />
+									{/if}
+								</span>
+								{cmdLabel("blockquote")}
+							</span>
 						{/snippet}
 					</DsDropdownItem>
 
@@ -224,7 +232,14 @@
 						}}
 					>
 						{#snippet children()}
-							{cmdLabel("callout")}
+							<span class="inline-flex items-center gap-2">
+								<span class="inline-flex h-4 w-4 items-center justify-center">
+									{#if isPressed("callout")}
+										<DsIcon name="check" size="sm" />
+									{/if}
+								</span>
+								{cmdLabel("callout")}
+							</span>
 						{/snippet}
 					</DsDropdownItem>
 				{/snippet}

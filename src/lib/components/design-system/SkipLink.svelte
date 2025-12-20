@@ -23,16 +23,15 @@
     if (e.defaultPrevented) return;
     if (!href.startsWith("#")) return;
 
-    const mouse = e as unknown as MouseEvent;
-    if (typeof mouse.button === "number" && mouse.button !== 0) return;
-    if (mouse.metaKey || mouse.ctrlKey || mouse.shiftKey || mouse.altKey) return;
+    if (typeof e.button === "number" && e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
     e.preventDefault();
     const id = href.slice(1);
     const target = document.getElementById(id) as HTMLElement | null;
     if (!target) return;
     if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-    target.scrollIntoView({ block: "start" });
+    target.scrollIntoView({ block: "start", behavior: "auto" });
     queueMicrotask(() => target.focus());
   }
 </script>

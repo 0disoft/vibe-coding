@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { DsDropdown, DsIcon } from "$lib/components/design-system";
-	import { useId } from "$lib/shared/utils/use-id";
-
 	type Option = {
 		value: string;
 		label: string;
@@ -40,7 +38,7 @@
 		class: className = "",
 	}: Props = $props();
 
-	const generatedId = useId("ds-select");
+	const generatedId = $props.id();
 	let triggerId = $derived(idProp ?? generatedId);
 
 	let selectedOption = $derived(options.find((o) => o.value === value));

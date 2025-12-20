@@ -1,4 +1,4 @@
-export function formatBytes(bytes: number): string {
+export function formatBytes(bytes: number, locale?: string): string {
 	const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'] as const;
 	let value = bytes;
 	let unitIndex = 0;
@@ -8,20 +8,22 @@ export function formatBytes(bytes: number): string {
 	}
 	const unit = units[unitIndex] ?? 'B';
 	const precision = unitIndex === 0 ? 0 : value < 10 ? 2 : 1;
-	const formatted = new Intl.NumberFormat(undefined, {
+	const formatted = new Intl.NumberFormat(locale, {
 		minimumFractionDigits: precision,
-		maximumFractionDigits: precision,
+		maximumFractionDigits: precision
 	}).format(value);
 	return `${formatted} ${unit}`;
 }
 
-export function fileKey(file: File): string {
+export type FileKeySource = Pick<File, 'name' | 'type' | 'size' | 'lastModified'>;
+
+export function fileKey(file: FileKeySource): string {
 	return `${file.name}:${file.type}:${file.size}:${file.lastModified}`;
 }
 
-export function dedupeFiles(files: File[]): File[] {
+export function dedupeFiles<T extends FileKeySource>(files: T[]): T[] {
 	const seen = new Set<string>();
-	const next: File[] = [];
+	const next: T[] = [];
 	for (const f of files) {
 		const key = fileKey(f);
 		if (seen.has(key)) continue;

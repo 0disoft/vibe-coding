@@ -82,21 +82,26 @@ export function createDropdownTypeahead(getItems: () => HTMLElement[], timeoutMs
 	return { handleKey, reset };
 }
 
-export function createDropdownKeyHandlers(opts: {
+type DropdownKeyHandlerOptions = {
 	getDisabled: () => boolean;
 	getIsOpen: () => boolean;
 	setOpen: (next: boolean) => void;
-	close: (options?: { focusButton?: boolean; }) => void;
+	close: (options?: { focusButton?: boolean }) => void;
 	afterOpen: (fn: () => void) => void;
 	getItemSelector: () => string;
 	focusSelectedOrFirstItem: () => void;
 	focusFirstItem: () => void;
 	focusLastItem: () => void;
 	focusNext: (current: HTMLElement, dir: 1 | -1) => void;
-	focusOnOpen: () => "always" | "keyboard" | "none";
-	typeahead: { handleKey: (key: string) => void; };
-}) {
-	function onTriggerKeyDown(e: KeyboardEvent): void {
+	focusOnOpen: () => 'always' | 'keyboard' | 'none';
+	typeahead: { handleKey: (key: string) => void };
+};
+
+type TriggerKeyHandler = (e: KeyboardEvent) => void;
+type MenuKeyHandler = (e: KeyboardEvent) => void;
+
+function createTriggerKeyHandler(opts: DropdownKeyHandlerOptions): TriggerKeyHandler {
+	return (e: KeyboardEvent) => {
 		if (opts.getDisabled()) return;
 
 		const isOpen = opts.getIsOpen();
@@ -136,9 +141,11 @@ export function createDropdownKeyHandlers(opts: {
 				}
 			}
 		}
-	}
+	};
+}
 
-	function onMenuKeyDown(e: KeyboardEvent): void {
+function createMenuKeyHandler(opts: DropdownKeyHandlerOptions): MenuKeyHandler {
+	return (e: KeyboardEvent) => {
 		const target = e.target as HTMLElement | null;
 		if (!target) return;
 
@@ -197,15 +204,20 @@ export function createDropdownKeyHandlers(opts: {
 				item.click();
 			}
 		}
-	}
+	};
+}
 
-	return { onTriggerKeyDown, onMenuKeyDown };
+export function createDropdownKeyHandlers(opts: DropdownKeyHandlerOptions) {
+	return {
+		onTriggerKeyDown: createTriggerKeyHandler(opts),
+		onMenuKeyDown: createMenuKeyHandler(opts)
+	};
 }
 
 export function computeDropdownPlacementStyles(opts: {
 	triggerEl: HTMLElement;
 	menuEl: HTMLElement;
-	side?: "auto" | "top" | "bottom";
+	side?: 'auto' | 'top' | 'bottom';
 }): string {
 	if (typeof window === 'undefined') return '';
 
@@ -222,12 +234,10 @@ export function computeDropdownPlacementStyles(opts: {
 	if (overflowLeft > 0) shiftX += overflowLeft;
 	if (overflowRight > 0) shiftX -= overflowRight;
 
-	const horizontalShift = shiftX
-		? `transform: translateX(${shiftX}px);`
-		: '';
+	const horizontalShift = shiftX ? `transform: translateX(${shiftX}px);` : '';
 
-	const preferTop = opts.side === "top";
-	const preferBottom = opts.side === "bottom";
+	const preferTop = opts.side === 'top';
+	const preferBottom = opts.side === 'bottom';
 
 	if (preferTop) {
 		return `top: auto; bottom: 100%; margin-bottom: var(--spacing-2); margin-top: 0; ${horizontalShift}`;

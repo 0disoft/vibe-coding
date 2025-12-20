@@ -63,6 +63,7 @@
 	let isRtl = $state(false);
 	let isProgrammaticScroll = false;
 	let scrollAnimationId: number | null = null;
+	let pendingScrollComplete: (() => void) | null = null;
 
 	function slideRef(node: HTMLElement, params: { i: number }) {
 		slideEls[params.i] = node;
@@ -96,6 +97,7 @@
 		const targetLeft = rect.left - viewportRect.left + currentScroll;
 
 		isProgrammaticScroll = true;
+		pendingScrollComplete = onComplete ?? null;
 
 		// Use native smooth scroll.
 		// The browser handles the interaction between scrollTo and scroll-snap (usually correctly).
@@ -113,7 +115,9 @@
 		scrollAnimationId = window.setTimeout(() => {
 			isProgrammaticScroll = false;
 			scrollAnimationId = null;
-			onComplete?.();
+			const complete = pendingScrollComplete;
+			pendingScrollComplete = null;
+			complete?.();
 		}, timeout);
 	}
 
@@ -206,12 +210,28 @@
 			clearTimeout(scrollAnimationId);
 			scrollAnimationId = null;
 		}
+		pendingScrollComplete = null;
 		isProgrammaticScroll = false;
+	}
+
+	function onScrollEnd() {
+		if (!isProgrammaticScroll) return;
+		if (scrollAnimationId) {
+			clearTimeout(scrollAnimationId);
+			scrollAnimationId = null;
+		}
+		isProgrammaticScroll = false;
+		const complete = pendingScrollComplete;
+		pendingScrollComplete = null;
+		complete?.();
 	}
 
 	function attachViewportEvents(node: HTMLDivElement) {
 		node.addEventListener("scroll", onScroll);
 		node.addEventListener("keydown", onKeyDown);
+		if ("onscrollend" in window) {
+			node.addEventListener("scrollend", onScrollEnd as EventListener);
+		}
 		// Interrupt programmatic scroll on user interaction
 		node.addEventListener("pointerdown", onInteract, { passive: true });
 		node.addEventListener("wheel", onInteract, { passive: true });
@@ -221,6 +241,9 @@
 			destroy() {
 				node.removeEventListener("scroll", onScroll);
 				node.removeEventListener("keydown", onKeyDown);
+				if ("onscrollend" in window) {
+					node.removeEventListener("scrollend", onScrollEnd as EventListener);
+				}
 				node.removeEventListener("pointerdown", onInteract);
 				node.removeEventListener("wheel", onInteract);
 				node.removeEventListener("touchstart", onInteract);

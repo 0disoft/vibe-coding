@@ -9,6 +9,7 @@
     query?: string;
     onQueryChange?: (next: string) => void;
     onSelect?: (id: string) => void;
+    title?: string;
     label?: string;
     placeholder?: string;
     emptyText?: string;
@@ -19,6 +20,7 @@
     query = $bindable(""),
     onQueryChange,
     onSelect,
+    title = "Demo",
     label = "Search pages",
     placeholder = "Type to filter pages…",
     emptyText = "No results.",
@@ -28,7 +30,7 @@
 </script>
 
 <div {...rest} class={["space-y-2", className].filter(Boolean).join(" ")}>
-  <div class="text-label text-muted-foreground">Demo</div>
+  <div class="text-label text-muted-foreground">{title}</div>
   <div class="mt-2">
     <DsSearchPanel
       {items}

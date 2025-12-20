@@ -5,7 +5,6 @@
 
 	import { DsButton } from "$lib/components/design-system";
 	import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
-	import { useId } from "$lib/shared/utils/use-id";
 	import {
 		computeDropdownPlacementStyles,
 		createDropdownFocusManager,
@@ -78,7 +77,7 @@
 	let menuEl = $state<HTMLDivElement | null>(null);
 
 	// SSR-safe ID
-	const triggerId = useId("ds-dropdown");
+	const triggerId = $props.id();
 	const menuId = `${triggerId}-menu`;
 
 	// State
@@ -161,7 +160,11 @@
 
 		placementStyles = "";
 		const frame = window.requestAnimationFrame(() => {
-			placementStyles = computeDropdownPlacementStyles({ triggerEl, menuEl, side });
+			placementStyles = computeDropdownPlacementStyles({
+				triggerEl: triggerEl!,
+				menuEl: menuEl!,
+				side,
+			});
 		});
 
 		return () => window.cancelAnimationFrame(frame);

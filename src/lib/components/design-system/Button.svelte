@@ -50,8 +50,6 @@
 	let isNativeDisabled = $derived(disabled);
 	// UX상 비활성처럼 동작해야 하는 상태(로딩 포함)
 	let isSoftDisabled = $derived(disabled || loading);
-	// CSS 변수 보간 수정
-	let iconSize = $derived(`var(--size-icon-${size})`);
 
 	// 클래스 조합
 	let buttonClass = $derived(
@@ -124,8 +122,7 @@
 		<DsIcon
 			name="loader-circle"
 			size="inherit"
-			class="animate-spin"
-			style={`width: ${iconSize}; height: ${iconSize};`}
+			class="ds-button__loader animate-spin"
 			aria-hidden="true"
 		/>
 		<!-- SR용 로딩 상태 안내 -->

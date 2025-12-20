@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
 
-  import { useId } from "$lib/shared/utils/use-id";
+  import DsLiveRegion from "./LiveRegion.svelte";
 
   type TagValue = string;
 
@@ -58,11 +58,12 @@
     ...rest
   }: Props = $props();
 
-  const generatedId = useId("ds-tag-input");
+  const generatedId = $props.id();
   let id = $derived(idProp ?? generatedId);
 
   let inputEl = $state<HTMLInputElement | null>(null);
   let draft = $state("");
+  let liveRegion: { announce: (message: string) => void } | null = null;
 
   let isDisabled = $derived(disabled || rest["aria-disabled"] === "true");
   let canEdit = $derived(!isDisabled && !readonly);
@@ -85,12 +86,14 @@
     if (!canEdit) return false;
     if (!canAdd(tag)) return false;
     values = [...values, tag];
+    liveRegion?.announce(`태그 추가됨: ${tag}`);
     return true;
   }
 
   function removeTag(tag: string) {
     if (!canEdit) return;
     values = values.filter((t) => t !== tag);
+    liveRegion?.announce(`태그 삭제됨: ${tag}`);
   }
 
   function handleKeyDown(e: KeyboardEvent) {
@@ -169,6 +172,8 @@
   data-disabled={isDisabled ? "true" : undefined}
   use:focusInput
 >
+  <DsLiveRegion bind:this={liveRegion} politeness="polite" />
+
   <div class="ds-tag-input-chips" role="list">
     {#each values as tag (tag)}
       <span class="ds-tag-input-chip" role="listitem">
@@ -205,4 +210,3 @@
     onblur={handleBlur}
   />
 </div>
-

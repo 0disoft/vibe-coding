@@ -47,6 +47,7 @@
               ? "bg-surface-hover text-foreground"
               : "text-muted-foreground hover:text-foreground hover:bg-surface-hover",
           ].join(" ")}
+          aria-current={activeId === item.id ? "location" : undefined}
         >
           {item.label}
         </a>

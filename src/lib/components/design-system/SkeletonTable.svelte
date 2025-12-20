@@ -20,6 +20,9 @@
   let safeCols = $derived(Math.min(8, Math.max(1, Math.floor(columns))));
   let safeRows = $derived(Math.min(12, Math.max(1, Math.floor(rows))));
 
+  let colIndexes = $derived(Array.from({ length: safeCols }, (_, i) => i));
+  let rowIndexes = $derived(Array.from({ length: safeRows }, (_, i) => i));
+
   function headerWidth(index: number) {
     return `${45 + (index * 11) % 35}%`;
   }
@@ -35,7 +38,7 @@
       {#if showHeader}
         <thead class="ds-table-head">
           <tr class="ds-table-tr">
-            {#each Array.from({ length: safeCols }) as _, i (i)}
+            {#each colIndexes as i (i)}
               <th class="ds-table-th">
                 <div class="px-[0.9rem] py-[0.7rem]">
                   <DsSkeleton width={headerWidth(i)} height={12} />
@@ -43,12 +46,12 @@
               </th>
             {/each}
           </tr>
-        </thead>
+      </thead>
       {/if}
       <tbody>
-        {#each Array.from({ length: safeRows }) as _, r (r)}
+        {#each rowIndexes as r (r)}
           <tr class="ds-table-tr">
-            {#each Array.from({ length: safeCols }) as __, c (c)}
+            {#each colIndexes as c (c)}
               <td class="ds-table-td">
                 <DsSkeleton width={cellWidth(r, c)} height={12} />
               </td>

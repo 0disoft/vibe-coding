@@ -60,7 +60,7 @@
 		{/if}
 	</div>
 
-	<div class="ds-table-toolbar-controls">
+	<div class="ds-table-toolbar-controls" role="search">
 		<DsInput
 			value={query}
 			oninput={(e) => update((e.currentTarget as HTMLInputElement).value)}

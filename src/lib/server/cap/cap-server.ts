@@ -1,4 +1,4 @@
-import Cap from "@cap.js/server";
+import Cap from '@cap.js/server';
 
 type ChallengeEntry = {
 	challenge: {
@@ -34,7 +34,7 @@ export const cap = new Cap({
 	noFSState: true,
 	state: {
 		challengesList: {},
-		tokensList: {},
+		tokensList: {}
 	},
 	storage: {
 		challenges: {
@@ -55,7 +55,7 @@ export const cap = new Cap({
 			},
 			async deleteExpired() {
 				pruneExpiredChallenges();
-			},
+			}
 		},
 		tokens: {
 			async store(tokenKey, expires) {
@@ -75,9 +75,9 @@ export const cap = new Cap({
 			},
 			async deleteExpired() {
 				pruneExpiredTokens();
-			},
-		},
-	},
+			}
+		}
+	}
 });
 
 export async function validateCapToken(token: string) {

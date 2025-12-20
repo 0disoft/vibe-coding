@@ -15,8 +15,39 @@ import type { ThemeMode, ThemePalette } from '$lib/shared/utils/theme';
  */
 declare global {
 	namespace svelteHTML {
+		type CapProgressEventDetail = {
+			progress: number;
+		};
+
+		type CapSolveEventDetail = {
+			token: string;
+		};
+
+		type CapErrorEventDetail = {
+			isCap: boolean;
+			message: string;
+		};
+
+		type CapResetEventDetail = Record<string, never>;
+
 		interface IntrinsicElements {
-			"cap-widget": Record<string, unknown>;
+			'cap-widget': {
+				id?: string;
+				class?: string;
+				style?: string;
+				'data-hide-credits'?: string;
+				'data-cap-api-endpoint'?: string;
+				'data-cap-worker-count'?: number;
+				'data-cap-hidden-field-name'?: string;
+				'aria-describedby'?: string;
+				'aria-invalid'?: string;
+				'aria-required'?: string;
+				onsolve?: (event: CustomEvent<CapSolveEventDetail>) => void;
+				onprogress?: (event: CustomEvent<CapProgressEventDetail>) => void;
+				onerror?: (event: CustomEvent<CapErrorEventDetail>) => void;
+				onreset?: (event: CustomEvent<CapResetEventDetail>) => void;
+				[key: `data-cap-i18n-${string}`]: string | undefined;
+			};
 		}
 	}
 

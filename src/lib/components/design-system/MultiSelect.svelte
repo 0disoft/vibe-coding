@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { DsDropdown, DsIcon } from "$lib/components/design-system";
-	import { useId } from "$lib/shared/utils/use-id";
 
 	type Option = {
 		value: string;
@@ -38,7 +37,7 @@
 		maxChips = 2,
 	}: Props = $props();
 
-	const generatedId = useId("ds-multiselect");
+	const generatedId = $props.id();
 	let triggerId = $derived(idProp ?? generatedId);
 
 	function isSelected(value: string) {

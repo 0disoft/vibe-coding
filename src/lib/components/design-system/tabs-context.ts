@@ -1,7 +1,10 @@
 import { getContext, setContext } from 'svelte';
 
-export type TabsOrientation = 'horizontal' | 'vertical';
-export type TabsActivationMode = 'automatic' | 'manual';
+export const TABS_ORIENTATIONS = ['horizontal', 'vertical'] as const;
+export type TabsOrientation = (typeof TABS_ORIENTATIONS)[number];
+
+export const TABS_ACTIVATION_MODES = ['automatic', 'manual'] as const;
+export type TabsActivationMode = (typeof TABS_ACTIVATION_MODES)[number];
 
 export type TabsContext = {
 	orientation: TabsOrientation;
@@ -13,12 +16,16 @@ export type TabsContext = {
 	panelId: (value: string) => string;
 };
 
-const tabsContextKey = Symbol('ds-tabs');
+const tabsContextKey = Symbol('vibe-coding.ds-tabs');
 
 export function setTabsContext(ctx: TabsContext): void {
 	setContext(tabsContextKey, ctx);
 }
 
 export function getTabsContext(): TabsContext {
-	return getContext(tabsContextKey);
+	const ctx = getContext<TabsContext | undefined>(tabsContextKey);
+	if (!ctx) {
+		throw new Error('[tabs-context] Missing TabsContext provider');
+	}
+	return ctx;
 }

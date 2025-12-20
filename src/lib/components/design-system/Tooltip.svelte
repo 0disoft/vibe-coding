@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { useId } from "$lib/shared/utils/use-id";
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
@@ -42,7 +41,7 @@
 		...rest
 	}: Props = $props();
 
-	const tooltipId = useId("ds-tooltip");
+	const tooltipId = $props.id();
 
 	let isOpen = $state(false);
 	let openTimer: number | null = null;

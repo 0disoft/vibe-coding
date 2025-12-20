@@ -22,6 +22,8 @@
 		...rest
 	}: Props = $props();
 
+	let effectiveDecorative = $derived(children ? false : decorative);
+
 	let separatorClass = $derived(
 		["ds-separator", className].filter(Boolean).join(" "),
 	);
@@ -33,9 +35,9 @@
 		class={["ds-separator", "ds-separator--labeled", className]
 			.filter(Boolean)
 			.join(" ")}
-		role={decorative ? "presentation" : "separator"}
-		aria-hidden={decorative ? "true" : undefined}
-		aria-label={!decorative && label ? label : undefined}
+		role={effectiveDecorative ? "presentation" : "separator"}
+		aria-hidden={effectiveDecorative ? "true" : undefined}
+		aria-label={!effectiveDecorative && label ? label : undefined}
 		data-ds-orientation="horizontal"
 	>
 		<span class="ds-separator-line" aria-hidden="true"></span>
@@ -48,11 +50,11 @@
 	<div
 		{...rest}
 		class={separatorClass}
-		role={decorative ? "presentation" : "separator"}
-		aria-hidden={decorative ? "true" : undefined}
-		aria-label={!decorative && label ? label : undefined}
+		role={effectiveDecorative ? "presentation" : "separator"}
+		aria-hidden={effectiveDecorative ? "true" : undefined}
+		aria-label={!effectiveDecorative && label ? label : undefined}
 		aria-orientation={
-			!decorative && orientation === "vertical" ? "vertical" : undefined
+			!effectiveDecorative && orientation === "vertical" ? "vertical" : undefined
 		}
 		data-ds-orientation={orientation}
 	></div>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { useId } from "$lib/shared/utils/use-id";
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
@@ -46,7 +45,7 @@
 		...rest
 	}: Props = $props();
 
-	const generatedId = useId("ds-field");
+	const generatedId = $props.id();
 	let id = $derived(idProp || generatedId);
 
 	let helpId = $derived(`${id}-help`);

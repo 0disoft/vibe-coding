@@ -32,9 +32,18 @@
 
   let open = $state(false);
 
+  function normalizeRange(next: DateRange) {
+    if (!next.start || !next.end) return next;
+    const startDate = parseIsoDate(next.start);
+    const endDate = parseIsoDate(next.end);
+    if (!startDate || !endDate) return next;
+    return startDate <= endDate ? next : { start: next.end, end: next.start };
+  }
+
   function set(next: DateRange) {
-    value = next;
-    onValueChange?.(next);
+    const normalized = normalizeRange(next);
+    value = normalized;
+    onValueChange?.(normalized);
   }
 
   function formatDate(value: string) {

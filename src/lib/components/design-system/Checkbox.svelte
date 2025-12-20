@@ -3,7 +3,6 @@
   import type { HTMLInputAttributes } from "svelte/elements";
 
   import { DsIcon } from "$lib/components/design-system";
-  import { useId } from "$lib/shared/utils/use-id";
 
   interface Props extends Omit<HTMLInputAttributes, "type" | "size"> {
     checked?: boolean;
@@ -12,6 +11,8 @@
     ref?: HTMLInputElement | null;
     children?: Snippet;
   }
+
+  const generatedId = $props.id();
 
   let {
     id: idProp,
@@ -24,7 +25,6 @@
     ...rest
   }: Props = $props();
 
-  const generatedId = useId("ds-checkbox");
   let id = $derived(idProp ?? generatedId);
 
   $effect(() => {
@@ -43,7 +43,11 @@
   let rootClass = $derived(["ds-checkbox", className].filter(Boolean).join(" "));
 </script>
 
-<label class={rootClass} data-disabled={isDisabled ? "true" : undefined}>
+<label
+  class={rootClass}
+  data-disabled={isDisabled ? "true" : undefined}
+  for={id}
+>
   <input
     {...rest}
     bind:this={ref}

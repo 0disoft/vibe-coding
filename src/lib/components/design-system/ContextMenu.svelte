@@ -5,7 +5,6 @@
   import { tick } from "svelte";
 
   import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
-  import { useId } from "$lib/shared/utils/use-id";
 
   import DsPopover from "./Popover.svelte";
   import DsIcon from "./Icon.svelte";
@@ -63,7 +62,7 @@
   let triggerEl = $state<HTMLElement | null>(null);
   let anchorPos = $state<{ x: number; y: number } | null>(null);
 
-  const triggerId = useId("ds-context-menu");
+  const triggerId = $props.id();
   const panelId = `${triggerId}-panel`;
 
   let openState = createControllableState({

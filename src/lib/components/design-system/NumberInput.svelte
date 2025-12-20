@@ -27,6 +27,8 @@
 		/** 증감 버튼 라벨 */
 		decrementLabel?: string;
 		incrementLabel?: string;
+		onkeydown?: HTMLInputAttributes["onkeydown"];
+		inputPattern?: string;
 	}
 
 	let {
@@ -46,6 +48,8 @@
 		decrementLabel = "값 감소",
 		incrementLabel = "값 증가",
 		class: className = "",
+		onkeydown,
+		inputPattern = "[0-9]*",
 		...rest
 	}: Props = $props();
 
@@ -157,8 +161,7 @@
 		}
 
 		// onkeydown prop 전달 지원
-		// @ts-ignore - Svelte HTML attributes typing issue
-		if (!e.defaultPrevented) rest.onkeydown?.(e);
+		if (!e.defaultPrevented) onkeydown?.(e as any);
 	}
 
 	function triggerFocus(node: HTMLElement) {
@@ -210,7 +213,12 @@
 		aria-label={ariaLabel}
 		aria-labelledby={ariaLabelledby}
 		aria-invalid={invalid ? "true" : undefined}
+		role="spinbutton"
+		aria-valuenow={value ?? undefined}
+		aria-valuemin={min ?? undefined}
+		aria-valuemax={max ?? undefined}
 		inputmode={inputMode}
+		pattern={inputMode === "numeric" ? inputPattern : undefined}
 		oninput={handleInput}
 		onfocus={handleFocus}
 		onblur={handleBlur}

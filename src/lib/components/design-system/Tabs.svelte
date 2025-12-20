@@ -2,7 +2,6 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
-  import { useId } from "$lib/shared/utils/use-id";
   import {
     setTabsContext,
     type TabsActivationMode,
@@ -29,7 +28,7 @@
     ...rest
   }: Props = $props();
 
-  const generatedId = useId("ds-tabs");
+  const generatedId = $props.id();
   let baseId = $derived(idProp ?? generatedId);
 
   let uncontrolledValue = $state("");

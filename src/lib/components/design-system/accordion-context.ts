@@ -19,21 +19,34 @@ export type AccordionItemContext = {
 	itemId: string;
 };
 
-const accordionContextKey = Symbol('ds-accordion');
-const accordionItemContextKey = Symbol('ds-accordion-item');
+const accordionContextKey = Symbol('vibe-coding.ds-accordion');
+const accordionItemContextKey = Symbol('vibe-coding.ds-accordion-item');
 
-export function setAccordionContext(ctx: AccordionContext): void {
+function getRequiredContext<T>(key: symbol, name: string): T {
+	const ctx = getContext<T | undefined>(key);
+
+	if (!ctx) {
+		throw new Error(`[accordion-context] Missing ${name} provider`);
+	}
+
+	return ctx;
+}
+
+export function setAccordionContext(ctx: Readonly<AccordionContext>): void {
 	setContext(accordionContextKey, ctx);
 }
 
-export function getAccordionContext(): AccordionContext {
-	return getContext(accordionContextKey);
+export function getAccordionContext(): Readonly<AccordionContext> {
+	return getRequiredContext<Readonly<AccordionContext>>(accordionContextKey, 'AccordionContext');
 }
 
-export function setAccordionItemContext(ctx: AccordionItemContext): void {
+export function setAccordionItemContext(ctx: Readonly<AccordionItemContext>): void {
 	setContext(accordionItemContextKey, ctx);
 }
 
-export function getAccordionItemContext(): AccordionItemContext {
-	return getContext(accordionItemContextKey);
+export function getAccordionItemContext(): Readonly<AccordionItemContext> {
+	return getRequiredContext<Readonly<AccordionItemContext>>(
+		accordionItemContextKey,
+		'AccordionItemContext'
+	);
 }

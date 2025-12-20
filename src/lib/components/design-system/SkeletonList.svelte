@@ -18,10 +18,13 @@
     class: className = "",
     ...rest
   }: Props = $props();
+
+  let rowCount = $derived(Math.max(1, rows));
+  let rowIndexes = $derived(Array.from({ length: rowCount }, (_, i) => i));
 </script>
 
 <div {...rest} class={["grid gap-3", className].filter(Boolean).join(" ")} aria-hidden="true">
-  {#each Array.from({ length: Math.max(1, rows) }) as _, i (i)}
+  {#each rowIndexes as i (i)}
     <div class="flex items-center gap-3 rounded-md border border-border bg-card p-3">
       {#if showAvatar}
         <DsSkeleton variant="circular" width={28} height={28} />

@@ -25,6 +25,10 @@
     hideLabel?: string;
     clearLabel?: string;
     capsLockLabel?: string;
+    captcha?: Snippet;
+    onkeydown?: HTMLInputAttributes["onkeydown"];
+    onkeyup?: HTMLInputAttributes["onkeyup"];
+    onmousedown?: HTMLInputAttributes["onmousedown"];
   }
 
   let {
@@ -43,7 +47,11 @@
     hideLabel = "Hide password",
     clearLabel = "Clear value",
     capsLockLabel = "CapsLock이 켜져 있습니다.",
+    captcha,
     class: className = "",
+    onkeydown,
+    onkeyup,
+    onmousedown,
     ...rest
   }: Props = $props();
 
@@ -83,6 +91,17 @@
     await tick();
     if (ref) {
       ref.dispatchEvent(new Event("input", { bubbles: true }));
+      ref.focus();
+    }
+  }
+
+  async function toggleReveal() {
+    const start = ref?.selectionStart ?? null;
+    const end = ref?.selectionEnd ?? null;
+    isRevealed = !isRevealed;
+    await tick();
+    if (ref && start !== null && end !== null) {
+      ref.setSelectionRange(start, end);
       ref.focus();
     }
   }
@@ -133,18 +152,15 @@
       aria-invalid={invalid ? "true" : undefined}
       onkeydown={(e) => {
         updateCapsLock(e);
-        // @ts-ignore - Svelte HTML attributes typing issue
-        if (!e.defaultPrevented) rest.onkeydown?.(e);
+        if (!e.defaultPrevented) onkeydown?.(e);
       }}
       onkeyup={(e) => {
         updateCapsLock(e);
-        // @ts-ignore - Svelte HTML attributes typing issue
-        rest.onkeyup?.(e);
+        onkeyup?.(e);
       }}
       onmousedown={(e) => {
         updateCapsLock(e);
-        // @ts-ignore - Svelte HTML attributes typing issue
-        rest.onmousedown?.(e);
+        onmousedown?.(e);
       }}
     />
 
@@ -170,7 +186,8 @@
             intent="secondary"
             icon={isRevealed ? "eye-off" : "eye"}
             label={isRevealed ? hideLabel : revealLabel}
-            onclick={() => (isRevealed = !isRevealed)}
+            pressed={isRevealed}
+            onclick={toggleReveal}
           />
         {/if}
       </div>
@@ -178,10 +195,14 @@
   </div>
 
   {#if capsLockOn}
-    <div class="ds-password-hint">
+    <div class="ds-password-hint" role="alert">
       <DsIcon name="triangle-alert" size="xs" />
       {capsLockLabel}
     </div>
+  {/if}
+
+  {#if captcha}
+    {@render captcha()}
   {/if}
 
   {#if showStrength}

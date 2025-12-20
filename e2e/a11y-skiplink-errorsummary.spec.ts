@@ -30,8 +30,8 @@ test.describe('A11y 패턴 회귀 방지', () => {
 
 			const focusable = Array.from(
 				document.querySelectorAll<HTMLElement>(
-					'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]',
-				),
+					'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
+				)
 			).filter((el) => !isHidden(el) && !el.hasAttribute('inert') && !isDisabled(el));
 
 			const first = focusable[0];
@@ -46,7 +46,9 @@ test.describe('A11y 패턴 회귀 방지', () => {
 		await expect(main).toBeFocused();
 	});
 
-	test('ErrorSummary - 제출 실패 시 자동 포커스 + 링크 클릭 시 입력 포커스', async ({ page }, testInfo) => {
+	test('ErrorSummary - 제출 실패 시 자동 포커스 + 링크 클릭 시 입력 포커스', async ({
+		page
+	}, testInfo) => {
 		test.skip(['Mobile', 'Tablet'].includes(testInfo.project.name));
 		await page.goto('/design-system', { waitUntil: 'load' });
 		await page.locator('html[data-hydrated="true"]').waitFor({ timeout: 60_000 });

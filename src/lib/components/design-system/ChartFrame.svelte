@@ -4,13 +4,15 @@
   import { slide } from "svelte/transition";
 
   import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
-  import { useId } from "$lib/shared/utils/use-id";
 
   import DsButton from "./Button.svelte";
+
+  type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
   interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
     title: string;
     description?: string;
+    headingLevel?: HeadingLevel;
     /** 차트 영역 */
     children?: Snippet;
     /** 우측 상단 액션 영역 */
@@ -29,6 +31,7 @@
   let {
     title,
     description,
+    headingLevel = 3,
     children,
     actions,
     legend,
@@ -41,9 +44,10 @@
     ...rest
   }: Props = $props();
 
-  const generatedId = useId("ds-chart");
+  const generatedId = $props.id();
   let chartId = $derived(rest.id ?? generatedId);
   let tableId = $derived(`${chartId}-table`);
+  let headingTag = $derived(`h${headingLevel}`);
 
   let showTableState = createControllableState<boolean>({
     value: () => showTable ?? undefined,
@@ -61,7 +65,7 @@
 >
   <header class="ds-chart-header">
     <div class="ds-chart-heading">
-      <h3 class="ds-chart-title">{title}</h3>
+      <svelte:element this={headingTag} class="ds-chart-title">{title}</svelte:element>
       {#if description}
         <div class="ds-chart-desc">{description}</div>
       {/if}

@@ -18,22 +18,28 @@
     title,
     description,
     headingLevel = "h3",
+    role: roleProp,
+    "aria-labelledby": ariaLabelledby,
     class: className = "",
     children,
     actions,
     ...rest
   }: Props = $props();
 
+  const titleId = $props.id();
+  let computedRole = $derived(roleProp ?? "region");
+  let labelledBy = $derived(ariaLabelledby ?? titleId);
+
   let rootClass = $derived(["ds-empty-state", className].filter(Boolean).join(" "));
 </script>
 
-<section {...rest} class={rootClass}>
+<section {...rest} class={rootClass} role={computedRole} aria-labelledby={labelledBy}>
   <div class="ds-empty-state-icon" aria-hidden="true">
     <DsIcon name={icon} size="lg" />
   </div>
 
   <div class="ds-empty-state-body">
-    <svelte:element this={headingLevel} class="ds-empty-state-title">
+    <svelte:element this={headingLevel} class="ds-empty-state-title" id={titleId}>
       {title}
     </svelte:element>
     {#if description}

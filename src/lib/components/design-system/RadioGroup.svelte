@@ -2,7 +2,6 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
-  import { useId } from "$lib/shared/utils/use-id";
   import { setRadioGroupContext } from "./radio-group-context";
 
   interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
@@ -13,6 +12,8 @@
     required?: boolean;
     /** DsField에서 전달받은 aria-describedby */
     describedBy?: string;
+    ariaLabel?: string;
+    ariaLabelledby?: string;
     id?: string;
     children?: Snippet;
   }
@@ -24,16 +25,17 @@
     disabled = false,
     required = false,
     describedBy,
+    ariaLabel,
+    ariaLabelledby,
     id: idProp,
     class: className = "",
     children,
     ...rest
   }: Props = $props();
 
-  const generatedId = useId("ds-radio-group");
+  const generatedId = $props.id();
   let id = $derived(idProp ?? generatedId);
-  const generatedName = useId("ds-radio-name");
-  let groupName = $derived(name ?? generatedName);
+  let groupName = $derived(name ?? `${generatedId}-name`);
 
   function setValue(next: string) {
     if (disabled) return;
@@ -71,6 +73,8 @@
   aria-disabled={disabled || undefined}
   aria-required={required || undefined}
   aria-describedby={describedBy}
+  aria-label={ariaLabel}
+  aria-labelledby={ariaLabelledby}
   data-disabled={disabled ? "true" : undefined}
 >
   {#if children}

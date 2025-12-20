@@ -10,6 +10,7 @@
 		name: string;
 		side?: Side;
 		size?: Size;
+		flipInRtl?: boolean;
 		/**
 		 * 텍스트가 없을 때만 의미 아이콘으로 사용.
 		 * 텍스트(children)가 있으면 아이콘은 장식용(자동 aria-hidden).
@@ -22,6 +23,7 @@
 		name,
 		side = "start",
 		size = "inherit",
+		flipInRtl = false,
 		label,
 		class: className = "",
 		children,
@@ -38,7 +40,7 @@
 	data-ds-side={side}
 >
 	{#if side === "start"}
-		<DsIcon {name} {size} label={iconLabel} />
+		<DsIcon {name} {size} label={iconLabel} {flipInRtl} />
 	{/if}
 
 	{#if children}
@@ -46,6 +48,6 @@
 	{/if}
 
 	{#if side === "end"}
-		<DsIcon {name} {size} label={iconLabel} />
+		<DsIcon {name} {size} label={iconLabel} {flipInRtl} />
 	{/if}
 </span>

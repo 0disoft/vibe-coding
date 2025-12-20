@@ -2,8 +2,6 @@
   import type { Snippet } from "svelte";
   import type { HTMLInputAttributes } from "svelte/elements";
 
-  import { useId } from "$lib/shared/utils/use-id";
-
   import { getRadioGroupContext } from "./radio-group-context";
 
   interface Props extends Omit<HTMLInputAttributes, "type" | "checked" | "value"> {
@@ -27,7 +25,7 @@
   }: Props = $props();
 
   const group = getRadioGroupContext();
-  const generatedId = useId("ds-radio");
+  const generatedId = $props.id();
   let id = $derived(rest.id ?? generatedId);
   let descriptionId = $derived(description ? `${id}-desc` : undefined);
 
@@ -74,13 +72,11 @@
     <span class="ds-radio-text">
       {#if children}
         {@render children()}
-      {:else}
-        {#if label}
-          <span class="ds-radio-label">{label}</span>
-        {/if}
-        {#if description}
-          <span id={descriptionId} class="ds-radio-description">{description}</span>
-        {/if}
+      {:else if label}
+        <span class="ds-radio-label">{label}</span>
+      {/if}
+      {#if description}
+        <span id={descriptionId} class="ds-radio-description">{description}</span>
       {/if}
     </span>
   {/if}

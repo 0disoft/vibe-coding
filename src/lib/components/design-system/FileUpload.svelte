@@ -3,8 +3,6 @@
 
 	import { tick } from "svelte";
 
-	import { useId } from "$lib/shared/utils/use-id";
-
 	import { DsButton, DsIconButton } from "$lib/components/design-system";
 	import { dedupeFiles, fileKey, formatBytes } from "./file-utils";
 
@@ -44,7 +42,7 @@
 		...rest
 	}: Props = $props();
 
-	const generatedId = useId("ds-file-upload");
+	const generatedId = $props.id();
 	let inputId = $derived(rest.id ?? generatedId);
 	let helpId = $derived(`${inputId}__help`);
 	let errorId = $derived(`${inputId}__error`);
@@ -52,6 +50,7 @@
 	let inputEl = $state<HTMLInputElement | null>(null);
 	let isDragActive = $state(false);
 	let errors = $state<FileError[]>([]);
+	let dragDepth = $state(0);
 
 	function setFiles(next: File[]) {
 		files = next;
@@ -108,6 +107,7 @@
 		e.preventDefault();
 		e.stopPropagation();
 		isDragActive = false;
+		dragDepth = 0;
 
 		const list = e.dataTransfer?.files;
 		if (!list || list.length === 0) return;
@@ -121,11 +121,20 @@
 		isDragActive = true;
 	}
 
+	function onDragEnter(e: DragEvent) {
+		if (disabled) return;
+		e.preventDefault();
+		e.stopPropagation();
+		dragDepth += 1;
+		isDragActive = true;
+	}
+
 	function onDragLeave(e: DragEvent) {
 		if (disabled) return;
 		e.preventDefault();
 		e.stopPropagation();
-		isDragActive = false;
+		dragDepth = Math.max(0, dragDepth - 1);
+		if (dragDepth === 0) isDragActive = false;
 	}
 
 	async function openPicker() {
@@ -190,7 +199,7 @@
 		}}
 		ondrop={onDrop}
 		ondragover={onDragOver}
-		ondragenter={onDragOver}
+		ondragenter={onDragEnter}
 		ondragleave={onDragLeave}
 	>
 		<div class="ds-file-dropzone-main">

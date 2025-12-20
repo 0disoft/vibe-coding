@@ -3,8 +3,6 @@
 
 	import { onMount } from "svelte";
 
-	import { useId } from "$lib/shared/utils/use-id";
-
 	export type CapStatus = "idle" | "solving" | "solved" | "error";
 
 	export type CapI18n = {
@@ -56,6 +54,8 @@
 		onReset?: () => void;
 	}
 
+	const generatedId = $props.id();
+
 	let {
 		apiEndpoint = "/api/cap/",
 		workerCount,
@@ -77,8 +77,7 @@
 		...rest
 	}: Props = $props();
 
-	const generatedId = useId("ds-captcha");
-	let widgetId = $derived(idProp ?? generatedId);
+	let id = $derived(idProp ?? generatedId);
 
 	let normalizedApiEndpoint = $derived(
 		apiEndpoint.endsWith("/") ? apiEndpoint : `${apiEndpoint}/`,
@@ -92,32 +91,11 @@
 		const attrs: Record<string, string> = {};
 		if (!i18n) return attrs;
 
-		if (i18n.initialState) {
-			attrs["data-cap-i18n-initial-state"] = i18n.initialState;
-		}
-		if (i18n.verifyingLabel) {
-			attrs["data-cap-i18n-verifying-label"] = i18n.verifyingLabel;
-		}
-		if (i18n.solvedLabel) {
-			attrs["data-cap-i18n-solved-label"] = i18n.solvedLabel;
-		}
-		if (i18n.errorLabel) {
-			attrs["data-cap-i18n-error-label"] = i18n.errorLabel;
-		}
-		if (i18n.verifyAriaLabel) {
-			attrs["data-cap-i18n-verify-aria-label"] = i18n.verifyAriaLabel;
-		}
-		if (i18n.verifyingAriaLabel) {
-			attrs["data-cap-i18n-verifying-aria-label"] = i18n.verifyingAriaLabel;
-		}
-		if (i18n.verifiedAriaLabel) {
-			attrs["data-cap-i18n-verified-aria-label"] = i18n.verifiedAriaLabel;
-		}
-		if (i18n.errorAriaLabel) {
-			attrs["data-cap-i18n-error-aria-label"] = i18n.errorAriaLabel;
-		}
-		if (i18n.wasmDisabled) {
-			attrs["data-cap-i18n-wasm-disabled"] = i18n.wasmDisabled;
+		for (const [key, value] of Object.entries(i18n)) {
+			if (value) {
+				const attrName = `data-cap-i18n-${key.replace(/([A-Z])/g, "-$1").toLowerCase()}`;
+				attrs[attrName] = value;
+			}
 		}
 
 		return attrs;
@@ -168,7 +146,7 @@
 	data-ready={isReady ? "true" : undefined}
 >
 	<cap-widget
-		id={widgetId}
+		{id}
 		class="ds-captcha-widget"
 		data-hide-credits={hideCredits ? "true" : undefined}
 		data-cap-api-endpoint={normalizedApiEndpoint}
@@ -179,11 +157,11 @@
 		aria-invalid={invalid ? "true" : undefined}
 		aria-required={required ? "true" : undefined}
 		{...i18nAttrs}
-		on:solve={handleSolve}
-		on:progress={handleProgress}
-		on:error={handleError}
-		on:reset={handleReset}
-	/>
+		onsolve={handleSolve}
+		onprogress={handleProgress}
+		onerror={handleError}
+		onreset={handleReset}
+	></cap-widget>
 </div>
 
 <style>

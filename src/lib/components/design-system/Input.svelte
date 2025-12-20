@@ -133,7 +133,6 @@
 					label={clearLabel}
 					onclick={handleClear}
 					onmousedown={(e) => e.preventDefault()}
-					tabindex={-1}
 				/>
 			{/if}
 		</div>

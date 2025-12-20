@@ -788,3 +788,94 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
 - **증상:** `RangeSlider`는 조정 시 썸(Thumb)에만 포커스 링이 생기는데, 단일 `Slider`는 조정하려고 클릭하면 트랙 전체(타원형 배경)에 파란색 테두리가 생김.
 - **원인:** `design-system.css`에 **`.ds-slider:focus-within .ds-slider-track { box-shadow: ... }`** 규칙이 있어서, 슬라이더 내부 Input이 포커스를 얻으면 부모 컨테이너(`.ds-slider`)의 `:focus-within`이 트리거되어 트랙 전체에 `box-shadow` 포커스 링이 적용됨.
 - **해결:** **해당 규칙을 주석 처리(REMOVED)**함. 포커스 링은 썸(Thumb)에만 `:focus-visible::-webkit-slider-thumb`를 통해 적용하는 것이 올바른 방식임.
+
+### 23. Svelte 5: `$props.id()` 사용 위치 오류
+
+- **증상:** `$props.id()` can only be used at the top level of components as a variable declaration initializer 에러 발생.
+- **원인:** `$props.id()`를 `$props()` destructuring 내부에서 기본값으로 사용함 (예: `id = $props.id()`).
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  let {
+    id = $props.id(),
+    ...rest
+  }: Props = $props();
+
+  <!-- After (해결) -->
+  const generatedId = $props.id();
+
+  let {
+    id: idProp,
+    ...rest
+  }: Props = $props();
+
+  let id = $derived(idProp ?? generatedId);
+  ```
+
+- **주의사항:** `idProp`은 reactive prop이므로 `const`가 아닌 `$derived`를 사용해야 `state_referenced_locally` 경고가 발생하지 않음.
+- **적용 시점:** Svelte 5 컴포넌트에서 자동 생성 ID와 사용자 제공 ID를 병합해야 할 때.
+
+### 24. Svelte 5: `{@const}` 배치 위치 오류
+
+- **증상:** `{@const}` must be the immediate child of `{#snippet}`, `{#if}`, `{:else if}`, `{:else}`, `{#each}`, `{:then}`, `{:catch}`, `<svelte:fragment>`, `<svelte:boundary>` or `<Component>` 에러 발생.
+- **원인:** `{@const}`를 `<div>`, `<li>` 등 HTML 요소 안에 배치했을 때 발생. Svelte의 `{@const}`는 블록 디렉티브(`{#each}`, `{#if}` 등)의 **직접 자식**으로만 사용 가능.
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  {#each items as item}
+    <li>
+      <div>
+        {@const computed = calculate(item)}
+        {computed}
+      </div>
+    </li>
+  {/each}
+
+  <!-- After (해결) -->
+  {#each items as item}
+    {@const computed = calculate(item)}
+    <li>
+      <div>
+        {computed}
+      </div>
+    </li>
+  {/each}
+  ```
+
+- **적용 시점:** `{#each}` 루프 내에서 파생값을 계산하여 여러 곳에서 사용할 때, 반드시 블록 디렉티브 바로 아래에 배치.
+
+### 25. MediaQueryList 레거시 API(`addListener`/`removeListener`) 타입 에러
+
+- **증상:** `Property 'addListener' does not exist on type 'never'` 타입 에러 발생.
+- **원인:** `MediaQueryList`의 레거시 API(`addListener`/`removeListener`)는 Safari 13 이전에만 필요한 deprecated API. TypeScript가 `"addEventListener" in mq` 체크 후 `else` 분기에서 `mq`를 `never`로 추론.
+- **해결:** 레거시 폴백을 제거하고 현대 API만 사용.
+
+  ```typescript
+  // Before (타입 에러)
+  if ("addEventListener" in mq) mq.addEventListener("change", onChange);
+  else mq.addListener(onChange); // Error: 'never' has no property 'addListener'
+
+  // After (해결)
+  mq.addEventListener("change", onChange);
+  ```
+
+- **적용 시점:** `matchMedia()` 이벤트 리스너 등록 시. IE 미지원 프로젝트에서는 레거시 폴백 불필요.
+
+### 26. Biome: `The imports and exports are not sorted` 경고
+
+- **증상:** `The imports and exports are not sorted` 경고 발생.
+- **원인:** Biome의 `organizeImports` 규칙에 따라 import/export가 정해진 순서로 정렬되어야 함.
+- **해결:** `biome check --write` 명령으로 자동 수정.
+
+  ```bash
+  bunx biome check --write <파일경로>
+  ```
+
+- **주의사항:**
+  - `biome format --write`는 코드 스타일만 정리하며, import/export 정렬은 수정하지 않음.
+  - `biome check --write`를 사용해야 lint 규칙 + 포맷팅 모두 적용됨.
+- **정렬 규칙 (기본값):**
+  - `export type`이 `export { default as ... }`보다 먼저
+  - 같은 모듈의 export는 그룹화

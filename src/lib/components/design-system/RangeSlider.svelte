@@ -1,8 +1,6 @@
 <script lang="ts">
   import type { HTMLInputAttributes } from "svelte/elements";
 
-  import { useId } from "$lib/shared/utils/use-id";
-
   type RangeValue = [number, number];
 
   interface Props
@@ -34,7 +32,7 @@
     ...rest
   }: Props = $props();
 
-  const generatedId = useId("ds-range-slider");
+  const generatedId = $props.id();
   let id = $derived(idProp ?? generatedId);
 
   function clamp(n: number) {

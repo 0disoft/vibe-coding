@@ -23,6 +23,9 @@
     ...rest
   }: Props = $props();
 
+  let lineCount = $derived(Math.max(1, lines));
+  let lineIndexes = $derived(Array.from({ length: lineCount }, (_, i) => i));
+
   let mediaClass = $derived(
     mediaAspect === "square"
       ? "aspect-square"
@@ -49,8 +52,8 @@
     {/if}
     <div class="flex-1 space-y-2">
       <DsSkeleton width="60%" height={14} />
-      {#each Array.from({ length: Math.max(1, lines) }) as _, i (i)}
-        <DsSkeleton width={i === lines - 1 ? "55%" : "90%"} height={12} />
+      {#each lineIndexes as i (i)}
+        <DsSkeleton width={i === lineCount - 1 ? "55%" : "90%"} height={12} />
       {/each}
     </div>
   </div>

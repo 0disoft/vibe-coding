@@ -29,6 +29,8 @@
 		weekStartsOn?: WeekdayIndex;
 		showOutsideDays?: boolean;
 		isDateDisabled?: (iso: string) => boolean;
+		prevMonthLabel?: string;
+		nextMonthLabel?: string;
 	}
 
 	let {
@@ -42,6 +44,8 @@
 		weekStartsOn = 0,
 		showOutsideDays = true,
 		isDateDisabled,
+		prevMonthLabel = "Previous month",
+		nextMonthLabel = "Next month",
 		class: className = "",
 		...rest
 	}: Props = $props();
@@ -212,7 +216,7 @@
 				size="sm"
 				variant="ghost"
 				intent="secondary"
-				label="Previous month"
+				label={prevMonthLabel}
 				onclick={() => goMonth(-1)}
 			/>
 			<DsIconButton
@@ -221,7 +225,7 @@
 				size="sm"
 				variant="ghost"
 				intent="secondary"
-				label="Next month"
+				label={nextMonthLabel}
 				onclick={() => goMonth(1)}
 			/>
 		</div>

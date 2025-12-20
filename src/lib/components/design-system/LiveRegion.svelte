@@ -1,42 +1,56 @@
 <script lang="ts">
-  import type { HTMLAttributes } from "svelte/elements";
+	import type { HTMLAttributes } from "svelte/elements";
 
-  export type Politeness = "polite" | "assertive";
+	import { onDestroy } from "svelte";
 
-  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-    politeness?: Politeness;
-    duration?: number;
-  }
+	import DsVisuallyHidden from "./VisuallyHidden.svelte";
 
-  let {
-    politeness = "polite",
-    duration = 3000,
-    class: className = "",
-    ...rest
-  }: Props = $props();
+	export type Politeness = "polite" | "assertive";
 
-  type Message = { id: number; text: string };
+	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+		politeness?: Politeness;
+		duration?: number;
+	}
 
-  let messages = $state<Message[]>([]);
-  let nextId = 0;
+	let {
+		politeness = "polite",
+		duration = 3000,
+		class: className = "",
+		...rest
+	}: Props = $props();
 
-  export function announce(next: string) {
-    const id = nextId;
-    nextId += 1;
-    messages = [...messages, { id, text: next }];
+	type Message = { id: number; text: string };
 
-    setTimeout(() => {
-      messages = messages.filter((msg) => msg.id !== id);
-    }, duration);
-  }
+	let messages = $state<Message[]>([]);
+	let nextId = 0;
+	const timeoutIds = new Map<number, ReturnType<typeof setTimeout>>();
 
-  let computedRole = $derived(politeness === "assertive" ? "alert" : "status");
+	export function announce(next: string) {
+		const id = nextId;
+		nextId += 1;
+		messages = [...messages, { id, text: next }];
 
-  let rootClass = $derived(["sr-only", className].filter(Boolean).join(" "));
+		const timeoutId = setTimeout(() => {
+			messages = messages.filter((msg) => msg.id !== id);
+			timeoutIds.delete(id);
+		}, duration);
+		timeoutIds.set(id, timeoutId);
+	}
+
+	onDestroy(() => {
+		timeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
+		timeoutIds.clear();
+	});
 </script>
 
-<div {...rest} class={rootClass} aria-live={politeness} aria-atomic="true" role={computedRole}>
-  {#each messages as msg (msg.id)}
-    <div>{msg.text}</div>
-  {/each}
-</div>
+<DsVisuallyHidden
+	{...rest}
+	as="div"
+	class={className}
+	aria-live={politeness}
+	aria-atomic="true"
+>
+	{#each messages as msg (msg.id)}
+		<div>{msg.text}</div>
+	{/each}
+</DsVisuallyHidden>

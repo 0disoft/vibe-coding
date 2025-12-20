@@ -3,7 +3,6 @@
 	import type { HTMLAttributes } from "svelte/elements";
 
 	import { DsIcon, DsInput, DsPopover } from "$lib/components/design-system";
-	import { useId } from "$lib/shared/utils/use-id";
 
 	export type ComboboxOption = {
 		value: string;
@@ -32,7 +31,7 @@
 		...rest
 	}: Props = $props();
 
-	const baseId = useId("ds-combobox");
+	const baseId = $props.id();
 	const listboxId = `${baseId}-listbox`;
 	const inputId = `${baseId}-search`;
 

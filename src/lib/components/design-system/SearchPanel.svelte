@@ -2,8 +2,6 @@
 	import { tick } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	import { useId } from "$lib/shared/utils/use-id";
-
 	import { DsInput } from "$lib/components/design-system";
 
 	export type SearchItem = {
@@ -41,11 +39,12 @@
 		...rest
 	}: Props = $props();
 
-	const generatedId = useId("ds-search");
+	const generatedId = $props.id();
 	let inputId = $derived(rest.id ?? generatedId);
 	let listboxId = $derived(`${inputId}__listbox`);
 
 	let activeIndex = $state<number>(-1);
+	let lastInteraction = $state<"keyboard" | "pointer">("pointer");
 
 	function normalize(s: string) {
 		return s.trim().toLowerCase();
@@ -70,6 +69,9 @@
 
 	let qNorm = $derived(normalize(query));
 	let queryText = $derived(query.trim());
+	let highlightRegExp = $derived(
+		queryText ? new RegExp(`(${escapeRegExp(queryText)})`, "gi") : null,
+	);
 	let filtered = $derived(items.filter((it) => matches(it, qNorm)));
 	let limited = $derived(filtered.slice(0, maxResults));
 
@@ -126,6 +128,7 @@
 	}
 
 	function onInputKeydown(e: KeyboardEvent) {
+		lastInteraction = "keyboard";
 		if (e.key === "ArrowDown") {
 			e.preventDefault();
 			move(1);
@@ -155,9 +158,7 @@
 	{#if !queryText}
 		{text}
 	{:else}
-		{@const parts = text.split(
-			new RegExp(`(${escapeRegExp(queryText)})`, "gi"),
-		)}
+		{@const parts = text.split(highlightRegExp ?? /$^/)}
 		{#each parts as part}
 			{#if part.toLowerCase() === queryText.toLowerCase()}
 				<span class="ds-search-highlight">{part}</span>
@@ -217,6 +218,9 @@
 				class="ds-search-list"
 				role="listbox"
 				aria-label={`${label} results`}
+				onpointermove={() => {
+					lastInteraction = "pointer";
+				}}
 			>
 				{#each limited as item, i (item.id)}
 					<li>
@@ -232,6 +236,7 @@
 								onSelect?.(item.id);
 							}}
 							onmousemove={() => {
+								if (lastInteraction !== "pointer") return;
 								if (activeIndex !== i && !item.disabled) activeIndex = i;
 							}}
 							data-testid={`ds-search-option-${item.id}`}

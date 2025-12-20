@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { HTMLButtonAttributes } from "svelte/elements";
 
+	import { onDestroy } from "svelte";
+
 	import { writeToClipboard } from "$lib/shared/utils/clipboard";
 
+	import DsLiveRegion from "./LiveRegion.svelte";
 	import DsIconButton from "./IconButton.svelte";
 	import type { IconButtonVariant, IntentWithNeutral, Size } from "./types";
 
@@ -67,6 +70,7 @@
 
 	let copied = $state(false);
 	let timerId = $state<ReturnType<typeof setTimeout> | null>(null);
+	let liveRegion: { announce: (message: string) => void } | null = null;
 
 	function setCopied(next: boolean) {
 		copied = next;
@@ -86,6 +90,7 @@
 		try {
 			await writeToClipboard(text);
 			setCopied(true);
+			liveRegion?.announce(copiedLabel);
 			onCopied?.();
 		} catch (error) {
 			if (import.meta.env.DEV) {
@@ -96,7 +101,16 @@
 			onclick?.(e);
 		}
 	}
+
+	onDestroy(() => {
+		if (timerId) {
+			clearTimeout(timerId);
+			timerId = null;
+		}
+	});
 </script>
+
+<DsLiveRegion bind:this={liveRegion} politeness="polite" duration={resetMs} />
 
 <DsIconButton
 	{type}

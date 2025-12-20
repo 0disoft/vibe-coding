@@ -2,7 +2,11 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	import { DsIconButton, DsSheet, DsSkipLink } from "$lib/components/design-system";
+	import {
+		DsIconButton,
+		DsSheet,
+		DsSkipLink,
+	} from "$lib/components/design-system";
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
 		title?: string;
@@ -33,14 +37,29 @@
 		children,
 		...rest
 	}: Props = $props();
+
+	$effect(() => {
+		if (typeof window === "undefined" || !sidebar) return;
+		const mq = window.matchMedia("(min-width: 1024px)");
+
+		function handleChange(next: boolean) {
+			if (next && sidebarOpen) sidebarOpen = false;
+		}
+
+		handleChange(mq.matches);
+
+		const onChange = (e: MediaQueryListEvent) => handleChange(e.matches);
+		mq.addEventListener("change", onChange);
+
+		return () => {
+			mq.removeEventListener("change", onChange);
+		};
+	});
 </script>
 
 <DsSkipLink href={`#${mainId}`} label={skipLinkLabel} />
 
-<div
-	{...rest}
-	class={["ds-app-shell", className].filter(Boolean).join(" ")}
->
+<div {...rest} class={["ds-app-shell", className].filter(Boolean).join(" ")}>
 	{#if sidebar}
 		<aside class="ds-app-shell-sidebar hidden lg:block">
 			{@render sidebar()}
@@ -107,4 +126,3 @@
 		{/if}
 	</DsSheet>
 {/if}
-

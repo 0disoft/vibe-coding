@@ -1,8 +1,6 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from "svelte/elements";
 
-	import { useId } from "$lib/shared/utils/use-id";
-
 	interface Props extends Omit<
 		HTMLInputAttributes,
 		"type" | "value" | "min" | "max" | "step" | "id"
@@ -29,7 +27,7 @@
 		...rest
 	}: Props = $props();
 
-	const generatedId = useId("ds-slider");
+	const generatedId = $props.id();
 	let id = $derived(idProp ?? generatedId);
 
 	function clamp(n: number) {
@@ -41,6 +39,14 @@
 	let percent = $derived.by(() => {
 		if (max <= min) return 0;
 		return ((clampedValue - min) / (max - min)) * 100;
+	});
+
+	$effect(() => {
+		if (import.meta.env.DEV && max <= min) {
+			console.warn(
+				`[DsSlider] Invalid range: max (${max}) must be greater than min (${min}).`,
+			);
+		}
 	});
 
 	function handleInput(e: Event) {

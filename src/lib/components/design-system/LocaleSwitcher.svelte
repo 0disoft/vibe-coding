@@ -12,8 +12,6 @@
 		writeLocaleCookie,
 		type Locale,
 	} from "$lib/shared/utils/locale";
-	import { useId } from "$lib/shared/utils/use-id";
-
 	import DsDropdown from "./Dropdown.svelte";
 	import DsDropdownItem from "./DropdownItem.svelte";
 	import DsIcon from "./Icon.svelte";
@@ -51,7 +49,7 @@
 		...rest
 	}: Props = $props();
 
-	const searchId = useId("ds-locale-search");
+	const searchId = $props.id();
 
 	let open = $state(false);
 	let query = $state("");

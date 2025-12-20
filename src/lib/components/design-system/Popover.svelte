@@ -4,8 +4,6 @@
 	import { scale } from "svelte/transition";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	import { useId } from "$lib/shared/utils/use-id";
-
 	export type PopoverSide = "top" | "bottom" | "left" | "right";
 	export type PopoverAlign = "start" | "center" | "end";
 
@@ -64,7 +62,7 @@
 	let panelEl = $state<HTMLDivElement | null>(null);
 	let previousActiveElement: HTMLElement | null = null;
 
-	const triggerId = useId("ds-popover");
+	const triggerId = $props.id();
 	const panelId = `${triggerId}-panel`;
 
 	let isOpen = $derived(open);
