@@ -1,8 +1,17 @@
 export function getDropdownItems(rootEl: HTMLElement | null, selector: string): HTMLElement[] {
 	if (!rootEl) return [];
-	return Array.from(rootEl.querySelectorAll<HTMLElement>(selector)).filter(
-		(el) => !el.hasAttribute('disabled') && el.getAttribute('aria-disabled') !== 'true'
-	);
+	return Array.from(rootEl.querySelectorAll<HTMLElement>(selector)).filter((el) => {
+		if (el.hasAttribute('disabled')) return false;
+		if (el.getAttribute('aria-disabled') === 'true') return false;
+		if (el.hasAttribute('hidden') || el.closest('[hidden]')) return false;
+
+		if (typeof window === 'undefined') return true;
+		const style = window.getComputedStyle(el);
+		if (style.display === 'none' || style.visibility === 'hidden') return false;
+		if (el.offsetParent === null && style.position !== 'fixed') return false;
+		if (el.getClientRects().length === 0) return false;
+		return true;
+	});
 }
 
 export function createDropdownFocusManager(getItems: () => HTMLElement[]) {
@@ -84,6 +93,7 @@ export function createDropdownKeyHandlers(opts: {
 	focusFirstItem: () => void;
 	focusLastItem: () => void;
 	focusNext: (current: HTMLElement, dir: 1 | -1) => void;
+	focusOnOpen: () => "always" | "keyboard" | "none";
 	typeahead: { handleKey: (key: string) => void; };
 }) {
 	function onTriggerKeyDown(e: KeyboardEvent): void {
@@ -100,14 +110,18 @@ export function createDropdownKeyHandlers(opts: {
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			if (!isOpen) opts.setOpen(true);
-			opts.afterOpen(opts.focusSelectedOrFirstItem);
+			if (opts.focusOnOpen() !== 'none') {
+				opts.afterOpen(opts.focusSelectedOrFirstItem);
+			}
 			return;
 		}
 
 		if (e.key === 'ArrowUp') {
 			e.preventDefault();
 			if (!isOpen) opts.setOpen(true);
-			opts.afterOpen(opts.focusLastItem);
+			if (opts.focusOnOpen() !== 'none') {
+				opts.afterOpen(opts.focusLastItem);
+			}
 			return;
 		}
 
@@ -117,7 +131,9 @@ export function createDropdownKeyHandlers(opts: {
 				opts.close({ focusButton: true });
 			} else {
 				opts.setOpen(true);
-				opts.afterOpen(opts.focusSelectedOrFirstItem);
+				if (opts.focusOnOpen() !== 'none') {
+					opts.afterOpen(opts.focusSelectedOrFirstItem);
+				}
 			}
 		}
 	}
@@ -189,16 +205,37 @@ export function createDropdownKeyHandlers(opts: {
 export function computeDropdownPlacementStyles(opts: {
 	triggerEl: HTMLElement;
 	menuEl: HTMLElement;
+	side?: "auto" | "top" | "bottom";
 }): string {
 	if (typeof window === 'undefined') return '';
 
 	const rect = opts.triggerEl.getBoundingClientRect();
 	const menuRect = opts.menuEl.getBoundingClientRect();
 	const spaceBelow = window.innerHeight - rect.bottom;
+	const viewportPadding = 8;
+	const maxRight = window.innerWidth - viewportPadding;
+	const minLeft = viewportPadding;
+	const overflowLeft = minLeft - menuRect.left;
+	const overflowRight = menuRect.right - maxRight;
+	let shiftX = 0;
 
-	if (spaceBelow < menuRect.height && rect.top > menuRect.height) {
-		return 'top: auto; bottom: 100%; margin-bottom: var(--spacing-2); margin-top: 0;';
+	if (overflowLeft > 0) shiftX += overflowLeft;
+	if (overflowRight > 0) shiftX -= overflowRight;
+
+	const horizontalShift = shiftX
+		? `transform: translateX(${shiftX}px);`
+		: '';
+
+	const preferTop = opts.side === "top";
+	const preferBottom = opts.side === "bottom";
+
+	if (preferTop) {
+		return `top: auto; bottom: 100%; margin-bottom: var(--spacing-2); margin-top: 0; ${horizontalShift}`;
 	}
 
-	return '';
+	if (!preferBottom && spaceBelow < menuRect.height && rect.top > menuRect.height) {
+		return `top: auto; bottom: 100%; margin-bottom: var(--spacing-2); margin-top: 0; ${horizontalShift}`;
+	}
+
+	return horizontalShift;
 }

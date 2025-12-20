@@ -304,7 +304,7 @@
 				{/snippet}
 
 				{#snippet children()}
-					<DsCard class="p-4">
+					<DsCard>
 						<div class="text-body-secondary text-muted-foreground">
 							이 영역에 DataTable/Charts/Forms 등을 조합합니다.
 						</div>

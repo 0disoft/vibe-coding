@@ -46,6 +46,7 @@
 
 <DsDropdown
   align="end"
+  focusOnOpen="keyboard"
   menuClass="w-56 max-h-80 overflow-y-auto thin-scrollbar"
   itemSelector='[role="menuitem"]'
   onOpenChange={handleMenuOpenChange}

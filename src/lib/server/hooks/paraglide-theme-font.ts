@@ -4,6 +4,8 @@ import { FONT_SIZE_COOKIE, THEME_COOKIE, THEME_PALETTE_COOKIE } from '$lib/const
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { getDirForLocale } from '$lib/shared/utils/locale';
 import {
+	DEFAULT_THEME_MODE,
+	DEFAULT_THEME_PALETTE,
 	isThemeMode,
 	isThemePalette,
 	type ThemeMode,
@@ -86,12 +88,14 @@ export const handleParaglide: Handle = ({ event, resolve }) =>
 
 		// 테마 모드 쿠키 읽기 (light/dark/system)
 		const rawTheme = event.cookies.get(THEME_COOKIE);
-		const themeMode = isThemeMode(rawTheme) ? (rawTheme as ThemeMode) : null;
+		const themeMode = isThemeMode(rawTheme) ? (rawTheme as ThemeMode) : DEFAULT_THEME_MODE;
 		const theme = themeMode === 'light' || themeMode === 'dark' ? themeMode : null;
 
 		// 팔레트 쿠키 읽기
 		const rawPalette = event.cookies.get(THEME_PALETTE_COOKIE);
-		const themePalette = isThemePalette(rawPalette) ? (rawPalette as ThemePalette) : null;
+		const themePalette = isThemePalette(rawPalette)
+			? (rawPalette as ThemePalette)
+			: DEFAULT_THEME_PALETTE;
 
 		// 폰트 크기 쿠키 읽기 (1~9만 허용)
 		const rawFontSize = event.cookies.get(FONT_SIZE_COOKIE);

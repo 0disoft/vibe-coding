@@ -757,3 +757,34 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
 - **증상:** 체크박스를 선택(Checked)하면 박스 크기가 미세하게 커지거나 주변 레이아웃이 밀림.
 - **원인:** 체크박스 크기가 `1.1rem`(~17.6px)로 설정되어 있는데, 내부 아이콘(`check`) 크기는 `1rem`(16px)임. `border-width`(1px * 2)를 제외한 내부 공간은 약 15.6px이고, 아이콘(16px)이 더 크기 때문에 박스가 강제로 늘어남.
 - **해결:** `design-system.css`에서 `.ds-checkbox-control`의 크기를 `1.25rem`(~20px)으로 증가시켜, 아이콘이 내부 여백 안에 안전하게 배치되도록 수정.
+
+### 20. 로케일 변경 직후 랜딩 CTA 링크가 기본 경로로 남음
+
+- **증상:** 언어를 변경해도 랜딩 페이지 CTA(Design System/Coverage) 링크가 `/design-system`처럼 기본 경로로 유지되어, `/ko/design-system` 등 로케일이 반영되지 않음.
+- **원인:** `localizeUrl()` 호출에 현재 로케일을 명시하지 않아, locale 변경 후에도 기본 로케일 기준으로 링크가 생성됨.
+- **해결:** `page.url`에서 현재 로케일을 파생한 뒤, `localizeUrl(path, { locale })`로 링크를 생성하도록 변경.
+
+### 21. SearchPanel 검색 결과 레이아웃 흔들림 및 텍스트 상단 정렬 문제
+
+- **증상:**
+  1. 검색어 길이에 따라 입력창이 줄어들거나 늘어나는 지터링 발생.
+  2. "21,875 results"와 같이 결과 수가 많아질 때 줄바꿈되어 레이아웃이 깨짐.
+  3. "88 results" 텍스트가 검색 입력창보다 미세하게 위쪽으로 치우쳐 보임(Top-aligned).
+  4. 검색 결과가 0개일 때 "0 results" 배지가 사라져서 상태 파악이 어려움.
+- **원인:**
+  1. `flex-1`이 적용된 입력창 컨테이너에 `min-w-0`이 없어 내부 콘텐츠(placeholder 등)에 의해 크기가 간섭받음.
+  2. 결과 수 표시에 `whitespace-nowrap`이 없고, 숫자가 포맷팅(`toLocaleString`)되지 않음.
+  3. `.ds-search-header` 클래스명이 다른 전역 스타일이나 내부 flex 설정과 충돌하여 `items-center`가 제대로 적용되지 않음.
+  4. 조건부 렌더링(`filtered.length > 0`)으로 인해 0개일 때 DOM이 제거됨.
+- **해결:**
+  - **입력창 고정:** 입력 필드 래퍼에 `flex-1 min-w-0` 적용.
+  - **텍스트 안정화:** 결과 수 컨테이너에 `whitespace-nowrap` 적용 및 숫자 포맷팅(`toLocaleString()`) 추가. 라벨을 동적("results for ...")에서 정적("results")으로 변경.
+  - **정렬 수정:** 클래스명을 `.ds-search-panel-header`로 변경하여 충돌 회피 및 `items-center` 적용 보장.
+  - **상태 일관성:** 0개일 때도 배지가 보이도록 조건문 제거.
+- **적용 시점:** 검색 필드와 결과 카운트가 한 줄에 배치되는 UI에서 레이아웃 안정성이 필요할 때.
+
+### 22. Slider(Single) 포커스 시 트랙 전체에 파란 테두리 발생
+
+- **증상:** `RangeSlider`는 조정 시 썸(Thumb)에만 포커스 링이 생기는데, 단일 `Slider`는 조정하려고 클릭하면 트랙 전체(타원형 배경)에 파란색 테두리가 생김.
+- **원인:** `design-system.css`에 **`.ds-slider:focus-within .ds-slider-track { box-shadow: ... }`** 규칙이 있어서, 슬라이더 내부 Input이 포커스를 얻으면 부모 컨테이너(`.ds-slider`)의 `:focus-within`이 트리거되어 트랙 전체에 `box-shadow` 포커스 링이 적용됨.
+- **해결:** **해당 규칙을 주석 처리(REMOVED)**함. 포커스 링은 썸(Thumb)에만 `:focus-visible::-webkit-slider-thumb`를 통해 적용하는 것이 올바른 방식임.

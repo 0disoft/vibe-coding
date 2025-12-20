@@ -3,7 +3,10 @@
 	import type { BundledLanguage, BundledTheme } from "shiki";
 
 	import { DsCopyButton, DsTooltip } from "$lib/components/design-system";
-	import { getHighlighterForLanguage } from "$lib/components/code-block/shiki";
+	import {
+		getHighlighterForLanguage,
+		resolveLanguageOrText,
+	} from "$lib/components/code-block/shiki";
 
 	interface Props {
 		code: string;
@@ -19,65 +22,27 @@
 
 	let highlightedHtml = $state("");
 
-	// 언어 이름 정규화 (Shiki에서 지원하는 이름으로 변환)
-	function normalizeLanguage(lang: string): BundledLanguage {
-		const langMap: Record<string, BundledLanguage> = {
-			// 별칭 → 정식 언어명
-			ts: "typescript",
-			js: "javascript",
-			py: "python",
-			rs: "rust",
-			yml: "yaml",
-			md: "markdown",
-			// 웹 기술
-			toml: "toml",
-			json: "json",
-			jsonc: "jsonc",
-			html: "html",
-			css: "css",
-			scss: "scss",
-			svelte: "svelte",
-			astro: "astro",
-			// JSX/TSX
-			jsx: "jsx",
-			tsx: "tsx",
-			// 쉘/스크립트
-			sh: "bash",
-			bash: "bash",
-			shell: "bash",
-			sql: "sql",
-			// 시스템/컴파일 언어
-			c: "c",
-			cpp: "cpp",
-			"c++": "cpp",
-			go: "go",
-			java: "java",
-			zig: "zig",
-			asm: "asm",
-			// 함수형/기타 언어
-			julia: "julia",
-			elixir: "elixir",
-			gleam: "gleam",
-		};
-		const normalized = lang.toLowerCase();
-		// 별칭이 있으면 정식 이름으로 변환, 없으면 Shiki에게 그대로 전달
-		return (langMap[normalized] ?? normalized) as BundledLanguage;
-	}
-
 	// code 또는 language prop 변경 시 자동 재하이라이트 (Svelte 5 runes)
 	$effect(() => {
 		let active = true; // Race condition 방지
 		const currentCode = code;
-		const currentLang = normalizeLanguage(language);
 		const currentTheme = theme;
 
 		// 하이라이팅 실행
 		(async () => {
 			try {
-				const highlighter = await getHighlighterForLanguage(currentLang);
+				const resolvedLang = await resolveLanguageOrText(language);
+				if (resolvedLang === "text") {
+					if (active) {
+						highlightedHtml = `<pre><code>${escapeHtml(currentCode)}</code></pre>`;
+					}
+					return;
+				}
+
+				const highlighter = await getHighlighterForLanguage(resolvedLang);
 
 				const html = highlighter.codeToHtml(currentCode, {
-					lang: currentLang,
+					lang: resolvedLang,
 					theme: currentTheme,
 				});
 

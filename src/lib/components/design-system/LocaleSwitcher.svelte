@@ -145,7 +145,7 @@
 		align="end"
 		{open}
 		onOpenChange={handleOpenChange}
-		menuClass="!min-w-fit w-max max-h-[360px] overflow-y-auto overscroll-contain thin-scrollbar p-1"
+		menuClass="!min-w-0 w-[min(15rem,90vw)] px-2 py-1 max-h-[360px] ds-dropdown-scroll ds-locale-dropdown"
 		itemSelector={'[role="menuitemradio"]'}
 	>
 		{#snippet trigger({ ref, ...props })}
@@ -179,47 +179,49 @@
 		{/snippet}
 
 		{#snippet children({ close })}
-			{#if filtered.length === 0}
-				<div class="px-3 py-2 text-sm text-muted-foreground">
-					No languages found.
-				</div>
-			{:else}
-				{#each filtered as item (item.locale)}
-					{@const isCurrent = item.locale === currentLocale}
-					{@const isDisabled = disableCurrent && isCurrent}
+			<div class="min-h-0 overflow-y-auto overflow-x-visible overscroll-contain thin-scrollbar">
+				{#if filtered.length === 0}
+					<div class="px-3 py-2 text-sm text-muted-foreground">
+						No languages found.
+					</div>
+				{:else}
+					{#each filtered as item (item.locale)}
+						{@const isCurrent = item.locale === currentLocale}
+						{@const isDisabled = disableCurrent && isCurrent}
 
-					<DsDropdownItem
-						href={isDisabled ? undefined : hrefFor(item.locale)}
-						type="button"
-						role="menuitemradio"
-						aria-checked={isCurrent}
-						aria-current={isCurrent ? "page" : undefined}
-						hreflang={item.locale}
-						disabled={isDisabled}
-						class="whitespace-nowrap"
-						onclick={(e) => {
-							if (isDisabled) return;
-							// SvelteKit가 a 클릭을 가로채기 전에 쿠키(선호 언어)를 먼저 갱신
-							changeLocale(item.locale);
-							close();
-						}}
-					>
-						{#snippet children()}
-							<span class="flex min-w-0 items-center justify-between gap-3">
-								<span class="min-w-0 truncate">{item.info.selfName}</span>
-								<span
-									class="flex items-center gap-1 text-xs text-muted-foreground"
-								>
-									<span>{item.locale.toUpperCase()}</span>
-									{#if isCurrent}
-										<DsIcon name="check" size="sm" class="text-primary" />
-									{/if}
+						<DsDropdownItem
+							href={isDisabled ? undefined : hrefFor(item.locale)}
+							type="button"
+							role="menuitemradio"
+							aria-checked={isCurrent}
+							aria-current={isCurrent ? "page" : undefined}
+							hreflang={item.locale}
+							disabled={isDisabled}
+							class="whitespace-nowrap"
+							onclick={(e) => {
+								if (isDisabled) return;
+								// SvelteKit가 a 클릭을 가로채기 전에 쿠키(선호 언어)를 먼저 갱신
+								changeLocale(item.locale);
+								close();
+							}}
+						>
+							{#snippet children()}
+								<span class="flex min-w-0 items-center justify-between gap-3">
+									<span class="min-w-0 truncate">{item.info.selfName}</span>
+									<span
+										class="flex items-center gap-1 text-xs text-muted-foreground"
+									>
+										<span>{item.locale.toUpperCase()}</span>
+										{#if isCurrent}
+											<DsIcon name="check" size="sm" class="text-primary" />
+										{/if}
+									</span>
 								</span>
-							</span>
-						{/snippet}
-					</DsDropdownItem>
-				{/each}
-			{/if}
+							{/snippet}
+						</DsDropdownItem>
+					{/each}
+				{/if}
+			</div>
 		{/snippet}
 	</DsDropdown>
 </div>

@@ -11,6 +11,7 @@ export { default as DsBreadcrumb } from './Breadcrumb.svelte';
 export { default as DsButton } from './Button.svelte';
 export { default as DsCalendar } from './Calendar.svelte';
 export { default as DsCallout } from './Callout.svelte';
+export { default as DsCaptcha } from './Captcha.svelte';
 export { default as DsCard } from './Card.svelte';
 export { default as DsCarousel } from './Carousel.svelte';
 export { default as DsChartFrame } from './ChartFrame.svelte';

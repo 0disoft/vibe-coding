@@ -53,6 +53,8 @@
 
 <DsDropdown
   align="end"
+  side="top"
+  focusOnOpen="keyboard"
   menuClass="w-48"
 >
   {#snippet trigger(props)}

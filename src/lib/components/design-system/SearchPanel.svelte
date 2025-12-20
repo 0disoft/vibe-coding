@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { HTMLAttributes } from "svelte/elements";
 	import { tick } from "svelte";
+	import type { HTMLAttributes } from "svelte/elements";
 
 	import { useId } from "$lib/shared/utils/use-id";
 
@@ -57,7 +57,12 @@
 
 	function matches(item: SearchItem, q: string) {
 		if (!q) return true;
-		const hay = [item.title, item.description ?? "", item.meta ?? "", ...(item.keywords ?? [])]
+		const hay = [
+			item.title,
+			item.description ?? "",
+			item.meta ?? "",
+			...(item.keywords ?? []),
+		]
 			.join(" ")
 			.toLowerCase();
 		return hay.includes(q);
@@ -83,7 +88,9 @@
 	}
 
 	let activeDescendant = $derived(
-		activeIndex >= 0 && activeIndex < limited.length ? optionId(activeIndex) : undefined,
+		activeIndex >= 0 && activeIndex < limited.length
+			? optionId(activeIndex)
+			: undefined,
 	);
 
 	function setQuery(next: string) {
@@ -148,7 +155,9 @@
 	{#if !queryText}
 		{text}
 	{:else}
-		{@const parts = text.split(new RegExp(`(${escapeRegExp(queryText)})`, "gi"))}
+		{@const parts = text.split(
+			new RegExp(`(${escapeRegExp(queryText)})`, "gi"),
+		)}
 		{#each parts as part}
 			{#if part.toLowerCase() === queryText.toLowerCase()}
 				<span class="ds-search-highlight">{part}</span>
@@ -160,11 +169,11 @@
 {/snippet}
 
 <div {...rest} class={["ds-search-panel", className].filter(Boolean).join(" ")}>
-	<div class="ds-search-header">
-		<div class="ds-search-input">
+	<div class="ds-search-panel-header flex items-center justify-between gap-3">
+		<div class="ds-search-input flex-1 min-w-0">
 			<DsInput
 				id={inputId}
-				placeholder={placeholder}
+				{placeholder}
 				clearable
 				bind:value={query}
 				aria-label={label}
@@ -183,20 +192,32 @@
 		</div>
 
 		{#if showCount}
-			<div class="ds-search-count">
-				<span class="ds-search-count-badge">{filtered.length}</span>
-				<span class="ds-search-count-label">
-					{qNorm ? `results for "${qNorm}"` : "results"}
-				</span>
+			<div
+				class="ds-search-count flex shrink-0 items-center gap-2 text-sm text-muted-foreground whitespace-nowrap"
+			>
+				<span
+					class="ds-search-count-badge rounded-full bg-surface-hover px-2 py-0.5 text-xs font-semibold text-text"
+					>{filtered.length.toLocaleString()}</span
+				>
+				<span class="ds-search-count-label">results</span>
 			</div>
 		{/if}
 	</div>
 
 	<div class="ds-search-results">
 		{#if limited.length === 0}
-			<div class="ds-search-empty text-body-secondary text-muted-foreground">{emptyText}</div>
+			<div
+				class="ds-search-empty flex min-h-[100px] items-center justify-center text-body-secondary text-muted-foreground"
+			>
+				{emptyText}
+			</div>
 		{:else}
-			<ul id={listboxId} class="ds-search-list" role="listbox" aria-label={`${label} results`}>
+			<ul
+				id={listboxId}
+				class="ds-search-list"
+				role="listbox"
+				aria-label={`${label} results`}
+			>
 				{#each limited as item, i (item.id)}
 					<li>
 						<button
@@ -227,7 +248,9 @@
 							</div>
 
 							{#if item.meta}
-								<div class="ds-search-meta text-helper text-muted-foreground">{item.meta}</div>
+								<div class="ds-search-meta text-helper text-muted-foreground">
+									{item.meta}
+								</div>
 							{/if}
 						</button>
 					</li>
@@ -236,4 +259,3 @@
 		{/if}
 	</div>
 </div>
-

@@ -93,7 +93,7 @@
 			<div class="grid gap-4">
 				<div class="text-label font-semibold text-foreground px-1">{title}</div>
 
-				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+				<div class="grid grid-cols-1 sm:grid-cols-[minmax(0,10.5rem)_minmax(0,1fr)] gap-4">
 					<!-- Mode Column -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -104,16 +104,17 @@
 						aria-label="Mode Selection"
 					>
 						<div class="text-menu-sm font-semibold text-foreground">Mode</div>
-						<DsRadioGroup
-							value={mode}
-							onValueChange={setMode}
-							name="theme-mode"
-							data-group="mode"
-						>
-							<DsRadioItem value="system" label="System" class="items-center" />
-							<DsRadioItem value="light" label="Light" class="items-center" />
-							<DsRadioItem value="dark" label="Dark" class="items-center" />
-						</DsRadioGroup>
+					<DsRadioGroup
+						value={mode}
+						onValueChange={setMode}
+						name="theme-mode"
+						data-group="mode"
+						class="theme-control-radio"
+					>
+						<DsRadioItem value="system" label="System" class="items-center" />
+						<DsRadioItem value="light" label="Light" class="items-center" />
+						<DsRadioItem value="dark" label="Dark" class="items-center" />
+					</DsRadioGroup>
 					</section>
 
 					<!-- Palette Column -->
@@ -126,16 +127,17 @@
 						aria-label="Palette Selection"
 					>
 						<div class="text-menu-sm font-semibold text-foreground">Palette</div>
-						<DsRadioGroup
-							value={palette}
-							onValueChange={setPalette}
-							name="theme-palette"
-							data-group="palette"
-						>
-							<DsRadioItem value="airy-blue" class="items-center">
-								<div class="flex items-center gap-2">
-									<span
-										class="w-3 h-3 rounded-full shadow-sm"
+					<DsRadioGroup
+						value={palette}
+						onValueChange={setPalette}
+						name="theme-palette"
+						data-group="palette"
+						class="theme-control-radio"
+					>
+						<DsRadioItem value="airy-blue" class="items-center">
+							<div class="flex items-center gap-2">
+								<span
+									class="w-3 h-3 rounded-full shadow-sm"
 										style="background-color: oklch(60% 0.16 240)"
 									></span>
 									<span>Airy Blue</span>
@@ -177,5 +179,17 @@
 </div>
 
 <style>
-	/* ... styles removed as they are no longer needed for the simplified layout ... */
+	:global(.theme-control-radio .ds-radio-item) {
+		align-items: center;
+	}
+
+	:global(.theme-control-radio .ds-radio-text) {
+		font-size: var(--font-size-sm);
+		line-height: 1.3;
+	}
+
+	:global(.theme-control-radio .ds-radio-text > *) {
+		font-size: inherit;
+		line-height: inherit;
+	}
 </style>

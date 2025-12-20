@@ -42,9 +42,14 @@
 
   /* Shadow */
   --shadow-color: var(--color-neutral-950);
-  --shadow-lg: 0 14px 30px oklch(var(--shadow-color) / 0.18);
-  --shadow-md: 0 6px 14px oklch(var(--shadow-color) / 0.16);
-  --shadow-sm: 0 1px 2px oklch(var(--shadow-color) / 0.14);
+  --shadow-lg:
+    0 10px 15px -3px oklch(var(--shadow-color) / 0.1),
+    0 4px 6px -4px oklch(var(--shadow-color) / 0.05);
+  --shadow-md:
+    0 4px 6px -1px oklch(var(--shadow-color) / 0.1),
+    0 2px 4px -2px oklch(var(--shadow-color) / 0.05);
+  --shadow-sm:
+    0 1px 2px 0 oklch(var(--shadow-color) / 0.05);
 
   /* Elevation */
   --elevation-1: var(--shadow-sm);
@@ -362,7 +367,7 @@
   --dialog-gap: var(--spacing-4);
   --dialog-padding: var(--spacing-4);
   --dialog-radius: var(--radius-lg);
-  --dialog-shadow: var(--elevation-3);
+  --dialog-shadow: var(--shadow-sm);
   --dialog-surface: var(--color-surface);
 
   /* Pattern: Dropdown */
@@ -445,7 +450,7 @@
   --raw-color-text: 21% 0.02 240;
   --raw-color-text-muted: 44% 0.02 240;
   --raw-color-warning: 85% 0.16 70;
-  
+
   /* Text Colors (Light Mode: Darker for contrast) */
   --raw-color-success-text: 48% 0.15 150;
   --raw-color-warning-text: 45% 0.13 70;

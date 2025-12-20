@@ -33,14 +33,14 @@
   <DsCard class="space-y-6">
     <div class="space-y-2">
       <div class="text-label text-muted-foreground">Carousel</div>
-      <DsCarousel items={carouselItems}>
-        {#snippet slide({ item })}
-          <DsCard class="h-full p-4">
-            <div class="text-body font-semibold">{item.title ?? ""}</div>
-            <div class="text-body-secondary text-muted-foreground">
-              {item.description ?? ""}
-            </div>
-          </DsCard>
+        <DsCarousel items={carouselItems}>
+          {#snippet slide({ item })}
+            <DsCard class="h-full">
+              <div class="text-body font-semibold">{item.title ?? ""}</div>
+              <div class="text-body-secondary text-muted-foreground">
+                {item.description ?? ""}
+              </div>
+            </DsCard>
         {/snippet}
       </DsCarousel>
     </div>

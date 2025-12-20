@@ -8,8 +8,8 @@
 .ds-dropdown-item:focus {
   outline: none;
   box-shadow:
-    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
-    0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
+    inset 0 0 0 var(--focus-ring-width) oklch(var(--focus-ring-color)),
+    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color));
 }
 
 @media (forced-colors: active) {
@@ -19,6 +19,45 @@
     outline: var(--focus-ring-width) solid Highlight;
     outline-offset: var(--focus-ring-offset);
   }
+}
+
+/* ───────────────────────────────────────────────────────────
+   Global Reset: Range Input Focus
+   브라우저 기본 포커스 스타일을 완전히 제거합니다.
+   ─────────────────────────────────────────────────────────── */
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+input[type="range"]:focus,
+input[type="range"]:focus-visible,
+input[type="range"]:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+input[type="range"]::-moz-focus-outer {
+  border: 0;
+  outline: none;
+}
+
+input[type="range"]::-moz-focus-inner {
+  border: 0;
+  outline: none;
 }
 
 .ds-motion {
@@ -452,8 +491,8 @@
 .ds-button[data-ds-state="focus"] {
   outline: none;
   box-shadow:
-    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
-    0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
+    inset 0 0 0 var(--focus-ring-width) oklch(var(--focus-ring-color)),
+    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color));
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -624,6 +663,11 @@
   flex-shrink: 0;
 }
 
+.ds-input-adornment.end {
+  min-width: 2rem;
+  justify-content: flex-end;
+}
+
 /* Sizes */
 .ds-input-group[data-ds-size="sm"] {
   min-height: 2.25rem;
@@ -651,8 +695,7 @@
   border-color: oklch(var(--color-primary));
   outline: none;
   box-shadow:
-    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
-    0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
+    inset 0 0 0 var(--focus-ring-width) oklch(var(--focus-ring-color));
 }
 
 /* Invalid State */
@@ -934,11 +977,13 @@
   transform: translateY(-50%);
 }
 
-.ds-slider:focus-within .ds-slider-track {
-  box-shadow:
-    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
-    0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
-}
+/* 
+ * REMOVED: This rule was causing a blue focus ring on the entire slider track.
+ * The focus ring should only appear on the thumb via :focus-visible::-webkit-slider-thumb
+ * .ds-slider:focus-within .ds-slider-track {
+ *   box-shadow: ...;
+ * }
+ */
 
 .ds-slider-fill {
   position: absolute;
@@ -2166,6 +2211,40 @@
 }
 
 /* ───────────────────────────────────────────────────────────
+   Component: Captcha (Cap.js)
+   ─────────────────────────────────────────────────────────── */
+
+.ds-captcha {
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+.ds-captcha-widget {
+  display: block;
+  max-inline-size: 100%;
+}
+
+.ds-captcha cap-widget {
+  font-family: var(--font-family-base);
+  max-inline-size: 100%;
+  --cap-background: oklch(var(--color-background));
+  --cap-border-color: oklch(var(--color-border));
+  --cap-border-radius: var(--radius-md);
+  --cap-color: oklch(var(--color-text));
+  --cap-font: var(--font-family-base);
+  --cap-checkbox-background: oklch(var(--color-surface));
+  --cap-checkbox-border: var(--border-width) solid oklch(var(--color-border));
+  --cap-spinner-color: oklch(var(--color-primary));
+  --cap-spinner-background-color: oklch(var(--color-border));
+  --cap-credits-font-size: 0px;
+  --cap-opacity-hover: 0;
+}
+
+.ds-captcha cap-widget[data-hide-credits="true"]::part(attribution) {
+  display: none !important;
+}
+
+/* ───────────────────────────────────────────────────────────
    Pattern: Dialog
    ─────────────────────────────────────────────────────────── */
 
@@ -2473,6 +2552,22 @@
   z-index: var(--z-dropdown);
   display: grid;
   gap: var(--spacing-1);
+}
+
+.ds-dropdown-menu.ds-dropdown-scroll {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.ds-dropdown-menu.ds-locale-dropdown .ds-dropdown-item {
+  padding-block: var(--spacing-2);
+}
+
+.ds-dropdown-menu.ds-locale-dropdown .ds-dropdown-item:focus,
+.ds-dropdown-menu.ds-locale-dropdown .ds-dropdown-item:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 var(--focus-ring-width) oklch(var(--focus-ring-color)),
+    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color));
 }
 
 .ds-dropdown[data-ds-align="end"] .ds-dropdown-menu {
@@ -3007,7 +3102,7 @@
   background-color: oklch(var(--color-surface));
   border: 1px solid oklch(var(--color-border));
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-sm);
   pointer-events: auto;
   overflow: hidden;
 
@@ -3422,8 +3517,8 @@
 .ds-tabs-trigger:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
-    0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
+    inset 0 0 0 var(--focus-ring-width) oklch(var(--focus-ring-color)),
+    0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color));
 }
 
 .ds-tabs-content {
@@ -3517,6 +3612,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -5123,7 +5219,7 @@
   color: oklch(var(--color-text));
   border: var(--border-width) solid oklch(var(--color-border));
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
@@ -5584,6 +5680,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   border-radius: var(--radius-lg);
+  scroll-behavior: smooth !important;
 }
 
 .ds-carousel-viewport::-webkit-scrollbar {
@@ -5602,14 +5699,14 @@
 }
 
 /* ───────────────────────────────────────────────────────────
-   Component: RangeSlider
+   Component: Slider & RangeSlider
    ─────────────────────────────────────────────────────────── */
 
+.ds-slider,
 .ds-range-slider {
   position: relative;
   width: 100%;
   height: var(--slider-thumb-size);
-  /* Remove flex to rely on absolute centering */
   touch-action: none;
 }
 
@@ -5622,7 +5719,7 @@
   height: var(--slider-track-height);
   border-radius: 9999px;
   background: oklch(var(--slider-track-bg));
-  pointer-events: none; /* Track acts as background */
+  pointer-events: none;
 }
 
 .ds-slider-fill {
@@ -5633,31 +5730,47 @@
   background: oklch(var(--slider-fill-bg));
 }
 
-/* Wrapper for inputs */
-.ds-range-slider-input {
+/* Shared Input Styles */
+.ds-slider-input {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-}
-
-/* Inputs: Fill the container height (thumb size) exactly */
-.ds-range-slider-input .ds-slider-input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%; /* Matches container --slider-thumb-size */
   margin: 0;
   appearance: none;
+  -webkit-appearance: none;
   background: transparent;
-  pointer-events: none;
   border: none;
   z-index: 2;
 }
 
+.ds-slider-input:focus,
+.ds-slider-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Firefox Focus Inner Fix */
+.ds-slider-input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+/* Range Slider Specifics (Overlap handling) */
+.ds-range-slider-input .ds-slider-input {
+  pointer-events: none;
+}
+
+/* Single Slider Specifics */
+.ds-slider .ds-slider-input {
+  cursor: pointer;
+}
+
 /* Chrome/Safari Thumb */
-.ds-range-slider-input .ds-slider-input::-webkit-slider-thumb {
+.ds-slider-input::-webkit-slider-thumb {
   pointer-events: auto;
   appearance: none;
   width: var(--slider-thumb-size);
@@ -5668,27 +5781,26 @@
   box-shadow: var(--elevation-1);
   cursor: pointer;
   transition: transform 0.1s ease;
-  /* Center thumb on the track height */
   margin-top: calc((var(--slider-track-height) - var(--slider-thumb-size)) / 2);
 }
 
-.ds-range-slider-input .ds-slider-input::-webkit-slider-runnable-track {
+.ds-slider-input::-webkit-slider-runnable-track {
   height: var(--slider-track-height);
   background: transparent;
   width: 100%;
 }
 
-.ds-range-slider-input .ds-slider-input::-webkit-slider-thumb:hover {
+.ds-slider-input::-webkit-slider-thumb:hover {
   transform: scale(1.1);
 }
 
-.ds-range-slider-input .ds-slider-input:focus-visible::-webkit-slider-thumb {
+.ds-slider-input:focus-visible::-webkit-slider-thumb {
   outline: 2px solid oklch(var(--color-primary));
   outline-offset: 2px;
 }
 
 /* Firefox Thumb */
-.ds-range-slider-input .ds-slider-input::-moz-range-thumb {
+.ds-slider-input::-moz-range-thumb {
   pointer-events: auto;
   width: var(--slider-thumb-size);
   height: var(--slider-thumb-size);
@@ -5701,16 +5813,16 @@
   box-sizing: border-box;
 }
 
-.ds-range-slider-input .ds-slider-input::-moz-range-track {
+.ds-slider-input::-moz-range-track {
   height: var(--slider-track-height);
   background: transparent;
 }
 
-.ds-range-slider-input .ds-slider-input::-moz-range-thumb:hover {
+.ds-slider-input::-moz-range-thumb:hover {
   transform: scale(1.1);
 }
 
-.ds-range-slider-input .ds-slider-input:focus-visible::-moz-range-thumb {
+.ds-slider-input:focus-visible::-moz-range-thumb {
   outline: 2px solid oklch(var(--color-primary));
   outline-offset: 2px;
 }

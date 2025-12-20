@@ -263,6 +263,13 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 역할: 파일 업로드(accept/size/maxFiles, 목록 표시)
 - Props: `files`, `onFilesChange`, `label`, `description`, `accept`, `multiple`, `disabled`, `required`, `name`, `maxFiles`, `maxSizeBytes`, `showList`, `clearable`
 
+#### `DsCaptcha`
+
+- 파일: `src/lib/components/design-system/Captcha.svelte`
+- 역할: cap.js 위젯 래퍼(챌린지/리딤 엔드포인트 연동)
+- Props: `apiEndpoint`, `workerCount`, `hiddenFieldName`, `hideCredits`, `token`, `status`, `i18n`, `invalid`, `required`, `onTokenChange`, `onStatusChange`, `onProgress`, `onError`, `onReset`
+- 참고: 기본 엔드포인트는 `/api/cap/` 이며, 내부적으로 `challenge` / `redeem` 라우트를 사용합니다.
+
 #### `DsTimePicker`
 
 - 파일: `src/lib/components/design-system/TimePicker.svelte`

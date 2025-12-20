@@ -346,3 +346,10 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	/* Enforce smooth scrolling for native interactions (scrollbar click, keyboard) */
+	.ds-carousel-viewport {
+		scroll-behavior: smooth !important;
+	}
+</style>

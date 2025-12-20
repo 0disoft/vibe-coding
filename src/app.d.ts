@@ -14,6 +14,12 @@ import type { ThemeMode, ThemePalette } from '$lib/shared/utils/theme';
  * @see https://svelte.dev/docs/kit/types#app.d.ts
  */
 declare global {
+	namespace svelteHTML {
+		interface IntrinsicElements {
+			"cap-widget": Record<string, unknown>;
+		}
+	}
+
 	namespace App {
 		interface Error {
 			requestId?: string;

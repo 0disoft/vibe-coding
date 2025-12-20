@@ -10,7 +10,7 @@
   <meta name="description" content="비밀번호 재설정 - {site.name}" />
 </svelte:head>
 
-<div class="container px-4 py-12 md:px-6">
+<div class="container py-12">
   <div class="mx-auto max-w-4xl space-y-6">
     <div class="space-y-2">
       <p class="text-label text-muted-foreground">Page Stub</p>
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <DsCard class="space-y-3 p-6 md:p-8">
+    <DsCard class="space-y-3" padding="lg">
       <div class="text-label text-muted-foreground">Route</div>
       <div class="text-body">
         <code class="text-code">/reset-password</code>

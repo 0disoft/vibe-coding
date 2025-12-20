@@ -5,7 +5,7 @@ export const THEME_PALETTES = ['airy-blue', 'misty-lavender', 'sage-breeze', 'co
 export type ThemePalette = (typeof THEME_PALETTES)[number];
 
 export const DEFAULT_THEME_MODE: ThemeMode = 'light';
-export const DEFAULT_THEME_PALETTE: ThemePalette = 'cozy-coral';
+export const DEFAULT_THEME_PALETTE: ThemePalette = 'airy-blue';
 
 export function isThemeMode(value: string | null | undefined): value is ThemeMode {
 	return THEME_MODES.includes(value as ThemeMode);

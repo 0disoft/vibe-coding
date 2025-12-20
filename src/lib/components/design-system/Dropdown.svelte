@@ -40,6 +40,8 @@
 		open?: boolean;
 		onOpenChange?: (next: boolean) => void;
 		align?: "start" | "end";
+		side?: "auto" | "top" | "bottom";
+		focusOnOpen?: "always" | "keyboard" | "none";
 		haspopup?: PopupRole;
 		disabled?: boolean;
 		trigger?: Snippet<[TriggerProps]>;
@@ -57,6 +59,8 @@
 		open,
 		onOpenChange,
 		align = "start",
+		side = "auto",
+		focusOnOpen = "always",
 		haspopup = "menu",
 		disabled = false,
 		class: className = "",
@@ -103,7 +107,9 @@
 		if (disabled) return;
 		const next = !isOpen;
 		setOpen(next);
-		if (next) tick().then(focus.focusSelectedOrFirstItem);
+		if (next && focusOnOpen === "always") {
+			tick().then(focus.focusSelectedOrFirstItem);
+		}
 	}
 
 	function close(options?: { focusButton?: boolean }): void {
@@ -129,6 +135,7 @@
 		focusFirstItem: focus.focusFirstItem,
 		focusLastItem: focus.focusLastItem,
 		focusNext: focus.focusNext,
+		focusOnOpen: () => focusOnOpen,
 		typeahead,
 	});
 
@@ -149,9 +156,20 @@
 	let placementStyles = $state("");
 
 	$effect(() => {
-		if (isOpen && menuEl && triggerEl) {
-			placementStyles = computeDropdownPlacementStyles({ triggerEl, menuEl });
-		}
+		if (!isOpen || !menuEl || !triggerEl) return;
+		if (typeof window === "undefined") return;
+
+		placementStyles = "";
+		const frame = window.requestAnimationFrame(() => {
+			placementStyles = computeDropdownPlacementStyles({ triggerEl, menuEl, side });
+		});
+
+		return () => window.cancelAnimationFrame(frame);
+	});
+
+	$effect(() => {
+		if (isOpen) return;
+		placementStyles = "";
 	});
 
 	function triggerRef(node: HTMLElement) {
@@ -220,6 +238,7 @@
 				.filter(Boolean)
 				.join(" ")}
 			style={placementStyles}
+			data-lenis-prevent
 			role={menuRole}
 			aria-labelledby={triggerId}
 			tabindex="-1"

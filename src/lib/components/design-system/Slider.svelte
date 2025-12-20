@@ -75,3 +75,29 @@
 		oninput={handleInput}
 	/>
 </div>
+
+<style>
+	/* Component-scoped style to forcefully override any global/browser defaults */
+	input[type="range"] {
+		-webkit-appearance: none;
+		appearance: none;
+		outline: none !important;
+		box-shadow: none !important;
+		border: none !important;
+		background: transparent;
+	}
+
+	input[type="range"]:focus,
+	input[type="range"]:focus-visible,
+	input[type="range"]:active {
+		outline: none !important;
+		box-shadow: none !important;
+		border: none !important;
+	}
+
+	/* Firefox specific reset */
+	input[type="range"]::-moz-focus-inner {
+		border: 0;
+		outline: none;
+	}
+</style>

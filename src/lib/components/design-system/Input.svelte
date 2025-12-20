@@ -88,6 +88,8 @@
 			!rest.disabled &&
 			!rest.readonly,
 	);
+
+	let shouldReserveEnd = $derived(!!end || showClearBtn);
 </script>
 
 <div
@@ -115,9 +117,11 @@
 		onkeydown={handleKeydown}
 	/>
 
-	{#if end}
+	{#if shouldReserveEnd}
 		<div class="ds-input-adornment end">
-			{@render end()}
+			{#if end}
+				{@render end()}
+			{/if}
 			{#if showClearBtn}
 				<DsIconButton
 					type="button"
@@ -125,26 +129,13 @@
 					size="sm"
 					variant="ghost"
 					intent="secondary"
+					touchTarget={false}
 					label={clearLabel}
 					onclick={handleClear}
 					onmousedown={(e) => e.preventDefault()}
 					tabindex={-1}
 				/>
 			{/if}
-		</div>
-	{:else if showClearBtn}
-		<div class="ds-input-adornment end">
-			<DsIconButton
-				type="button"
-				icon="x"
-				size="sm"
-				variant="ghost"
-				intent="secondary"
-				label={clearLabel}
-				onclick={handleClear}
-				onmousedown={(e) => e.preventDefault()}
-				tabindex={-1}
-			/>
 		</div>
 	{/if}
 </div>

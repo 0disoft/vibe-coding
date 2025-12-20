@@ -1,6 +1,7 @@
 <script lang="ts">
   import {
     DsCard,
+    DsCaptcha,
     DsCheckbox,
     DsButton,
     DsErrorSummary,
@@ -37,6 +38,8 @@
   let timeValue = $state<string | null>("09:30");
   let sliderValue = $state(35);
   let rangeValue = $state<[number, number]>([20, 80]);
+  let captchaToken = $state<string | null>(null);
+  let captchaStatus = $state<"idle" | "solving" | "solved" | "error">("idle");
 
   const errorSummaryEmailId = "ds-error-summary-email";
   let errorSummaryEmail = $state("");
@@ -198,6 +201,36 @@
     <div class="space-y-2">
       <div class="text-label text-muted-foreground">FileUpload</div>
       <DsFileUpload accept="image/*,.pdf" maxFiles={5} maxSizeBytes={5 * 1024 * 1024} />
+    </div>
+
+    <div class="space-y-2">
+      <div class="text-label text-muted-foreground">Captcha (cap.js)</div>
+      <div class="flex flex-wrap items-center gap-3">
+        <DsCaptcha bind:token={captchaToken} bind:status={captchaStatus} />
+        <DsTag
+          variant="soft"
+          intent={
+            captchaStatus === "solved"
+              ? "success"
+              : captchaStatus === "error"
+                ? "danger"
+                : captchaStatus === "solving"
+                  ? "warning"
+                  : "neutral"
+          }
+        >
+          {captchaStatus === "solved"
+            ? "Solved"
+            : captchaStatus === "error"
+              ? "Error"
+              : captchaStatus === "solving"
+                ? "Verifying"
+                : "Idle"}
+        </DsTag>
+      </div>
+      <div class="text-helper text-muted-foreground">
+        {captchaToken ? "토큰이 발급되었습니다." : "검증을 완료하면 토큰이 생성됩니다."}
+      </div>
     </div>
 
     <div class="flex flex-wrap items-center gap-6">
