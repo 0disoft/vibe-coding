@@ -44,7 +44,7 @@ Der Schweregrad kann je nach tatsächlicher Auswirkung angepasst werden.
 ### Meldewege
 
 - **E-Mail**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Betreff**: `[Security Report] Vulnerability Summary` (Zusammenfassung der Schwachstelle)
+- **Betreff**: [Security Report] Vulnerability Summary (Zusammenfassung der Schwachstelle)
 - **Sprache**: Bitte schreiben Sie auf Koreanisch, Englisch oder Deutsch.
 
 ### Berichtsformat

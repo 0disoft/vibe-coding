@@ -44,7 +44,7 @@ Allvarlighetsgraden kan justeras baserat på faktisk påverkan.
 ### Rapporteringskanaler
 
 - **E-post**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Ämne**: `[Security Report] Vulnerability Summary` (Sammanfattning av sårbarhet)
+- **Ämne**: [Security Report] Vulnerability Summary (Sammanfattning av sårbarhet)
 - **Språk**: Vänligen skriv på koreanska, engelska eller svenska.
 
 ### Rapportformat

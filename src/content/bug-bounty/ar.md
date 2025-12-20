@@ -44,7 +44,7 @@
 ### قنوات الإبلاغ
 
 - **البريد الإلكتروني**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **الموضوع**: `[Security Report] Vulnerability Summary` (ملخص الثغرة)
+- **الموضوع**: [Security Report] Vulnerability Summary (ملخص الثغرة)
 - **اللغة**: يرجى الكتابة باللغة الكورية أو الإنجليزية أو العربية.
 
 ### تنسيق التقرير

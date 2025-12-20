@@ -44,7 +44,7 @@ De ernst kan worden aangepast op basis van de werkelijke impact.
 ### Meldingskanalen
 
 - **E-mail**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Onderwerp**: `[Security Report] Vulnerability Summary` (Samenvatting van de kwetsbaarheid)
+- **Onderwerp**: [Security Report] Vulnerability Summary (Samenvatting van de kwetsbaarheid)
 - **Taal**: Schrijf in het Koreaans, Engels of Nederlands.
 
 ### Rapportindeling

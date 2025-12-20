@@ -44,7 +44,7 @@ Tingkat keparahan dapat disesuaikan berdasarkan dampak aktual.
 ### Saluran Pelaporan
 
 - **Email**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Subjek**: `[Security Report] Vulnerability Summary` (Ringkasan Kerentanan)
+- **Subjek**: [Security Report] Vulnerability Summary (Ringkasan Kerentanan)
 - **Bahasa**: Harap tulis dalam bahasa Korea, Inggris, atau Indonesia.
 
 ### Format Laporan

@@ -44,7 +44,7 @@ La sévérité peut être ajustée en fonction de l'impact réel.
 ### Canaux de Signalement
 
 - **E-mail** : [{{EMAIL}}](mailto:{{EMAIL}})
-- **Objet** : `[Security Report] Vulnerability Summary` (Résumé de la vulnérabilité)
+- **Objet** : [Security Report] Vulnerability Summary (Résumé de la vulnérabilité)
 - **Langue** : Veuillez rédiger en coréen, anglais ou français.
 
 ### Format du Rapport

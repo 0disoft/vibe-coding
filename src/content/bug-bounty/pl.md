@@ -44,7 +44,7 @@ Ważność może zostać dostosowana w oparciu o rzeczywisty wpływ.
 ### Kanały Zgłaszania
 
 - **E-mail**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Temat**: `[Security Report] Vulnerability Summary` (Podsumowanie luki)
+- **Temat**: [Security Report] Vulnerability Summary (Podsumowanie luki)
 - **Język**: Prosimy pisać po koreańsku, angielsku lub polsku.
 
 ### Format Raportu

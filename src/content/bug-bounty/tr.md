@@ -44,7 +44,7 @@ Bütçeye ve hizmet ölçeğine bağlı olarak gelecekte parasal bir ödül sist
 ### Raporlama Kanalları
 
 - **E-posta**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Konu**: `[Security Report] Vulnerability Summary` (Güvenlik Açığı Özeti)
+- **Konu**: [Security Report] Vulnerability Summary (Güvenlik Açığı Özeti)
 - **Dil**: Lütfen Korece, İngilizce veya Türkçe yazın.
 
 ### Rapor Formatı

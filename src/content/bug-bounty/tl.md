@@ -44,7 +44,7 @@ Maaaring ayusin ang kalubhaan batay sa aktwal na epekto.
 ### Mga Channel ng Pag-uulat
 
 - **E-mail**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Paksa**: `[Security Report] Vulnerability Summary` (Buod ng Kahinaan)
+- **Paksa**: [Security Report] Vulnerability Summary (Buod ng Kahinaan)
 - **Wika**: Mangyaring sumulat sa Korean, English, o Tagalog.
 
 ### Format ng Ulat

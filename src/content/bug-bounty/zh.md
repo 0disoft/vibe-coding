@@ -44,7 +44,7 @@
 ### 报告渠道
 
 - **电子邮件**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **主题**: `[Security Report] Vulnerability Summary` (漏洞摘要)
+- **主题**: [Security Report] Vulnerability Summary (漏洞摘要)
 - **语言**: 请使用中文、韩文或英文撰写。
 
 ### 报告格式

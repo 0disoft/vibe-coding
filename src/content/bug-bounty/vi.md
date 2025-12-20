@@ -44,7 +44,7 @@ Mức độ nghiêm trọng có thể được điều chỉnh dựa trên tác 
 ### Kênh báo cáo
 
 - **Email**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Tiêu đề**: `[Security Report] Vulnerability Summary` (Tóm tắt lỗ hổng)
+- **Tiêu đề**: [Security Report] Vulnerability Summary (Tóm tắt lỗ hổng)
 - **Ngôn ngữ**: Vui lòng viết bằng tiếng Hàn, tiếng Anh hoặc tiếng Việt.
 
 ### Định dạng báo cáo

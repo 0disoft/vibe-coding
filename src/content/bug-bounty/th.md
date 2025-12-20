@@ -44,7 +44,7 @@
 ### ช่องทางการรายงาน
 
 - **อีเมล**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **หัวเรื่อง**: `[Security Report] Vulnerability Summary` (สรุปช่องโหว่)
+- **หัวเรื่อง**: [Security Report] Vulnerability Summary (สรุปช่องโหว่)
 - **ภาษา**: โปรดเขียนเป็นภาษาเกาหลี ภาษาอังกฤษ หรือภาษาไทย
 
 ### รูปแบบรายงาน

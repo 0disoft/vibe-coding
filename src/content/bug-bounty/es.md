@@ -44,7 +44,7 @@ La severidad puede ajustarse según el impacto real.
 ### Canales de Reporte
 
 - **Correo electrónico**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Asunto**: `[Security Report] Vulnerability Summary` (Resumen de la vulnerabilidad)
+- **Asunto**: [Security Report] Vulnerability Summary (Resumen de la vulnerabilidad)
 - **Idioma**: Por favor escriba en coreano, inglés o español.
 
 ### Formato del Reporte

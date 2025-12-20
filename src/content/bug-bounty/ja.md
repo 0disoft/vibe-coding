@@ -44,7 +44,7 @@
 ### 報告チャネル
 
 - **Eメール**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **件名**: `[Security Report] Vulnerability Summary` (脆弱性の概要)
+- **件名**: [Security Report] Vulnerability Summary (脆弱性の概要)
 - **言語**: 日本語、韓国語、または英語で記述してください。
 
 ### 報告フォーマット

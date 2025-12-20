@@ -44,7 +44,7 @@ La gravità può essere modificata in base all'impatto reale.
 ### Canali di Segnalazione
 
 - **E-mail**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **Oggetto**: `[Security Report] Vulnerability Summary` (Riepilogo della vulnerabilità)
+- **Oggetto**: [Security Report] Vulnerability Summary (Riepilogo della vulnerabilità)
 - **Lingua**: Si prega di scrivere in coreano, inglese o italiano.
 
 ### Formato del Rapporto

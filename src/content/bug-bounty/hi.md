@@ -44,7 +44,7 @@
 ### रिपोर्टिंग चैनल
 
 - **ई-मेल**: [{{EMAIL}}](mailto:{{EMAIL}})
-- **विषय**: `[Security Report] Vulnerability Summary` (भेद्यता सारांश)
+- **विषय**: [Security Report] Vulnerability Summary (भेद्यता सारांश)
 - **भाषा**: कृपया कोरियाई, अंग्रेजी या हिंदी में लिखें।
 
 ### रिपोर्ट प्रारूप
