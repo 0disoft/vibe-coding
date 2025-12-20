@@ -2,6 +2,7 @@ export { default as DsAccordion } from './Accordion.svelte';
 export { default as DsAccordionContent } from './AccordionContent.svelte';
 export { default as DsAccordionItem } from './AccordionItem.svelte';
 export { default as DsAccordionTrigger } from './AccordionTrigger.svelte';
+export { default as DsAdSlot } from './AdSlot.svelte';
 export { default as DsAlert } from './Alert.svelte';
 export { default as DsAppShell } from './AppShell.svelte';
 export { default as DsAvatar } from './Avatar.svelte';

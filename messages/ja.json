@@ -221,5 +221,7 @@
 	"ds_toast_region": "通知",
 	"ds_toast_dismiss": "通知を閉じる",
 	"a11y_skip_to_main_content": "本文へスキップ",
-	"form_error_summary_title": "次の内容を修正してください"
+	"form_error_summary_title": "次の内容を修正してください",
+	"common_advertisement": "広告",
+	"common_ad_placeholder": "広告掲載エリア"
 }

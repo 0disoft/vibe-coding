@@ -453,6 +453,13 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 역할: 링크 복사/북마크/열기 같은 “콘텐츠 액션” 프리셋
 - Props: `url`, `copyLabel`, `copiedLabel`, `bookmarkLabel`, `openLabel`, `bookmarked`, `onBookmarkedChange`, `showOpen`
 
+#### `DsAdSlot`
+
+- 파일: `src/lib/components/design-system/AdSlot.svelte`
+- 역할: 광고 영역 레이아웃/CLS 방지용 슬롯(실제 광고 스크립트는 외부 주입)
+- Props: `variant`, `minHeight`, `height`, `ratio`, `sticky`, `stickyTop`, `label`, `showLabel`, `showPlaceholder`, `children`
+- Variant: `banner`, `infeed`, `infeed-wide`, `sidebar`, `native`
+
 #### `DsFilterBar`
 
 - 파일: `src/lib/components/design-system/FilterBar.svelte`

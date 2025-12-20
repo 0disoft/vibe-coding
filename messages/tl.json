@@ -221,5 +221,7 @@
 	"ds_toast_region": "Mga Notification",
 	"ds_toast_dismiss": "Isara ang notification",
 	"a11y_skip_to_main_content": "Tumalon sa pangunahing nilalaman",
-	"form_error_summary_title": "Pakisuri at ayusin ang sumusunod"
+	"form_error_summary_title": "Pakisuri at ayusin ang sumusunod",
+	"common_advertisement": "Patalastas",
+	"common_ad_placeholder": "Espasyo para sa Patalastas"
 }

@@ -221,5 +221,7 @@
 	"ds_toast_region": "Meldingen",
 	"ds_toast_dismiss": "Melding sluiten",
 	"a11y_skip_to_main_content": "Ga naar hoofdinhoud",
-	"form_error_summary_title": "Corrigeer het volgende"
+	"form_error_summary_title": "Corrigeer het volgende",
+	"common_advertisement": "Advertentie",
+	"common_ad_placeholder": "Ruimte voor advertentie"
 }

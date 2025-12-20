@@ -221,5 +221,7 @@
 	"ds_toast_region": "การแจ้งเตือน",
 	"ds_toast_dismiss": "ปิดการแจ้งเตือน",
 	"a11y_skip_to_main_content": "ข้ามไปยังเนื้อหาหลัก",
-	"form_error_summary_title": "โปรดแก้ไขรายการต่อไปนี้"
+	"form_error_summary_title": "โปรดแก้ไขรายการต่อไปนี้",
+	"common_advertisement": "โฆษณา",
+	"common_ad_placeholder": "พื้นที่สำหรับโฆษณา"
 }

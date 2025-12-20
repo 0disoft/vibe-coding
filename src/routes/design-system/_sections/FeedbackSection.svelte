@@ -172,7 +172,10 @@
     <div class="flex items-center gap-3">
       <DsSpinner label="Loading" />
       <DsAvatar name="Test User" />
-      <DsAvatar name="Jane Doe" src="https://invalid.example/avatar.png" />
+      <DsAvatar
+        name="Jane Doe"
+        src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23e5e7eb'/><text x='32' y='38' font-size='20' text-anchor='middle' fill='%236b7280' font-family='Arial'>JD</text></svg>"
+      />
       <DsDropdown align="end" menuClass="w-56" itemSelector='[role="menuitem"]'>
         {#snippet trigger(props)}
           <DsIconButton {...props} icon="ellipsis" label="More" />

@@ -221,5 +221,7 @@
 	"ds_toast_region": "सूचनाएं",
 	"ds_toast_dismiss": "सूचना बंद करें",
 	"a11y_skip_to_main_content": "मुख्य सामग्री पर जाएँ",
-	"form_error_summary_title": "कृपया निम्नलिखित ठीक करें"
+	"form_error_summary_title": "कृपया निम्नलिखित ठीक करें",
+	"common_advertisement": "विज्ञापन",
+	"common_ad_placeholder": "विज्ञापन के लिए स्थान"
 }

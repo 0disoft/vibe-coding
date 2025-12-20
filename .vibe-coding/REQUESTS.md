@@ -38,6 +38,7 @@
 | 순번 | 요청 유형 | 대상 파일/항목 | 상태 | 비고 |
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | 코드 개선 제안 | `src/lib/components/design-system/FilterBar.svelte` | ✅ 완료 | [상세 보기](#1-filterbar-리팩토링) |
+| 2 | 코드 개선 제안 | `src/lib/components/design-system/AdSlot.svelte` | ✅ 완료 | [상세 보기](#2-adslot-리팩토링) |
 
 ---
 
@@ -59,4 +60,20 @@
   - ✅ **접근성 보강**: `aria-live="polite"` 영역을 추가해 검색/정렬 변경 시 상태를 알립니다.
   - ✅ **Debounce 로직 유틸화**: `src/lib/shared/utils/debounce.ts`에 공용 디바운스 러너를 추가했습니다.
   - ⏭️ **컴포넌트 분리**: 현재 파일 규모(172줄)와 명확한 레이아웃 구조를 고려해 과도한 분리는 보류했습니다.
+  - ✅ **검증**: `bun run lint` 실행 완료.
+
+### 2. AdSlot 리팩토링
+
+- **대상**: `src/lib/components/design-system/AdSlot.svelte`
+- **관점**: `A11Y_UX_COPILOT` (UX 안정성 및 투명한 광고 경험)
+- **제안 내용**:
+  - **CLS(누적 레이아웃 시프트) 원천 차단**: 광고가 로드되기 전후의 레이아웃 변화를 막기 위해 `variant`별 권장 최소 높이(`min-height`)를 상수로 정의하고, 값이 누락된 경우에도 기본 공간을 확보하도록 개선합니다.
+  - **광고 표기 규정 준수**: "Advertisement" 또는 "AD" 라벨의 시각적 가독성(대비)을 점검하고, Paraglide를 통한 로컬라이징(`m.common_advertisement()`)을 적용하여 전 세계 사용자에게 투명하게 정보를 제공합니다.
+  - **접근성 보강**: `role="complementary"`와 `$props.id()` 기반의 `aria-labelledby` 연결은 우수합니다. 추가로 광고 차단기(AdBlocker) 등에 의해 요소가 숨겨질 경우 레이아웃이 깨지지 않도록 `display: grid`나 `aspect-ratio` 기반의 컨테이너 안정화 전략을 보강합니다.
+  - **로딩 및 실패 상태 UX**: 광고 로딩 실패 시 빈 공간이 흉하게 남지 않도록 플레이스홀더(`showPlaceholder`)의 스타일을 개선하거나, 일정 시간 후 슬롯을 부드럽게 접는(Collapse) 로직 검토를 제안합니다.
+- **처리 결과**:
+  - ✅ **CLS 원천 차단**: `variant`별 기본 `min-height` 상수를 정의하고, CSS 변수를 통해 광고 로드 전 공간을 강제 확보했습니다.
+  - ✅ **로컬라이징 적용**: "Advertisement" 라벨 및 플레이스홀더 텍스트를 Paraglide(`m.common_advertisement`) 연동으로 전환했습니다.
+  - ✅ **접근성 보강**: `role`을 `region`으로 조정하고 `aria-roledescription`을 추가하여 광고 영역임을 명확히 인지하도록 개선했습니다.
+  - ✅ **UX 개선**: 플레이스홀더에 은은한 배경색과 대시 테두리를 적용하여 시각적 완성도를 높였습니다.
   - ✅ **검증**: `bun run lint` 실행 완료.

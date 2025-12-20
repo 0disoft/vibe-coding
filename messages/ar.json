@@ -221,5 +221,7 @@
 	"ds_toast_region": "الإشعارات",
 	"ds_toast_dismiss": "إغلاق الإشعار",
 	"a11y_skip_to_main_content": "انتقل إلى المحتوى الرئيسي",
-	"form_error_summary_title": "يرجى تصحيح ما يلي"
+	"form_error_summary_title": "يرجى تصحيح ما يلي",
+	"common_advertisement": "إعلان",
+	"common_ad_placeholder": "مساحة للإعلان"
 }

@@ -221,5 +221,7 @@
 	"ds_toast_region": "알림",
 	"ds_toast_dismiss": "알림 닫기",
 	"a11y_skip_to_main_content": "본문으로 바로가기",
-	"form_error_summary_title": "다음을 확인해 주세요"
+	"form_error_summary_title": "다음을 확인해 주세요",
+	"common_advertisement": "광고",
+	"common_ad_placeholder": "광고 게재 영역"
 }

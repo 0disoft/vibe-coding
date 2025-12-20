@@ -81,7 +81,7 @@
   <div class="ds-range-slider-input">
     <input
       {...rest}
-      id={`${id}-min`}
+      id={id}
       type="range"
       class="ds-slider-input"
       min={min}

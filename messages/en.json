@@ -221,5 +221,7 @@
 	"ds_toast_region": "Notifications",
 	"ds_toast_dismiss": "Dismiss notification",
 	"a11y_skip_to_main_content": "Skip to main content",
-	"form_error_summary_title": "Please fix the following"
+	"form_error_summary_title": "Please fix the following",
+	"common_advertisement": "Advertisement",
+	"common_ad_placeholder": "Space for Advertisement"
 }

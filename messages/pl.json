@@ -221,5 +221,7 @@
 	"ds_toast_region": "Powiadomienia",
 	"ds_toast_dismiss": "Zamknij powiadomienie",
 	"a11y_skip_to_main_content": "Przejdź do głównej treści",
-	"form_error_summary_title": "Popraw poniższe"
+	"form_error_summary_title": "Popraw poniższe",
+	"common_advertisement": "Reklama",
+	"common_ad_placeholder": "Miejsce na reklamę"
 }

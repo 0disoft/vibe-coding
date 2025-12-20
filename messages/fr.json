@@ -221,5 +221,7 @@
 	"ds_toast_region": "Notifications",
 	"ds_toast_dismiss": "Fermer la notification",
 	"a11y_skip_to_main_content": "Aller au contenu principal",
-	"form_error_summary_title": "Veuillez corriger ce qui suit"
+	"form_error_summary_title": "Veuillez corriger ce qui suit",
+	"common_advertisement": "Publicité",
+	"common_ad_placeholder": "Espace publicitaire"
 }

@@ -4,6 +4,7 @@
     DsCallout,
     DsCard,
     DsContentCard,
+    DsAdSlot,
     DsFacetFilter,
     DsFilterBar,
     DsMediaPicker,
@@ -148,6 +149,17 @@
         <div class="rounded-lg border border-border bg-surface p-4">
           <div class="text-helper text-muted-foreground">state</div>
           <pre class="mt-2 whitespace-pre-wrap rounded-md bg-surface-hover p-3 text-xs text-foreground">{JSON.stringify({ query, sort, facetValues }, null, 2)}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <div class="text-label text-muted-foreground">AdSlot</div>
+      <div class="grid gap-4 md:grid-cols-3">
+        <DsAdSlot variant="banner" label="Sponsored" showPlaceholder />
+        <DsAdSlot variant="infeed-wide" label="Sponsored" showPlaceholder />
+        <div class="min-h-[20rem]">
+          <DsAdSlot variant="sidebar" label="Sponsored" showPlaceholder sticky />
         </div>
       </div>
     </div>

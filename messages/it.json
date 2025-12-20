@@ -221,5 +221,7 @@
 	"ds_toast_region": "Notifiche",
 	"ds_toast_dismiss": "Chiudi notifica",
 	"a11y_skip_to_main_content": "Vai al contenuto principale",
-	"form_error_summary_title": "Correggi quanto segue"
+	"form_error_summary_title": "Correggi quanto segue",
+	"common_advertisement": "Annuncio",
+	"common_ad_placeholder": "Spazio per la pubblicità"
 }
