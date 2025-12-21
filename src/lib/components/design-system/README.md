@@ -379,7 +379,9 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/Breadcrumb.svelte`
 - 역할: breadcrumb
 - Props: `items`, `label`, `separator`
-- 참고: `items[].icon`을 지정하면 라벨 앞에 아이콘을 표시합니다.
+- 참고:
+  - `items[].icon`을 지정하면 라벨 앞에 아이콘을 표시합니다.
+  - `items[].menuItems`를 제공하면 드롭다운 메뉴로 표시됩니다.
 
 #### `DsTabs` / `DsTabsList` / `DsTabsTrigger` / `DsTabsContent`
 

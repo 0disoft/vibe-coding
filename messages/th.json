@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "ค้นหา…",
 	"search_panel_placeholder_pages": "พิมพ์เพื่อกรองหน้า…",
 	"search_panel_empty": "ไม่พบผลลัพธ์",
-	"search_panel_results": "รายการ"
+	"search_panel_results": "รายการ",
+	"policy_effective_date_label": "วันที่มีผลบังคับใช้",
+	"policy_language_label": "ภาษา",
+	"policy_breadcrumb_section": "นโยบาย"
 }

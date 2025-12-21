@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Sök…",
 	"search_panel_placeholder_pages": "Skriv för att filtrera sidor…",
 	"search_panel_empty": "Inga resultat.",
-	"search_panel_results": "resultat"
+	"search_panel_results": "resultat",
+	"policy_effective_date_label": "Ikraftträdandedatum",
+	"policy_language_label": "Språk",
+	"policy_breadcrumb_section": "Policyer"
 }

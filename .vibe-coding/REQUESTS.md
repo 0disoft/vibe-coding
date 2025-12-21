@@ -37,61 +37,46 @@
 
 | 순번 | 요청 유형 | 대상 파일/항목 | 상태 | 비고 |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | 코드 개선 제안 | `src/lib/components/design-system/FilterBar.svelte` | ✅ 완료 | [상세 보기](#1-filterbar-리팩토링) |
-| 2 | 코드 개선 제안 | `src/lib/components/design-system/AdSlot.svelte` | ✅ 완료 | [상세 보기](#2-adslot-리팩토링) |
-| 3 | 코드 개선 제안 | `src/lib/components/search/SearchPanelSection.svelte` | ✅ 완료 | [상세 보기](#3-searchpanelsection-리팩토링) |
+| 1 | 코드 개선 제안 | `src/lib/components/marketing/MarketingHero.svelte` | ✅ 완료 | [상세 보기](#1-marketinghero-리팩토링) |
+| 2 | 코드 개선 제안 | `src/lib/components/docs` | 🏗️ 진행 중 | [상세 보기](#2-docs-컴포넌트-모음-리팩토링) |
 
 ---
 
 ## 📋 작업 상세 내용
 
-### 1. FilterBar 리팩토링
+### 1. MarketingHero 리팩토링
 
-- **대상**: `src/lib/components/design-system/FilterBar.svelte`
-- **관점**: `A11Y_UX_COPILOT` (UX 및 접근성 인터랙션)
+- **대상**: `src/lib/components/marketing/MarketingHero.svelte`
+- **관점**: `A11Y_UX_COPILOT` (A11y 및 UI/UX)
 - **제안 내용**:
-  - **컴포넌트 분리**: 검색(`DsInput`), 정렬(`DsSelect`), 필터(`children`) 영역의 명시적인 레이아웃 구조화 및 필요시 서브 컴포넌트화 검토.
-  - **UX/레이아웃 안정성**: `Clear` 버튼이 데이터 입력 시나리오에 따라 동적으로 나타났다 사라지는데, 이때 발생하는 레이아웃 시프트(CLS)를 방지하기 위해 고정된 공간 확보 또는 부드러운 전환 처리 제안.
-  - **상태 동기화 최적화**: `$effect`를 사용한 `query`와 `inputValue` 간의 동기화 로직을 더 선언적인 방식(예: `get`/`set` 패턴 확대)으로 개선 가능한지 검토.
-  - **접근성 보강**: 필터링이나 정렬이 수행될 때 스크린 리더 사용자에게 실시간 결과를 알릴 수 있도록 `aria-live` 영역 추가 검토.
-  - **Debounce 로직 유틸화**: 컴포넌트 내부에 산재된 `setTimeout` 기반 디바운스 로직을 범용적인 유틸리티로 추출하여 가독성 및 재사용성 향상.
+  - **시맨틱 구조 개선**: 루트 요소를 `div`에서 `section`으로 변경하고, 헤딩 요소와 `aria-labelledby`로 연결하여 랜드마크로서의 의미를 명확히 합니다.
+  - **ID 관리 및 안정성**: Svelte 5의 `$props.id()`를 사용하여 고유 ID를 생성하고, 이를 헤딩 요소에 할당하여 컨테이너와의 접근성 연결을 강화합니다.
+  - **헤딩 수준 유연성**: `headingLevel`이 1인 경우 `text-h1`, 2인 경우 `text-h2` 등 수준에 맞는 스타일 유틸리티가 자동 적용되도록 로직을 보강합니다.
+  - **RTL 및 논리적 속성**: `mx-auto` 등 물리적 속성을 논리적 속성으로 대체하거나 검토하고, 다국어 텍스트(영어/한국어 혼용) 발생 시 문장부호 꼬임을 방지하기 위해 `Unicode Isolate` 적용 여부를 검토합니다.
+  - **에러 격리**: 컴포넌트 내부 렌더링 오류가 페이지 전체로 퍼지지 않도록 `<svelte:boundary>` 적용을 고려합니다.
+  - **CTA 인터랙션**: `primary`, `secondary` 버튼 그룹에 적절한 `aria-label`이나 그룹 라벨링이 필요한지 검토하여 스크린 리더 사용자의 맥락 이해를 돕습니다.
 - **처리 결과**:
-  - ✅ **UX/레이아웃 안정성**: `Clear` 버튼 슬롯을 상시 렌더링하고, 비활성 시 숨김 처리(`data-hidden`)로 레이아웃 시프트를 제거했습니다.
-  - ✅ **상태 동기화 최적화**: 입력값은 `bind:value` + `get/set` 프록시로 관리하고, 쿼리 반영은 디바운스 유틸로 처리하도록 정리했습니다.
-  - ✅ **접근성 보강**: `aria-live="polite"` 영역을 추가해 검색/정렬 변경 시 상태를 알립니다.
-  - ✅ **Debounce 로직 유틸화**: `src/lib/shared/utils/debounce.ts`에 공용 디바운스 러너를 추가했습니다.
-  - ⏭️ **컴포넌트 분리**: 현재 파일 규모(172줄)와 명확한 레이아웃 구조를 고려해 과도한 분리는 보류했습니다.
-  - ✅ **검증**: `bun run lint` 실행 완료.
+  - ✅ **시맨틱 구조 개선**: 루트 요소를 `section`으로 전환하고 `aria-labelledby`로 헤딩과 연결했습니다.
+  - ✅ **ID 관리 및 안정성**: `$props.id()` 기반 `id`/`titleId`를 도입했습니다.
+  - ✅ **헤딩 수준 유연성**: `headingLevel`에 따라 `text-h1`/`text-h2`를 자동 적용하도록 보강했습니다.
+  - ⏭️ **RTL 및 논리적 속성**: `mx-auto`/`text-center`는 RTL에서도 의미가 유지되어 별도 교체는 하지 않았습니다.
+  - ⏸️ **에러 격리**: 전역적인 에러 바운더리 도입이 더 적합하다고 판단해 보류했습니다.
+  - ✅ **CTA 인터랙션**: 버튼 그룹에 `role="group"` + `aria-labelledby`를 추가했습니다.
 
-### 2. AdSlot 리팩토링
+### 2. Docs 컴포넌트 모음 리팩토링
 
-- **대상**: `src/lib/components/design-system/AdSlot.svelte`
-- **관점**: `A11Y_UX_COPILOT` (UX 안정성 및 투명한 광고 경험)
+- **대상**: `src/lib/components/docs` (전체 파일)
+- **관점**: `A11Y_UX_COPILOT` (문서화 시스템의 일관성 및 접근성)
 - **제안 내용**:
-  - **CLS(누적 레이아웃 시프트) 원천 차단**: 광고가 로드되기 전후의 레이아웃 변화를 막기 위해 `variant`별 권장 최소 높이(`min-height`)를 상수로 정의하고, 값이 누락된 경우에도 기본 공간을 확보하도록 개선합니다.
-  - **광고 표기 규정 준수**: "Advertisement" 또는 "AD" 라벨의 시각적 가독성(대비)을 점검하고, Paraglide를 통한 로컬라이징(`m.common_advertisement()`)을 적용하여 전 세계 사용자에게 투명하게 정보를 제공합니다.
-  - **접근성 보강**: `role="complementary"`와 `$props.id()` 기반의 `aria-labelledby` 연결은 우수합니다. 추가로 광고 차단기(AdBlocker) 등에 의해 요소가 숨겨질 경우 레이아웃이 깨지지 않도록 `display: grid`나 `aspect-ratio` 기반의 컨테이너 안정화 전략을 보강합니다.
-  - **로딩 및 실패 상태 UX**: 광고 로딩 실패 시 빈 공간이 흉하게 남지 않도록 플레이스홀더(`showPlaceholder`)의 스타일을 개선하거나, 일정 시간 후 슬롯을 부드럽게 접는(Collapse) 로직 검토를 제안합니다.
-- **처리 결과**:
-  - ✅ **CLS 원천 차단**: `variant`별 기본 `min-height` 상수를 정의하고, CSS 변수를 통해 광고 로드 전 공간을 강제 확보했습니다.
-  - ✅ **로컬라이징 적용**: "Advertisement" 라벨 및 플레이스홀더 텍스트를 Paraglide(`m.common_advertisement`) 연동으로 전환했습니다.
-  - ✅ **접근성 보강**: `role`을 `region`으로 조정하고 `aria-roledescription`을 추가하여 광고 영역임을 명확히 인지하도록 개선했습니다.
-  - ✅ **UX 개선**: 플레이스홀더에 은은한 배경색과 대시 테두리를 적용하여 시각적 완성도를 높였습니다.
-  - ✅ **검증**: `bun run lint` 실행 완료.
-
-### 3. SearchPanelSection 리팩토링
-
-- **대상**: `src/lib/components/search/SearchPanelSection.svelte`
-- **관점**: `A11Y_UX_COPILOT` (시맨틱 웹 및 다국어 환경 최적화)
-- **제안 내용**:
-  - **시맨틱 헤딩 적용**: 현재 `title`이 단순 `div`로 구현되어 있어 정보 계층 파악이 어렵습니다. 이를 `h3` 등 적절한 헤딩 태그로 변경하거나, `as` prop을 통해 태그를 선택할 수 있게 개선하고 검색 영역과 `aria-labelledby`로 연결할 것을 제안합니다.
-  - **로컬라이징 전면 도입**: 하드코딩된 "Demo", "Search pages", "results" 등의 영어 문자열을 Paraglide 메시지(`m.*`)로 교체하여 다국어 환경에서의 UX 일관성을 확보합니다.
-  - **ID 관리 및 ARIA 연결 최적화**: Svelte 5의 `$props.id()`를 사용하여 컴포넌트 내부 요소 간의 ARIA 연결(label <-> input)을 더 견고하게 관리합니다.
-  - **레이아웃 일관성**: 부모의 `space-y-2`와 자식의 `mt-2`가 중첩되어 발생하는 간격 불일치를 정리합니다.
-  - **랜드마크 역할 검토**: 검색 섹션으로서의 의미를 명확히 하기 위해 컨테이너에 `role="search"` 또는 적절한 라벨이 포함된 `role="region"` 적용을 검토합니다.
-- **처리 결과**:
-  - ✅ **시맨틱 헤딩 적용**: `titleAs`(기본 `h3`)를 도입하고 타이틀을 시맨틱 헤딩으로 렌더링하도록 개선했습니다.
-  - ✅ **로컬라이징 전면 도입**: `title`, `label`, `placeholder`, `emptyText` 및 `results` 라벨을 Paraglide 메시지로 전환했습니다.
-  - ✅ **ID 관리 및 ARIA 연결 최적화**: `$props.id()` 기반 `titleId`를 생성해 `aria-labelledby`로 연결하고, 타이틀이 없는 경우 `aria-label`로 대체했습니다.
-  - ✅ **레이아웃 일관성**: 중복 간격을 유발하던 `mt-2`를 제거했습니다.
-  - ✅ **랜드마크 역할**: 컨테이너에 `role="search"`를 적용했습니다.
+  - **다국어 지원(i18n) 강화**: `ApiEndpointCard`, `DocsLayout`, `DocsToc`, `DocsSidebarNav` 등 여러 컴포넌트에 하드코딩된 문자열("Docs", "On this page", "Results", "Copy link" 등)을 Paraglide 메시지(`m.*`)로 전환하여 글로벌 서비스 대응 능력을 확보합니다.
+  - **Svelte 5 Runes 최적화**:
+    - `DocsAnchoredHeading`의 `headingTag()`와 같은 로직을 `$derived` 룬으로 전환하여 선언적 성능을 높입니다.
+    - `ApiEndpointCard`에서 `$effect` 기반의 `activeExampleIndex` 보정 로직을 `$derived` 또는 더 안정적인 상태 관리 패턴으로 개선합니다.
+  - **접근성(A11y) 보강**:
+    - **ID 일관성**: `DocsLayout`의 `docs-sidebar`, `docs-toc` 등 하드코딩된 ID를 `$props.id()`를 사용해 자동 생성하거나 병합하여 중복 및 충돌을 방지합니다.
+    - **스크린 리더 피드백**: `DocsAnchoredHeading`의 링크 복사 시 `DsLiveRegion`을 사용하는 것은 우수합니다. `ApiEndpointCard`의 예제 변경 시에도 스크린 리더가 인지할 수 있도록 `aria-live`를 검토합니다.
+    - **포커스 가시성**: `DocsAnchoredHeading`의 앵커 링크가 호버/포커스 시에만 보이는 디자인은 키보드 사용자에게 유용하지만, 저시력 사용자를 위해 가시성을 상시 확보하거나 명확한 포커스 링 스타일을 보장합니다.
+  - **레이아웃 안정성 및 성능**:
+    - `DocsLayout`의 `embedded` 모드와 일반 모드 간의 전환 시 발생하는 미디어 쿼리 로직을 `SOLVED.md`의 레거시 API 이슈를 고려하여 현대적인 `addEventListener` 전용으로 정리합니다.
+    - 모바일 시트(`DsSheet`)와 일반 사이드바 간의 중복 렌더링을 최소화하고, `inert` 속성 등을 활용해 배경 포커스 트랩을 더 견고히 합니다.
+  - **데이터 구조 일관성**: `DocsToc`과 `DocsLayout`에서 사용하는 `TocItem` 등의 타입을 배럴 파일(`index.ts`)에서 통합 관리하여 타입 안정성을 높입니다.

@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "検索…",
 	"search_panel_placeholder_pages": "入力してページを絞り込む…",
 	"search_panel_empty": "結果がありません。",
-	"search_panel_results": "件の結果"
+	"search_panel_results": "件の結果",
+	"policy_effective_date_label": "施行日",
+	"policy_language_label": "言語",
+	"policy_breadcrumb_section": "ポリシー"
 }

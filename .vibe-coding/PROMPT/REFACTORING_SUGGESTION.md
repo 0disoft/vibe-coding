@@ -5,7 +5,7 @@
 > [!TIP]
 > 이용자가 아래 내용을 직접 수정하여 작업 대상을 지정할 수 있습니다.
 
-- **리팩토링 참조 파일/폴더**: `src\lib\components\policy\PolicyLayout.svelte`
+- **리팩토링 참조 파일/폴더**: `src\lib\components\docs`
 - **적용할 페르소나**: @[.vibe-coding/PERSONA/A11Y_UX_COPILOT.md]
 
 ---

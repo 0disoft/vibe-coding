@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Tìm kiếm…",
 	"search_panel_placeholder_pages": "Nhập để lọc trang…",
 	"search_panel_empty": "Không có kết quả.",
-	"search_panel_results": "kết quả"
+	"search_panel_results": "kết quả",
+	"policy_effective_date_label": "Ngày có hiệu lực",
+	"policy_language_label": "Ngôn ngữ",
+	"policy_breadcrumb_section": "Chính sách"
 }

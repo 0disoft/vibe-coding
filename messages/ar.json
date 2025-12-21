@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "بحث…",
 	"search_panel_placeholder_pages": "اكتب لتصفية الصفحات…",
 	"search_panel_empty": "لا توجد نتائج.",
-	"search_panel_results": "نتائج"
+	"search_panel_results": "نتائج",
+	"policy_effective_date_label": "تاريخ النفاذ",
+	"policy_language_label": "اللغة",
+	"policy_breadcrumb_section": "سياسات"
 }

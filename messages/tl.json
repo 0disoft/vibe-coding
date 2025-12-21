@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Maghanap…",
 	"search_panel_placeholder_pages": "Mag-type para i-filter ang mga pahina…",
 	"search_panel_empty": "Walang resulta.",
-	"search_panel_results": "mga resulta"
+	"search_panel_results": "mga resulta",
+	"policy_effective_date_label": "Petsa ng bisa",
+	"policy_language_label": "Wika",
+	"policy_breadcrumb_section": "Mga Patakaran"
 }

@@ -3,6 +3,7 @@ import { marked } from 'marked';
 
 import { policy, site } from '$lib/constants';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
+import { stripPolicyFrontMatter } from '$lib/shared/utils/policy-markdown';
 
 import type { PageServerLoad } from './$types';
 
@@ -40,6 +41,8 @@ export const load: PageServerLoad = ({ url }) => {
 			throw error(500, 'GDPR content not found');
 		}
 	}
+
+	markdown = stripPolicyFrontMatter(markdown);
 
 	// 템플릿 변수 치환
 	markdown = markdown

@@ -2,7 +2,7 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
-  import { DsIcon } from "$lib/components/design-system";
+  import { DsDropdown, DsDropdownItem, DsIcon } from "$lib/components/design-system";
 
   export type BreadcrumbItem = {
     label: string;
@@ -10,6 +10,14 @@
     icon?: string;
     /** 현재 페이지 표시(미지정이면 마지막 항목을 current로 처리) */
     current?: boolean;
+    menuItems?: BreadcrumbMenuItem[];
+    menuLabel?: string;
+  };
+
+  export type BreadcrumbMenuItem = {
+    label: string;
+    href: string;
+    disabled?: boolean;
   };
 
   interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
@@ -38,7 +46,34 @@
   <ol class="ds-breadcrumb-list">
     {#each computedItems as item, idx (item.href ?? `${item.label}-${idx}`)}
       <li class="ds-breadcrumb-item">
-        {#if item.href && !item.current}
+        {#if item.menuItems && item.menuItems.length > 0}
+          <DsDropdown label={item.menuLabel ?? item.label} align="start">
+            {#snippet trigger(props)}
+              <button
+                {...props}
+                type="button"
+                class="ds-breadcrumb-link ds-breadcrumb-button ds-focus-ring"
+              >
+                {#if item.icon}
+                  <DsIcon name={item.icon} size="sm" class="ds-breadcrumb-icon" />
+                {/if}
+                <span>{item.label}</span>
+                <DsIcon name="chevron-down" size="xs" class="ds-breadcrumb-menu-icon" />
+              </button>
+            {/snippet}
+            {#snippet children({ close })}
+              {#each item.menuItems as menuItem (menuItem.href)}
+                <DsDropdownItem
+                  href={menuItem.href}
+                  disabled={menuItem.disabled}
+                  onclick={() => close()}
+                >
+                  {menuItem.label}
+                </DsDropdownItem>
+              {/each}
+            {/snippet}
+          </DsDropdown>
+        {:else if item.href && !item.current}
           <a class="ds-breadcrumb-link" href={item.href}>
             {#if item.icon}
               <DsIcon name={item.icon} size="sm" class="ds-breadcrumb-icon" />
@@ -67,4 +102,3 @@
     {/each}
   </ol>
 </nav>
-

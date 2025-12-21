@@ -4,6 +4,7 @@ import { marked } from 'marked';
 import { policy, site } from '$lib/constants';
 import * as m from '$lib/paraglide/messages.js';
 import { extractLocaleFromUrl, setLocale } from '$lib/paraglide/runtime';
+import { stripPolicyFrontMatter } from '$lib/shared/utils/policy-markdown';
 
 import type { PageServerLoad } from './$types';
 
@@ -44,6 +45,8 @@ export const load: PageServerLoad = ({ url }) => {
 			throw error(500, 'Cookie policy content not found');
 		}
 	}
+
+	markdown = stripPolicyFrontMatter(markdown);
 
 	// 제3자 서비스 목록 생성 (policy 기반 동적 생성)
 	let thirdPartyServicesHtml = '';

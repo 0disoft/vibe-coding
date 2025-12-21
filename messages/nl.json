@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Zoeken…",
 	"search_panel_placeholder_pages": "Typ om pagina's te filteren…",
 	"search_panel_empty": "Geen resultaten.",
-	"search_panel_results": "resultaten"
+	"search_panel_results": "resultaten",
+	"policy_effective_date_label": "Ingangsdatum",
+	"policy_language_label": "Taal",
+	"policy_breadcrumb_section": "Beleid"
 }

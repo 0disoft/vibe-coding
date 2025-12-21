@@ -11,7 +11,7 @@
 
   type HeadingLevel = 1 | 2;
 
-  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
     kicker?: string;
     title: string;
     description?: string;
@@ -21,6 +21,8 @@
     actions?: Snippet;
   }
 
+  const generatedId = $props.id();
+
   let {
     kicker,
     title,
@@ -29,23 +31,33 @@
     primary,
     secondary,
     actions,
+    id: idProp,
     class: className = "",
     ...rest
   }: Props = $props();
 
+  let id = $derived(idProp ?? generatedId);
   let headingTag = $derived(`h${headingLevel}`);
+  let headingId = $derived(`${id}-title`);
+  let headingClass = $derived(
+    [headingLevel === 1 ? "text-h1" : "text-h2", "font-semibold"]
+      .filter(Boolean)
+      .join(" "),
+  );
 </script>
 
-<div
+<section
   {...rest}
+  {id}
   class={["mx-auto max-w-2xl space-y-6 text-center", className]
     .filter(Boolean)
     .join(" ")}
+  aria-labelledby={headingId}
 >
   {#if kicker}
     <p class="text-label text-muted-foreground">{kicker}</p>
   {/if}
-  <svelte:element this={headingTag} class="text-h1 font-semibold">
+  <svelte:element this={headingTag} id={headingId} class={headingClass}>
     {title}
   </svelte:element>
   {#if description}
@@ -53,11 +65,11 @@
   {/if}
 
   {#if actions}
-    <div class="flex justify-center gap-2">
+    <div class="flex justify-center gap-2" role="group" aria-labelledby={headingId}>
       {@render actions()}
     </div>
   {:else if primary || secondary}
-    <div class="flex justify-center gap-2">
+    <div class="flex justify-center gap-2" role="group" aria-labelledby={headingId}>
       {#if primary}
         <DsLinkButton href={primary.href} intent="primary">
           {primary.label}
@@ -70,5 +82,4 @@
       {/if}
     </div>
   {/if}
-</div>
-
+</section>

@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "검색…",
 	"search_panel_placeholder_pages": "페이지를 찾으려면 입력하세요…",
 	"search_panel_empty": "결과가 없습니다.",
-	"search_panel_results": "결과"
+	"search_panel_results": "결과",
+	"policy_effective_date_label": "시행일",
+	"policy_language_label": "언어",
+	"policy_breadcrumb_section": "정책"
 }

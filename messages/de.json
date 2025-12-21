@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Suchen…",
 	"search_panel_placeholder_pages": "Tippen, um Seiten zu filtern…",
 	"search_panel_empty": "Keine Ergebnisse.",
-	"search_panel_results": "Ergebnisse"
+	"search_panel_results": "Ergebnisse",
+	"policy_effective_date_label": "Inkrafttreten",
+	"policy_language_label": "Sprache",
+	"policy_breadcrumb_section": "Richtlinien"
 }

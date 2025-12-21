@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "搜索…",
 	"search_panel_placeholder_pages": "输入以过滤页面…",
 	"search_panel_empty": "无结果。",
-	"search_panel_results": "条结果"
+	"search_panel_results": "条结果",
+	"policy_effective_date_label": "生效日期",
+	"policy_language_label": "语言",
+	"policy_breadcrumb_section": "政策"
 }

@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Cari…",
 	"search_panel_placeholder_pages": "Ketik untuk memfilter halaman…",
 	"search_panel_empty": "Tidak ada hasil.",
-	"search_panel_results": "hasil"
+	"search_panel_results": "hasil",
+	"policy_effective_date_label": "Tanggal berlaku",
+	"policy_language_label": "Bahasa",
+	"policy_breadcrumb_section": "Kebijakan"
 }

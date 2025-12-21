@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import { marked } from 'marked';
 
 import { policy, site } from '$lib/constants';
+import { stripPolicyFrontMatter } from '$lib/shared/utils/policy-markdown';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
 
 import type { PageServerLoad } from './$types';
@@ -40,6 +41,8 @@ export const load: PageServerLoad = ({ url }) => {
 			throw error(500, 'Terms of service content not found');
 		}
 	}
+
+	markdown = stripPolicyFrontMatter(markdown);
 
 	// 템플릿 변수 치환
 	markdown = markdown

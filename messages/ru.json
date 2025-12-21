@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Поиск…",
 	"search_panel_placeholder_pages": "Введите для фильтрации страниц…",
 	"search_panel_empty": "Нет результатов.",
-	"search_panel_results": "результатов"
+	"search_panel_results": "результатов",
+	"policy_effective_date_label": "Дата вступления в силу",
+	"policy_language_label": "Язык",
+	"policy_breadcrumb_section": "Политики"
 }

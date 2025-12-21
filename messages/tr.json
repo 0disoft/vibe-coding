@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Ara…",
 	"search_panel_placeholder_pages": "Sayfaları filtrelemek için yazın…",
 	"search_panel_empty": "Sonuç bulunamadı.",
-	"search_panel_results": "sonuçlar"
+	"search_panel_results": "sonuçlar",
+	"policy_effective_date_label": "Yürürlük Tarihi",
+	"policy_language_label": "Dil",
+	"policy_breadcrumb_section": "Politikalar"
 }

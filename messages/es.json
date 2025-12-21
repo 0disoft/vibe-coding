@@ -230,5 +230,8 @@
 	"search_panel_placeholder": "Buscar…",
 	"search_panel_placeholder_pages": "Escribe para filtrar páginas…",
 	"search_panel_empty": "No hay resultados.",
-	"search_panel_results": "resultados"
+	"search_panel_results": "resultados",
+	"policy_effective_date_label": "Fecha de vigencia",
+	"policy_language_label": "Idioma",
+	"policy_breadcrumb_section": "Políticas"
 }
