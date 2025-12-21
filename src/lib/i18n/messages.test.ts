@@ -113,8 +113,7 @@ function getValueByPath(obj: Record<string, unknown>, path: string): unknown {
 	const parts = path.split('.');
 	let current: unknown = obj;
 	for (const part of parts) {
-		if (!current || typeof current !== 'object' || Array.isArray(current))
-			return undefined;
+		if (!current || typeof current !== 'object' || Array.isArray(current)) return undefined;
 		current = (current as Record<string, unknown>)[part];
 	}
 	return current;
@@ -133,7 +132,7 @@ const LENGTH_WARNING_PATTERNS = [
 	/(^|\.)tab/i,
 	/(^|\.)cta/i,
 	/(^|\.)label/i,
-	/(^|\.)action/i,
+	/(^|\.)action/i
 ];
 
 describe('messages/', () => {
@@ -258,8 +257,7 @@ describe('messages/', () => {
 
 		for (const file of messageFiles) {
 			walkStringValues(contentByFile[file], (key, value) => {
-				if (!LENGTH_WARNING_PATTERNS.some((pattern) => pattern.test(key)))
-					return;
+				if (!LENGTH_WARNING_PATTERNS.some((pattern) => pattern.test(key))) return;
 				if (value.trim().length > LENGTH_WARNING_LIMIT) {
 					warnings.push(`${file}:${key}(${value.trim().length})`);
 				}

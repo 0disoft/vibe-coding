@@ -62,15 +62,27 @@ export { default as DsNavigationMenu } from './NavigationMenu.svelte';
 export { default as DsNotificationCenter } from './NotificationCenter.svelte';
 export { default as DsNumberInput } from './NumberInput.svelte';
 export { default as DsOtpInput } from './OtpInput.svelte';
+export { default as DsPageHeader } from './PageHeader.svelte';
 export { default as DsPagination } from './Pagination.svelte';
 export { default as DsPasswordInput } from './PasswordInput.svelte';
-export { default as DsPageHeader } from './PageHeader.svelte';
-export { default as DsPopover } from './Popover.svelte';
-export { default as DsPricingTable } from './PricingTable.svelte';
-export { default as DsProgress } from './Progress.svelte';
 export { default as DsPaymentFlowSummary } from './PaymentFlowSummary.svelte';
 export { default as DsPaymentOptionDetails } from './PaymentOptionDetails.svelte';
 export { default as DsPaymentOptionSelector } from './PaymentOptionSelector.svelte';
+export { default as DsPopover } from './Popover.svelte';
+export { default as DsPricingTable } from './PricingTable.svelte';
+export { default as DsProgress } from './Progress.svelte';
+export type {
+	CurrencyCode,
+	PaymentAvailabilityResult,
+	PaymentContext,
+	PaymentMethodType,
+	PaymentOption,
+	PaymentOptionAvailability,
+	PaymentSummaryItem,
+	RegionCode,
+	UnavailabilityReason
+} from './payment-types';
+export { checkPaymentOptionAvailability, isPaymentOptionAvailable } from './payment-types';
 export { default as DsQuote } from './Quote.svelte';
 export { default as DsRadioGroup } from './RadioGroup.svelte';
 export { default as DsRadioItem } from './RadioItem.svelte';
@@ -81,8 +93,8 @@ export { default as DsSegmentedControl } from './SegmentedControl.svelte';
 export { default as DsSelect } from './Select.svelte';
 export { default as DsSeparator } from './Separator.svelte';
 export { default as DsSheet } from './Sheet.svelte';
-export { default as DsSideNav } from './SideNav.svelte';
 export { default as DsSidebar } from './Sidebar.svelte';
+export { default as DsSideNav } from './SideNav.svelte';
 export { default as DsSkeleton } from './Skeleton.svelte';
 export { default as DsSkeletonCard } from './SkeletonCard.svelte';
 export { default as DsSkeletonList } from './SkeletonList.svelte';
@@ -122,18 +134,6 @@ export type {
 	IntentWithNeutral,
 	Size
 } from './types';
-export type {
-	PaymentContext,
-	PaymentOptionAvailability,
-	PaymentMethodType,
-	PaymentOption,
-	PaymentSummaryItem,
-	PaymentAvailabilityResult,
-	UnavailabilityReason,
-	CurrencyCode,
-	RegionCode
-} from './payment-types';
-export { isPaymentOptionAvailable, checkPaymentOptionAvailability } from './payment-types';
 // Types
 export { toIntentCss } from './types';
 export { default as DsVisuallyHidden } from './VisuallyHidden.svelte';

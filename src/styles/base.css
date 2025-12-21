@@ -41,6 +41,12 @@ a {
 	text-decoration: none;
 }
 
+a:focus-visible {
+	outline: var(--focus-ring-width) var(--focus-ring-style) oklch(var(--focus-ring-color));
+	outline-offset: var(--focus-ring-offset);
+	border-radius: 0.2em;
+}
+
 /*
   접근성: 프로그램적으로 포커스를 받는 컨테이너(tabindex="-1")는
   포커스 링을 숨깁니다. (예: 페이지 이동 후 main 태그)
@@ -154,7 +160,8 @@ pre:not(.shiki) {
 	background-color: oklch(var(--color-surface));
 	border: none;
 	border-radius: 0.75rem;
-	padding: 1rem;
+	padding-block: 1rem;
+	padding-inline: 1rem;
 	overflow-x: auto;
 }
 
@@ -177,4 +184,44 @@ pre code {
 	padding: 0;
 	background: transparent;
 	border: none;
+}
+
+:where(
+	a,
+	button,
+	input,
+	select,
+	textarea,
+	summary,
+	[role="button"],
+	[role="link"],
+	[tabindex]:not([tabindex="-1"])
+):focus-visible {
+	outline: var(--focus-ring-width) var(--focus-ring-style) oklch(var(--focus-ring-color));
+	outline-offset: var(--focus-ring-offset);
+}
+
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+	box-shadow: 0 0 0 var(--focus-ring-width) oklch(var(--focus-ring-color) / 0.7);
+}
+
+input[type="range"]:focus-visible::-moz-range-thumb {
+	box-shadow: 0 0 0 var(--focus-ring-width) oklch(var(--focus-ring-color) / 0.7);
+}
+
+@media (forced-colors: active) {
+	:where(
+		a,
+		button,
+		input,
+		select,
+		textarea,
+		summary,
+		[role="button"],
+		[role="link"],
+		[tabindex]:not([tabindex="-1"])
+	):focus-visible {
+		outline: 2px solid CanvasText;
+		outline-offset: 2px;
+	}
 }

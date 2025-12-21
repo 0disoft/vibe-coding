@@ -120,8 +120,7 @@
 	border-color: oklch(var(--color-primary));
 	box-shadow:
 		0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
-		0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width))
-			oklch(var(--focus-ring-color));
+		0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
 }
 
 .ds-payment-option.is-selected {
@@ -260,4 +259,3 @@
 .ds-payment-summary-note {
 	margin-block-start: var(--spacing-2);
 }
-/* ───────────────────────────────────────────────────────────

@@ -4,7 +4,7 @@
 
 .ds-skip-link {
 	position: fixed;
-	inset-block-start: var(--spacing-4);
+	inset-block-start: calc(var(--spacing-4) + var(--safe-area-top));
 	inset-inline-start: var(--spacing-4);
 	z-index: var(--z-toast);
 	padding: var(--spacing-3) var(--spacing-4);
@@ -15,17 +15,50 @@
 	box-shadow: var(--elevation-3);
 	text-decoration: none;
 	transform: translateY(-180%);
-	transition: transform var(--motion-duration-fast) var(--motion-ease);
+	transition:
+		transform var(--motion-duration-fast) var(--motion-ease),
+		opacity var(--motion-duration-fast) var(--motion-ease);
+	opacity: 0;
 }
 
 .ds-skip-link:focus,
 .ds-skip-link:focus-visible {
 	transform: translateY(0);
+	opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
 
 	.ds-skip-link {
-		transition: none;
+		transition: opacity var(--motion-duration-fast) var(--motion-ease);
+		transform: translateY(0);
+	}
+}
+
+.ds-skip-link:focus-visible {
+	outline: var(--focus-ring-width) var(--focus-ring-style) oklch(var(--focus-ring-color));
+	outline-offset: var(--focus-ring-offset);
+}
+
+.ds-visually-hidden {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	clip-path: inset(50%) !important;
+	white-space: nowrap !important;
+	border: 0 !important;
+}
+
+@media (forced-colors: active) {
+	.ds-skip-link:focus-visible {
+		outline: 2px solid CanvasText;
+		outline-offset: 2px;
+		background: Canvas;
+		color: CanvasText;
+		border-color: CanvasText;
 	}
 }

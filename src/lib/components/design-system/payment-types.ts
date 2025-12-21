@@ -1,4 +1,4 @@
-import type { IntentWithNeutral } from "./types";
+import type { IntentWithNeutral } from './types';
 
 /**
  * ISO 4217 Currency Code (e.g., "USD", "KRW")
@@ -11,21 +11,21 @@ export type CurrencyCode = string;
 export type RegionCode = string;
 
 export type PaymentMethodType =
-	| "card"
-	| "bank"
-	| "crypto"
-	| "wallet"
-	| "mobile"
-	| "virtual"
-	| "transfer"
-	| "other";
+	| 'card'
+	| 'bank'
+	| 'crypto'
+	| 'wallet'
+	| 'mobile'
+	| 'virtual'
+	| 'transfer'
+	| 'other';
 
 export type UnavailabilityReason =
-	| "LOGIN_REQUIRED"
-	| "UNSUPPORTED_REGION"
-	| "UNSUPPORTED_CURRENCY"
-	| "DISABLED"
-	| "OTHER";
+	| 'LOGIN_REQUIRED'
+	| 'UNSUPPORTED_REGION'
+	| 'UNSUPPORTED_CURRENCY'
+	| 'DISABLED'
+	| 'OTHER';
 
 export type PaymentAvailabilityResult = {
 	available: boolean;
@@ -78,12 +78,12 @@ export type PaymentSummaryItem = {
  */
 export function checkPaymentOptionAvailability(
 	option: PaymentOption,
-	context?: PaymentContext,
+	context?: PaymentContext
 ): PaymentAvailabilityResult {
 	const note = option.availabilityNote;
 
 	if (option.disabled) {
-		return { available: false, reason: "DISABLED", message: note };
+		return { available: false, reason: 'DISABLED', message: note };
 	}
 
 	if (!option.availability) return { available: true };
@@ -93,18 +93,18 @@ export function checkPaymentOptionAvailability(
 
 	// 1. Login check
 	if (requireLogin && context.loggedIn !== true) {
-		return { available: false, reason: "LOGIN_REQUIRED", message: note };
+		return { available: false, reason: 'LOGIN_REQUIRED', message: note };
 	}
 
 	// 2. Region check
 	if (regions?.length) {
 		const region = context.region?.toUpperCase();
 		if (!region) {
-			return { available: false, reason: "UNSUPPORTED_REGION", message: note };
+			return { available: false, reason: 'UNSUPPORTED_REGION', message: note };
 		}
 		const match = regions.some((r) => r.toUpperCase() === region);
 		if (!match) {
-			return { available: false, reason: "UNSUPPORTED_REGION", message: note };
+			return { available: false, reason: 'UNSUPPORTED_REGION', message: note };
 		}
 	}
 
@@ -112,11 +112,11 @@ export function checkPaymentOptionAvailability(
 	if (currencies?.length) {
 		const currency = context.currency?.toUpperCase();
 		if (!currency) {
-			return { available: false, reason: "UNSUPPORTED_CURRENCY", message: note };
+			return { available: false, reason: 'UNSUPPORTED_CURRENCY', message: note };
 		}
 		const match = currencies.some((c) => c.toUpperCase() === currency);
 		if (!match) {
-			return { available: false, reason: "UNSUPPORTED_CURRENCY", message: note };
+			return { available: false, reason: 'UNSUPPORTED_CURRENCY', message: note };
 		}
 	}
 
@@ -127,9 +127,6 @@ export function checkPaymentOptionAvailability(
  * Legacy wrapper for checkPaymentOptionAvailability
  * @deprecated Use checkPaymentOptionAvailability for more detailed results
  */
-export function isPaymentOptionAvailable(
-	option: PaymentOption,
-	context?: PaymentContext,
-): boolean {
+export function isPaymentOptionAvailable(option: PaymentOption, context?: PaymentContext): boolean {
 	return checkPaymentOptionAvailability(option, context).available;
 }

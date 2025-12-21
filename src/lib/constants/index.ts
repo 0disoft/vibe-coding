@@ -30,7 +30,7 @@ export { RTL_LOCALES } from './i18n';
 // 라우트/페이지 레지스트리
 export { pages } from './pages';
 // 정책 관련 설정
-export { policy, POLICY_NAV_IDS, type PolicyNavId } from './policy';
+export { POLICY_NAV_IDS, type PolicyNavId, policy } from './policy';
 // 사이트 기본 정보
 export { site } from './site';
 // 테마 관련 상수

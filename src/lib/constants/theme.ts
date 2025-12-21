@@ -4,5 +4,5 @@ export type ThemeMode = (typeof THEME_MODES)[number];
 export const THEME_PALETTES = ['airy-blue', 'misty-lavender', 'sage-breeze', 'cozy-coral'] as const;
 export type ThemePalette = (typeof THEME_PALETTES)[number];
 
-export const DEFAULT_THEME_MODE: ThemeMode = 'light';
-export const DEFAULT_THEME_PALETTE: ThemePalette = 'airy-blue';
+export const DEFAULT_THEME_MODE: ThemeMode = 'dark';
+export const DEFAULT_THEME_PALETTE: ThemePalette = 'misty-lavender';

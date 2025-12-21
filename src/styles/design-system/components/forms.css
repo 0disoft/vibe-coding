@@ -33,6 +33,12 @@
 	font-family: inherit;
 }
 
+.ds-input-native:focus,
+.ds-input-native:focus-visible {
+	outline: none;
+	box-shadow: none;
+}
+
 .ds-input-native::placeholder {
 	color: oklch(var(--color-text-muted) / 0.6);
 	opacity: 1;
@@ -134,6 +140,11 @@
 	text-align: start;
 	transition: border-color 0.2s;
 	cursor: pointer;
+}
+
+.ds-select-trigger:focus,
+.ds-select-trigger:focus-visible {
+	outline: none;
 }
 
 .ds-select-trigger[data-ds-size="sm"] {
@@ -246,6 +257,11 @@
 	transition: border-color 0.2s;
 	cursor: pointer;
 	gap: var(--spacing-2);
+}
+
+.ds-multiselect-trigger:focus,
+.ds-multiselect-trigger:focus-visible {
+	outline: none;
 }
 
 .ds-multiselect-trigger:focus-visible {
@@ -563,6 +579,12 @@
 	padding-inline: 0;
 }
 
+.ds-tag-input-native:focus,
+.ds-tag-input-native:focus-visible {
+	outline: none;
+	box-shadow: none;
+}
+
 .ds-tag-input-native::placeholder {
 	color: oklch(var(--color-text-muted) / 0.6);
 	opacity: 1;
@@ -586,6 +608,11 @@
 	/* 가로 리사이즈 방지 */
 	transition: border-color 0.2s;
 	font-family: inherit;
+}
+
+.ds-textarea:focus,
+.ds-textarea:focus-visible {
+	outline: none;
 }
 
 .ds-textarea::placeholder {
@@ -798,7 +825,7 @@
 		border-color: CanvasText !important;
 	}
 
-	.ds-checkbox-native:checked + .ds-checkbox-control {
+	.ds-checkbox-native:checked+.ds-checkbox-control {
 		background: Highlight;
 		border-color: Highlight !important;
 		color: HighlightText;
@@ -886,12 +913,12 @@
 		box-shadow: none;
 	}
 
-	.ds-switch-native:checked + .ds-switch-track {
+	.ds-switch-native:checked+.ds-switch-track {
 		background: Highlight;
 		border-color: Highlight;
 	}
 
-	.ds-switch-native:checked + .ds-switch-track .ds-switch-thumb {
+	.ds-switch-native:checked+.ds-switch-track .ds-switch-thumb {
 		background: HighlightText;
 	}
 }
@@ -1022,7 +1049,7 @@
 		border-color: CanvasText;
 	}
 
-	.ds-radio-native:checked ~ .ds-radio-control {
+	.ds-radio-native:checked~.ds-radio-control {
 		border-color: Highlight;
 	}
 

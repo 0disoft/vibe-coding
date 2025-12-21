@@ -2,6 +2,7 @@
   :root {
     --touch-target-min: var(--touch-target-min-coarse);
     --touch-target-dense: var(--touch-target-dense-coarse);
+    --touch-target-optimal: 3.25rem;
   }
 }
 
@@ -11,12 +12,14 @@
     --opacity-hover: 1;
     --opacity-disabled: 0.75;
     --focus-ring-width: 3px;
+    --focus-ring-offset: 3px;
+    --focus-ring-style: dashed;
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
   :root {
-    --alpha-scrim: 0.85;
+    --alpha-scrim: 0.95;
     --opacity-hover: 1;
     --opacity-disabled: 0.85;
   }

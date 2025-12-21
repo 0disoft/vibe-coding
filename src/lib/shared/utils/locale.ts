@@ -103,9 +103,9 @@ export type LocaleInfo = {
 function safeDisplayName(displayLocale: string, targetLocale: string): string | null {
 	const DisplayNames = Intl.DisplayNames as
 		| (new (
-			locales: ReadonlyArray<string>,
-			options: { type: 'language'; }
-		) => Intl.DisplayNames)
+				locales: ReadonlyArray<string>,
+				options: { type: 'language' }
+		  ) => Intl.DisplayNames)
 		| undefined;
 
 	if (!DisplayNames) return null;
