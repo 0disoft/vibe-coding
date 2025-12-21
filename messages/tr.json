@@ -218,6 +218,12 @@
 	"ds_loading": "Yükleniyor…",
 	"ds_navigating": "Geziniliyor…",
 	"ds_clear_value": "Değeri temizle",
+	"ds_anchor_nav_label": "Bu sayfada",
+	"ds_breadcrumb": "Gezinti yolu",
+	"ds_confirm": "Onayla",
+	"ds_cancel": "İptal",
+	"ds_processing": "İşleniyor…",
+	"ds_dialog_close": "İletişim kutusunu kapat",
 	"ds_toast_region": "Bildirimler",
 	"ds_toast_dismiss": "Bildirimi kapat",
 	"a11y_skip_to_main_content": "Ana içeriğe atla",
@@ -233,5 +239,16 @@
 	"search_panel_results": "sonuçlar",
 	"policy_effective_date_label": "Yürürlük Tarihi",
 	"policy_language_label": "Dil",
-	"policy_breadcrumb_section": "Politikalar"
+	"policy_breadcrumb_section": "Politikalar",
+	"docs_copy_link": "Bağlantıyı kopyala",
+	"docs_copied_link": "Bağlantı kopyalandı",
+	"docs_on_this_page": "Bu sayfada",
+	"docs_menu_button": "Menü",
+	"docs_menu_title": "Dokümantasyon menüsü",
+	"docs_pagination_label": "Dokümantasyon sayfalama",
+	"docs_results_label": "Sonuçlar",
+	"docs_api_example_select": "Örnek seç",
+	"docs_api_copy_path": "Yolu kopyala",
+	"docs_api_copied": "Kopyalandı"
 }
+

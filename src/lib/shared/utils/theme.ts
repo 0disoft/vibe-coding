@@ -1,11 +1,14 @@
-export const THEME_MODES = ['light', 'dark', 'system'] as const;
-export type ThemeMode = (typeof THEME_MODES)[number];
+import {
+	DEFAULT_THEME_MODE,
+	DEFAULT_THEME_PALETTE,
+	THEME_MODES,
+	THEME_PALETTES,
+	type ThemeMode,
+	type ThemePalette
+} from '$lib/constants/theme';
 
-export const THEME_PALETTES = ['airy-blue', 'misty-lavender', 'sage-breeze', 'cozy-coral'] as const;
-export type ThemePalette = (typeof THEME_PALETTES)[number];
-
-export const DEFAULT_THEME_MODE: ThemeMode = 'light';
-export const DEFAULT_THEME_PALETTE: ThemePalette = 'airy-blue';
+export { DEFAULT_THEME_MODE, DEFAULT_THEME_PALETTE, THEME_MODES, THEME_PALETTES };
+export type { ThemeMode, ThemePalette };
 
 export function isThemeMode(value: string | null | undefined): value is ThemeMode {
 	return THEME_MODES.includes(value as ThemeMode);

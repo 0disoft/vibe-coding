@@ -18,6 +18,12 @@
 		returnFocusTo?: HTMLElement | null;
 		/** 열릴 때 포커스 대상 (selector 또는 엘리먼트, 기본: dialog 자체) */
 		initialFocus?: string | HTMLElement | null;
+		/** 로딩 상태 표시 */
+		busy?: boolean;
+		/** 로딩 상태 안내 문구 (SR 전용) */
+		busyLabel?: string;
+		/** 로딩/상태 영역 커스터마이즈 */
+		status?: Snippet;
 		/** 닫기 버튼 레이블 (i18n) */
 		closeLabel?: string;
 		children?: Snippet;
@@ -36,6 +42,9 @@
 		closeOnEscape = true,
 		returnFocusTo = null,
 		initialFocus = null,
+		busy = false,
+		busyLabel = "Loading",
+		status,
 		closeLabel = "Close dialog",
 		class: className = "",
 		children,
@@ -54,6 +63,7 @@
 	// 스크롤 락 복원용
 	let prevBodyOverflow = "";
 	let prevBodyPaddingRight = "";
+	let prevRootScrollbarWidth = "";
 
 	function setOpen(next: boolean) {
 		if (open === next) return;
@@ -74,18 +84,31 @@
 	function lockScroll() {
 		prevBodyOverflow = document.body.style.overflow;
 		prevBodyPaddingRight = document.body.style.paddingRight;
+		prevRootScrollbarWidth = document.documentElement.style.getPropertyValue(
+			"--scrollbar-width",
+		);
 
 		const scrollBarWidth =
 			window.innerWidth - document.documentElement.clientWidth;
+		document.documentElement.style.setProperty(
+			"--scrollbar-width",
+			`${Math.max(scrollBarWidth, 0)}px`,
+		);
 		document.body.style.overflow = "hidden";
-		if (scrollBarWidth > 0) {
-			document.body.style.paddingRight = `calc(${prevBodyPaddingRight || "0px"} + ${scrollBarWidth}px)`;
-		}
+		document.body.style.paddingRight = `calc(${prevBodyPaddingRight || "0px"} + var(--scrollbar-width, 0px))`;
 	}
 
 	function unlockScroll() {
 		document.body.style.overflow = prevBodyOverflow;
 		document.body.style.paddingRight = prevBodyPaddingRight;
+		if (prevRootScrollbarWidth) {
+			document.documentElement.style.setProperty(
+				"--scrollbar-width",
+				prevRootScrollbarWidth,
+			);
+		} else {
+			document.documentElement.style.removeProperty("--scrollbar-width");
+		}
 	}
 
 	function focusOnOpen() {
@@ -115,10 +138,42 @@
 		isClosing = false;
 		unlockScroll();
 
-		const target = returnFocusTo ?? previousActiveElement;
-		if (target && document.body.contains(target)) {
-			tick().then(() => target.focus());
+		tick().then(() => {
+			const primary = returnFocusTo ?? previousActiveElement;
+			if (focusElement(primary)) return;
+
+			const fallback = resolveFocusFallback();
+			focusElement(fallback);
+		});
+	}
+
+	function resolveFocusFallback() {
+		return (
+			document.querySelector<HTMLElement>("[data-dialog-focus-fallback]") ??
+			document.getElementById("main-content")
+		);
+	}
+
+	function focusElement(target: HTMLElement | null | undefined) {
+		if (!target || !document.body.contains(target)) return false;
+
+		const hasTabIndex = target.hasAttribute("tabindex");
+		const prevTabIndex = target.getAttribute("tabindex");
+		if (target.tabIndex < 0) {
+			target.setAttribute("tabindex", "-1");
 		}
+		target.focus({ preventScroll: true });
+
+		if (!hasTabIndex && target.tabIndex < 0) {
+			window.setTimeout(() => {
+				if (document.body.contains(target)) {
+					if (prevTabIndex === null) target.removeAttribute("tabindex");
+					else target.setAttribute("tabindex", prevTabIndex);
+				}
+			}, 0);
+		}
+
+		return true;
 	}
 
 	function maxAnimationMs(el: HTMLElement) {
@@ -227,6 +282,7 @@
 		.join(" ")}
 	aria-labelledby={titleId}
 	aria-describedby={description ? descId : undefined}
+	aria-busy={busy || undefined}
 	aria-modal="true"
 	data-ds-size={size}
 	oncancel={onCancel}
@@ -257,6 +313,14 @@
 				onclick={requestClose}
 			/>
 		</header>
+
+		{#if status}
+			{@render status()}
+		{:else if busy}
+			<span class="sr-only" role="status" aria-live="polite">
+				{busyLabel}
+			</span>
+		{/if}
 
 		<div
 			class={`ds-dialog-body ${scrollable ? "flex-1 overflow-y-auto min-h-0" : ""}`}

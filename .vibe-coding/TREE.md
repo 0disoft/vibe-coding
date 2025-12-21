@@ -17,11 +17,14 @@
 ├── .vibe-coding/
 │   ├── INSIGHTS/
 │   ├── KNOWLEDGE/
+│   ├── PERSONA/               # AI 에이전트 페르소나 정의
+│   ├── PROMPT/                # 재사용 가능한 프롬프트 템플릿
 │   ├── PUBLIC_APIS/
 │   ├── SOS/
 │   ├── TOOLS/
 │   ├── TROUBLE/
 │   ├── WEBNOVEL/
+│   ├── _tmp/                  # 임시 작업 폴더
 │   └── TREE.md
 ├── e2e/                            # E2E 테스트 (Playwright)
 │   ├── a11y-skiplink-errorsummary.spec.ts
@@ -33,6 +36,7 @@
     ├── app.html
     ├── app.css
     ├── app.d.ts
+    ├── error.html              # 정적 에러 페이지 (빌드 실패 시 폴백)
     ├── hooks.ts
     ├── hooks.client.ts
     ├── hooks.server.ts
@@ -65,11 +69,17 @@
         ├── assets/                # 정적 에셋 (이미지, 아이콘 등)
         ├── i18n/                  # i18n 테스트 및 유틸리티
         │   └── messages.test.ts
+        ├── interaction/           # 인터랙션 유틸리티 컴포넌트
+        │   └── SmoothScroll.svelte
         ├── server/                # 서버 전용 코드 (모노레포 전환 시 apps/api로 이동)
         │   ├── index.ts
         │   ├── rate-limiter.ts
+        │   ├── cap/               # CAP 서버 관련 모듈
+        │   │   ├── cap-server.ts
+        │   │   └── cap-rate-limit.ts
         │   ├── hooks/             # SvelteKit 서버 훅 구성 요소 (hooks.server.ts 조립용)
         │   │   ├── request-id.ts
+        │   │   ├── id-context.ts
         │   │   ├── security-headers.ts
         │   │   ├── body-size-limit.ts
         │   │   ├── rate-limit.ts
@@ -148,17 +158,21 @@
 | `WIP.md`               | 세부 실행 계획 및 작업 분해 (임시 저장소)                  |
 | `API.md`               | API 엔드포인트 문서                                        |
 | `REVIEW.md`            | 코드 리뷰 가이드라인                                       |
+| `REQUESTS.md`          | 기능 요청 및 아이디어 백로그                               |
 | `.temporary.txt`       | 긴 질문/응답 임시 저장 스크래치패드 (항상 덮어쓰기 저장)   |
-| `.suggestions.txt`     | 코드 개선 제안 임시 저장 스크래치패드 (항상 덮어쓰기 저장) |
 | `.questions.txt`       | 추가 질문 임시 저장 스크래치패드 (항상 덮어쓰기 저장)      |
 | `.reports.txt`         | 수정 보고 임시 저장 스크래치패드 (항상 덮어쓰기 저장)      |
 | `stack.manifest.toml`  | 기술 스택 매니페스트                                       |
+| `project.meta.toml`    | 프로젝트 메타데이터 (진행 상황, 설정 등)                   |
 | `INSIGHTS/`            | 전략적 인사이트, 아키텍처 결정, 레퍼런스 문서 모음         |
 | `KNOWLEDGE/`           | 기술 지식 베이스 (언어별 가이드 등)                        |
+| `PERSONA/`             | AI 에이전트 페르소나 정의 문서                             |
+| `PROMPT/`              | 재사용 가능한 프롬프트 템플릿                              |
 | `PUBLIC_APIS/`         | Public API 카탈로그(Provider별 연동 메모/레시피)           |
 | `TROUBLE/`             | 문제 해결 기록 (SOLVED.md 등)                              |
 | `SOS/`                 | 긴급 이슈 및 디버깅 로그                                   |
 | `TOOLS/README.md`      | 자동화 스크립트 사용법 문서 (개별 도구는 이 파일 참조)     |
+| `_tmp/`                | 임시 작업 폴더 (gitignore 대상)                            |
 | `TOOLS/design-system/` | 디자인 시스템 운영/문서화 (토큰 매니페스트/스펙 포함)        |
 | `WEBNOVEL/`            | 웹소설 집필 템플릿 (캐릭터, 사물, 현상, 에피소드 관리)     |
 
@@ -188,6 +202,7 @@
 | `app.html`          | 루트 HTML 템플릿. `data-theme`, `%paraglide.lang%` 속성 주입 |
 | `app.css`           | 스타일 모듈 진입점. styles/ 폴더의 CSS 파일들을 import       |
 | `app.d.ts`          | SvelteKit 전역 타입 확장 (Locals, PageData 등)               |
+| `error.html`        | 정적 에러 페이지 (빌드 실패 시 폴백, 스타일 인라인)          |
 | `hooks.ts`          | locale 프리픽스 제거 reroute 훅                              |
 | `hooks.client.ts`   | 클라이언트 전용 훅 (브라우저 API, 분석 등)                   |
 | `hooks.server.ts`   | 서버 훅 (테마 쿠키 주입, Paraglide 미들웨어)                 |
@@ -239,9 +254,15 @@
 | `index.ts`                                        | $lib 배럴 export (스토어, 상수 통합)                           |
 | `assets/`                                         | 정적 에셋 폴더 (이미지, 아이콘 등)                             |
 | `i18n/messages.test.ts`                           | i18n 메시지 테스트                                             |
+| `interaction/`                                    | 인터랙션 유틸리티 컴포넌트 폴더                                |
+| `interaction/SmoothScroll.svelte`                 | 부드러운 스크롤 인터랙션 컴포넌트                              |
 | `server/index.ts`                                 | 서버 전용 코드 진입점 (모노레포 전환 시 apps/api로 이동)       |
 | `server/rate-limiter.ts`                          | IP 기반 Rate Limit 유틸리티                                   |
+| `server/cap/`                                     | CAP 서버 관련 모듈 (챌린지/응답 인증)                          |
+| `server/cap/cap-server.ts`                        | CAP 서버 구현 (챌린지 생성/검증)                               |
+| `server/cap/cap-rate-limit.ts`                    | CAP 전용 Rate Limit 설정                                       |
 | `server/hooks/`                                   | SvelteKit 서버 훅 핸들러 모듈 (hooks.server.ts 조립용)         |
+| `server/hooks/id-context.ts`                      | 요청 ID 컨텍스트 관리                                          |
 | `server/services/`                                | 비즈니스 서비스 레이어 (auth, user, payment 등)                |
 | `shared/index.ts`                                 | 프론트/백 공유 코드 진입점 (모노레포 시 packages/shared로 이동)|
 | `shared/types/`                                   | 공용 타입 정의 (ApiResponse, User 등)                          |

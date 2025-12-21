@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
 
+  import * as m from "$lib/paraglide/messages.js";
+
   export type SearchResult = {
     title: string;
     href: string;
@@ -17,7 +19,7 @@
   let {
     query,
     items,
-    emptyText = "No results",
+    emptyText = m.search_panel_empty(),
     class: className = "",
     ...rest
   }: Props = $props();
@@ -49,7 +51,7 @@
 
 <section {...rest} class={["ds-search-results", className].filter(Boolean).join(" ")}>
   <div class="ds-search-results-header">
-    <div class="text-label font-semibold text-foreground">Results</div>
+    <div class="text-label font-semibold text-foreground">{m.docs_results_label()}</div>
     <div class="text-helper text-muted-foreground" aria-live="polite" aria-atomic="true">
       “{query}” · {items.length}
     </div>

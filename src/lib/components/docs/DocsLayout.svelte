@@ -2,9 +2,13 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
+	import * as m from "$lib/paraglide/messages.js";
+
 	import { DsButton, DsSheet } from "$lib/components/design-system";
 
-	import DocsToc, { type TocItem } from "$lib/components/docs/DocsToc.svelte";
+	import DocsToc from "$lib/components/docs/DocsToc.svelte";
+
+	import type { TocItem } from "./types";
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
 		title: string;
@@ -21,6 +25,7 @@
 	}
 
 	let {
+		id: providedId,
 		title,
 		description,
 		sidebar,
@@ -30,6 +35,11 @@
 		children,
 		...rest
 	}: Props = $props();
+
+	const generatedId = $props.id();
+	let rootId = $derived(providedId ?? generatedId);
+	let sidebarId = $derived(`${rootId}-docs-sidebar`);
+	let tocId = $derived(`${rootId}-docs-toc`);
 
 	let sidebarOpen = $state(false);
 	let tocOpen = $state(false);
@@ -71,7 +81,7 @@
 	});
 </script>
 
-<div {...rest} class={rootClass}>
+<div {...rest} class={rootClass} id={rootId}>
 	<aside class={desktopOnlyClass}>
 		{#if sidebar}
 			{@render sidebar()}
@@ -95,7 +105,7 @@
 							onclick={() => (sidebarOpen = true)}
 						>
 							<span class="i-lucide-menu h-4 w-4" aria-hidden="true"></span>
-							Menu
+							{m.docs_menu_button()}
 						</DsButton>
 					{/if}
 					{#if tocItems.length > 0}
@@ -106,7 +116,7 @@
 							onclick={() => (tocOpen = true)}
 						>
 							<span class="i-lucide-list h-4 w-4" aria-hidden="true"></span>
-							On this page
+							{m.docs_on_this_page()}
 						</DsButton>
 					{/if}
 				</div>
@@ -132,8 +142,8 @@
 
 {#if sidebar}
 	<DsSheet
-		id="docs-sidebar"
-		title="Docs Menu"
+		id={sidebarId}
+		title={m.docs_menu_title()}
 		open={sidebarOpen}
 		onOpenChange={(next) => (sidebarOpen = next)}
 		side="left"
@@ -148,8 +158,8 @@
 
 {#if tocItems.length > 0}
 	<DsSheet
-		id="docs-toc"
-		title="On this page"
+		id={tocId}
+		title={m.docs_on_this_page()}
 		open={tocOpen}
 		onOpenChange={(next) => (tocOpen = next)}
 		side="right"

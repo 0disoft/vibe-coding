@@ -218,6 +218,12 @@
 	"ds_loading": "Naglo-load…",
 	"ds_navigating": "Nagna-navigate…",
 	"ds_clear_value": "Burahin ang halaga",
+	"ds_anchor_nav_label": "Sa pahinang ito",
+	"ds_breadcrumb": "Landas ng nabigasyon",
+	"ds_confirm": "Kumpirmahin",
+	"ds_cancel": "Kanselahin",
+	"ds_processing": "Pinoproseso…",
+	"ds_dialog_close": "Isara ang dialog",
 	"ds_toast_region": "Mga Notification",
 	"ds_toast_dismiss": "Isara ang notification",
 	"a11y_skip_to_main_content": "Tumalon sa pangunahing nilalaman",
@@ -233,5 +239,16 @@
 	"search_panel_results": "mga resulta",
 	"policy_effective_date_label": "Petsa ng bisa",
 	"policy_language_label": "Wika",
-	"policy_breadcrumb_section": "Mga Patakaran"
+	"policy_breadcrumb_section": "Mga Patakaran",
+	"docs_copy_link": "Kopyahin ang link",
+	"docs_copied_link": "Nakopya ang link",
+	"docs_on_this_page": "Sa pahinang ito",
+	"docs_menu_button": "Menu",
+	"docs_menu_title": "Menu ng dokumentasyon",
+	"docs_pagination_label": "Pag-inasyon ng dokumentasyon",
+	"docs_results_label": "Mga resulta",
+	"docs_api_example_select": "Pumili ng halimbawa",
+	"docs_api_copy_path": "Kopyahin ang path",
+	"docs_api_copied": "Nakopya"
 }
+

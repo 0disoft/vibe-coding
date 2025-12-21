@@ -218,6 +218,12 @@
 	"ds_loading": "読み込み中…",
 	"ds_navigating": "移動中…",
 	"ds_clear_value": "値をクリア",
+	"ds_anchor_nav_label": "このページ内",
+	"ds_breadcrumb": "パンくずリスト",
+	"ds_confirm": "確認",
+	"ds_cancel": "キャンセル",
+	"ds_processing": "処理中…",
+	"ds_dialog_close": "ダイアログを閉じる",
 	"ds_toast_region": "通知",
 	"ds_toast_dismiss": "通知を閉じる",
 	"a11y_skip_to_main_content": "本文へスキップ",
@@ -233,5 +239,16 @@
 	"search_panel_results": "件の結果",
 	"policy_effective_date_label": "施行日",
 	"policy_language_label": "言語",
-	"policy_breadcrumb_section": "ポリシー"
+	"policy_breadcrumb_section": "ポリシー",
+	"docs_copy_link": "リンクをコピー",
+	"docs_copied_link": "リンクをコピーしました",
+	"docs_on_this_page": "このページ内",
+	"docs_menu_button": "メニュー",
+	"docs_menu_title": "ドキュメントメニュー",
+	"docs_pagination_label": "ドキュメントのページネーション",
+	"docs_results_label": "結果",
+	"docs_api_example_select": "例を選択",
+	"docs_api_copy_path": "パスをコピー",
+	"docs_api_copied": "コピーしました"
 }
+

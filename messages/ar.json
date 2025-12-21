@@ -218,6 +218,12 @@
 	"ds_loading": "جارٍ التحميل…",
 	"ds_navigating": "جارٍ الانتقال…",
 	"ds_clear_value": "مسح القيمة",
+	"ds_anchor_nav_label": "في هذه الصفحة",
+	"ds_breadcrumb": "مسار التنقل",
+	"ds_confirm": "تأكيد",
+	"ds_cancel": "إلغاء",
+	"ds_processing": "جارٍ المعالجة…",
+	"ds_dialog_close": "إغلاق مربع الحوار",
 	"ds_toast_region": "الإشعارات",
 	"ds_toast_dismiss": "إغلاق الإشعار",
 	"a11y_skip_to_main_content": "انتقل إلى المحتوى الرئيسي",
@@ -233,5 +239,16 @@
 	"search_panel_results": "نتائج",
 	"policy_effective_date_label": "تاريخ النفاذ",
 	"policy_language_label": "اللغة",
-	"policy_breadcrumb_section": "سياسات"
+	"policy_breadcrumb_section": "سياسات",
+	"docs_copy_link": "نسخ الرابط",
+	"docs_copied_link": "تم نسخ الرابط",
+	"docs_on_this_page": "في هذه الصفحة",
+	"docs_menu_button": "القائمة",
+	"docs_menu_title": "قائمة المستندات",
+	"docs_pagination_label": "ترقيم صفحات المستندات",
+	"docs_results_label": "النتائج",
+	"docs_api_example_select": "اختر مثالاً",
+	"docs_api_copy_path": "نسخ المسار",
+	"docs_api_copied": "تم النسخ"
 }
+

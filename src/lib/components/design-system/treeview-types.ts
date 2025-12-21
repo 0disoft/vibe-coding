@@ -5,6 +5,9 @@ export type TreeNode<T = unknown> = {
 	icon?: string;
 	disabled?: boolean;
 	href?: string;
+	ariaCurrent?: 'page' | 'step' | 'location' | 'date' | 'time' | 'true' | 'false';
+	isLoading?: boolean;
+	loadingLabel?: string;
 	data?: T;
 	ariaLabel?: string;
 	ariaRole?: string;

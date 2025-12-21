@@ -4,6 +4,8 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
+  import * as m from "$lib/paraglide/messages.js";
+
   import { DsLiveRegion } from "$lib/components/design-system";
 
   type HeadingLevel = 2 | 3 | 4;
@@ -23,8 +25,8 @@
     id,
     level = 2,
     text,
-    copyLabel = "Copy link",
-    copiedLabel = "Copied link",
+    copyLabel = m.docs_copy_link(),
+    copiedLabel = m.docs_copied_link(),
     class: className = "",
     children,
     ...rest
@@ -34,9 +36,7 @@
   let timer: number | null = null;
   let liveRegion: { announce: (message: string) => void } | null = null;
 
-  function headingTag(): string {
-    return `h${level}`;
-  }
+  let headingTag = $derived(`h${level}`);
 
   async function copyLink(e: MouseEvent) {
     e.preventDefault();
@@ -61,7 +61,7 @@
 <DsLiveRegion bind:this={liveRegion} politeness="polite" duration={1200} />
 
 <svelte:element
-  this={headingTag()}
+  this={headingTag}
   {...rest}
   id={id}
   class={[
@@ -83,7 +83,7 @@
   </span>
   <a
     href={`#${id}`}
-    class="ds-focus-ring inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground opacity-0 transition group-hover:opacity-100 focus-visible:opacity-100"
+    class="ds-focus-ring inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100"
     aria-label={copied ? copiedLabel : copyLabel}
     onclick={copyLink}
   >

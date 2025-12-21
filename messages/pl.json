@@ -218,6 +218,12 @@
 	"ds_loading": "Ładowanie…",
 	"ds_navigating": "Nawigowanie…",
 	"ds_clear_value": "Wyczyść wartość",
+	"ds_anchor_nav_label": "Na tej stronie",
+	"ds_breadcrumb": "Ścieżka nawigacji",
+	"ds_confirm": "Potwierdź",
+	"ds_cancel": "Anuluj",
+	"ds_processing": "Przetwarzanie…",
+	"ds_dialog_close": "Zamknij okno dialogowe",
 	"ds_toast_region": "Powiadomienia",
 	"ds_toast_dismiss": "Zamknij powiadomienie",
 	"a11y_skip_to_main_content": "Przejdź do głównej treści",
@@ -233,5 +239,16 @@
 	"search_panel_results": "wyniki",
 	"policy_effective_date_label": "Data wejścia w życie",
 	"policy_language_label": "Język",
-	"policy_breadcrumb_section": "Zasady"
+	"policy_breadcrumb_section": "Zasady",
+	"docs_copy_link": "Skopiuj link",
+	"docs_copied_link": "Link skopiowany",
+	"docs_on_this_page": "Na tej stronie",
+	"docs_menu_button": "Menu",
+	"docs_menu_title": "Menu dokumentacji",
+	"docs_pagination_label": "Paginacja dokumentacji",
+	"docs_results_label": "Wyniki",
+	"docs_api_example_select": "Wybierz przykład",
+	"docs_api_copy_path": "Skopiuj ścieżkę",
+	"docs_api_copied": "Skopiowano"
 }
+

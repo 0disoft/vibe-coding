@@ -2,8 +2,8 @@ import { error } from '@sveltejs/kit';
 import { marked } from 'marked';
 
 import { policy, site } from '$lib/constants';
-import { stripPolicyFrontMatter } from '$lib/shared/utils/policy-markdown';
 import { extractLocaleFromUrl } from '$lib/paraglide/runtime';
+import { stripPolicyFrontMatter } from '$lib/shared/utils/policy-markdown';
 
 import type { PageServerLoad } from './$types';
 

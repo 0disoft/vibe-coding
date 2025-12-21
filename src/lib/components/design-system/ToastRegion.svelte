@@ -5,7 +5,7 @@
 	import type { HTMLAttributes } from "svelte/elements";
 	import { fly } from "svelte/transition";
 
-	import { DsIcon, DsIconButton } from "$lib/components/design-system";
+	import { DsToast } from "$lib/components/design-system";
 	import * as m from "$lib/paraglide/messages.js";
 	import type { ToastItem } from "$lib/stores/toast.svelte";
 
@@ -46,13 +46,6 @@
 		...rest
 	}: Props = $props();
 
-	const intentIcon: Record<string, string> = {
-		neutral: "info",
-		success: "circle-check",
-		warning: "triangle-alert",
-		error: "circle-alert",
-	};
-
 	let flyY = $derived(position.startsWith("top") ? -20 : 20);
 	let isTop = $derived(position.startsWith("top"));
 
@@ -74,14 +67,6 @@
 		// 리전 내부 포커스 이동이면 resume 금지
 		if (next && current.contains(next)) return;
 		onResume?.();
-	}
-
-	function onToastKeyDown(e: KeyboardEvent, id: string) {
-		if (e.key === "Escape") {
-			e.preventDefault();
-			e.stopPropagation();
-			onDismiss(id);
-		}
 	}
 
 	let reduceMotion = $state(false);
@@ -134,43 +119,15 @@
 				animate:flip={flipParams}
 				transition:fly={flyParams}
 			>
-				<div
-					class="ds-toast ds-elevation-3"
-					data-intent={t.intent ?? "neutral"}
+				<DsToast
+					title={t.title}
+					message={t.message}
+					intent={(t.intent ?? "neutral") as "neutral" | "success" | "warning" | "error"}
 					role={toastRole(t)}
-					onkeydown={(e) => onToastKeyDown(e, t.id)}
-				>
-					<div class="ds-toast-icon" aria-hidden="true">
-						<DsIcon
-							name={intentIcon[t.intent ?? "neutral"] ?? "info"}
-							size="md"
-						/>
-					</div>
-
-					<div class="ds-toast-content">
-						<div class="ds-toast-title">{t.title}</div>
-						{#if t.message}
-							<div class="ds-toast-message">{t.message}</div>
-						{/if}
-
-						{#if action}
-							<div class="ds-toast-action">
-								{@render action(t)}
-							</div>
-						{/if}
-					</div>
-
-					<div class="ds-toast-close">
-						<DsIconButton
-							type="button"
-							icon="x"
-							label={dismissLabel}
-							variant="ghost"
-							size="sm"
-							onclick={() => onDismiss(t.id)}
-						/>
-					</div>
-				</div>
+					dismissLabel={dismissLabel}
+					onDismiss={() => onDismiss(t.id)}
+					actions={action ? () => action(t) : undefined}
+				/>
 			</li>
 		{/each}
 	</ol>

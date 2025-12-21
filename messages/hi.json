@@ -218,6 +218,12 @@
 	"ds_loading": "लोड हो रहा है…",
 	"ds_navigating": "नेविगेट हो रहा है…",
 	"ds_clear_value": "मान साफ़ करें",
+	"ds_anchor_nav_label": "इस पेज पर",
+	"ds_breadcrumb": "नेविगेशन ट्रेल",
+	"ds_confirm": "पुष्टि करें",
+	"ds_cancel": "रद्द करें",
+	"ds_processing": "प्रक्रिया जारी है…",
+	"ds_dialog_close": "डायलॉग बंद करें",
 	"ds_toast_region": "सूचनाएं",
 	"ds_toast_dismiss": "सूचना बंद करें",
 	"a11y_skip_to_main_content": "मुख्य सामग्री पर जाएँ",
@@ -233,5 +239,16 @@
 	"search_panel_results": "परिणाम",
 	"policy_effective_date_label": "प्रभावी तिथि",
 	"policy_language_label": "भाषा",
-	"policy_breadcrumb_section": "नीतियां"
+	"policy_breadcrumb_section": "नीतियां",
+	"docs_copy_link": "लिंक कॉपी करें",
+	"docs_copied_link": "लिंक कॉपी हो गया",
+	"docs_on_this_page": "इस पेज पर",
+	"docs_menu_button": "मेनू",
+	"docs_menu_title": "दस्तावेज़ मेनू",
+	"docs_pagination_label": "डॉक्स पेजिनेशन",
+	"docs_results_label": "परिणाम",
+	"docs_api_example_select": "उदाहरण चुनें",
+	"docs_api_copy_path": "पाथ कॉपी करें",
+	"docs_api_copied": "कॉपी हो गया"
 }
+

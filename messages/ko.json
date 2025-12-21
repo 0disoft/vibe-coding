@@ -218,6 +218,12 @@
 	"ds_loading": "처리 중…",
 	"ds_navigating": "이동 중…",
 	"ds_clear_value": "값 지우기",
+	"ds_anchor_nav_label": "이 페이지에서",
+	"ds_breadcrumb": "탐색 경로",
+	"ds_confirm": "확인",
+	"ds_cancel": "취소",
+	"ds_processing": "처리 중…",
+	"ds_dialog_close": "대화 상자 닫기",
 	"ds_toast_region": "알림",
 	"ds_toast_dismiss": "알림 닫기",
 	"a11y_skip_to_main_content": "본문으로 바로가기",
@@ -233,5 +239,16 @@
 	"search_panel_results": "결과",
 	"policy_effective_date_label": "시행일",
 	"policy_language_label": "언어",
-	"policy_breadcrumb_section": "정책"
+	"policy_breadcrumb_section": "정책",
+	"docs_copy_link": "링크 복사",
+	"docs_copied_link": "링크가 복사되었습니다",
+	"docs_on_this_page": "이 페이지에서",
+	"docs_menu_button": "메뉴",
+	"docs_menu_title": "문서 메뉴",
+	"docs_pagination_label": "문서 페이지네이션",
+	"docs_results_label": "결과",
+	"docs_api_example_select": "예제 선택",
+	"docs_api_copy_path": "경로 복사",
+	"docs_api_copied": "복사됨"
 }
+

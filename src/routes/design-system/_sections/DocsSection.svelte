@@ -1,7 +1,6 @@
 <script lang="ts">
   import { DsCard, DsDefinitionList, DsTable } from "$lib/components/design-system";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
-  import type { TocItem } from "$lib/components/docs/DocsToc.svelte";
 
   import {
     ApiEndpointCard,
@@ -16,6 +15,7 @@
     DocsSidebarNav,
     DocsSteps,
     DocsToc,
+    type TocItem,
   } from "$lib/components/docs";
 
   export let tocItems: readonly TocItem[];

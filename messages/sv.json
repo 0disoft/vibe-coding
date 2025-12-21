@@ -218,6 +218,12 @@
 	"ds_loading": "Laddar…",
 	"ds_navigating": "Navigerar…",
 	"ds_clear_value": "Rensa värde",
+	"ds_anchor_nav_label": "På den här sidan",
+	"ds_breadcrumb": "Brödsmulenavigering",
+	"ds_confirm": "Bekräfta",
+	"ds_cancel": "Avbryt",
+	"ds_processing": "Bearbetar…",
+	"ds_dialog_close": "Stäng dialogruta",
 	"ds_toast_region": "Aviseringar",
 	"ds_toast_dismiss": "Stäng avisering",
 	"a11y_skip_to_main_content": "Hoppa till huvudinnehåll",
@@ -233,5 +239,16 @@
 	"search_panel_results": "resultat",
 	"policy_effective_date_label": "Ikraftträdandedatum",
 	"policy_language_label": "Språk",
-	"policy_breadcrumb_section": "Policyer"
+	"policy_breadcrumb_section": "Policyer",
+	"docs_copy_link": "Kopiera länk",
+	"docs_copied_link": "Länk kopierad",
+	"docs_on_this_page": "På den här sidan",
+	"docs_menu_button": "Meny",
+	"docs_menu_title": "Dokumentationsmeny",
+	"docs_pagination_label": "Dokumentationspaginering",
+	"docs_results_label": "Resultat",
+	"docs_api_example_select": "Välj exempel",
+	"docs_api_copy_path": "Kopiera sökväg",
+	"docs_api_copied": "Kopierad"
 }
+

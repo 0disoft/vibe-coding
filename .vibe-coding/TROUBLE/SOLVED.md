@@ -863,7 +863,14 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
 
 - **적용 시점:** `matchMedia()` 이벤트 리스너 등록 시. IE 미지원 프로젝트에서는 레거시 폴백 불필요.
 
-### 26. Biome: `The imports and exports are not sorted` 경고
+### 26. `as const` 정책 배열 비교 시 `string` 인자 타입 오류
+
+- **증상:** `string` 형식의 인수는 `'"/robots.txt" | ...'` 형식의 매개 변수에 할당될 수 없습니다(TS2345) 오류가 `includes`/`Set.has`에서 발생.
+- **원인:** `policy`가 `as const`라 `exact` 배열이 리터럴 유니온으로 고정되고, `Set`도 같은 좁은 타입으로 추론되어 일반 `string` 인자를 받지 못함.
+- **해결:** `new Set<string>(policy.staticAssets.exact)`처럼 타입을 넓혀 `has(p)`로 검사 (또는 `includes(p as ...)`).
+- **적용 시점:** `as const` 배열을 런타임 문자열과 비교할 때.
+
+### 27. Biome: `The imports and exports are not sorted` 경고
 
 - **증상:** `The imports and exports are not sorted` 경고 발생.
 - **원인:** Biome의 `organizeImports` 규칙에 따라 import/export가 정해진 순서로 정렬되어야 함.
@@ -879,3 +886,12 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
 - **정렬 규칙 (기본값):**
   - `export type`이 `export { default as ... }`보다 먼저
   - 같은 모듈의 export는 그룹화
+  - **inline type export는 default보다 앞에 배치:**
+
+    ```typescript
+    // Before (경고)
+    export { default as ApiEndpointCard, type ApiExample } from './ApiEndpointCard.svelte';
+
+    // After (해결)
+    export { type ApiExample, default as ApiEndpointCard } from './ApiEndpointCard.svelte';
+    ```

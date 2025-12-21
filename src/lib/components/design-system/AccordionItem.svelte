@@ -5,15 +5,19 @@
   import { getAccordionContext, setAccordionItemContext } from "./accordion-context";
   import { accordionContentId, accordionItemId, accordionTriggerId } from "./accordion-ids";
 
-  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  type RootTag = "div" | "li";
+
+  interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
     value: string;
     disabled?: boolean;
     children?: Snippet;
+    as?: RootTag;
   }
 
   let {
     value,
     disabled = false,
+    as = "div",
     class: className = "",
     children,
     ...rest
@@ -50,10 +54,12 @@
   let rootClass = $derived(["ds-accordion-item", className].filter(Boolean).join(" "));
 </script>
 
-<div
+<svelte:element
+  this={as}
   {...rest}
   class={rootClass}
   data-state={isOpen ? "open" : "closed"}
+  data-open={isOpen ? "true" : undefined}
   data-disabled={isItemDisabled ? "true" : undefined}
   data-ds-accordion-item="true"
   data-value={value}
@@ -62,5 +68,5 @@
   {#if children}
     {@render children()}
   {/if}
-</div>
+</svelte:element>
 

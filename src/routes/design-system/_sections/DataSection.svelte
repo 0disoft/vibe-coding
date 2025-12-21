@@ -9,6 +9,7 @@
 		DsDatePicker,
 		DsDateRangePicker,
 		DsIconButton,
+		DsInlineStatus,
 		DsKpi,
 		DsSearchPanel,
 		DsSkeletonCard,
@@ -170,6 +171,25 @@
 					delta="stable"
 					trend="neutral"
 					icon="shield-check"
+				/>
+			</div>
+		</div>
+
+		<div class="space-y-2">
+			<div class="text-label text-muted-foreground">InlineStatus</div>
+			<div class="text-helper text-muted-foreground">
+				pulse와 announce 옵션으로 시각/스크린리더 피드백을 강화합니다.
+			</div>
+			<div class="flex flex-wrap items-center gap-3">
+				<DsInlineStatus intent="success" label="Healthy" pulse />
+				<DsInlineStatus intent="warning" label="Degraded" />
+				<DsInlineStatus intent="danger" label="Down" />
+				<DsInlineStatus intent="neutral" label="Unknown" />
+				<DsInlineStatus
+					intent="success"
+					label="Deploying"
+					announce
+					ariaLive="polite"
 				/>
 			</div>
 		</div>

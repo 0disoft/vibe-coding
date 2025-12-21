@@ -67,6 +67,11 @@
       items: ["DsDataTable", "DsTableToolbar", "DsSearchPanel", "DsKpi", "DsStatCard", "DsProgress"],
     },
     {
+      id: "ds-commerce",
+      title: "Commerce",
+      items: ["DsPaymentOptionSelector", "DsPaymentOptionDetails", "DsPaymentFlowSummary"],
+    },
+    {
       id: "ds-feedback",
       title: "Feedback",
       items: ["DsAlert", "DsSpinner", "DsAvatar", "DsToastRegion"],
@@ -171,4 +176,3 @@
     </div>
   </DsCard>
 </section>
-

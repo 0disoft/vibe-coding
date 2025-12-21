@@ -5,8 +5,12 @@
   import { DsIcon } from "$lib/components/design-system";
   import { getAccordionContext, getAccordionItemContext } from "./accordion-context";
 
+  type HeadingTag = "h2" | "h3" | "h4" | "h5" | "h6";
+
   interface Props extends Omit<HTMLButtonAttributes, "children" | "type" | "value"> {
     disabled?: boolean;
+    headingLevel?: 2 | 3 | 4 | 5 | 6;
+    headingTag?: HeadingTag;
     children?: Snippet;
   }
 
@@ -15,6 +19,8 @@
 
   let {
     disabled = false,
+    headingLevel,
+    headingTag,
     class: className = "",
     children,
     onclick,
@@ -29,6 +35,9 @@
   let triggerId = $derived(item.triggerId);
   let contentId = $derived(item.contentId);
   let isTriggerDisabled = $derived(item.disabled || disabled);
+  let resolvedHeadingTag = $derived.by(() =>
+    headingTag ?? (headingLevel ? (`h${headingLevel}` as HeadingTag) : undefined),
+  );
 
   function handleClick(e: ButtonClickEvent) {
     if (isTriggerDisabled) {
@@ -74,27 +83,55 @@
   let rootClass = $derived(["ds-accordion-trigger", className].filter(Boolean).join(" "));
 </script>
 
-<button
-  {...rest}
-  type="button"
-  class={rootClass}
-  id={triggerId}
-  aria-controls={contentId}
-  aria-expanded={isOpen}
-  aria-disabled={isTriggerDisabled || undefined}
-  disabled={isTriggerDisabled || undefined}
-  data-state={isOpen ? "open" : "closed"}
-  data-ds-accordion-trigger="true"
-  onclick={handleClick}
-  onkeydown={handleKeyDown}
->
-  <span class="ds-accordion-trigger-label">
-    {#if children}
-      {@render children()}
-    {/if}
-  </span>
-  <span class="ds-accordion-trigger-icon" aria-hidden="true">
-    <DsIcon name="chevron-down" size="sm" />
-  </span>
-</button>
+{#if resolvedHeadingTag}
+  <svelte:element this={resolvedHeadingTag} class="ds-accordion-heading">
+    <button
+      {...rest}
+      type="button"
+      class={rootClass}
+      id={triggerId}
+      aria-controls={contentId}
+      aria-expanded={isOpen}
+      aria-disabled={isTriggerDisabled || undefined}
+      disabled={isTriggerDisabled || undefined}
+      data-state={isOpen ? "open" : "closed"}
+      data-ds-accordion-trigger="true"
+      onclick={handleClick}
+      onkeydown={handleKeyDown}
+    >
+      <span class="ds-accordion-trigger-label">
+        {#if children}
+          {@render children()}
+        {/if}
+      </span>
+      <span class="ds-accordion-trigger-icon" aria-hidden="true">
+        <DsIcon name="chevron-down" size="sm" />
+      </span>
+    </button>
+  </svelte:element>
+{:else}
+  <button
+    {...rest}
+    type="button"
+    class={rootClass}
+    id={triggerId}
+    aria-controls={contentId}
+    aria-expanded={isOpen}
+    aria-disabled={isTriggerDisabled || undefined}
+    disabled={isTriggerDisabled || undefined}
+    data-state={isOpen ? "open" : "closed"}
+    data-ds-accordion-trigger="true"
+    onclick={handleClick}
+    onkeydown={handleKeyDown}
+  >
+    <span class="ds-accordion-trigger-label">
+      {#if children}
+        {@render children()}
+      {/if}
+    </span>
+    <span class="ds-accordion-trigger-icon" aria-hidden="true">
+      <DsIcon name="chevron-down" size="sm" />
+    </span>
+  </button>
+{/if}
 

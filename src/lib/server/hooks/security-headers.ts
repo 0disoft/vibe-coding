@@ -1,5 +1,11 @@
 import type { Handle } from '@sveltejs/kit';
 
+import {
+	HEADER_CONTENT_TYPE_OPTIONS,
+	HEADER_FRAME_OPTIONS,
+	HEADER_PERMITTED_CROSS_DOMAIN_POLICIES
+} from '$lib/constants/headers';
+
 /**
  * 헤더가 없을 때만 설정
  */
@@ -33,10 +39,10 @@ export const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 	const headers = response.headers;
 
 	// 기본 보안 헤더들
-	setIfMissing(headers, 'X-Content-Type-Options', 'nosniff');
+	setIfMissing(headers, HEADER_CONTENT_TYPE_OPTIONS, 'nosniff');
 	setIfMissing(headers, 'Referrer-Policy', 'strict-origin-when-cross-origin');
-	setIfMissing(headers, 'X-Frame-Options', 'DENY');
-	setIfMissing(headers, 'X-Permitted-Cross-Domain-Policies', 'none');
+	setIfMissing(headers, HEADER_FRAME_OPTIONS, 'DENY');
+	setIfMissing(headers, HEADER_PERMITTED_CROSS_DOMAIN_POLICIES, 'none');
 	setIfMissing(headers, 'Origin-Agent-Cluster', '?1');
 
 	// 불필요한 브라우저 기능 차단

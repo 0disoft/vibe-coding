@@ -1,11 +1,9 @@
 <script lang="ts">
   import { page } from "$app/state";
 
-  import { DocsLayout, DocsSidebarNav } from "$lib/components/docs";
+  import { DocsLayout, DocsSidebarNav, type TocItem } from "$lib/components/docs";
 
   import { localizeUrl } from "$lib/paraglide/runtime.js";
-
-  type TocItem = { id: string; label: string; level: 2 | 3 | 4 };
 
   const navItems = [
     { href: localizeUrl("/docs").pathname, label: "Overview" },

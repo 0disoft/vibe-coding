@@ -218,6 +218,12 @@
 	"ds_loading": "Laden…",
 	"ds_navigating": "Navigeren…",
 	"ds_clear_value": "Waarde wissen",
+	"ds_anchor_nav_label": "Op deze pagina",
+	"ds_breadcrumb": "Kruimelpad",
+	"ds_confirm": "Bevestigen",
+	"ds_cancel": "Annuleren",
+	"ds_processing": "Bezig…",
+	"ds_dialog_close": "Dialoog sluiten",
 	"ds_toast_region": "Meldingen",
 	"ds_toast_dismiss": "Melding sluiten",
 	"a11y_skip_to_main_content": "Ga naar hoofdinhoud",
@@ -233,5 +239,16 @@
 	"search_panel_results": "resultaten",
 	"policy_effective_date_label": "Ingangsdatum",
 	"policy_language_label": "Taal",
-	"policy_breadcrumb_section": "Beleid"
+	"policy_breadcrumb_section": "Beleid",
+	"docs_copy_link": "Link kopiëren",
+	"docs_copied_link": "Link gekopieerd",
+	"docs_on_this_page": "Op deze pagina",
+	"docs_menu_button": "Menu",
+	"docs_menu_title": "Documentatiemenu",
+	"docs_pagination_label": "Documentatiepaginering",
+	"docs_results_label": "Resultaten",
+	"docs_api_example_select": "Voorbeeld selecteren",
+	"docs_api_copy_path": "Pad kopiëren",
+	"docs_api_copied": "Gekopieerd"
 }
+

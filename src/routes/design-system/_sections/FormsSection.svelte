@@ -7,6 +7,7 @@
     DsErrorSummary,
     DsField,
     DsFileUpload,
+    DsFormSection,
     DsInput,
     DsMultiSelect,
     DsNumberInput,
@@ -16,6 +17,7 @@
     DsRadioGroup,
     DsRadioItem,
     DsRangeSlider,
+    DsSegmentedControl,
     DsSelect,
     DsSlider,
     DsSwitch,
@@ -40,6 +42,7 @@
   let rangeValue = $state<[number, number]>([20, 80]);
   let captchaToken = $state<string | null>(null);
   let captchaStatus = $state<"idle" | "solving" | "solved" | "error">("idle");
+  let billingCycle = $state("monthly");
 
   const errorSummaryEmailId = "ds-error-summary-email";
   let errorSummaryEmail = $state("");
@@ -102,6 +105,58 @@
           <DsButton intent="secondary" variant="outline" onclick={resetErrorSummaryDemo}>Reset</DsButton>
         </div>
       </div>
+    </div>
+
+    <div class="space-y-2">
+      <div class="text-label text-muted-foreground">FormSection + SegmentedControl</div>
+      <div class="text-helper text-muted-foreground">
+        SegmentedControl에 aria-describedby로 보조 설명을 연결합니다.
+      </div>
+      <DsFormSection
+        title="Billing preferences"
+        description="결제 주기를 선택하고 이메일을 입력하세요."
+        columns={2}
+      >
+        {#snippet actions()}
+          <DsButton size="sm" variant="outline" intent="secondary">
+            Reset
+          </DsButton>
+          <DsButton size="sm" intent="primary">Save</DsButton>
+        {/snippet}
+        {#snippet children()}
+          <div class="space-y-1">
+            <p id="billing-cycle-desc" class="text-helper text-muted-foreground">
+              연간 결제는 10% 할인이 적용됩니다.
+            </p>
+            <DsSegmentedControl
+              items={[
+                { value: "monthly", label: "Monthly" },
+                { value: "annual", label: "Annual" },
+                { value: "lifetime", label: "Lifetime", disabled: true },
+              ]}
+              value={billingCycle}
+              onValueChange={(next) => (billingCycle = next)}
+              size="sm"
+              ariaLabel="Billing cycle"
+              ariaDescribedby="billing-cycle-desc"
+            />
+          </div>
+          <DsInput placeholder="billing@company.com" aria-label="Billing email" />
+        {/snippet}
+      </DsFormSection>
+    </div>
+
+    <div class="space-y-2">
+      <div class="text-label text-muted-foreground">FormSection (aria-label only)</div>
+      <div class="text-helper text-muted-foreground">
+        title 없이 aria-label만으로 섹션 이름을 제공합니다.
+      </div>
+      <DsFormSection aria-label="Notification preferences" columns={2}>
+        {#snippet children()}
+          <DsSwitch label="Product updates" />
+          <DsSwitch label="Weekly digest" />
+        {/snippet}
+      </DsFormSection>
     </div>
 
     <div class="grid gap-4 md:grid-cols-2">

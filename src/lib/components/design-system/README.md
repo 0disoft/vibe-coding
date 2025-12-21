@@ -80,7 +80,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Icon.svelte`
 - 역할: Lucide 아이콘 렌더링(장식용/의미용 분리)
-- Props: `name`, `size`, `label`, `title`, `flipInRtl`
+- Props: `name`, `size`, `label`, `title`, `intent`, `strokeWidth`, `flipInRtl`
 
 #### `DsInlineIcon`
 
@@ -174,6 +174,12 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 역할: 라벨/헬프/에러 메시지 및 aria 연결 패턴
 - Props: `id`, `label`, `hideLabel`, `helpText`, `errorText`, `invalid`, `required`, `announceError`, `children`
 
+#### `DsFormSection`
+
+- 파일: `src/lib/components/design-system/FormSection.svelte`
+- 역할: 폼 섹션(fieldset/legend + 설명/액션)
+- Props: `title`, `description`, `actions`, `columns`, `disabled`, `aria-label`, `children`
+
 #### `DsErrorSummary`
 
 - 파일: `src/lib/components/design-system/ErrorSummary.svelte`
@@ -206,6 +212,12 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 역할: 스위치 토글
 - Props: `checked`, `size`, `label`, `ref`, `children`
 - 접근성: 화면에 라벨이 없으면 `aria-label`을 반드시 제공하세요.
+
+#### `DsSegmentedControl`
+
+- 파일: `src/lib/components/design-system/SegmentedControl.svelte`
+- 역할: 소형 토글 그룹(라디오 패턴)
+- Props: `items`, `value`, `defaultValue`, `onValueChange`, `size`, `disabled`, `ariaLabel`, `ariaLabelledby`, `ariaDescribedby`
 
 #### `DsRadioGroup` / `DsRadioItem`
 
@@ -274,7 +286,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/TimePicker.svelte`
 - 역할: 시간 입력(단계/범위/clearable)
-- Props: `value`, `onValueChange`, `label`, `placeholder`, `clearable`, `id`, `name`, `disabled`, `readonly`, `required`, `min`, `max`, `step`, `autocomplete`, `class`
+- Props: `value`, `onValueChange`, `label`, `placeholder`, `clearable`, `showIcon`, `icon`, `id`, `name`, `disabled`, `readonly`, `required`, `min`, `max`, `step`, `autocomplete`, `aria-describedby`, `aria-labelledby`, `aria-label`, `class`
 
 ### Editor
 
@@ -304,8 +316,14 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Dialog.svelte`
 - 역할: 모달 다이얼로그(포커스/ESC/외부 클릭)
-- Props: `id`, `title`, `description`, `open`, `onOpenChange`, `size`, `scrollable`, `closeOnOutsideClick`, `closeOnEscape`, `returnFocusTo`, `initialFocus`, `closeLabel`, `children`, `footer`
+- Props: `id`, `title`, `description`, `open`, `onOpenChange`, `size`, `scrollable`, `closeOnOutsideClick`, `closeOnEscape`, `returnFocusTo`, `initialFocus`, `busy`, `busyLabel`, `status`, `closeLabel`, `children`, `footer`
 - 상태: `bind:open` 사용을 권장하며, `onOpenChange`는 호환용 콜백입니다.
+
+#### `DsConfirmDialog`
+
+- 파일: `src/lib/components/design-system/ConfirmDialog.svelte`
+- 역할: 파괴적 액션용 확인 다이얼로그(기본 버튼 구성)
+- Props: `id`, `title`, `description`, `open`, `onOpenChange`, `onConfirm`, `onCancel`, `confirmLabel`, `cancelLabel`, `confirmIntent`, `cancelIntent`, `confirmVariant`, `cancelVariant`, `confirmDisabled`, `confirmLoading`, `confirmLoadingLabel`, `size`, `closeOnOutsideClick`, `closeOnEscape`, `content`, `actions`
 
 #### `DsCommandPalette` (상태)
 
@@ -363,8 +381,8 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/Accordion.svelte`, `src/lib/components/design-system/AccordionItem.svelte`, `src/lib/components/design-system/AccordionTrigger.svelte`, `src/lib/components/design-system/AccordionContent.svelte`
 - 역할: 아코디언(단일/다중 열림, 키보드 내비 포함)
 - `DsAccordion` Props: `type`, `value`, `onValueChange`, `collapsible`, `disabled`, `id`, `children`
-- `DsAccordionItem` Props: `value`, `disabled`, `children`
-- `DsAccordionTrigger` Props: `disabled`, `children` (+ button props)
+- `DsAccordionItem` Props: `value`, `disabled`, `as`, `children`
+- `DsAccordionTrigger` Props: `disabled`, `headingLevel`, `headingTag`, `children` (+ button props)
 - `DsAccordionContent` Props: `keepMounted`, `transitionParams`, `children`
 - Trigger/Content는 부모 `DsAccordionItem`의 `value`/ID를 컨텍스트로 전달받습니다.
 - ID 규칙: `accordion-ids.ts` 헬퍼 사용(Trigger/Content/Item 동일 규칙 유지)
@@ -383,14 +401,33 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
   - `items[].icon`을 지정하면 라벨 앞에 아이콘을 표시합니다.
   - `items[].menuItems`를 제공하면 드롭다운 메뉴로 표시됩니다.
 
+#### `DsPageHeader`
+
+- 파일: `src/lib/components/design-system/PageHeader.svelte`
+- 역할: 페이지 상단 헤더(브레드크럼 + 타이틀 + 설명 + 액션)
+- Props: `title`, `description`, `breadcrumbs`, `breadcrumbLabel`, `size`, `align`, `titleTag`, `actions`, `meta`, `children`
+
+#### `DsAnchorNav`
+
+- 파일: `src/lib/components/design-system/AnchorNav.svelte`
+- 역할: 문서/페이지 내 앵커 내비(현재 섹션 강조)
+- Props: `id`, `items`, `activeId`, `onActiveChange`, `sticky`, `offset`, `label`, `labelTag`
+
+#### `DsSideNav`
+
+- 파일: `src/lib/components/design-system/SideNav.svelte`
+- 역할: 사이드 내비 리스트(아이콘/활성/축약)
+- Props: `items`, `activeId`, `defaultActiveId`, `onActiveChange`, `collapsed`, `label`
+- 참고: `items[].isAction`을 사용하면 `aria-pressed` 상태로 동작합니다.
+
 #### `DsTabs` / `DsTabsList` / `DsTabsTrigger` / `DsTabsContent`
 
 - 파일: `src/lib/components/design-system/Tabs.svelte`, `src/lib/components/design-system/TabsList.svelte`, `src/lib/components/design-system/TabsTrigger.svelte`, `src/lib/components/design-system/TabsContent.svelte`
 - 역할: 탭 UI(키보드 내비 포함)
 - `DsTabs` Props: `value`, `onValueChange`, `orientation`, `activationMode`, `id`, `children`
-- `DsTabsList` Props: `children`
+- `DsTabsList` Props: `children`, `loop`
 - `DsTabsTrigger` Props: `value`, `disabled`, `children`
-- `DsTabsContent` Props: `value`, `children`
+- `DsTabsContent` Props: `value`, `children`, `keepMounted`, `tabStop`, `transition`, `transitionDuration`
 
 #### `DsPagination`
 
@@ -422,6 +459,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/TreeView.svelte`
 - 역할: 계층 내비/목록(접기/펼치기 + 키보드 내비)
 - Props: `nodes`, `selectedId`, `onSelectedIdChange`, `defaultSelectedId`, `expandedIds`, `onExpandedIdsChange`, `defaultExpandedIds`, `showToggle`, `showIcons`, `renderNode`, `onSelectNode`
+- 참고: `TreeNode`는 `description`, `href`, `ariaCurrent`, `isLoading`, `loadingLabel`을 지원합니다.
 
 ### Content
 
@@ -448,6 +486,12 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/StatusBadge.svelte`
 - 역할: draft/published/archived 상태 배지 프리셋
 - Props: `status`, `label`
+
+#### `DsInlineStatus`
+
+- 파일: `src/lib/components/design-system/InlineStatus.svelte`
+- 역할: 상태 점 + 라벨 프리셋
+- Props: `intent`, `label`, `size`, `pulse`, `announce`, `ariaLive`, `children`
 
 #### `DsContentActions`
 
@@ -543,7 +587,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/Badge.svelte`, `src/lib/components/design-system/Tag.svelte`
 - 역할: 상태/라벨 표시
 - `DsBadge` Props: `intent`, `variant`, `size`, `start`, `end`, `children`
-- `DsTag` Props: `intent`, `variant`, `size`, `start`, `end`, `children`
+- `DsTag` Props: `intent`, `variant`, `size`, `start`, `end`, `children`, `remove`, `onRemove`, `removeLabel`, `as`, `href`, `target`, `rel`, `type`, `status`, `flipStartInRtl`, `flipEndInRtl`
 
 #### `DsAvatar`
 
@@ -568,7 +612,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Skeleton.svelte`
 - 역할: 로딩 스켈레톤
-- Props: `width`, `height`, `variant`, `animate`
+- Props: `width`, `height`, `variant`, `animate`, `label`, `busy`
 
 #### `DsSkeletonCard` / `DsSkeletonList` / `DsSkeletonTable`
 
@@ -640,7 +684,7 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 
 - 파일: `src/lib/components/design-system/Kpi.svelte`, `src/lib/components/design-system/StatCard.svelte`
 - 역할: KPI/지표 카드
-- `DsKpi` Props: `label`, `value`, `helper`, `delta`, `trend`, `size`, `icon`, `iconLabel`
+- `DsKpi` Props: `label`, `value`, `helper`, `delta`, `trend`, `size`, `icon`, `iconLabel`, `as`, `labelTag`, `formatValue`, `formatLocale`, `formatOptions`
 - `DsStatCard` Props: `label`, `value`, `helper`, `delta`, `trend`, `icon`, `action`, `bottom`, `href`, `target`, `rel`
 
 #### `DsPricingTable`
@@ -654,6 +698,26 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/SearchPanel.svelte`
 - 역할: 검색 결과 패널(목록/선택)
 - Props: `query`, `onQueryChange`, `items`, `onSelect`, `label`, `placeholder`, `emptyText`, `maxResults`, `showCount`
+
+### Commerce
+
+#### `DsPaymentOptionSelector`
+
+- 파일: `src/lib/components/design-system/PaymentOptionSelector.svelte`
+- 역할: 결제 옵션 선택 UI(그리드/리스트, 데이터 기반)
+- Props: `options`, `value`, `defaultValue`, `onValueChange`, `layout`, `name`, `disabled`, `required`, `label`, `ariaLabel`, `ariaLabelledby`, `ariaDescribedby`, `context`, `availabilityMode`, `emptyText`, `renderOption`
+
+#### `DsPaymentOptionDetails`
+
+- 파일: `src/lib/components/design-system/PaymentOptionDetails.svelte`
+- 역할: 선택된 결제 옵션의 상세/제약/수수료 표시
+- Props: `option`, `title`, `emptyText`, `children`
+
+#### `DsPaymentFlowSummary`
+
+- 파일: `src/lib/components/design-system/PaymentFlowSummary.svelte`
+- 역할: 결제 요약 카드(항목/총액/노트/액션)
+- Props: `title`, `subtitle`, `items`, `discountLabel`, `discountValue`, `taxLabel`, `taxValue`, `totalLabel`, `totalValue`, `note`, `children`, `footer`
 
 ### Feedback
 
@@ -687,6 +751,18 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/EmptyState.svelte`
 - 역할: 빈 상태(아이콘/타이틀/설명/액션 슬롯)
 - Props: `icon`, `title`, `description`, `headingLevel`, `children`, `actions`
+
+#### `DsEmptyStateMini`
+
+- 파일: `src/lib/components/design-system/EmptyStateMini.svelte`
+- 역할: 작은 영역용 간단 빈 상태 프리셋
+- Props: `id`, `title`, `titleSnippet`, `description`, `icon`, `actions`, `align`, `size`, `role`, `ariaLive`
+
+#### `DsToast`
+
+- 파일: `src/lib/components/design-system/Toast.svelte`
+- 역할: 단일 토스트 카드 UI
+- Props: `id`, `title`, `message`, `intent`, `icon`, `dismissible`, `dismissLabel`, `onDismiss`, `role`, `actions`
 
 #### `DsToastRegion`
 

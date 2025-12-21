@@ -1,0 +1,22 @@
+Stale Files Report - 2025-12-21 04:14:13
+Threshold: 2 days
+Target: src/lib/components/design-system
+Elapsed: 26ms
+============================================================
+
+검색: 115개 파일 | 발견: 12개
+
+Days  │ Last Modified │   Size   │ Path
+──────┼───────────────┼──────────┼────────────────────────────────────────
+    5 │ 2025-12-16    │    1.1KB │ src/lib/components/design-system/Skeleton.svelte
+    4 │ 2025-12-17    │    1.4KB │ src/lib/components/design-system/Kpi.svelte
+    4 │ 2025-12-17    │     936B │ src/lib/components/design-system/TabsContent.svelte
+    4 │ 2025-12-17    │    2.4KB │ src/lib/components/design-system/TabsList.svelte
+    4 │ 2025-12-17    │    1.3KB │ src/lib/components/design-system/Tag.svelte
+    4 │ 2025-12-17    │    1.3KB │ src/lib/components/design-system/TimePicker.svelte
+    3 │ 2025-12-17    │    3.7KB │ src/lib/components/design-system/TreeViewNode.svelte
+    2 │ 2025-12-19    │    1.5KB │ src/lib/components/design-system/AccordionContent.svelte
+    2 │ 2025-12-19    │    1.6KB │ src/lib/components/design-system/AccordionItem.svelte
+    2 │ 2025-12-19    │    2.8KB │ src/lib/components/design-system/AccordionTrigger.svelte
+    2 │ 2025-12-19    │    6.6KB │ src/lib/components/design-system/Dialog.svelte
+    2 │ 2025-12-19    │     827B │ src/lib/components/design-system/Icon.svelte

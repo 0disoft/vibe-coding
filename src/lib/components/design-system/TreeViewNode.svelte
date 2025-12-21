@@ -3,7 +3,9 @@
 
   import type { RenderNodeCtx, TreeNode } from "./treeview-types";
 
+  import Self from "./TreeViewNode.svelte";
   import DsIcon from "./Icon.svelte";
+  import DsSpinner from "./Spinner.svelte";
 
   interface Props {
     treeId: string;
@@ -52,11 +54,28 @@
   let isExpanded = $derived(hasChildren && expandedIds.includes(node.id));
   let isSelected = $derived(selectedId === node.id);
   let isDisabled = $derived(Boolean(node.disabled));
+  let isLoading = $derived(Boolean(node.isLoading));
   let tabIndex = $derived(activeId === node.id ? 0 : -1);
+  let descriptionId = $derived(
+    node.description ? `${treeId}-${node.id}-desc` : undefined,
+  );
+  let ariaCurrent = $derived(
+    node.ariaCurrent ?? (node.href && isSelected ? "page" : undefined),
+  );
+  let loadingLabel = $derived(node.loadingLabel ?? "Loading");
 
   let paddingStart = $derived(
     `calc(var(--treeview-padding-x) + (${level} * var(--treeview-indent)))`,
   );
+
+  function handleKeyDown(event: KeyboardEvent) {
+    if (isDisabled) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setActive(node.id);
+      selectNode(node);
+    }
+  }
 </script>
 
 <div
@@ -64,16 +83,21 @@
   tabindex={tabIndex}
   aria-level={level + 1}
   aria-selected={isSelected ? "true" : undefined}
+  aria-current={ariaCurrent}
+  aria-describedby={descriptionId}
   aria-expanded={hasChildren ? (isExpanded ? "true" : "false") : undefined}
+  aria-busy={isLoading ? "true" : undefined}
   class="ds-tree-item ds-focus-ring"
   data-selected={isSelected ? "true" : undefined}
   data-disabled={isDisabled ? "true" : undefined}
+  data-loading={isLoading ? "true" : undefined}
   style={`padding-inline-start: ${paddingStart};`}
   use:itemRef={{ id: node.id }}
   onclick={() => {
     setActive(node.id);
     if (!isDisabled) selectNode(node);
   }}
+  onkeydown={handleKeyDown}
   onfocus={() => setActive(node.id)}
 >
   {#if renderNode}
@@ -97,7 +121,7 @@
         aria-controls={`${treeId}-${node.id}-group`}
         aria-hidden={hasChildren ? undefined : "true"}
         tabindex="-1"
-        disabled={!hasChildren || isDisabled}
+        disabled={!hasChildren || isDisabled || isLoading}
         onmousedown={(e) => e.preventDefault()}
         onclick={(e) => {
           e.preventDefault();
@@ -107,7 +131,11 @@
         }}
       >
         {#if hasChildren}
-          <DsIcon name={isExpanded ? "chevron-down" : "chevron-right"} size="sm" />
+          {#if isLoading}
+            <DsSpinner size="sm" label={loadingLabel} intent="primary" />
+          {:else}
+            <DsIcon name={isExpanded ? "chevron-down" : "chevron-right"} size="sm" />
+          {/if}
         {/if}
       </button>
     {/if}
@@ -121,7 +149,9 @@
     <div class="ds-tree-text">
       <div class="ds-tree-label">{node.label}</div>
       {#if node.description}
-        <div class="ds-tree-desc">{node.description}</div>
+        <div class="ds-tree-desc" id={descriptionId}>
+          {node.description}
+        </div>
       {/if}
     </div>
   {/if}
@@ -130,7 +160,7 @@
 {#if hasChildren && isExpanded}
   <div role="group" id={`${treeId}-${node.id}-group`}>
     {#each node.children ?? [] as child (child.id)}
-      <svelte:self
+      <Self
         {treeId}
         node={child}
         level={level + 1}
@@ -149,4 +179,3 @@
     {/each}
   </div>
 {/if}
-

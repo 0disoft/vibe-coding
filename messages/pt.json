@@ -218,6 +218,12 @@
 	"ds_loading": "Carregando…",
 	"ds_navigating": "Navegando…",
 	"ds_clear_value": "Limpar valor",
+	"ds_anchor_nav_label": "Nesta página",
+	"ds_breadcrumb": "Trilha de navegação",
+	"ds_confirm": "Confirmar",
+	"ds_cancel": "Cancelar",
+	"ds_processing": "Processando…",
+	"ds_dialog_close": "Fechar caixa de diálogo",
 	"ds_toast_region": "Notificações",
 	"ds_toast_dismiss": "Fechar notificação",
 	"a11y_skip_to_main_content": "Ir para o conteúdo principal",
@@ -233,5 +239,16 @@
 	"search_panel_results": "resultados",
 	"policy_effective_date_label": "Data de vigência",
 	"policy_language_label": "Idioma",
-	"policy_breadcrumb_section": "Políticas"
+	"policy_breadcrumb_section": "Políticas",
+	"docs_copy_link": "Copiar link",
+	"docs_copied_link": "Link copiado",
+	"docs_on_this_page": "Nesta página",
+	"docs_menu_button": "Menu",
+	"docs_menu_title": "Menu de documentação",
+	"docs_pagination_label": "Paginação da documentação",
+	"docs_results_label": "Resultados",
+	"docs_api_example_select": "Selecionar exemplo",
+	"docs_api_copy_path": "Copiar caminho",
+	"docs_api_copied": "Copiado"
 }
+

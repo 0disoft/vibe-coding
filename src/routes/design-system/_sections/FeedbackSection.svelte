@@ -13,9 +13,11 @@
     DsField,
     DsIconButton,
     DsInlineAlert,
+    DsEmptyStateMini,
     DsNotificationCenter,
     DsSelect,
     DsSpinner,
+    DsToast,
     DsToastRegion,
   } from "$lib/components/design-system";
 
@@ -169,6 +171,33 @@
       <DsAlert intent="success" title="Success" description="성공했습니다" />
       <DsAlert intent="danger" title="Error" description="문제가 발생했습니다" />
     </div>
+
+    <div class="space-y-2">
+      <div class="text-label text-muted-foreground">EmptyStateMini</div>
+      <div class="text-helper text-muted-foreground">
+        titleSnippet으로 타이틀에 아이콘/텍스트를 조합할 수 있습니다.
+      </div>
+      <div class="grid gap-3 md:grid-cols-2">
+        <DsEmptyStateMini
+          title="No drafts"
+          description="작성 중인 초안이 없습니다."
+          icon="file-text"
+        />
+        <DsEmptyStateMini
+          title="No alerts"
+          description="최근 알림이 없습니다."
+          icon="bell"
+          align="center"
+        >
+          {#snippet titleSnippet()}
+            <span class="inline-flex items-center gap-2">
+              <span class="i-lucide-bell-off text-muted-foreground"></span>
+              No alerts
+            </span>
+          {/snippet}
+        </DsEmptyStateMini>
+      </div>
+    </div>
     <div class="flex items-center gap-3">
       <DsSpinner label="Loading" />
       <DsAvatar name="Test User" />
@@ -198,6 +227,14 @@
           <DsIconButton {...props} icon="mouse-pointer-click" label="Context menu" />
         {/snippet}
       </DsContextMenu>
+    </div>
+
+    <div class="space-y-2">
+      <div class="text-label text-muted-foreground">Toast (single)</div>
+      <div class="grid gap-3 md:grid-cols-2">
+        <DsToast title="Saved" message="변경사항이 저장되었습니다." intent="success" dismissible={false} />
+        <DsToast title="Network error" message="다시 시도해주세요." intent="error" dismissible={false} />
+      </div>
     </div>
 
     <div class="space-y-3">

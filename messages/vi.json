@@ -218,6 +218,12 @@
 	"ds_loading": "Đang tải…",
 	"ds_navigating": "Đang điều hướng…",
 	"ds_clear_value": "Xóa giá trị",
+	"ds_anchor_nav_label": "Trên trang này",
+	"ds_breadcrumb": "Đường dẫn",
+	"ds_confirm": "Xác nhận",
+	"ds_cancel": "Hủy",
+	"ds_processing": "Đang xử lý…",
+	"ds_dialog_close": "Đóng hộp thoại",
 	"ds_toast_region": "Thông báo",
 	"ds_toast_dismiss": "Đóng thông báo",
 	"a11y_skip_to_main_content": "Chuyển đến nội dung chính",
@@ -233,5 +239,16 @@
 	"search_panel_results": "kết quả",
 	"policy_effective_date_label": "Ngày có hiệu lực",
 	"policy_language_label": "Ngôn ngữ",
-	"policy_breadcrumb_section": "Chính sách"
+	"policy_breadcrumb_section": "Chính sách",
+	"docs_copy_link": "Sao chép liên kết",
+	"docs_copied_link": "Đã sao chép liên kết",
+	"docs_on_this_page": "Trên trang này",
+	"docs_menu_button": "Menu",
+	"docs_menu_title": "Menu tài liệu",
+	"docs_pagination_label": "Phân trang tài liệu",
+	"docs_results_label": "Kết quả",
+	"docs_api_example_select": "Chọn ví dụ",
+	"docs_api_copy_path": "Sao chép đường dẫn",
+	"docs_api_copied": "Đã sao chép"
 }
+

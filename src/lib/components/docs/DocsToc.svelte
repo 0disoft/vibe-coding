@@ -1,11 +1,9 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
 
-  export type TocItem = {
-    id: string;
-    label: string;
-    level?: 2 | 3 | 4;
-  };
+  import * as m from "$lib/paraglide/messages.js";
+
+  import type { TocItem } from "./types";
 
   interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
     items: ReadonlyArray<TocItem>;
@@ -16,7 +14,7 @@
   let {
     items,
     activeId,
-    title = "On this page",
+    title = m.docs_on_this_page(),
     class: className = "",
     ...rest
   }: Props = $props();

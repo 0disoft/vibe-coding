@@ -218,6 +218,12 @@
 	"ds_loading": "Загрузка…",
 	"ds_navigating": "Переход…",
 	"ds_clear_value": "Очистить значение",
+	"ds_anchor_nav_label": "На этой странице",
+	"ds_breadcrumb": "Навигационная цепочка",
+	"ds_confirm": "Подтвердить",
+	"ds_cancel": "Отмена",
+	"ds_processing": "Обработка…",
+	"ds_dialog_close": "Закрыть диалог",
 	"ds_toast_region": "Уведомления",
 	"ds_toast_dismiss": "Закрыть уведомление",
 	"a11y_skip_to_main_content": "Перейти к основному содержанию",
@@ -233,5 +239,16 @@
 	"search_panel_results": "результатов",
 	"policy_effective_date_label": "Дата вступления в силу",
 	"policy_language_label": "Язык",
-	"policy_breadcrumb_section": "Политики"
+	"policy_breadcrumb_section": "Политики",
+	"docs_copy_link": "Скопировать ссылку",
+	"docs_copied_link": "Ссылка скопирована",
+	"docs_on_this_page": "На этой странице",
+	"docs_menu_button": "Меню",
+	"docs_menu_title": "Меню документации",
+	"docs_pagination_label": "Пагинация документации",
+	"docs_results_label": "Результаты",
+	"docs_api_example_select": "Выбрать пример",
+	"docs_api_copy_path": "Скопировать путь",
+	"docs_api_copied": "Скопировано"
 }
+

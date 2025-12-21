@@ -218,6 +218,12 @@
 	"ds_loading": "加载中…",
 	"ds_navigating": "跳转中…",
 	"ds_clear_value": "清除值",
+	"ds_anchor_nav_label": "本页内容",
+	"ds_breadcrumb": "面包屑",
+	"ds_confirm": "确认",
+	"ds_cancel": "取消",
+	"ds_processing": "处理中…",
+	"ds_dialog_close": "关闭对话框",
 	"ds_toast_region": "通知",
 	"ds_toast_dismiss": "关闭通知",
 	"a11y_skip_to_main_content": "跳到主要内容",
@@ -233,5 +239,16 @@
 	"search_panel_results": "条结果",
 	"policy_effective_date_label": "生效日期",
 	"policy_language_label": "语言",
-	"policy_breadcrumb_section": "政策"
+	"policy_breadcrumb_section": "政策",
+	"docs_copy_link": "复制链接",
+	"docs_copied_link": "已复制链接",
+	"docs_on_this_page": "本页内容",
+	"docs_menu_button": "菜单",
+	"docs_menu_title": "文档菜单",
+	"docs_pagination_label": "文档分页",
+	"docs_results_label": "结果",
+	"docs_api_example_select": "选择示例",
+	"docs_api_copy_path": "复制路径",
+	"docs_api_copied": "已复制"
 }
+

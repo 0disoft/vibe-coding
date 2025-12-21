@@ -3,6 +3,7 @@
     DsBadge,
     DsButton,
     DsCard,
+    DsConfirmDialog,
     DsDropdown,
     DsDropdownItem,
     DsEmptyState,
@@ -15,6 +16,8 @@
 
   let dropdownSelected = $state<string | null>(null);
   let popoverCount = $state(0);
+  let confirmOpen = $state(false);
+  let confirmResult = $state("대기 중");
 </script>
 
 <section id="ds-overlays" class="space-y-4">
@@ -102,6 +105,28 @@
           </div>
         {/snippet}
       </DsPopover>
+    </div>
+
+    <div class="space-y-2">
+      <div class="text-label text-muted-foreground">ConfirmDialog</div>
+      <div class="flex flex-wrap items-center gap-3">
+        <DsButton intent="danger" onclick={() => (confirmOpen = true)}>
+          Delete project
+        </DsButton>
+        <div class="text-helper text-muted-foreground">result: {confirmResult}</div>
+      </div>
+      <DsConfirmDialog
+        id="ds-confirm-dialog-demo"
+        title="프로젝트를 삭제할까요?"
+        description="이 작업은 되돌릴 수 없습니다."
+        open={confirmOpen}
+        onOpenChange={(next) => (confirmOpen = next)}
+        onConfirm={() => (confirmResult = "확인됨")}
+        onCancel={() => (confirmResult = "취소됨")}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        confirmIntent="danger"
+      />
     </div>
 
     <div class="grid gap-3 md:grid-cols-2">

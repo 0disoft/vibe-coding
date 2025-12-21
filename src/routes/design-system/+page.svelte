@@ -7,6 +7,7 @@
 	import ButtonsSection from "./_sections/ButtonsSection.svelte";
 	import CoverageSection from "./_sections/CoverageSection.svelte";
 	import ContentSection from "./_sections/ContentSection.svelte";
+	import CommerceSection from "./_sections/CommerceSection.svelte";
 	import DataSection from "./_sections/DataSection.svelte";
 	import DocsSection from "./_sections/DocsSection.svelte";
 	import FeedbackSection from "./_sections/FeedbackSection.svelte";
@@ -31,6 +32,7 @@
 		{ id: "ds-navigation", label: "Navigation", level: 2 },
 		{ id: "ds-content", label: "Content", level: 2 },
 		{ id: "ds-data", label: "Data", level: 2 },
+		{ id: "ds-commerce", label: "Commerce", level: 2 },
 		{ id: "ds-feedback", label: "Feedback", level: 2 },
 		{ id: "ds-advanced", label: "Advanced", level: 2 },
 		{ id: "docs", label: "Docs Components", level: 2 },
@@ -99,6 +101,7 @@
 		<NavigationSection />
 		<ContentSection />
 		<DataSection />
+		<CommerceSection />
 		<FeedbackSection />
 		<AdvancedSection />
 		<DocsSection tocItems={tocItems} />

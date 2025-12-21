@@ -1,13 +1,12 @@
 import { browser } from '$app/environment';
 
+import { DEFAULT_COOKIE_DAYS } from '$lib/constants/cookies';
+
 // Note: 이 파일은 Svelte runes($state)을 사용하므로 .svelte.ts 확장자를 유지하세요.
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 상수
 // ─────────────────────────────────────────────────────────────────────────────
-
-/** 쿠키 기본 만료일 (일) */
-const DEFAULT_COOKIE_DAYS = 365;
 
 /** 하루를 밀리초로 변환 */
 const DAY_IN_MS = 24 * 60 * 60 * 1000;

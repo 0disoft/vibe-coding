@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
 
+  import * as m from "$lib/paraglide/messages.js";
+
   import { DsLinkButton, DsSeparator } from "$lib/components/design-system";
 
   type NavItem = {
@@ -20,7 +22,7 @@
 <nav
   {...rest}
   class={["grid gap-3 sm:grid-cols-2", className].filter(Boolean).join(" ")}
-  aria-label="Docs pagination"
+  aria-label={m.docs_pagination_label()}
 >
   <div class="min-w-0">
     {#if prev}

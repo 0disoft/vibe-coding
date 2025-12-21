@@ -1,13 +1,14 @@
 <script lang="ts">
   import { DsBreadcrumb } from '$lib/components/design-system';
   import { PolicyLayout } from '$lib/components/policy';
-  import { policy, site } from '$lib/constants';
+  import { policy, site, type PolicyNavId } from '$lib/constants';
   import * as m from '$lib/paraglide/messages';
   import type { PageData } from './$types';
 
   // 서버에서 로드된 HTML 컨텐츠
   let { data }: { data: PageData } = $props();
-  const currentId = 'privacy';
+  const currentId: PolicyNavId = 'privacy';
+  const isCurrent = (id: PolicyNavId) => currentId === id;
 
   let docTitle = $derived(m.footer_privacy({}, { locale: data.lang }));
   let headTitle = $derived(`${docTitle} | ${site.name}`);
@@ -23,37 +24,37 @@
     {
       label: m.footer_terms({}, { locale: data.lang }),
       href: `/${data.lang}/terms`,
-      disabled: currentId === 'terms',
+      disabled: isCurrent('terms'),
     },
     {
       label: m.footer_privacy({}, { locale: data.lang }),
       href: `/${data.lang}/privacy`,
-      disabled: currentId === 'privacy',
+      disabled: isCurrent('privacy'),
     },
     {
       label: m.footer_cookie_policy({}, { locale: data.lang }),
       href: `/${data.lang}/cookie`,
-      disabled: currentId === 'cookie',
+      disabled: isCurrent('cookie'),
     },
     {
       label: m.footer_security({}, { locale: data.lang }),
       href: `/${data.lang}/security`,
-      disabled: currentId === 'security',
+      disabled: isCurrent('security'),
     },
     {
       label: m.footer_gdpr({}, { locale: data.lang }),
       href: `/${data.lang}/gdpr`,
-      disabled: currentId === 'gdpr',
+      disabled: isCurrent('gdpr'),
     },
     {
       label: m.footer_accessibility({}, { locale: data.lang }),
       href: `/${data.lang}/accessibility`,
-      disabled: currentId === 'accessibility',
+      disabled: isCurrent('accessibility'),
     },
     {
       label: m.footer_bug_bounty({}, { locale: data.lang }),
       href: `/${data.lang}/bug-bounty`,
-      disabled: currentId === 'bug-bounty',
+      disabled: isCurrent('bug-bounty'),
     },
   ]);
   let breadcrumbs = $derived([

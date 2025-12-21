@@ -9,6 +9,8 @@
 		height?: CSSLength;
 		variant?: SkeletonVariant;
 		animate?: boolean;
+		label?: string;
+		busy?: boolean;
 	}
 
 	let {
@@ -16,7 +18,10 @@
 		height,
 		variant = "rectangular",
 		animate = true,
+		label,
+		busy,
 		class: className = "",
+		"aria-hidden": ariaHidden,
 		style = "",
 		...rest
 	}: Props = $props();
@@ -39,6 +44,16 @@
 			.filter(Boolean)
 			.join("; "),
 	);
+
+	let resolvedLabel = $derived.by(() => label?.trim() || undefined);
+	let resolvedAriaHidden = $derived.by(() => {
+		if (ariaHidden !== undefined) return ariaHidden;
+		return resolvedLabel ? undefined : "true";
+	});
+	let resolvedBusy = $derived.by(() => {
+		if (busy !== undefined) return busy;
+		return resolvedLabel ? true : undefined;
+	});
 </script>
 
 <div
@@ -47,5 +62,10 @@
 	style={mergedStyle}
 	data-ds-variant={variant}
 	data-animate={animate ? "true" : undefined}
-	aria-hidden="true"
-></div>
+	aria-hidden={resolvedAriaHidden}
+	aria-busy={resolvedBusy}
+>
+	{#if resolvedLabel}
+		<span class="sr-only" aria-live="polite">{resolvedLabel}</span>
+	{/if}
+</div>

@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
 
+  import * as m from "$lib/paraglide/messages.js";
+
   import { DsLinkButton, DsSeparator } from "$lib/components/design-system";
 
   type DocsNavItem = {
@@ -17,7 +19,7 @@
   }
 
   let {
-    title = "Docs",
+    title = m.nav_docs(),
     items,
     activePath,
     class: className = "",

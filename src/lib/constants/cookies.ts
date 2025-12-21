@@ -1,3 +1,9 @@
+/** 쿠키 기본 만료일 (일) */
+export const DEFAULT_COOKIE_DAYS = 365;
+
+/** 로케일 쿠키 기본 만료 (초) */
+export const DEFAULT_LOCALE_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
+
 /**
  * 쿠키 키 상수
  *

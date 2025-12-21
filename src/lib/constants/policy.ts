@@ -103,12 +103,57 @@ export const policy = {
 		support: ['chatwoot'],
 		ai: ['openrouter', 'vercel_ai']
 	},
+	// 정적 파일 요청 식별 (Rate Limit 제외 대상)
+	staticAssets: {
+		prefixes: [
+			'/_app/', // SvelteKit 빌드 출력
+			'/favicon',
+			'/apple-touch-icon',
+			'/icons/', // /icons/ 디렉토리
+			'/icon-', // icon-192.png 등
+			'/icon.' // icon.png 등
+		],
+		exact: [
+			'/robots.txt',
+			'/sitemap.xml',
+			'/sitemap.xml.gz',
+			'/manifest.webmanifest',
+			'/manifest.json',
+			'/service-worker.js',
+			'/sw.js'
+		]
+	},
 	// Rate Limiting 설정
 	rateLimit: {
-		maxRequests: 7, // 윈도우 내 최대 요청 수
+		maxRequests: 10, // 윈도우 내 최대 요청 수
 		windowMs: 2000, // 탐지 윈도우 (밀리초) - 2초
 		penaltyMs: 5000 // 차단 시 페널티 기간 (밀리초) - 5초
+	},
+	// CAPTCHA 전용 Rate Limiting 설정
+	capRateLimit: {
+		challenge: {
+			windowMs: 60_000,
+			max: 15,
+			penaltyMs: 90_000
+		},
+		redeem: {
+			windowMs: 60_000,
+			max: 8,
+			penaltyMs: 90_000
+		}
 	},
 	// 요청 본문 크기 제한 (Content-Length 검사)
 	maxBodySize: 10 * 1024 * 1024 // 10MB
 } as const;
+
+export const POLICY_NAV_IDS = [
+	'terms',
+	'privacy',
+	'cookie',
+	'security',
+	'gdpr',
+	'accessibility',
+	'bug-bounty'
+] as const;
+
+export type PolicyNavId = (typeof POLICY_NAV_IDS)[number];

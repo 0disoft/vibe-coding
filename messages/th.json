@@ -218,6 +218,12 @@
 	"ds_loading": "กำลังโหลด…",
 	"ds_navigating": "กำลังนำทาง…",
 	"ds_clear_value": "ล้างค่า",
+	"ds_anchor_nav_label": "ในหน้านี้",
+	"ds_breadcrumb": "เส้นทางนำทาง",
+	"ds_confirm": "ยืนยัน",
+	"ds_cancel": "ยกเลิก",
+	"ds_processing": "กำลังประมวลผล…",
+	"ds_dialog_close": "ปิดกล่องโต้ตอบ",
 	"ds_toast_region": "การแจ้งเตือน",
 	"ds_toast_dismiss": "ปิดการแจ้งเตือน",
 	"a11y_skip_to_main_content": "ข้ามไปยังเนื้อหาหลัก",
@@ -233,5 +239,16 @@
 	"search_panel_results": "รายการ",
 	"policy_effective_date_label": "วันที่มีผลบังคับใช้",
 	"policy_language_label": "ภาษา",
-	"policy_breadcrumb_section": "นโยบาย"
+	"policy_breadcrumb_section": "นโยบาย",
+	"docs_copy_link": "คัดลอกลิงก์",
+	"docs_copied_link": "คัดลอกลิงก์แล้ว",
+	"docs_on_this_page": "ในหน้านี้",
+	"docs_menu_button": "เมนู",
+	"docs_menu_title": "เมนูเอกสาร",
+	"docs_pagination_label": "การแบ่งหน้าของเอกสาร",
+	"docs_results_label": "ผลลัพธ์",
+	"docs_api_example_select": "เลือกตัวอย่าง",
+	"docs_api_copy_path": "คัดลอกพาธ",
+	"docs_api_copied": "คัดลอกแล้ว"
 }
+

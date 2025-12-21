@@ -2,13 +2,17 @@
   import type { Snippet } from "svelte";
 
   import CodeBlock from "$lib/components/CodeBlock.svelte";
+
+  import * as m from "$lib/paraglide/messages.js";
+
   import {
     DsBadge,
     DsButton,
     DsCard,
     DsCopyButton,
     DsDropdown,
-    DsDropdownItem
+    DsDropdownItem,
+    DsLiveRegion
   } from "$lib/components/design-system";
 
   type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -38,10 +42,7 @@
   }: Props = $props();
 
   let activeExampleIndex = $state(0);
-
-  $effect(() => {
-    if (activeExampleIndex >= examples.length) activeExampleIndex = 0;
-  });
+  let liveRegion: { announce: (message: string) => void } | null = null;
 
   function methodIntent(m: HttpMethod) {
     if (m === "GET") return "secondary";
@@ -53,11 +54,20 @@
   function selectExample(index: number) {
     activeExampleIndex = index;
     onExampleSelect?.(index);
+    const selected = examples[index];
+    if (selected) liveRegion?.announce(selected.label);
   }
 
-  let activeExample = $derived(examples[activeExampleIndex] ?? null);
-  let exampleLabel = $derived(activeExample?.label ?? "예제 선택");
+  let resolvedExampleIndex = $derived(
+    examples.length === 0 ? -1 : Math.min(activeExampleIndex, examples.length - 1)
+  );
+  let activeExample = $derived(
+    resolvedExampleIndex >= 0 ? examples[resolvedExampleIndex] ?? null : null
+  );
+  let exampleLabel = $derived(activeExample?.label ?? m.docs_api_example_select());
 </script>
+
+<DsLiveRegion bind:this={liveRegion} politeness="polite" duration={1200} />
 
 <DsCard class="space-y-4">
   <div class="flex flex-wrap items-center gap-2">
@@ -69,8 +79,8 @@
       intent="neutral"
       icon="copy"
       copiedIcon="check"
-      label="Copy path"
-      copiedLabel="Copied"
+      label={m.docs_api_copy_path()}
+      copiedLabel={m.docs_api_copied()}
       text={path}
     />
   </div>
@@ -91,7 +101,7 @@
         {#each examples as ex, index (ex.label)}
           <DsDropdownItem
             role="menuitemradio"
-            aria-checked={index === activeExampleIndex}
+            aria-checked={index === resolvedExampleIndex}
             onclick={() => {
               selectExample(index);
               close();

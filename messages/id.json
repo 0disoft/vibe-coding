@@ -218,6 +218,12 @@
 	"ds_loading": "Memuat…",
 	"ds_navigating": "Menavigasi…",
 	"ds_clear_value": "Hapus nilai",
+	"ds_anchor_nav_label": "Di halaman ini",
+	"ds_breadcrumb": "Jejak navigasi",
+	"ds_confirm": "Konfirmasi",
+	"ds_cancel": "Batal",
+	"ds_processing": "Memproses…",
+	"ds_dialog_close": "Tutup dialog",
 	"ds_toast_region": "Notifikasi",
 	"ds_toast_dismiss": "Tutup notifikasi",
 	"a11y_skip_to_main_content": "Lewati ke konten utama",
@@ -233,5 +239,16 @@
 	"search_panel_results": "hasil",
 	"policy_effective_date_label": "Tanggal berlaku",
 	"policy_language_label": "Bahasa",
-	"policy_breadcrumb_section": "Kebijakan"
+	"policy_breadcrumb_section": "Kebijakan",
+	"docs_copy_link": "Salin tautan",
+	"docs_copied_link": "Tautan disalin",
+	"docs_on_this_page": "Di halaman ini",
+	"docs_menu_button": "Menu",
+	"docs_menu_title": "Menu Dokumentasi",
+	"docs_pagination_label": "Paginasi dokumentasi",
+	"docs_results_label": "Hasil",
+	"docs_api_example_select": "Pilih contoh",
+	"docs_api_copy_path": "Salin path",
+	"docs_api_copied": "Disalin"
 }
+

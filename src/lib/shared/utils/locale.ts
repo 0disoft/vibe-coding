@@ -1,3 +1,6 @@
+import { DEFAULT_LOCALE_COOKIE_MAX_AGE_SECONDS } from '$lib/constants/cookies';
+
+import { RTL_LOCALES } from '$lib/constants/i18n';
 import {
 	baseLocale,
 	cookieName,
@@ -11,10 +14,6 @@ export type Locale = (typeof locales)[number];
 export type Direction = 'ltr' | 'rtl';
 
 export { baseLocale, cookieName, locales };
-
-const RTL_LOCALES = new Set<string>(['ar']);
-
-export const DEFAULT_LOCALE_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
 
 export function getDirForLocale(locale: string): Direction {
 	return RTL_LOCALES.has(locale) ? 'rtl' : 'ltr';
@@ -104,9 +103,9 @@ export type LocaleInfo = {
 function safeDisplayName(displayLocale: string, targetLocale: string): string | null {
 	const DisplayNames = Intl.DisplayNames as
 		| (new (
-				locales: ReadonlyArray<string>,
-				options: { type: 'language' }
-		  ) => Intl.DisplayNames)
+			locales: ReadonlyArray<string>,
+			options: { type: 'language'; }
+		) => Intl.DisplayNames)
 		| undefined;
 
 	if (!DisplayNames) return null;

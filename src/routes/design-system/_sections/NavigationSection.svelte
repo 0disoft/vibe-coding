@@ -4,6 +4,7 @@
 		DsAccordionContent,
 		DsAccordionItem,
 		DsAccordionTrigger,
+		DsAnchorNav,
 		DsAppShell,
 		DsBreadcrumb,
 		DsButton,
@@ -11,6 +12,7 @@
 		DsLinkButton,
 		DsNavigationMenu,
 		DsPagination,
+		DsSideNav,
 		DsSidebar,
 		DsTabs,
 		DsTabsContent,
@@ -22,6 +24,7 @@
 	let pageNum = $state(5);
 	let treeSelectedId = $state<string | null>("docs");
 	let treeExpandedIds = $state<string[]>(["docs", "getting-started"]);
+	let anchorActive = $state("anchor-intro");
 
 	const navMenuItems = [
 		{
@@ -150,6 +153,30 @@
 			],
 		},
 	];
+
+	const sideNavItems = [
+		{ id: "overview", label: "Overview", href: "/docs", icon: "layout-dashboard" },
+		{ id: "guides", label: "Guides", href: "/docs/guides", icon: "book-open" },
+		{ id: "api", label: "API", href: "/docs/api", icon: "brackets" },
+		{
+			id: "billing",
+			label: "Billing",
+			href: "/billing",
+			icon: "badge-dollar-sign",
+		},
+		{
+			id: "pin",
+			label: "Pin sidebar",
+			icon: "pin",
+			isAction: true,
+		},
+	] as const;
+
+	const anchorItems = [
+		{ id: "anchor-intro", label: "Intro", level: 2 },
+		{ id: "anchor-details", label: "Details", level: 2 },
+		{ id: "anchor-usage", label: "Usage", level: 2 },
+	] as const;
 </script>
 
 <section id="ds-navigation" class="space-y-4">
@@ -171,6 +198,57 @@
 					{ label: "API" },
 				]}
 			/>
+		</div>
+
+		<div class="space-y-2">
+			<div class="text-label text-muted-foreground">SideNav</div>
+			<div class="text-helper text-muted-foreground">
+				왼쪽은 기본, 오른쪽은 collapsed 상태(툴팁 노출)입니다.
+			</div>
+			<div class="grid gap-3 md:grid-cols-2">
+				<div class="rounded-lg border border-border bg-surface p-3">
+					<DsSideNav items={sideNavItems} />
+				</div>
+				<div class="rounded-lg border border-border bg-surface p-3">
+					<DsSideNav items={sideNavItems} collapsed />
+				</div>
+			</div>
+		</div>
+
+		<div class="space-y-2">
+			<div class="text-label text-muted-foreground">AnchorNav</div>
+			<div class="text-helper text-muted-foreground">
+				labelTag로 제목 태그를 조정할 수 있습니다.
+			</div>
+			<div class="grid gap-4 md:grid-cols-[240px_1fr]">
+				<DsAnchorNav
+					items={anchorItems}
+					activeId={anchorActive}
+					onActiveChange={(id) => (anchorActive = id)}
+					sticky={false}
+					labelTag="h3"
+				/>
+				<div class="rounded-lg border border-border bg-surface p-4 space-y-6">
+					<section id="anchor-intro" class="space-y-2">
+						<h3 class="text-h4 font-semibold">Intro</h3>
+						<p class="text-body-secondary text-muted-foreground">
+							앵커 네비게이션은 긴 문서를 빠르게 이동할 때 사용합니다.
+						</p>
+					</section>
+					<section id="anchor-details" class="space-y-2">
+						<h3 class="text-h4 font-semibold">Details</h3>
+						<p class="text-body-secondary text-muted-foreground">
+							스크롤 위치에 따라 현재 섹션이 자동으로 강조됩니다.
+						</p>
+					</section>
+					<section id="anchor-usage" class="space-y-2">
+						<h3 class="text-h4 font-semibold">Usage</h3>
+						<p class="text-body-secondary text-muted-foreground">
+							`items` 배열에 섹션 id와 레이블을 전달하세요.
+						</p>
+					</section>
+				</div>
+			</div>
 		</div>
 
 		<DsTabs>

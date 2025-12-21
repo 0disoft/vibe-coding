@@ -1,6 +1,11 @@
 import type { Handle } from '@sveltejs/kit';
 
 import { policy } from '$lib/constants';
+import {
+	HEADER_RATE_LIMIT_LIMIT,
+	HEADER_RATE_LIMIT_REMAINING,
+	HEADER_RATE_LIMIT_RESET
+} from '$lib/constants/headers';
 import { checkRateLimit, getClientIP, type RateLimitRule } from '$lib/server/rate-limiter';
 
 /** high-risk 경로 패턴 (인증 관련) - 중복 정의 방지를 위해 상수로 분리 */
@@ -30,26 +35,15 @@ const UNKNOWN_HIGH_RISK_RULES: RateLimitRule[] = [
 	{ name: 'unknown-high-risk', pattern: HIGH_RISK_PATTERN, windowMs: 60_000, max: 3 }
 ];
 
+const STATIC_ASSET_EXACT = new Set<string>(policy.staticAssets.exact);
+
 /**
  * 정적 파일 요청인지 확인 (Rate Limit 제외 대상)
  */
 function isStaticRequest(pathname: string): boolean {
 	const p = pathname.toLowerCase();
-	return (
-		p.startsWith('/_app/') || // SvelteKit 빌드 출력
-		p.startsWith('/favicon') ||
-		p.startsWith('/apple-touch-icon') ||
-		p.startsWith('/icons/') || // /icons/ 디렉토리
-		p.startsWith('/icon-') || // icon-192.png 등
-		p.startsWith('/icon.') || // icon.png 등
-		p === '/robots.txt' ||
-		p === '/sitemap.xml' ||
-		p === '/sitemap.xml.gz' ||
-		p === '/manifest.webmanifest' ||
-		p === '/manifest.json' ||
-		p === '/service-worker.js' ||
-		p === '/sw.js'
-	);
+	if (STATIC_ASSET_EXACT.has(p)) return true;
+	return policy.staticAssets.prefixes.some((prefix) => p.startsWith(prefix));
 }
 
 /**
@@ -119,9 +113,9 @@ function create429Response(request: Request, result: RateLimitHeaderFields): Res
 
 	// X-RateLimit 헤더 추가 (일관성)
 	if (result.limit > 0) {
-		headers.set('X-RateLimit-Limit', String(result.limit));
-		headers.set('X-RateLimit-Remaining', String(result.remaining));
-		headers.set('X-RateLimit-Reset', String(result.reset));
+		headers.set(HEADER_RATE_LIMIT_LIMIT, String(result.limit));
+		headers.set(HEADER_RATE_LIMIT_REMAINING, String(result.remaining));
+		headers.set(HEADER_RATE_LIMIT_RESET, String(result.reset));
 	}
 
 	if (wantsHtml) {
@@ -176,9 +170,9 @@ export const handleRateLimit: Handle = async ({ event, resolve }) => {
 			// 성공 응답에도 X-RateLimit 헤더 추가 (일관성)
 			const response = await resolve(event);
 			if (unknownResult.limit > 0) {
-				response.headers.set('X-RateLimit-Limit', String(unknownResult.limit));
-				response.headers.set('X-RateLimit-Remaining', String(unknownResult.remaining));
-				response.headers.set('X-RateLimit-Reset', String(unknownResult.reset));
+				response.headers.set(HEADER_RATE_LIMIT_LIMIT, String(unknownResult.limit));
+				response.headers.set(HEADER_RATE_LIMIT_REMAINING, String(unknownResult.remaining));
+				response.headers.set(HEADER_RATE_LIMIT_RESET, String(unknownResult.reset));
 			}
 			return response;
 		}
@@ -191,9 +185,9 @@ export const handleRateLimit: Handle = async ({ event, resolve }) => {
 	// Rate Limit 정보 헤더 준비
 	const setRateLimitHeaders = (headers: Headers) => {
 		if (result.limit > 0) {
-			headers.set('X-RateLimit-Limit', String(result.limit));
-			headers.set('X-RateLimit-Remaining', String(result.remaining));
-			headers.set('X-RateLimit-Reset', String(result.reset));
+			headers.set(HEADER_RATE_LIMIT_LIMIT, String(result.limit));
+			headers.set(HEADER_RATE_LIMIT_REMAINING, String(result.remaining));
+			headers.set(HEADER_RATE_LIMIT_RESET, String(result.reset));
 		}
 	};
 
