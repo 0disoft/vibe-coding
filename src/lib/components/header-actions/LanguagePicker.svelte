@@ -8,4 +8,9 @@
   label={m.language_picker_label()}
   triggerTestId="header-language-picker"
   disableCurrent={false}
+  searchPlaceholder={m.language_picker_search_placeholder()}
+  emptyText={m.language_picker_empty()}
+  announceMessage={(info) =>
+    m.language_picker_changed({ language: info.selfName })
+  }
 />

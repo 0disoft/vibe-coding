@@ -1,0 +1,121 @@
+:root {
+  /* Primitive (Raw) */
+  --raw-color-accent: 94% 0.035 240;
+  --raw-color-background: 98.8% 0.014 240;
+  --raw-color-border: 89.5% 0.02 240;
+  --raw-color-code-card: 27% 0.0314 274;
+  --raw-color-danger: 82% 0.16 25;
+  --raw-color-error: 82% 0.16 25;
+  --raw-color-input: 97% 0.016 240;
+  --raw-color-link: 54% 0.14 240;
+  --raw-color-neutral-100: 97% 0.004 255;
+  --raw-color-neutral-200: 93% 0.004 255;
+  --raw-color-neutral-300: 88% 0.004 255;
+  --raw-color-neutral-400: 72% 0.004 255;
+  --raw-color-neutral-50: 99% 0.004 255;
+  --raw-color-neutral-500: 56% 0.004 255;
+  --raw-color-neutral-600: 46% 0.004 255;
+  --raw-color-neutral-700: 35% 0.004 255;
+  --raw-color-neutral-800: 26% 0.004 255;
+  --raw-color-neutral-900: 18% 0.004 255;
+  --raw-color-neutral-950: 12% 0.004 255;
+  --raw-color-on-accent: 20% 0.02 240;
+  --raw-color-on-code-card: 96% 0.01 106;
+  --raw-color-on-danger: 20% 0.02 25;
+  --raw-color-on-error: 20% 0.02 25;
+  --raw-color-on-link: 18% 0.02 240;
+  --raw-color-on-primary: 98% 0.006 240;
+  --raw-color-on-secondary: 20% 0.02 240;
+  --raw-color-on-selected: 20% 0.02 240;
+  --raw-color-on-sidebar: 26% 0.02 240;
+  --raw-color-on-success: 20% 0.02 150;
+  --raw-color-on-warning: 20% 0.02 70;
+  --raw-color-overlay: 22% 0.015 240;
+  --raw-color-primary: 60% 0.13 240;
+  --raw-color-primary-hover: 54% 0.13 240;
+  --raw-color-scrim: 22% 0.015 240;
+  --raw-color-secondary: 93% 0.03 240;
+  --raw-color-selected: 90% 0.05 240;
+  --raw-color-sidebar: 98% 0.012 240;
+  --raw-color-success: 82% 0.14 150;
+  --raw-color-surface: 99.2% 0.012 240;
+  --raw-color-surface-hover: 97.5% 0.016 240;
+  --raw-color-surface-1: var(--raw-color-surface);
+  --raw-color-surface-2: var(--raw-color-surface-hover);
+  --raw-color-text: 21% 0.02 240;
+  --raw-color-text-muted: 40% 0.02 240;
+  --raw-color-warning: 85% 0.16 70;
+
+  /* Text Colors (Light Mode: Darker for contrast) */
+  --raw-color-success-text: 48% 0.15 150;
+  --raw-color-warning-text: 45% 0.13 70;
+  --raw-color-error-text: 53% 0.16 25;
+  --raw-color-danger-text: 53% 0.16 25;
+
+  /* Hover Colors (Light Mode: Darker) */
+  --raw-color-danger-hover: 75% 0.16 25;
+  --raw-color-error-hover: 75% 0.16 25;
+  --raw-color-success-hover: 75% 0.14 150;
+  --raw-color-warning-hover: 78% 0.16 70;
+  --raw-color-secondary-hover: 85% 0.03 240;
+
+  /* Semantic (Canonical) */
+  --color-accent: var(--raw-color-accent);
+  --color-background: var(--raw-color-background);
+  --color-border: var(--raw-color-border);
+  --color-code-card: var(--raw-color-code-card);
+  --color-danger: var(--raw-color-danger);
+  --color-error: var(--raw-color-error);
+  --color-input: var(--raw-color-input);
+  --color-link: var(--raw-color-link);
+  --color-neutral-100: var(--raw-color-neutral-100);
+  --color-neutral-200: var(--raw-color-neutral-200);
+  --color-neutral-300: var(--raw-color-neutral-300);
+  --color-neutral-400: var(--raw-color-neutral-400);
+  --color-neutral-50: var(--raw-color-neutral-50);
+  --color-neutral-500: var(--raw-color-neutral-500);
+  --color-neutral-600: var(--raw-color-neutral-600);
+  --color-neutral-700: var(--raw-color-neutral-700);
+  --color-neutral-800: var(--raw-color-neutral-800);
+  --color-neutral-900: var(--raw-color-neutral-900);
+  --color-neutral-950: var(--raw-color-neutral-950);
+  --color-on-accent: var(--raw-color-on-accent);
+  --color-on-code-card: var(--raw-color-on-code-card);
+  --color-on-danger: var(--raw-color-on-danger);
+  --color-on-error: var(--raw-color-on-error);
+  --color-on-link: var(--raw-color-on-link);
+  --color-on-primary: var(--raw-color-on-primary);
+  --color-on-secondary: var(--raw-color-on-secondary);
+  --color-on-selected: var(--raw-color-on-selected);
+  --color-on-sidebar: var(--raw-color-on-sidebar);
+  --color-on-success: var(--raw-color-on-success);
+  --color-on-surface: var(--raw-color-text);
+  --color-on-warning: var(--raw-color-on-warning);
+  --color-overlay: var(--raw-color-overlay);
+  --color-primary: var(--raw-color-primary);
+  --color-primary-hover: var(--raw-color-primary-hover);
+  --color-scrim: oklch(var(--raw-color-scrim) / var(--alpha-scrim));
+  --color-secondary: var(--raw-color-secondary);
+  --color-selected: var(--raw-color-selected);
+  --color-sidebar: var(--raw-color-sidebar);
+  --color-success: var(--raw-color-success);
+  --color-surface-1: var(--raw-color-surface-1);
+  --color-surface-2: var(--raw-color-surface-2);
+  --color-surface: var(--raw-color-surface-1);
+  --color-surface-hover: var(--raw-color-surface-hover);
+  --color-text: var(--raw-color-text);
+  --color-text-muted: var(--raw-color-text-muted);
+  --color-warning: var(--raw-color-warning);
+
+  /* Hover Semantics */
+  --color-danger-hover: var(--raw-color-danger-hover);
+  --color-error-hover: var(--raw-color-error-hover);
+  --color-success-hover: var(--raw-color-success-hover);
+  --color-warning-hover: var(--raw-color-warning-hover);
+
+  --color-success-text: var(--raw-color-success-text);
+  --color-warning-text: var(--raw-color-warning-text);
+  --color-error-text: var(--raw-color-error-text);
+  --color-danger-text: var(--raw-color-danger-text);
+  --color-secondary-hover: var(--raw-color-secondary-hover);
+}

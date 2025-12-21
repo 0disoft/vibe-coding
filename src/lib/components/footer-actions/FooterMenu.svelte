@@ -72,14 +72,14 @@
     {#each menuItems as item (item.key)}
       <DsDropdownItem
         href={localizeUrl(item.href, { locale: currentLocale }).href}
-        aria-checked={isActive(item)}
-        role="menuitemradio"
+        aria-current={isActive(item) ? "page" : undefined}
+        role="menuitem"
         class={["text-menu-sm", item.mobileOnly ? "sm:!hidden" : ""]
           .filter(Boolean)
           .join(" ")}
         onclick={() => close()}
       >
-        <span class="{item.icon} h-3 w-3 shrink-0"></span>
+        <span class="{item.icon} h-3 w-3 shrink-0" aria-hidden="true"></span>
         <span>{getMenuLabel(item.key)}</span>
       </DsDropdownItem>
     {/each}

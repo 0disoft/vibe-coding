@@ -9,10 +9,11 @@
     DsRadioItem,
     DsTag,
   } from "$lib/components/design-system";
+  import * as m from "$lib/paraglide/messages.js";
   import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
 
-  import type { PaymentContext, PaymentMethodType, PaymentOption } from "./payment-types";
-  import { isPaymentOptionAvailable } from "./payment-types";
+  import type { PaymentContext, PaymentMethodType, PaymentOption, UnavailabilityReason } from "./payment-types";
+  import { checkPaymentOptionAvailability } from "./payment-types";
 
   type Layout = "grid" | "list";
 
@@ -35,15 +36,27 @@
     renderOption?: Snippet<[PaymentOption, boolean]>;
   }
 
-  const METHOD_LABELS: Record<PaymentMethodType, string> = {
-    card: "Card",
-    bank: "Bank transfer",
-    crypto: "Crypto",
-    wallet: "Wallet",
-    mobile: "Mobile",
-    virtual: "Virtual account",
-    transfer: "Wire transfer",
-    other: "Other",
+  const getMethodLabel = (type: PaymentMethodType): string => {
+    switch (type) {
+      case "card": return m.payment_method_card();
+      case "bank": return m.payment_method_bank();
+      case "crypto": return m.payment_method_crypto();
+      case "wallet": return m.payment_method_wallet();
+      case "mobile": return m.payment_method_mobile();
+      case "virtual": return m.payment_method_virtual();
+      case "transfer": return m.payment_method_transfer();
+      default: return m.payment_method_other();
+    }
+  };
+
+  const getReasonLabel = (reason?: UnavailabilityReason): string | undefined => {
+    switch (reason) {
+      case "LOGIN_REQUIRED": return m.payment_reason_login_required();
+      case "UNSUPPORTED_REGION": return m.payment_reason_unsupported_region();
+      case "UNSUPPORTED_CURRENCY": return m.payment_reason_unsupported_currency();
+      case "DISABLED": return m.payment_reason_disabled();
+      default: return undefined;
+    }
   };
 
   let {
@@ -61,8 +74,9 @@
     ariaDescribedby,
     context,
     availabilityMode = "hide",
-    emptyText = "No payment options available.",
+    emptyText = m.payment_no_options(),
     renderOption,
+    id: idProp,
     class: className = "",
     ...rest
   }: Props = $props();
@@ -76,12 +90,15 @@
   let currentValue = $derived(valueState.value);
   let resolvedAriaLabel = $derived(ariaLabel ?? label);
   let rootClass = $derived(["ds-payment-option-group", className].filter(Boolean).join(" "));
+  let normalizedId = $derived(idProp ?? undefined);
   let optionStates = $derived.by(() =>
     options
       .map((option) => {
-        const available = isPaymentOptionAvailable(option, context);
-        const disabledResolved = disabled || option.disabled || (!available && availabilityMode === "disable");
-        return { option, available, disabledResolved };
+        const check = checkPaymentOptionAvailability(option, context);
+        const available = check.available;
+        const disabledResolved =
+          disabled || option.disabled || (!available && availabilityMode === "disable");
+        return { option, available, disabledResolved, check };
       })
       .filter((state) => (availabilityMode === "hide" ? state.available : true)),
   );
@@ -109,9 +126,10 @@
   function resolveMeta(option: PaymentOption, availabilityNote?: string) {
     const meta = option.meta ? [...option.meta] : [];
     if (option.methodType) {
-      const label = METHOD_LABELS[option.methodType];
+      const label = getMethodLabel(option.methodType);
       if (label && !meta.includes(label)) meta.unshift(label);
     }
+    // Only add availabilityNote if it's NOT a critical error (which is handled separately)
     if (availabilityNote && !meta.includes(availabilityNote)) meta.unshift(availabilityNote);
     return meta;
   }
@@ -124,6 +142,7 @@
 {:else}
   <DsRadioGroup
     {...rest}
+    id={normalizedId}
     class={rootClass}
     value={currentValue}
     onValueChange={(next) => (valueState.value = next)}
@@ -138,14 +157,23 @@
     {#each optionStates as state (state.option.id)}
       {@const option = state.option}
       {@const isSelected = currentValue === option.id}
-      {@const badgeLabel = option.badge ?? (option.recommended ? "Recommended" : undefined)}
+      {@const badgeLabel = option.badge ?? (option.recommended ? m.payment_recommended() : undefined)}
       {@const badgeIntent = option.badgeIntent ?? (option.recommended ? "primary" : "secondary")}
+      {@const reasonLabel = getReasonLabel(state.check.reason)}
       {@const availabilityNote =
-        !state.available && availabilityMode === "disable" ? option.availabilityNote : undefined}
+        !state.available && availabilityMode === "disable"
+          ? (state.check.message ?? reasonLabel ?? option.availabilityNote)
+          : undefined}
       {@const metaItems = resolveMeta(option, availabilityNote)}
+      
+      <!-- Connect description and availabilityNote to aria-describedby via DsRadioItem's description prop -->
+      {@const combinedDescription = [option.description, availabilityNote].filter(Boolean).join(". ")}
+
       <DsRadioItem
         value={option.id}
         disabled={state.disabledResolved}
+        aria-label={option.ariaLabel}
+        description={combinedDescription}
         class={[
           "ds-payment-option",
           isSelected ? "is-selected" : "",
@@ -175,17 +203,29 @@
                 {option.provider}
               </div>
             {/if}
+            
+            <!-- availabilityNote gets special treatment for better visibility when disabled -->
+            {#if availabilityNote}
+              <div class="ds-payment-option-error text-helper text-destructive mt-1 font-medium" role="status">
+                <DsIcon name="alert-circle" size="xs" class="mr-1 inline-block" />
+                {availabilityNote}
+              </div>
+            {/if}
+
             {#if option.description}
               <div class="ds-payment-option-desc text-body-secondary text-muted-foreground">
                 {option.description}
               </div>
             {/if}
+            
             {#if metaItems.length}
               <div class="ds-payment-option-meta">
                 {#each metaItems as meta (meta)}
-                  <DsTag size="sm" variant="outline" intent="neutral">
-                    {meta}
-                  </DsTag>
+                  {#if meta !== availabilityNote}
+                    <DsTag size="sm" variant="outline" intent="neutral">
+                      {meta}
+                    </DsTag>
+                  {/if}
                 {/each}
               </div>
             {/if}

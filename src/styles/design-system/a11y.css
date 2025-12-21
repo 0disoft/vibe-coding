@@ -1,0 +1,31 @@
+/* ───────────────────────────────────────────────────────────
+   A11y: Skip Link
+   ─────────────────────────────────────────────────────────── */
+
+.ds-skip-link {
+	position: fixed;
+	inset-block-start: var(--spacing-4);
+	inset-inline-start: var(--spacing-4);
+	z-index: var(--z-toast);
+	padding: var(--spacing-3) var(--spacing-4);
+	border-radius: var(--radius-md);
+	border: var(--border-width) solid oklch(var(--color-border));
+	background: oklch(var(--color-surface));
+	color: oklch(var(--color-text));
+	box-shadow: var(--elevation-3);
+	text-decoration: none;
+	transform: translateY(-180%);
+	transition: transform var(--motion-duration-fast) var(--motion-ease);
+}
+
+.ds-skip-link:focus,
+.ds-skip-link:focus-visible {
+	transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.ds-skip-link {
+		transition: none;
+	}
+}

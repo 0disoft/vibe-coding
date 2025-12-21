@@ -1,0 +1,156 @@
+/* ───────────────────────────────────────────────────────────
+   Component: Icon
+   ─────────────────────────────────────────────────────────── */
+
+.ds-icon {
+	display: inline-block;
+	vertical-align: middle;
+	background-color: currentColor;
+	mask-size: 100% 100%;
+	-webkit-mask-size: 100% 100%;
+	flex-shrink: 0;
+	stroke-width: var(--icon-stroke-width);
+	unicode-bidi: isolate;
+}
+
+/* Intent */
+.ds-icon[data-ds-intent="neutral"] {
+	color: oklch(var(--color-text));
+}
+
+.ds-icon[data-ds-intent="primary"] {
+	color: oklch(var(--color-primary));
+}
+
+.ds-icon[data-ds-intent="secondary"] {
+	color: oklch(var(--color-secondary));
+}
+
+.ds-icon[data-ds-intent="success"] {
+	color: oklch(var(--color-success));
+}
+
+.ds-icon[data-ds-intent="warning"] {
+	color: oklch(var(--color-warning));
+}
+
+.ds-icon[data-ds-intent="error"] {
+	color: oklch(var(--color-error));
+}
+
+/* Size Tokens */
+.ds-icon[data-ds-size="inherit"] {
+	inline-size: 1em;
+	block-size: 1em;
+}
+
+.ds-icon[data-ds-size="sm"] {
+	inline-size: var(--size-icon-sm);
+	block-size: var(--size-icon-sm);
+}
+
+.ds-icon[data-ds-size="md"] {
+	inline-size: var(--size-icon-md);
+	block-size: var(--size-icon-md);
+}
+
+.ds-icon[data-ds-size="lg"] {
+	inline-size: var(--size-icon-lg);
+	block-size: var(--size-icon-lg);
+}
+
+.ds-icon[data-ds-size="xl"] {
+	inline-size: 2rem;
+	block-size: 2rem;
+}
+
+/* RTL Support */
+:where([dir="rtl"]) .ds-icon[data-ds-flip-rtl="true"] {
+	transform: scaleX(-1);
+}
+
+/* ───────────────────────────────────────────────────────────
+   Component: DsInlineIcon
+   ─────────────────────────────────────────────────────────── */
+
+.ds-inline-icon {
+	display: inline-flex;
+	align-items: center;
+	vertical-align: middle;
+	gap: var(--icon-gap);
+	font-size: inherit;
+	line-height: inherit;
+	color: inherit;
+}
+
+.ds-inline-icon .ds-icon {
+	position: relative;
+	inset-block-start: -0.05em;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Component: DsSkeleton
+   ─────────────────────────────────────────────────────────── */
+
+.ds-skeleton {
+	background-color: oklch(var(--color-neutral-200));
+	border-radius: var(--radius-md);
+	display: block;
+	width: 100%;
+}
+
+:root[data-theme="dark"] .ds-skeleton {
+	background-color: oklch(var(--color-neutral-800));
+}
+
+.ds-skeleton[data-animate="true"] {
+	animation: ds-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ds-skeleton[data-animate="true"] {
+		animation: none;
+		opacity: 1;
+	}
+}
+
+@keyframes ds-pulse {
+
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.5;
+	}
+}
+
+/* Variants */
+.ds-skeleton[data-ds-variant="circular"] {
+	border-radius: 50%;
+}
+
+.ds-skeleton[data-ds-variant="text"] {
+	display: inline-block;
+	height: calc(1em * var(--line-height-normal));
+	width: 100%;
+	border-radius: var(--radius-sm);
+	margin-block: 0.25em;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Utilities: Elevation
+   ─────────────────────────────────────────────────────────── */
+
+.ds-elevation-1 {
+	box-shadow: var(--elevation-1);
+}
+
+.ds-elevation-2 {
+	box-shadow: var(--elevation-2);
+}
+
+.ds-elevation-3 {
+	box-shadow: var(--elevation-3);
+}

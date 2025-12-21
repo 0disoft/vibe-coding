@@ -37,142 +37,21 @@
 
 | 순번 | 요청 유형 | 대상 파일/항목 | 상태 | 비고 |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | 코드 개선 제안 | `src/lib/components/docs` | ✅ 완료 | [상세 보기](#1-docs-컴포넌트-모음-리팩토링) |
-| 2 | 코드 개선 제안 | `src/lib/components/design-system/AccordionItem.svelte` | ✅ 완료 | [상세 보기](#2-accordionitem-리팩토링) |
-| 3 | 코드 개선 제안 | `src/lib/interaction/SmoothScroll.svelte` | 🏗️ 진행 중 | [상세 보기](#3-smoothscroll-리팩토링) |
-| 4 | 코드 개선 제안 | `src/lib/i18n/messages.test.ts` | 🏗️ 진행 중 | [상세 보기](#4-messagestestts-리팩토링) |
-| 5 | 코드 개선 제안 | `src/lib/components/Header.svelte` | 🏗️ 진행 중 | [상세 보기](#5-header-리팩토링) |
-| 6 | 코드 개선 제안 | `src/lib/components/CodeBlock.svelte` | 🏗️ 진행 중 | [상세 보기](#6-codeblock-리팩토링) |
-| 7 | 코드 개선 제안 | `src/lib/components/header-actions/UserMenu.svelte` | 🏗️ 진행 중 | [상세 보기](#7-usermenu-리팩토링) |
-| 8 | 코드 개선 제안 | `src/lib/components/header-actions/ThemeToggle.svelte` | 🏗️ 진행 중 | [상세 보기](#8-themetoggle-리팩토링) |
-| 9 | 코드 개선 제안 | `src/lib/components/header-actions/LanguagePicker.svelte` | 🏗️ 진행 중 | [상세 보기](#9-languagepicker-리팩토링) |
-| 10 | 코드 개선 제안 | `src/lib/components/header-actions/FontSizePicker.svelte` | 🏗️ 진행 중 | [상세 보기](#10-fontsizepicker-리팩토링) |
-| 11 | 코드 개선 제안 | `src/lib/components/footer-actions/FooterMenu.svelte` | 🏗️ 진행 중 | [상세 보기](#11-footermenu-리팩토링) |
+| 1 | 코드 개선 제안 | `src/lib/components/header-actions/ThemeToggle.svelte` | ✅ 완료 | [상세 보기](#1-themetoggle-리팩토링) |
+| 2 | 코드 개선 제안 | `src/lib/components/footer-actions/FooterMenu.svelte` | ✅ 완료 | [상세 보기](#2-footermenu-리팩토링) |
+| 3 | 코드 개선 제안 | `src/styles/tokens/base.css` | ✅ 완료 | [상세 보기](#3-tokensbasecss-리팩토링) |
+| 4 | 코드 개선 제안 | `src/styles/scrollbar.css` | ✅ 완료 | [상세 보기](#4-scrollbarcss-리팩토링) |
+| 5 | 코드 개선 제안 | `src/styles/prose.css` | ✅ 완료 | [상세 보기](#5-prosecss-리팩토링) |
+| 6 | 코드 개선 제안 | `src/styles/base.css` | 🏗️ 진행 중 | [상세 보기](#6-basecss-리팩토링) |
+| 7 | 코드 개선 제안 | `src/styles/design-system/base.css` | 🏗️ 진행 중 | [상세 보기](#7-design-systembasecss-리팩토링) |
+| 8 | 코드 개선 제안 | `src/styles/design-system/a11y.css` | 🏗️ 진행 중 | [상세 보기](#8-design-systema11ycss-리팩토링) |
+| 9 | 코드 개선 제안 | `src/styles/tokens/a11y-motion.css` | 🏗️ 진행 중 | [상세 보기](#9-tokensa11y-motioncss-리팩토링) |
 
 ---
 
 ## 📋 작업 상세 내용
 
-### 1. Docs 컴포넌트 모음 리팩토링
-
-- **대상**: `src/lib/components/docs` (전체 파일)
-- **관점**: `A11Y_UX_COPILOT` (문서화 시스템의 일관성 및 접근성)
-- **제안 내용**:
-  - **다국어 지원(i18n) 강화**: `ApiEndpointCard`, `DocsLayout`, `DocsToc`, `DocsSidebarNav` 등 여러 컴포넌트에 하드코딩된 문자열("Docs", "On this page", "Results", "Copy link" 등)을 Paraglide 메시지(`m.*`)로 전환하여 글로벌 서비스 대응 능력을 확보합니다.
-  - **Svelte 5 Runes 최적화**:
-    - `DocsAnchoredHeading`의 `headingTag()`와 같은 로직을 `$derived` 룬으로 전환하여 선언적 성능을 높입니다.
-    - `ApiEndpointCard`에서 `$effect` 기반의 `activeExampleIndex` 보정 로직을 `$derived` 또는 더 안정적인 상태 관리 패턴으로 개선합니다.
-  - **접근성(A11y) 보강**:
-    - **ID 일관성**: `DocsLayout`의 `docs-sidebar`, `docs-toc` 등 하드코딩된 ID를 `$props.id()`를 사용해 자동 생성하거나 병합하여 중복 및 충돌을 방지합니다.
-    - **스크린 리더 피드백**: `DocsAnchoredHeading`의 링크 복사 시 `DsLiveRegion`을 사용하는 것은 우수합니다. `ApiEndpointCard`의 예제 변경 시에도 스크린 리더가 인지할 수 있도록 `aria-live`를 검토합니다.
-    - **포커스 가시성**: `DocsAnchoredHeading`의 앵커 링크가 호버/포커스 시에만 보이는 디자인은 키보드 사용자에게 유용하지만, 저시력 사용자를 위해 가시성을 상시 확보하거나 명확한 포커스 링 스타일을 보장합니다.
-  - **레이아웃 안정성 및 성능**:
-    - `DocsLayout`의 `embedded` 모드와 일반 모드 간의 전환 시 발생하는 미디어 쿼리 로직을 `SOLVED.md`의 레거시 API 이슈를 고려하여 현대적인 `addEventListener` 전용으로 정리합니다.
-    - 모바일 시트(`DsSheet`)와 일반 사이드바 간의 중복 렌더링을 최소화하고, `inert` 속성 등을 활용해 배경 포커스 트랩을 더 견고히 합니다.
-  - **데이터 구조 일관성**: `DocsToc`과 `DocsLayout`에서 사용하는 `TocItem` 등의 타입을 배럴 파일(`index.ts`)에서 통합 관리하여 타입 안정성을 높입니다.
-- **처리 결과**:
-  - ✅ **다국어 지원(i18n) 강화**: Docs 컴포넌트의 문자열을 `m.*`로 전환하고 `messages/*.json`에 docs 전용 키를 추가했습니다.
-  - ✅ **Svelte 5 Runes 최적화**: `DocsAnchoredHeading`의 heading tag를 `$derived`로 전환하고, `ApiEndpointCard`는 파생 인덱스로 범위를 안정화했습니다.
-  - ✅ **ID 일관성**: `DocsLayout`에서 `$props.id()` 기반으로 `docs-sidebar`/`docs-toc`/루트 ID를 생성했습니다.
-  - ✅ **스크린 리더 피드백**: `ApiEndpointCard`에 `DsLiveRegion`을 추가해 예제 변경을 공지합니다.
-  - ✅ **포커스 가시성**: 앵커 링크에 `group-focus-within` 가시성 보강을 추가했습니다.
-  - 🔵 **미디어 쿼리 로직 정리**: `addEventListener` 기반으로 이미 구현되어 있어 추가 수정 없이 확인만 했습니다.
-  - ⏭️ **중복 렌더링/inert**: `DsSheet`의 포커스 트랩과 `hidden` 클래스가 충분하다고 판단해 변경하지 않았습니다.
-  - ✅ **데이터 구조 일관성**: `TocItem` 타입을 `types.ts`로 분리하고 배럴에서 재노출했습니다.
-
----
-
-### 2. AccordionItem 리팩토링
-
-- **대상**: `src/lib/components/design-system/AccordionItem.svelte`
-- **관점**: `A11Y_UX_COPILOT` (아코디언 항목의 유연성 및 구조적 정합성)
-- **제안 내용**:
-  - **다형성 지원 (Semantic Tagging)**: 루트 요소가 `div`로 고정되어 있습니다. 아코디언이 리스트(`ul` > `li`) 구조로 사용되어야 하는 경우를 위해 `as` 프로퍼티가 `li` 등으로 변경할 수 있는 옵션을 제공합니다.
-  - **상태 기반 스타일링 강화**: `data-state` 외에도 `data-open`, `data-disabled` 등을 활용하여 CSS에서 가상 클래스 등을 사용하지 않고도 직관적으로 스타일링할 수 있도록 속성 설계를 보강합니다.
-  - **ID 충돌 방지 및 검증**: `value`가 ID 생성에 사용되므로, 유효하지 않은 문자열이 들어왔을 때의 폴백 로직이 `accordion-ids.ts`에 충분한지 검토하고, 컴포넌트 레벨에서도 최소한의 안전장치를 확인합니다.
-  - **시각적 강조 정책**: 항목이 열렸을 때의 테두리나 배경색 변화를 위한 CSS 변수 매핑이 디자인 시스템의 다른 카드형 컴포넌트와 일관성을 유지하는지 점검합니다.
-- **처리 결과**:
-  - ✅ **다형성 지원**: `as`로 `div`/`li` 루트 태그를 선택할 수 있도록 했습니다.
-  - ✅ **상태 기반 스타일링**: `data-open` 속성을 추가해 CSS 훅을 강화했습니다.
-  - 🔵 **ID 충돌 방지**: 기존 `accordion-ids` 정책을 유지합니다.
-  - 🔵 **시각적 강조 정책**: 기존 토큰/스타일을 유지했습니다.
-
----
-
-### 3. SmoothScroll 리팩토링
-
-- **대상**: `src/lib/interaction/SmoothScroll.svelte`
-- **관점**: `A11Y_UX_COPILOT` (부드러운 스크롤의 접근성 및 초점 동기화)
-- **제안 내용**:
-  - **초점 이동 자동화 (A11y)**: 시각적 스크롤 이동 후 타깃 요소로 실제 키보드 초점(Focus)을 동기화하여 접근성 위반 방지.
-  - **URL 및 히스토리 관리**: 브라우저 내비게이션(뒤로/앞으로 가기) 시에도 부드러운 스크롤이 자연스럽게 연동되도록 보강.
-  - **구성 옵션 확장 (UX/DX)**: `lerp`, `easing` 등 상세 설정을 Props로 노출하여 유연한 사용성 확보.
-  - **키보드 오버라이드 정밀화**: 특정 복합 컴포넌트와의 키 간섭 방지를 위한 예외 처리 강화.
-- **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
-
----
-
-### 4. messages.test.ts 리팩토링
-
-- **대상**: `src/lib/i18n/messages.test.ts`
-- **관점**: `A11Y_UX_COPILOT` (다국어 메시지 품질 및 접근성 검증 체계)
-- **제안 내용**:
-  - **번역 품질 자동 검증 (UX)**: 단순히 키의 존재 여부만 체크하는 것을 넘어, 빈 문자열이나 "JSON Key"와 동일한 값이 할당된 경우(번역 누락 의심 사례)를 감지하는 테스트 케이스를 추가합니다.
-  - **접근성 전용 키 명명 규칙 준수**: 디자인 시스템에서 권장하는 접근성 키(예: `*_aria_label`, `*_sr_only`)가 모든 언어 파일에서 일관되게 정의되었는지 검증하는 로직을 보강합니다.
-  - **플레이스홀더 누락 방지 강화**: 복잡한 ICU 메시지 포맷이나 중첩된 플레이스홀더 패턴이 모든 번역 파일에서 깨지지 않고 정확히 유지되는지 정규표현식을 고도화하여 체크합니다.
-  - **문자열 길이 임계치 경고 (UX)**: 버튼이나 탭처럼 공간 제약이 심한 UI에 들어가는 메시지의 경우, 특정 언어(예: 독일어, 러시아어 등)에서 지나치게 길어져 레이아웃이 붕괴될 가능성이 있는 키들을 목록화하여 관리하고, 경고(Warning)를 띄우는 메커니즘을 검토합니다.
-  - **방향성(RTL) 마커 무결성**: 아랍어 등 RTL 언어 파일에서 특정 제어 문자나 방향성 플레이스홀더가 의도치 않게 삭제되거나 위치가 바뀌지 않았는지 검증합니다.
-- **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
-
----
-
-### 5. Header 리팩토링
-
-- **대상**: `src/lib/components/Header.svelte`
-- **관점**: `A11Y_UX_COPILOT` (내비게이션 구조 및 모바일 경험)
-- **제안 내용**:
-  - **랜드마크 및 레이블 최적화 (A11y)**: 데스크톱/모바일 내비게이션 목적 구분을 위한 레이블 정교화 및 로고 링크 접근성 보강.
-  - **모바일 메뉴 UX**: `DsSheet`와의 연동을 통한 포커스 트랩 강화 및 배경 `inert` 처리, 메뉴 닫힘 시 시각적 피드백 개선.
-  - **상태 기반 시각적 단서 (UX)**: 활성 링크에 대한 색상 대비 점검 및 색상 외 시각적 단서(Bold, Underline 등) 추가 검토.
-  - **코드 구조 개선 (DX)**: 네비게이션 렌더링 로직을 `Snippet`으로 공통화하여 중복 제거 및 유지보수성 향상.
-- **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
-
----
-
-### 6. CodeBlock 리팩토링
-
-- **대상**: `src/lib/components/CodeBlock.svelte`
-- **관점**: `A11Y_UX_COPILOT` (코드 가독성 및 글로벌 접근성)
-- **제안 내용**:
-  - **다국어 지원(i18n) 강화 (UX)**: "Copy code", "Copied to clipboard" 등 사용자에게 직접 노출되는 하드코딩된 문자열을 Paraglide 메시지로 전환하여 언어별 일관성을 확보합니다.
-  - **초점(Focus) 가시성 보강 (A11y)**: 코드 본문 영역(`tabindex="0"`)에 키보드 포커스가 진입했을 때, 디자인 시스템의 포커스 링 스타일을 적용하여 현재 위치를 명확히 인지할 수 있도록 개선합니다.
-  - **로딩 상태 인지 보조**: 하이라이팅 로딩 중(`aria-busy="true"`) 시각적 정보뿐만 아니라 스크린 리더 사용자에게 현재 상태를 안내하는 레이블링을 보강합니다.
-  - **긴 콘텐츠 대응 (UX)**: 코드 블록이 지나치게 길 경우 가독성을 저해할 수 있으므로, 최대 높이(`max-height`) 설정 및 "전체 보기" 토글 기능 도입을 검토합니다.
-  - **구조적 시맨틱 검토**: 현재 `role="textbox"`를 통해 라인별 탐색을 돕는 방식은 우수하나, 일반적인 코드 블록의 시맨틱(`code` 태그 내의 텍스트)과의 정합성을 재점검합니다.
-- **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
-
----
-
-### 7. UserMenu 리팩토링
-
-- **대상**: `src/lib/components/header-actions/UserMenu.svelte`
-- **관점**: `A11Y_UX_COPILOT` (사용자 개인정보 보호 및 메뉴 접근성)
-- **제안 내용**:
-  - **다국어 지원(i18n) 완성**: 이메일 보기/숨기기 버튼의 레이블(`이메일 보기`, `이메일 숨기기`)이 한국어로 하드코딩되어 있습니다. 이를 Paraglide 메시지(`m.*`)로 전환하여 글로벌 대응 능력을 확보합니다.
-  - **상태 변경 피드백 강화 (A11y)**: 이메일 마스킹 상태가 해제되거나 적용될 때, 시각적으로는 즉시 반영되지만 스크린 리더 사용자에게는 명확한 안내가 부족할 수 있습니다. `aria-live="polite"`를 활용하거나, 레이블 변경 시 문맥을 충분히 설명하도록 개선합니다.
-  - **키보드 접근성 정교화**: 드롭다운 내부에 일반적인 `menuitem`이 아닌 토글 버튼(이메일 보기)이 포함되어 있습니다. `itemSelector`가 이 버튼을 건너뛰지 않고 키보드 탐색(화살표 키)으로 자연스럽게 접근 가능한지 확인하고 보강합니다.
-  - **개인정보 보호 로직 모듈화 (DX)**: 현재 내부에 정의된 `maskEmail` 함수를 공통 유틸리티(`$lib/shared/utils/privacy.ts` 등)로 분리하여 프로젝트 전반에서 일관된 마스킹 정책을 적용할 수 있도록 합니다.
-  - **로딩 및 인증 상태 통합**: Better-Auth 연동을 대비하여, 인증 정보 로딩 중의 상태(`Skeleton` 등)를 스니펫으로 미리 정의하여 UX 안정성을 높입니다.
-- **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
-
----
-
-### 8. ThemeToggle 리팩토링
+### 1. ThemeToggle 리팩토링
 
 - **대상**: `src/lib/components/header-actions/ThemeToggle.svelte`
 - **관점**: `A11Y_UX_COPILOT` (테마 전환의 접근성 및 상태 피드백)
@@ -182,39 +61,14 @@
   - **초기 상태 동기화 및 안정성**: SSR에서 주입된 테마 설정과 클라이언트 사이드 스토어 상태 간의 동기화 로직을 점검하여, 페이지 로드 시 발생하는 깜빡임(FOUC)을 방지하고 일관된 테마 경험을 보장합니다.
   - **인터랙션 레이블 정교화**: `DsThemeControlCenter`에 전달되는 `label`이 현재의 컨텍스트(테마 및 팔레트 통합 제어)를 충분히 설명하는지 검토하고, 필요한 경우 접근성 레이블을 더욱 명확하게 보강합니다.
 - **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
+  - ✅ **스크린 리더 상태 안내**: 모드/팔레트 변경 시 라이브 리전으로 상태를 안내합니다.
+  - 🔵 **모션 감수성 대응**: 전역 CSS에 `prefers-reduced-motion` 대응이 존재하여 추가 변경 없이 유지했습니다.
+  - 🔵 **초기 상태 동기화**: `+layout.svelte`에서 `theme.init()`으로 동기화가 이미 구현되어 있어 유지했습니다.
+  - 🔵 **인터랙션 레이블 정교화**: 기존 `theme_toggle_label`이 목적을 충분히 설명한다고 판단했습니다.
 
 ---
 
-### 9. LanguagePicker 리팩토링
-
-- **대상**: `src/lib/components/header-actions/LanguagePicker.svelte`
-- **관점**: `A11Y_UX_COPILOT` (언어 전환의 직관성 및 내비게이션 접근성)
-- **제안 내용**:
-  - **현재 로케일 강조 및 인지 (UX)**: `DsLocaleSwitcher` 내에서 현재 선택된 언어가 시각적으로뿐만 아니라 보조 공학 기기에서 `aria-current="true"` 등을 통해 명확히 강조되도록 보강합니다.
-  - **페이지 전환 피드백 (A11y)**: 언어 변경 시 페이지가 리로드되거나 내비게이션이 발생할 때, 스크린 리더 사용자에게 "언어가 한국어로 변경되었습니다"와 같은 음성 안내를 즉시 제공하는 기능을 검토합니다.
-  - **검색 및 필터링 사용성**: 언어 목록이 많아질 경우를 대비하여 `DsLocaleSwitcher`의 `showSearch` 옵션을 상황에 맞게 제어하고, 검색 결과가 없을 때의 접근성 레이블(`emptyText`)이 적절히 제공되는지 점검합니다.
-  - **RTL 언어 환경의 레이아웃 안정성**: 아랍어 등 RTL 언어로 전환했을 때 언어 선택기 UI의 정렬 방향과 아이콘 배치가 디자인 시스템의 논리적 속성 토큰을 따르는지 확인합니다.
-- **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
-
----
-
-### 10. FontSizePicker 리팩토링
-
-- **대상**: `src/lib/components/header-actions/FontSizePicker.svelte`
-- **관점**: `A11Y_UX_COPILOT` (사용자 맞춤형 글꼴 제어의 접근성 및 피드백)
-- **제안 내용**:
-  - **의미론적 레이블링 보강 (A11y)**: 현재 1~9 사이의 숫자로만 표시된 각 크기 단계에 대해, 스크린 리더가 "글꼴 크기 단계 1", "글꼴 크기 단계 2"와 같이 명확한 맥락을 읽어줄 수 있도록 `aria-label`을 Paraglide 메시지로 추가합니다.
-  - **동적 상태 안내 (A11y)**: 글꼴 크기가 변경되면 전체 레이아웃의 비율이 달라지므로, 변경 직후 스크린 리더 사용자에게 "글꼴 크기가 5단계로 설정되었습니다"와 같은 음성 안내(`aria-live` 또는 `DsLiveRegion` 활용)를 제공하여 변화를 인지시킵니다.
-  - **그리드 그룹 레이블링**: 3x3 그리드로 구성된 라디오 그룹 영역에 대해 `aria-labelledby`를 사용하여 현재 "글꼴 크기 선택" 중임을 명확히 안내합니다.
-  - **비파괴적 미리보기 (UX)**: 사용자가 여러 크기를 시도해 본 후 최적의 설정을 찾을 수 있도록, 항목 클릭 시 메뉴가 즉시 닫히지 않고 "적용" 버튼을 누르거나 메뉴를 닫을 때 확정되는 방식, 혹은 호버 시 미리보기를 제공하는 방안을 검토합니다.
-- **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
-
----
-
-### 11. FooterMenu 리팩토링
+### 2. FooterMenu 리팩토링
 
 - **대상**: `src/lib/components/footer-actions/FooterMenu.svelte`
 - **관점**: `A11Y_UX_COPILOT` (하단 보조 내비게이션의 접근성 및 구조적 명확성)
@@ -224,4 +78,117 @@
   - **아이콘 접근성**: 장식용으로 사용된 각 메뉴의 아이콘에 `aria-hidden="true"`를 명시하여 스크린 리더가 중복된 정보를 읽지 않도록 방어합니다.
   - **중첩 내비게이션 정책**: 데스크톱의 고정 푸터 링크와 모바일 드롭다운 메뉴 간의 데이터 일관성을 유지하면서도, 스크린 리더 사용자가 중복된 내비게이션 랜드마크를 마주하지 않도록 `aria-label`을 통한 맥락 구분을 명확히 합니다.
 - **처리 결과**:
-  - 🏗️ **진행 중**: 분석 및 개선 제안 완료. (구현 대기)
+  - ✅ **시맨틱 역할 보정**: `menuitemradio`를 `menuitem`으로 변경하고 `aria-current`로 현재 위치를 표시했습니다.
+  - 🔵 **반응형 가시성/공백**: `sm:!hidden`으로 레이아웃 흐름이 깨지지 않아 유지했습니다.
+  - ✅ **아이콘 접근성**: 장식 아이콘에 `aria-hidden="true"`를 추가했습니다.
+  - 🔵 **중첩 내비게이션**: 별도 nav 랜드마크가 없고 트리거 레이블이 있어 추가 변경 없이 유지했습니다.
+
+---
+
+### 3. tokens/base.css 리팩토링
+
+- **대상**: `src/styles/tokens/base.css`
+- **관점**: `A11Y_UX_COPILOT` (기본 시스템 토큰의 접근성 및 레이아웃 안정성)
+- **제안 내용**:
+  - **Z-Index 계층 구조(Hierarchy) 정교화 (UX)**: 현재 `dropdown`, `modal`, `toast` 등이 독립적인 숫자로 정의되어 있으나, 레이아웃의 복잡도가 증가함에 따라 상호 간섭이 발생할 수 있습니다. 헤더(`header`), 내비게이션(`nav`), 스티키 요소(`sticky`) 등을 포함한 전역적인 Z-index 계층 구조를 명시적으로 정의하여 레이아웃 안정성을 확보합니다.
+  - **포커스 링(Focus Ring) 시인성 및 대비 강화 (A11y)**: `prefers-contrast: more` 환경에 대한 대응은 이미 존재하지만, 일반 환경에서도 `focus-visible` 상태에서 더 높은 대비와 명확한 오프셋을 제공할 수 있도록 토큰을 세분화합니다. 특히 컴포넌트 배경색과 포커스 링 사이의 대비를 보장하는 `--focus-ring-offset-color` 활용 가이드를 강화합니다.
+  - **모션 감수성 기반 이징(Easing) 토큰 보강 (UX)**: 단순한 `ease` 외에, 인지적 부하를 줄이고 반응성을 높이는 `cubic-bezier` 기반의 진입(`ease-out`), 퇴장(`ease-in`) 토큰을 추가합니다. 이는 OS의 모션 감소 설정(`prefers-reduced-motion`)과 연동되어 더 세밀한 인터랙션 제어를 가능하게 합니다.
+  - **터치 타깃 최적화 및 동적 대응 (UX/A11y)**: `--touch-target-min` 외에 모바일 환경(`pointer: coarse`)에서 자동으로 확장될 수 있는 가변형 터치 타깃 토큰을 검토하고, 밀도 높은 UI(Dense)를 위한 전용 토큰의 접근성 기준을 재점검합니다.
+  - **상태(State)별 불투명도 및 시맨틱 매핑**: `hover`, `active`, `disabled` 상태에 사용되는 불투명도 토큰을 단순히 숫자가 아닌 시맨틱한 이름으로 매핑하여, 컴포넌트 전반에서 일관된 피드백 강도를 유지하도록 합니다.
+- **처리 결과**:
+  - ✅ **Z-Index 계층 구조 토큰 추가**: `--z-base`, `--z-sticky`, `--z-header`, `--z-nav`, `--z-overlay`를 추가해 전역 우선순위를 명시했습니다.
+  - ✅ **모션 이징 토큰 보강**: `--motion-ease-in`, `--motion-ease-out`을 추가해 진입/퇴장 애니메이션 제어 폭을 확보했습니다.
+  - ✅ **기존 항목 확인**: 포커스 링(오프셋 색상 포함), 터치 타깃(포인터 coarse 대응), 상태 불투명도 토큰이 이미 반영돼 있어 유지했습니다.
+
+---
+
+### 4. scrollbar.css 리팩토링
+
+- **대상**: `src/styles/scrollbar.css`
+- **관점**: `A11Y_UX_COPILOT` (스크롤바 시인성 및 터치 조작성)
+- **제안 내용**:
+  - **가시성 강화 및 대비(Contrast) 보정 (A11y)**: 현재 4px~6px의 매우 얇은 스크롤바는 심미적으로는 우수하나 저시력 사용자에게는 인지가 어려울 수 있습니다. 스크롤 가능 영역에 포커스가 갔을 때(`focus-within`) 또는 실제 스크롤 중일 때 썸(Thumb)의 대비를 더 명확하게 높이는(예: 투명도 `0.4` → `0.8`) 토큰 전략을 제안합니다.
+  - **터치 환경(Coarse Pointer) 대응 (UX)**: 매우 좁은 너비의 스크롤바는 터치 환경에서 직접 드래그하여 조작하기 거의 불가능합니다. `@media (pointer: coarse)` 미디어 쿼리를 활용하여 모바일 기기에서는 네이티브 스크롤바를 유지하거나, 인터랙션 가능한 최소 너비(최소 10px 이상)를 확보하도록 개선합니다.
+  - **다크 모드 가독성 최적화**: 다크 모드에서 `text-muted` 기반의 낮은 투명도는 배경과 묻힐 위험이 큽니다. 테마별로 최적화된 스크롤바 전용 불투명도 변수를 도입하여 어떤 배경에서도 위치를 파악할 수 있도록 합니다.
+  - **포커스 상태 연동 (A11y)**: `scrollbar-color`와 `::-webkit-scrollbar-thumb` 스타일을 부모 요소의 포커스 상태와 연동하여, 키보드 내비게이션 사용자가 현재 어느 영역을 스크롤하고 있는지 시각적으로 명확히 인지할 수 있도록 보강합니다.
+- **처리 결과**:
+  - ✅ **대비/가시성 강화**: 썸 불투명도를 변수화하고 `:focus-within`, `:active`, `:hover`에 따라 대비가 상승하도록 조정했습니다.
+  - ✅ **터치 환경 대응**: `@media (pointer: coarse)`에서 스크롤바 폭을 10~12px로 확장하고 Firefox는 `auto`로 완화했습니다.
+  - ✅ **다크 모드 가독성 최적화**: `:root[data-theme="dark"]`에서 전용 불투명도 상향을 적용했습니다.
+  - ✅ **포커스 상태 연동**: `scrollbar-color`와 WebKit 썸이 포커스 상태에 반응하도록 연결했습니다.
+  - ⚠️ **스크롤 중 상태 감지**: CSS만으로는 “스크롤 중”을 직접 감지하기 어려워 `:active`/`focus-within`으로 대체했습니다.
+
+---
+
+### 5. prose.css 리팩토링
+
+- **대상**: `src/styles/prose.css`
+- **관점**: `A11Y_UX_COPILOT` (장문 콘텐츠의 가독성 및 글로벌 접근성)
+- **제안 내용**:
+  - **논리적 속성(Logical Properties) 도입 (RTL)**: 리스트의 `padding-left`와 인용문(blockquote)의 `border-left`를 각각 `padding-inline-start`, `border-inline-start`로 전환하여 다국어(RTL) 환경에서 레이아웃이 올바르게 반전되도록 개선합니다.
+  - **`!important` 의존도 낮추기 (Maintainability)**: 현재 거의 모든 속성에 사용된 `!important`는 스타일 상속과 커스터마이징을 방해합니다. CSS 레이어 또는 고유한 클래스 조합을 통해 우선순위를 관리하고, 불필요한 강제 적용을 제거합니다.
+  - **링크(Link) 가시성 및 인터랙션 강화 (A11y)**: 본문 내 링크가 텍스트와 명확히 구분되도록 `focus-visible` 상태에서 전용 포커스 링을 제공하고, `hover` 시 `text-underline-offset` 등을 조정하여 시각적 피드백을 풍부하게 합니다.
+  - **가독성 최적화 (UX)**: `text-muted` 색상이 본문 텍스트로서 WCAG AA 대비 표준(4.5:1)을 충족하는지 재점검하고, 글의 길이에 최적화된 행간(`line-height`)과 단락 간격(`margin-bottom`)을 정교하게 조정합니다.
+  - **시맨틱 마크업 지원 확대**: 마크다운에서 자주 쓰이는 `kbd`, `abbr`, `mark`, `cite` 등 추가적인 HTML 요소에 대한 접근성 중심의 기본 스타일을 보강합니다.
+- **처리 결과**:
+  - ✅ **RTL 논리 속성 도입**: `padding-inline-start`, `border-inline-start`, `padding-inline`로 전환해 RTL 레이아웃 대응을 강화했습니다.
+  - ✅ **`!important` 의존도 완화**: `.prose` 내부 선언의 강제 우선순위를 제거해 확장 가능성을 확보했습니다.
+  - ✅ **링크 접근성 보강**: `:focus-visible`에서 포커스 링과 언더라인 강조를 추가했습니다.
+  - ✅ **가독성 기본값 조정**: 본문 기본 색상을 `--color-text`로 상향하고, 단락/목록 간격을 정돈했습니다.
+  - ✅ **시맨틱 요소 지원**: `kbd`, `abbr`, `mark`, `cite` 기본 스타일을 추가했습니다.
+
+---
+
+### 6. base.css 리팩토링
+
+- **대상**: `src/styles/base.css`
+- **관점**: `A11Y_UX_COPILOT` (전역 베이스 스타일의 접근성 및 가독성 표준화)
+- **제안 내용**:
+  - **링크(Link)의 비시각적 식별성 강화 (A11y)**: 현재 전역적으로 `a { text-decoration: none; }`이 적용되어 있어, 색상만으로 링크를 구분해야 하는 상황은 WCAG 2.1 기준(성공 기준 1.4.1)에 위배될 가능성이 큽니다. 본문 영역 등에서는 기본 밑줄을 유지하거나, 최소한 포커스/호버 시 밑줄 외의 추가적인 시각적 단서를 제공하도록 개선합니다.
+  - **논리적 속성(Logical Properties) 전면 전환 (RTL)**: `pre:not(.shiki)`의 `padding`, `border-radius` 등을 논리적 속성(`padding-inline`, `border-start-start-radius` 등)으로 교체하여 RTL 환경에서의 레이아웃 일관성을 확보합니다.
+  - **전역 포커스 링(Focus Ring) SSOT 통합 (A11y)**: `[tabindex="-1"]:focus` 외에도, 모든 대화형 요소에 대해 디자인 시스템의 `--focus-ring-*` 토큰을 활용한 고대비 포커스 스타일을 전역적으로 선언하여 키보드 사용자의 조작성을 보장합니다.
+  - **타이포그래피 렌더링 및 가독성 미세 조정 (UX)**: `text-wrap: balance`와 `pretty`를 제목과 본문에 적절히 배분하여 가독성을 높이고, `optimizeLegibility` 옵션이 특정 브라우저에서 성능 문제를 일으키지 않는지 검토하여 안전 가드를 보강합니다.
+  - **모바일 뷰포트 및 줌(Zoom) 대응 표준화**: 폰트 크기 자동 확대 방지(`text-size-adjust`) 외에도, 사용자가 브라우저 줌 기능을 사용할 때 레이아웃이 깨지지 않도록 상대 단위(`rem`, `em`) 사용 원칙을 재점검합니다.
+- **처리 결과**: (분석 완료, 구현 대기 중)
+
+---
+
+### 7. design-system/base.css 리팩토링
+
+- **대상**: `src/styles/design-system/base.css`
+- **관점**: `A11Y_UX_COPILOT` (디자인 시스템 전역 구성 요소의 접근성 및 인터랙션 품질)
+- **제안 내용**:
+  - **포커스 링(Focus Ring) 논리적 일관성 확보 (A11y)**: `.ds-focus-ring`과 `.ds-dropdown-item`에 적용된 `box-shadow` 기반 포커스 스타일이 모든 대화형 컴포넌트(Button, Input 등)에서 상속되거나 동일한 토큰 로직을 따르는지 전수 점검합니다. 특히 `forced-colors` 모드에서의 `outline` 전환 로직을 믹스인(Mixin)이나 공통 유틸리티로 추상화하여 중복을 제거합니다.
+  - **Range 입력기 접근성 안전장치(Safety Guard) 보강**: `input[type="range"]`의 기본 포커스 스타일을 제거하는 강력한 초기화(`!important`)가 적용되어 있습니다. 이로 인해 개별 컴포넌트에서 포커스 스타일 구현을 누락할 경우 키보드 사용자가 컨트롤 위치를 잃을 위험이 큽니다. 전역 레벨에서 슬라이더 썸(Thumb)에 대한 최소한의 `focus-visible` 스타일 가이드를 주석으로 명시하거나 기본 안전 스타일을 제공합니다.
+  - **논리적 애니메이션 및 트랜지션 전환 (RTL)**: `.ds-motion:hover`에서 사용된 `translateBlock(-2px)`(가칭)을 표준 논리적 속성이나 CSS 변수 기반의 방향 중립적 이동 방식으로 전환합니다. 수직 이동은 LTR/RTL에 영향이 적으나, 향후 수평 이동 애니메이션 추가를 대비하여 `inset-block` 등의 논리적 위치 조정을 우선 고려합니다.
+  - **상태 인터랙션 강도 최적화 (UX)**: `hover` 시의 불투명도 변화와 `translate` 이동이 동시에 발생할 때, 사용자에게 전달되는 "깊이감"이 디자인 시스템의 의도와 맞는지 재점검합니다. 특히 저사양 기기나 모션 감수성이 예민한 사용자를 위해 `prefers-reduced-motion` 대응 시 `opacity` 변화 폭을 더 완만하게 조정합니다.
+  - **전역 터치 타깃 유틸리티 도입 검토**: 토큰으로 정의된 `--touch-target-min`을 실제 클래스(`.ds-touch-target`)로 구현하여, 작은 아이콘이나 링크에 대해 일관된 최소 클릭 영역을 보장할 수 있는 도구를 제공합니다.
+- **처리 결과**: (분석 완료, 구현 대기 중)
+
+---
+
+### 8. design-system/a11y.css 리팩토링
+
+- **대상**: `src/styles/design-system/a11y.css`
+- **관점**: `A11Y_UX_COPILOT` (접근성 보조 도구의 신뢰성 및 가시성 확보)
+- **제안 내용**:
+  - **스킵 링크(Skip Link) 포커스 시인성 강화 (A11y)**: 현재 `transform`만으로 노출 여부를 제어하고 있습니다. 포커스 시 디자인 시스템의 표준 포커스 링(`.ds-focus-ring` 로직)을 적용하여, 고대비 환경이나 다양한 테마 배경에서도 링크의 위치를 명확히 식별할 수 있도록 개선합니다.
+  - **Safe Area 및 반응형 위치 최적화 (UX)**: 노치가 있는 모바일 기기 상단에서 스킵 링크가 가려지지 않도록 `inset-block-start`에 `var(--safe-area-top)`을 고려한 여백 계산식을 적용합니다.
+  - **전역 접근성 유틸리티 통합 (Maintainability)**: 파일명이 `a11y.css`인 만큼, 스킵 링크 외에도 프로젝트 전반에서 쓰이는 `sr-only` (Visually Hidden) 패턴을 표준 토큰을 소비하는 `.ds-visually-hidden` 클래스로 정의하여 관리 포인트를 일원화합니다.
+  - **고대비 모드(Forced Colors) 가시성 보장**: `forced-colors: active` 환경에서 스킵 링크가 나타났을 때, 배경색(`Canvas`)과 텍스트색(`CanvasText`)의 대비가 시스템 설정에 따라 명확히 유지되는지 점검하고 필요 시 `outline`을 명시합니다.
+  - **애니메이션 접근성 (UX)**: `prefers-reduced-motion` 대응 시 단순히 `transition: none`을 넘어, 즉각적인 노출(`transform: translateY(0)`)이 부드럽게 느껴지도록 불투명도(`opacity`) 변화를 활용한 폴백 스타일을 검토합니다.
+- **처리 결과**: (분석 완료, 구현 대기 중)
+
+---
+
+### 9. tokens/a11y-motion.css 리팩토링
+
+- **대상**: `src/styles/tokens/a11y-motion.css`
+- **관점**: `A11Y_UX_COPILOT` (접근성 특성 대응 및 사용자 선호도 동기화)
+- **제안 내용**:
+  - **터치 타깃(Touch Target) 세분화 및 하위 호환성 (UX)**: `pointer: coarse` 환경에서 최소 영역(`min`)과 밀집 영역(`dense`) 외에도, 상호작용의 중요도에 따른 최적 영역(`optimal`) 토큰을 추가하여 모바일에서의 오조작을 방지합니다.
+  - **고대비 모드(High Contrast) 시각 보정 정교화 (A11y)**: `prefers-contrast: more` 시 보더 두께와 불투명도 조정 외에도, 포커스 링의 오프셋(`--focus-ring-offset`)과 스타일(`--focus-ring-style`)을 대시(dashed) 등으로 변경하여 시인성을 극대화합니다.
+  - **투명도 감소(Reduced Transparency) 대응 강화**: `prefers-reduced-transparency` 환경에서 `--alpha-scrim` 값을 `1`에 가깝게 설정하여, 배경 간섭 없이 오버레이 콘텐츠에 집중할 수 있도록 가독성 임계값을 상향 조정합니다.
+  - **모션 이징(Easing)의 접근성 프로필 추가 (UX)**: 단순히 시간을 `0ms`로 줄이는 것 외에, 모션을 허용하는 사용자에게도 인지적 부하가 적은 "접근성 중심 이징 커브" 토큰을 정의하여 부드러우면서도 어지러움이 없는 인터랙션을 제공합니다.
+  - **다크 모드 고대비 시나리오 통합**: 테마 속성(`data-theme="dark"`)과 미디어 쿼리를 조합하여, 어두운 배경에서의 고대비 요구 사항(예: 더 밝은 보더나 더 넓은 글로우 효과)을 세밀하게 정의합니다.
+- **처리 결과**: (분석 완료, 구현 대기 중)

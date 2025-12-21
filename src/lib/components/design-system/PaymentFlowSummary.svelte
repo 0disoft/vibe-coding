@@ -2,11 +2,12 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
 
-  import { DsCard, DsDefinitionList } from "$lib/components/design-system";
+  import { DsCard, DsDefinitionList, DsIcon, DsSeparator } from "$lib/components/design-system";
+  import * as m from "$lib/paraglide/messages.js";
 
   import type { PaymentSummaryItem } from "./payment-types";
 
-  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
     title?: string;
     subtitle?: string;
     items?: PaymentSummaryItem[];
@@ -19,21 +20,24 @@
     note?: string;
     children?: Snippet;
     footer?: Snippet;
+    /** Heading level for the summary title (default: 4) */
+    headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   }
 
   let {
-    title = "Payment summary",
+    title = m.payment_summary_title(),
     subtitle,
     items,
-    discountLabel = "Discount",
+    discountLabel = m.payment_summary_discount(),
     discountValue,
-    taxLabel = "Tax",
+    taxLabel = m.payment_summary_tax(),
     taxValue,
-    totalLabel = "Total",
+    totalLabel = m.payment_summary_total(),
     totalValue,
     note,
     children: childrenSnippet,
     footer,
+    headingLevel = 4,
     class: className = "",
     ...rest
   }: Props = $props();
@@ -53,6 +57,8 @@
       !!totalValue ||
       !!note,
   );
+
+  let headingTag = $derived(`h${headingLevel}`);
 </script>
 
 <DsCard {...rest} class={["ds-payment-summary", className].filter(Boolean).join(" ")}>
@@ -60,10 +66,12 @@
     {#snippet header()}
       <div class="ds-payment-summary-header">
         {#if title}
-          <div class="text-h4 font-semibold">{title}</div>
+          <svelte:element this={headingTag} class="text-h4 font-semibold">
+            {title}
+          </svelte:element>
         {/if}
         {#if subtitle}
-          <div class="text-helper text-muted-foreground">{subtitle}</div>
+          <p class="text-helper text-muted-foreground mt-1">{subtitle}</p>
         {/if}
       </div>
     {/snippet}
@@ -75,33 +83,48 @@
         {@render childrenSnippet()}
       {:else}
         {#if definitionItems.length}
-          <DsDefinitionList items={definitionItems} variant="stacked" />
+          <div class="ds-payment-summary-items">
+            <DsDefinitionList items={definitionItems} variant="stacked" />
+          </div>
         {/if}
-        {#if showLines}
-          <div class="ds-payment-summary-lines">
-            {#if discountValue !== undefined && discountValue !== null}
-              <div class="ds-payment-summary-line">
-                <span>{discountLabel}</span>
-                <span>{discountValue}</span>
-              </div>
+
+        {#if showLines || totalValue}
+          <div class="ds-payment-summary-calculator space-y-3 mt-4">
+            {#if definitionItems.length}
+              <DsSeparator class="opacity-50" />
             {/if}
-            {#if taxValue !== undefined && taxValue !== null}
-              <div class="ds-payment-summary-line">
-                <span>{taxLabel}</span>
-                <span>{taxValue}</span>
+            
+            <dl class="ds-payment-summary-lines space-y-2 text-body-secondary">
+              {#if discountValue !== undefined && discountValue !== null}
+                <div class="flex justify-between items-center">
+                  <dt>{discountLabel}</dt>
+                  <dd class="font-medium text-success">{discountValue}</dd>
+                </div>
+              {/if}
+              {#if taxValue !== undefined && taxValue !== null}
+                <div class="flex justify-between items-center">
+                  <dt>{taxLabel}</dt>
+                  <dd class="font-medium">{taxValue}</dd>
+                </div>
+              {/if}
+            </dl>
+
+            {#if totalValue}
+              <div class="ds-payment-summary-total-wrapper pt-2">
+                <DsSeparator class="mb-3" />
+                <dl class="ds-payment-summary-total flex justify-between items-center">
+                  <dt class="text-body font-semibold">{totalLabel}</dt>
+                  <dd class="text-h3 font-bold text-primary">{totalValue}</dd>
+                </dl>
               </div>
             {/if}
           </div>
         {/if}
-        {#if totalValue}
-          <div class="ds-payment-summary-total">
-            <span>{totalLabel}</span>
-            <span>{totalValue}</span>
-          </div>
-        {/if}
+
         {#if note}
-          <div class="ds-payment-summary-note text-helper text-muted-foreground">
-            {note}
+          <div class="ds-payment-summary-note mt-6 p-3 bg-muted/30 border border-border rounded-md flex items-start gap-2 text-helper text-muted-foreground">
+            <DsIcon name="info" size="xs" class="mt-0.5 shrink-0" />
+            <span>{note}</span>
           </div>
         {/if}
       {/if}

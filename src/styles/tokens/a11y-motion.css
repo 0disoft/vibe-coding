@@ -1,0 +1,32 @@
+@media (pointer: coarse) {
+  :root {
+    --touch-target-min: var(--touch-target-min-coarse);
+    --touch-target-dense: var(--touch-target-dense-coarse);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --alpha-scrim: 0.7;
+    --opacity-hover: 1;
+    --opacity-disabled: 0.75;
+    --focus-ring-width: 3px;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --alpha-scrim: 0.85;
+    --opacity-hover: 1;
+    --opacity-disabled: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  :root {
+    --motion-duration-fast: var(--motion-duration-instant);
+    --motion-duration-normal: var(--motion-duration-instant);
+    --motion-duration-slow: var(--motion-duration-instant);
+  }
+}

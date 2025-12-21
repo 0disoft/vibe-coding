@@ -49,8 +49,30 @@ function flattenKeys(obj: Record<string, unknown>, prefix = ''): string[] {
 /** 문자열에서 {placeholder} 토큰 추출 */
 function extractPlaceholders(value: unknown): string[] {
 	if (typeof value !== 'string') return [];
-	const matches = value.match(/\{[^}]+\}/g);
-	return matches ? matches.sort() : [];
+	const placeholders = new Set<string>();
+	let depth = 0;
+	let start = -1;
+
+	for (let i = 0; i < value.length; i += 1) {
+		const ch = value[i];
+		if (ch === '{') {
+			if (depth === 0) start = i + 1;
+			depth += 1;
+			continue;
+		}
+		if (ch === '}') {
+			depth -= 1;
+			if (depth === 0 && start >= 0) {
+				const token = value.slice(start, i).trim();
+				const name = token.split(/[\s,]+/)[0];
+				if (name) placeholders.add(name);
+				start = -1;
+			}
+			if (depth < 0) depth = 0;
+		}
+	}
+
+	return [...placeholders].sort();
 }
 
 /** 중첩 객체에서 모든 문자열 값의 플레이스홀더를 키별로 추출 */
@@ -70,6 +92,49 @@ function extractAllPlaceholders(
 	}
 	return result;
 }
+
+function walkStringValues(
+	obj: Record<string, unknown>,
+	onValue: (key: string, value: string) => void,
+	prefix = ''
+) {
+	for (const [k, v] of Object.entries(obj)) {
+		if (k === '$schema') continue;
+		const path = prefix ? `${prefix}.${k}` : k;
+		if (typeof v === 'string') {
+			onValue(path, v);
+		} else if (v && typeof v === 'object' && !Array.isArray(v)) {
+			walkStringValues(v as Record<string, unknown>, onValue, path);
+		}
+	}
+}
+
+function getValueByPath(obj: Record<string, unknown>, path: string): unknown {
+	const parts = path.split('.');
+	let current: unknown = obj;
+	for (const part of parts) {
+		if (!current || typeof current !== 'object' || Array.isArray(current))
+			return undefined;
+		current = (current as Record<string, unknown>)[part];
+	}
+	return current;
+}
+
+function extractRtlMarkers(value: unknown): string {
+	if (typeof value !== 'string') return '';
+	return value.replace(/[^\u200E\u200F\u061C]/g, '');
+}
+
+const A11Y_KEY_PATTERN = /(^|\.)[^.]+_(aria_label|sr_only)$/;
+const RTL_LOCALES = new Set(['ar', 'fa', 'he', 'ur']);
+const LENGTH_WARNING_LIMIT = 40;
+const LENGTH_WARNING_PATTERNS = [
+	/(^|\.)button/i,
+	/(^|\.)tab/i,
+	/(^|\.)cta/i,
+	/(^|\.)label/i,
+	/(^|\.)action/i,
+];
 
 describe('messages/', () => {
 	let messageFiles: string[] = [];
@@ -161,5 +226,103 @@ describe('messages/', () => {
 				).toEqual(basePh);
 			}
 		}
+	});
+
+	it('모든 언어 파일의 문자열은 비어 있거나 키와 동일할 수 없다', () => {
+		const invalidValues: string[] = [];
+
+		for (const file of messageFiles) {
+			walkStringValues(contentByFile[file], (key, value) => {
+				const trimmed = value.trim();
+				if (!trimmed || trimmed === key) {
+					invalidValues.push(`${file}:${key}`);
+				}
+			});
+		}
+
+		expect(invalidValues, '비어 있거나 키와 동일한 메시지').toEqual([]);
+	});
+
+	it('접근성 전용 키는 모든 언어에 존재해야 한다', () => {
+		const baseKeys = keysByFile['en.json'] ?? [];
+		const a11yKeys = baseKeys.filter((key) => A11Y_KEY_PATTERN.test(key));
+
+		for (const file of messageFiles) {
+			const missing = a11yKeys.filter((key) => !keysByFile[file]?.includes(key));
+			expect(missing, `${file} 접근성 키 누락`).toEqual([]);
+		}
+	});
+
+	it('공간 제약 UI 문자열 길이 경고를 출력한다', () => {
+		const warnings: string[] = [];
+
+		for (const file of messageFiles) {
+			walkStringValues(contentByFile[file], (key, value) => {
+				if (!LENGTH_WARNING_PATTERNS.some((pattern) => pattern.test(key)))
+					return;
+				if (value.trim().length > LENGTH_WARNING_LIMIT) {
+					warnings.push(`${file}:${key}(${value.trim().length})`);
+				}
+			});
+		}
+
+		if (warnings.length > 0) {
+			const preview = warnings.slice(0, 10).join(', ');
+			console.warn(
+				`[messages] 길이 경고 ${warnings.length}건 (limit=${LENGTH_WARNING_LIMIT}): ${preview}`
+			);
+		}
+
+		expect(true).toBe(true);
+	});
+
+	it('RTL 마커가 포함된 키는 기준 언어와 동일해야 한다', () => {
+		const baseMarkers: Record<string, string> = {};
+		walkStringValues(contentByFile['en.json'], (key, value) => {
+			const markers = extractRtlMarkers(value);
+			if (markers) baseMarkers[key] = markers;
+		});
+
+		for (const file of messageFiles) {
+			const locale = file.replace('.json', '');
+			if (!RTL_LOCALES.has(locale)) continue;
+
+			const targetMarkers: Record<string, string> = {};
+			walkStringValues(contentByFile[file], (key, value) => {
+				const markers = extractRtlMarkers(value);
+				if (markers) targetMarkers[key] = markers;
+			});
+
+			const mismatches = Object.entries(baseMarkers)
+				.filter(([key, markers]) => (targetMarkers[key] ?? '') !== markers)
+				.map(([key]) => key)
+				.sort();
+
+			expect(mismatches, `${file} RTL 마커 불일치`).toEqual([]);
+		}
+	});
+
+	it('RTL 마커 추가 사용은 경고로 안내한다', () => {
+		const warnings: string[] = [];
+
+		for (const file of messageFiles) {
+			const locale = file.replace('.json', '');
+			if (!RTL_LOCALES.has(locale)) continue;
+
+			walkStringValues(contentByFile[file], (key, value) => {
+				const markers = extractRtlMarkers(value);
+				if (!markers) return;
+				const baseValue = getValueByPath(contentByFile['en.json'], key);
+				const baseMarkers = extractRtlMarkers(baseValue);
+				if (!baseMarkers) warnings.push(`${file}:${key}`);
+			});
+		}
+
+		if (warnings.length > 0) {
+			const preview = warnings.slice(0, 10).join(', ');
+			console.warn(`[messages] RTL 마커 추가 사용 ${warnings.length}건: ${preview}`);
+		}
+
+		expect(true).toBe(true);
 	});
 });

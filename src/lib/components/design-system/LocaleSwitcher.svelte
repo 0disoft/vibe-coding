@@ -4,14 +4,15 @@
 
 	import { page } from "$app/state";
 
-	import {
-		buildLocalizedUrl,
-		getLocaleFromUrl,
-		getLocaleInfo,
-		locales,
-		writeLocaleCookie,
-		type Locale,
-	} from "$lib/shared/utils/locale";
+import {
+	buildLocalizedUrl,
+	getLocaleFromUrl,
+	getLocaleInfo,
+	locales,
+	writeLocaleCookie,
+	type Locale,
+	type LocaleInfo,
+} from "$lib/shared/utils/locale";
 	import DsDropdown from "./Dropdown.svelte";
 	import DsDropdownItem from "./DropdownItem.svelte";
 	import DsIcon from "./Icon.svelte";
@@ -27,26 +28,30 @@
 		value?: Locale;
 		/** locale 변경 콜백(선택) */
 		onValueChange?: (next: Locale) => void;
-		/** 검색 UI 표시 여부(기본: locale이 많으면 자동) */
-		showSearch?: boolean;
-		searchPlaceholder?: string;
-		/** 현재 언어 항목 클릭 방지 */
-		disableCurrent?: boolean;
-		/** 변경 안내(스크린리더) */
-		announce?: boolean;
+	/** 검색 UI 표시 여부(기본: locale이 많으면 자동) */
+	showSearch?: boolean;
+	searchPlaceholder?: string;
+	emptyText?: string;
+	announceMessage?: (info: LocaleInfo) => string;
+	/** 현재 언어 항목 클릭 방지 */
+	disableCurrent?: boolean;
+	/** 변경 안내(스크린리더) */
+	announce?: boolean;
 	}
 
 	let {
 		label = "Language",
 		triggerTestId,
 		value,
-		onValueChange,
-		showSearch,
-		searchPlaceholder = "Search languages…",
-		disableCurrent = true,
-		announce = true,
-		class: className = "",
-		...rest
+	onValueChange,
+	showSearch,
+	searchPlaceholder = "Search languages…",
+	emptyText = "No languages found.",
+	announceMessage,
+	disableCurrent = true,
+	announce = true,
+	class: className = "",
+	...rest
 	}: Props = $props();
 
 	const searchId = $props.id();
@@ -113,11 +118,14 @@
 		// Paraglide가 쿠키를 굽더라도 옵션(Path/SameSite/Secure/Max-Age)을 SSOT로 한 번 더 고정
 		writeLocaleCookie(next);
 		onValueChange?.(next);
-		if (announce) {
-			const info = getLocaleInfo(next);
-			void announceLive(`Language switched to ${info.englishName}.`);
-		}
+	if (announce) {
+		const info = getLocaleInfo(next);
+		const message = announceMessage
+			? announceMessage(info)
+			: `Language switched to ${info.englishName}.`;
+		void announceLive(message);
 	}
+}
 
 	function handleOpenChange(next: boolean) {
 		open = next;
@@ -180,7 +188,7 @@
 			<div class="min-h-0 overflow-y-auto overflow-x-visible overscroll-contain thin-scrollbar">
 				{#if filtered.length === 0}
 					<div class="px-3 py-2 text-sm text-muted-foreground">
-						No languages found.
+						{emptyText}
 					</div>
 				{:else}
 					{#each filtered as item (item.locale)}
@@ -205,7 +213,9 @@
 						>
 							{#snippet children()}
 								<span class="flex min-w-0 items-center justify-between gap-3">
-									<span class="min-w-0 truncate">{item.info.selfName}</span>
+									<span class="min-w-0 truncate" dir={item.info.dir}>
+										{item.info.selfName}
+									</span>
 									<span
 										class="flex items-center gap-1 text-xs text-muted-foreground"
 									>

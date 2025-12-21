@@ -127,9 +127,13 @@ export type {
 	PaymentOptionAvailability,
 	PaymentMethodType,
 	PaymentOption,
-	PaymentSummaryItem
+	PaymentSummaryItem,
+	PaymentAvailabilityResult,
+	UnavailabilityReason,
+	CurrencyCode,
+	RegionCode
 } from './payment-types';
-export { isPaymentOptionAvailable } from './payment-types';
+export { isPaymentOptionAvailable, checkPaymentOptionAvailability } from './payment-types';
 // Types
 export { toIntentCss } from './types';
 export { default as DsVisuallyHidden } from './VisuallyHidden.svelte';

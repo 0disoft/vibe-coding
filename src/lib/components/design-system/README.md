@@ -5,7 +5,10 @@
 - 컴포넌트 소스: `src/lib/components/design-system/`
 - 배럴 export: `src/lib/components/design-system/index.ts`
 - 토큰(SSOT): `src/styles/design-system.tokens.css`
+- 토큰 분리: src/styles/tokens/ (index: src/styles/design-system.tokens.css)
 - 스타일: `src/styles/design-system.css`
+- 스타일 분리: `src/styles/design-system/*.css` (index: `src/styles/design-system.css`)
+- 스타일 상세: `src/styles/design-system/` 및 `src/styles/design-system/components/`
 - 쇼케이스: `/design-system` (소스: `src/routes/design-system/_sections/`)
 
 ## 사용 규칙

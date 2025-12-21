@@ -2,7 +2,13 @@
   import * as m from '$lib/paraglide/messages.js';
   import { localizeUrl } from '$lib/paraglide/runtime.js';
 
-  import { DsDropdown, DsDropdownItem, DsIconButton } from '$lib/components/design-system';
+  import {
+    DsDropdown,
+    DsDropdownItem,
+    DsIconButton,
+    DsLiveRegion
+  } from '$lib/components/design-system';
+  import { maskEmail } from '$lib/shared/utils/privacy';
 
   // TODO: Better-Auth 연동 시 실제 인증 상태로 교체
   // 현재는 UI 확인용 mock 상태
@@ -30,25 +36,22 @@
     showEmail = false; // 상태 변경 시 이메일 숨김으로 리셋
   }
 
-  // 이메일 마스킹 (예: t***@e***.c**)
-  function maskEmail(email: string): string {
-    const [local, domain] = email.split('@');
-    if (!domain) return '***';
-    const maskedLocal = local.length > 1 ? `${local[0]}***` : '***';
-    // 도메인도 마스킹 (각 부분의 첫 글자 제외)
-    const maskedDomain = domain
-      .split('.')
-      .map((part) => (part.length > 1 ? `${part[0]}${'*'.repeat(part.length - 1)}` : part))
-      .join('.');
-    return `${maskedLocal}@${maskedDomain}`;
+  let liveRegion: { announce: (message: string) => void } | null = null;
+
+  function toggleEmailVisibility() {
+    showEmail = !showEmail;
+    liveRegion?.announce(
+      showEmail ? m.user_menu_email_revealed() : m.user_menu_email_hidden()
+    );
   }
 </script>
+
+<DsLiveRegion bind:this={liveRegion} politeness="polite" />
 
 <DsDropdown
   align="end"
   focusOnOpen="keyboard"
   menuClass="w-56 max-h-80 overflow-y-auto thin-scrollbar"
-  itemSelector='[role="menuitem"]'
   onOpenChange={handleMenuOpenChange}
 >
   {#snippet trigger(props)}
@@ -74,11 +77,15 @@
           <DsIconButton
             size="sm"
             variant="ghost"
-            label={showEmail ? '이메일 숨기기' : '이메일 보기'}
+            label={showEmail ? m.user_menu_hide_email() : m.user_menu_show_email()}
             icon={showEmail ? 'eye-off' : 'eye'}
+            role="menuitemcheckbox"
+            aria-checked={showEmail}
+            tabindex={-1}
+            data-ds-dropdown-item="true"
             onclick={(e) => {
               e.stopPropagation();
-              showEmail = !showEmail;
+              toggleEmailVisibility();
             }}
           />
         </div>

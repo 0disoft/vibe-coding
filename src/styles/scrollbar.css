@@ -3,16 +3,42 @@
    얇고 세련된 스크롤바 스타일
    ═══════════════════════════════════════════════════════════════════════════ */
 
+:root {
+	--scrollbar-size: 6px;
+	--scrollbar-size-thin: 4px;
+	--scrollbar-size-coarse: 12px;
+	--scrollbar-size-thin-coarse: 10px;
+	--scrollbar-thumb-opacity: 0.4;
+	--scrollbar-thumb-opacity-hover: 0.6;
+	--scrollbar-thumb-opacity-focus: 0.8;
+	--scrollbar-thumb-opacity-thin: 0.3;
+	--scrollbar-thumb-opacity-thin-hover: 0.5;
+	--scrollbar-thumb-opacity-thin-focus: 0.7;
+}
+
+:root[data-theme="dark"] {
+	--scrollbar-thumb-opacity: 0.6;
+	--scrollbar-thumb-opacity-hover: 0.8;
+	--scrollbar-thumb-opacity-focus: 0.9;
+	--scrollbar-thumb-opacity-thin: 0.45;
+	--scrollbar-thumb-opacity-thin-hover: 0.7;
+	--scrollbar-thumb-opacity-thin-focus: 0.85;
+}
+
 html {
 	scrollbar-width: thin;
 	/* Firefox */
-	scrollbar-color: oklch(var(--color-text-muted) / 0.4) transparent;
+	scrollbar-color: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity)) transparent;
+}
+
+html:focus-within {
+	scrollbar-color: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity-focus)) transparent;
 }
 
 /* Webkit (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-	width: 6px;
-	height: 6px;
+	width: var(--scrollbar-size);
+	height: var(--scrollbar-size);
 }
 
 ::-webkit-scrollbar-track {
@@ -20,12 +46,17 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-	background: oklch(var(--color-text-muted) / 0.4);
+	background: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity));
 	border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: oklch(var(--color-text-muted) / 0.6);
+	background: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity-hover));
+}
+
+::-webkit-scrollbar-thumb:active,
+html:focus-within::-webkit-scrollbar-thumb {
+	background: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity-focus));
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -35,11 +66,15 @@ html {
 
 .thin-scrollbar {
 	scrollbar-width: thin;
-	scrollbar-color: oklch(var(--color-text-muted) / 0.3) transparent;
+	scrollbar-color: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity-thin)) transparent;
+}
+
+.thin-scrollbar:focus-within {
+	scrollbar-color: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity-thin-focus)) transparent;
 }
 
 .thin-scrollbar::-webkit-scrollbar {
-	width: 4px;
+	width: var(--scrollbar-size-thin);
 }
 
 .thin-scrollbar::-webkit-scrollbar-track {
@@ -47,10 +82,35 @@ html {
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb {
-	background: oklch(var(--color-text-muted) / 0.3);
+	background: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity-thin));
 	border-radius: 2px;
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
-	background: oklch(var(--color-text-muted) / 0.5);
+	background: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity-thin-hover));
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:active,
+.thin-scrollbar:focus-within::-webkit-scrollbar-thumb {
+	background: oklch(var(--color-text-muted) / var(--scrollbar-thumb-opacity-thin-focus));
+}
+
+@media (pointer: coarse) {
+	html {
+		scrollbar-width: auto;
+	}
+
+	::-webkit-scrollbar {
+		width: var(--scrollbar-size-coarse);
+		height: var(--scrollbar-size-coarse);
+	}
+
+	.thin-scrollbar {
+		scrollbar-width: auto;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar {
+		width: var(--scrollbar-size-thin-coarse);
+		height: var(--scrollbar-size-thin-coarse);
+	}
 }

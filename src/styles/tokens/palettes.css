@@ -1,0 +1,319 @@
+/* --------------------------------------------------------------------------
+   Theme Palette (Accent)
+   - data-theme: 적용(light/dark)
+   - data-theme-palette: airy-blue/misty-lavender/sage-breeze/cozy-coral
+   - palette는 배경/텍스트/액센트 주요 색상을 override
+   -------------------------------------------------------------------------- */
+
+[data-theme="light"][data-theme-palette="airy-blue"] {
+  /* Airy Blue: 신뢰/청량 (pastel sky blue) - Hue 240 */
+  --raw-color-background: 97% 0.02 240;
+  --raw-color-surface: 99% 0.01 240;
+  --raw-color-surface-hover: 95% 0.03 240;
+  --raw-color-border: 90% 0.02 240;
+  --raw-color-input: 97% 0.02 240;
+  --raw-color-sidebar: 97% 0.02 240;
+  --raw-color-overlay: 22% 0.02 240;
+  --raw-color-scrim: 22% 0.02 240;
+
+  --raw-color-text: 25% 0.05 240;
+  --raw-color-text-muted: 40% 0.05 240;
+
+  --raw-color-accent: 94% 0.04 240;
+  --raw-color-on-accent: 25% 0.05 240;
+
+  --raw-color-primary: 60% 0.16 240;
+  --raw-color-primary-hover: 55% 0.16 240;
+  --raw-color-on-primary: 98% 0.01 240;
+
+  --raw-color-secondary: 92% 0.04 240;
+  --raw-color-on-secondary: 25% 0.05 240;
+
+  --raw-color-selected: 90% 0.05 240;
+  --raw-color-on-selected: 25% 0.05 240;
+
+  --raw-color-link: 55% 0.16 240;
+  --raw-color-on-link: 98% 0.01 240;
+}
+
+[data-theme="light"][data-theme-palette="misty-lavender"] {
+  /* Misty Lavender: 차분/창의 (pastel lilac) - Hue 290 */
+  --raw-color-background: 97% 0.02 290;
+  --raw-color-surface: 99% 0.01 290;
+  --raw-color-surface-hover: 95% 0.03 290;
+  --raw-color-border: 90% 0.02 290;
+  --raw-color-input: 97% 0.02 290;
+  --raw-color-sidebar: 97% 0.02 290;
+  --raw-color-overlay: 22% 0.02 290;
+  --raw-color-scrim: 22% 0.02 290;
+
+  --raw-color-text: 25% 0.05 290;
+  --raw-color-text-muted: 40% 0.05 290;
+
+  --raw-color-accent: 94% 0.04 290;
+  --raw-color-on-accent: 25% 0.05 290;
+
+  --raw-color-primary: 60% 0.16 290;
+  --raw-color-primary-hover: 55% 0.16 290;
+  --raw-color-on-primary: 98% 0.01 290;
+
+  --raw-color-secondary: 92% 0.04 290;
+  --raw-color-on-secondary: 25% 0.05 290;
+
+  --raw-color-selected: 90% 0.05 290;
+  --raw-color-on-selected: 25% 0.05 290;
+
+  --raw-color-link: 55% 0.16 290;
+  --raw-color-on-link: 98% 0.01 290;
+}
+
+[data-theme="light"][data-theme-palette="sage-breeze"] {
+  /* Sage Breeze: 자연/휴식 (pastel sage/teal) - Hue 150 */
+  --raw-color-background: 97% 0.02 150;
+  --raw-color-surface: 99% 0.01 150;
+  --raw-color-surface-hover: 95% 0.03 150;
+  --raw-color-border: 90% 0.02 150;
+  --raw-color-input: 97% 0.02 150;
+  --raw-color-sidebar: 97% 0.02 150;
+  --raw-color-overlay: 22% 0.02 150;
+  --raw-color-scrim: 22% 0.02 150;
+
+  --raw-color-text: 25% 0.05 150;
+  --raw-color-text-muted: 40% 0.05 150;
+
+  --raw-color-accent: 94% 0.04 150;
+  --raw-color-on-accent: 25% 0.05 150;
+
+  --raw-color-primary: 60% 0.16 150;
+  --raw-color-primary-hover: 55% 0.16 150;
+  --raw-color-on-primary: 98% 0.01 150;
+
+  --raw-color-secondary: 92% 0.04 150;
+  --raw-color-on-secondary: 25% 0.05 150;
+
+  --raw-color-selected: 90% 0.05 150;
+  --raw-color-on-selected: 25% 0.05 150;
+
+  --raw-color-link: 55% 0.16 150;
+  --raw-color-on-link: 98% 0.01 150;
+}
+
+[data-theme="light"][data-theme-palette="cozy-coral"] {
+  /* Cozy Coral: 따뜻/친근 (pastel coral) - Hue 35 */
+  --raw-color-background: 97% 0.02 35;
+  --raw-color-surface: 99% 0.01 35;
+  --raw-color-surface-hover: 95% 0.03 35;
+  --raw-color-border: 90% 0.02 35;
+  --raw-color-input: 97% 0.02 35;
+  --raw-color-sidebar: 97% 0.02 35;
+  --raw-color-overlay: 22% 0.02 35;
+  --raw-color-scrim: 22% 0.02 35;
+
+  --raw-color-text: 25% 0.05 35;
+  --raw-color-text-muted: 40% 0.05 35;
+
+  --raw-color-accent: 94% 0.04 35;
+  --raw-color-on-accent: 25% 0.05 35;
+
+  --raw-color-primary: 60% 0.16 35;
+  --raw-color-primary-hover: 55% 0.16 35;
+  --raw-color-on-primary: 98% 0.01 35;
+
+  --raw-color-secondary: 92% 0.04 35;
+  --raw-color-on-secondary: 25% 0.05 35;
+
+  --raw-color-selected: 90% 0.05 35;
+  --raw-color-on-selected: 25% 0.05 35;
+
+  --raw-color-link: 55% 0.16 35;
+  --raw-color-on-link: 98% 0.01 35;
+}
+
+[data-theme="dark"] {
+  /* 폼 컨트롤 렌더링 힌트 (테마별로 재정의) */
+  color-scheme: dark;
+
+  /* Opacity */
+  --alpha-scrim: 0.6;
+
+  /* Primitive (Raw) */
+  --raw-color-accent: 42% 0.06 240;
+  --raw-color-background: 22% 0.01 240;
+  --raw-color-border: 30% 0.012 240;
+  --raw-color-code-card: 27% 0.0314 274;
+  --raw-color-danger: 72% 0.18 25;
+  --raw-color-error: 72% 0.18 25;
+  --raw-color-input: 34% 0.012 240;
+  --raw-color-link: 88% 0.1 240;
+  --raw-color-neutral-100: 85% 0.004 255;
+  --raw-color-neutral-200: 72% 0.004 255;
+  --raw-color-neutral-300: 60% 0.004 255;
+  --raw-color-neutral-400: 50% 0.004 255;
+  --raw-color-neutral-50: 95% 0.004 255;
+  --raw-color-neutral-500: 40% 0.004 255;
+  --raw-color-neutral-600: 30% 0.004 255;
+  --raw-color-neutral-700: 22% 0.004 255;
+  --raw-color-neutral-800: 16% 0.004 255;
+  --raw-color-neutral-900: 12% 0.004 255;
+  --raw-color-neutral-950: 8% 0.004 255;
+  --raw-color-on-accent: 96% 0.01 240;
+  --raw-color-on-code-card: 96% 0.01 106;
+  --raw-color-on-danger: 18% 0.02 25;
+  --raw-color-on-error: 18% 0.02 25;
+  --raw-color-on-link: 15% 0.02 240;
+  --raw-color-on-primary: 15% 0.02 240;
+  --raw-color-on-secondary: 15% 0.02 240;
+  --raw-color-on-selected: 96% 0.01 240;
+  --raw-color-on-sidebar: 85% 0.01 255;
+  --raw-color-on-success: 18% 0.02 150;
+  --raw-color-on-warning: 18% 0.02 70;
+  --raw-color-overlay: 15% 0.01 240;
+  --raw-color-primary: 84% 0.1 240;
+  --raw-color-primary-hover: 88% 0.1 240;
+  --raw-color-scrim: 15% 0.01 240;
+  --raw-color-secondary: 90% 0.04 240;
+  --raw-color-selected: 50% 0.08 240;
+  --raw-color-sidebar: 20% 0.012 240;
+  --raw-color-success: 75% 0.1 150;
+  --raw-color-surface: 27% 0.015 240;
+  --raw-color-surface-hover: 32% 0.02 240;
+  --raw-color-text: 96% 0.01 240;
+  --raw-color-text-muted: 82% 0.01 240;
+  --raw-color-success-text: 75% 0.1 150;
+  --raw-color-warning-text: 80% 0.12 70;
+  --raw-color-error-text: 72% 0.18 25;
+  --raw-color-danger-text: 72% 0.18 25;
+
+  /* Hover Colors (Dark Mode: Lighter) */
+  --raw-color-danger-hover: 78% 0.18 25;
+  --raw-color-error-hover: 78% 0.18 25;
+  --raw-color-success-hover: 80% 0.1 150;
+  --raw-color-warning-hover: 85% 0.12 70;
+  --raw-color-secondary-hover: 95% 0.04 240;
+
+  --raw-color-warning: 80% 0.12 70;
+}
+
+[data-theme="dark"][data-theme-palette="airy-blue"] {
+  /* Airy Blue: 심해의 차분한 블루 - Hue 240 */
+  --raw-color-background: 22% 0.02 240;
+  --raw-color-surface: 27% 0.025 240;
+  --raw-color-surface-hover: 32% 0.03 240;
+  --raw-color-border: 30% 0.02 240;
+  --raw-color-input: 34% 0.02 240;
+  --raw-color-sidebar: 20% 0.02 240;
+  --raw-color-overlay: 15% 0.02 240;
+  --raw-color-scrim: 15% 0.02 240;
+
+  --raw-color-text: 96% 0.01 240;
+  --raw-color-text-muted: 82% 0.02 240;
+
+  --raw-color-accent: 30% 0.05 240;
+  --raw-color-on-accent: 94% 0.02 240;
+
+  --raw-color-primary: 75% 0.14 240;
+  --raw-color-primary-hover: 80% 0.14 240;
+  --raw-color-on-primary: 15% 0.03 240;
+
+  --raw-color-secondary: 30% 0.04 240;
+  --raw-color-on-secondary: 94% 0.02 240;
+
+  --raw-color-selected: 25% 0.05 240;
+  --raw-color-on-selected: 94% 0.02 240;
+
+  --raw-color-link: 80% 0.1 240;
+  --raw-color-on-link: 15% 0.03 240;
+}
+
+[data-theme="dark"][data-theme-palette="misty-lavender"] {
+  /* Misty Lavender: 짙은 밤하늘의 보라 - Hue 290 */
+  --raw-color-background: 22% 0.02 290;
+  --raw-color-surface: 27% 0.025 290;
+  --raw-color-surface-hover: 32% 0.03 290;
+  --raw-color-border: 30% 0.02 290;
+  --raw-color-input: 34% 0.02 290;
+  --raw-color-sidebar: 20% 0.02 290;
+  --raw-color-overlay: 15% 0.02 290;
+  --raw-color-scrim: 15% 0.02 290;
+
+  --raw-color-text: 96% 0.01 290;
+  --raw-color-text-muted: 82% 0.02 290;
+
+  --raw-color-accent: 30% 0.05 290;
+  --raw-color-on-accent: 94% 0.02 290;
+
+  --raw-color-primary: 75% 0.14 290;
+  --raw-color-primary-hover: 80% 0.14 290;
+  --raw-color-on-primary: 15% 0.03 290;
+
+  --raw-color-secondary: 30% 0.04 290;
+  --raw-color-on-secondary: 94% 0.02 290;
+
+  --raw-color-selected: 25% 0.05 290;
+  --raw-color-on-selected: 94% 0.02 290;
+
+  --raw-color-link: 80% 0.1 290;
+  --raw-color-on-link: 15% 0.03 290;
+}
+
+[data-theme="dark"][data-theme-palette="sage-breeze"] {
+  /* Sage Breeze: 깊은 숲/세이지 (sage/teal) - Hue 150 */
+  --raw-color-background: 22% 0.02 150;
+  --raw-color-surface: 27% 0.025 150;
+  --raw-color-surface-hover: 32% 0.03 150;
+  --raw-color-border: 30% 0.02 150;
+  --raw-color-input: 34% 0.02 150;
+  --raw-color-sidebar: 20% 0.02 150;
+  --raw-color-overlay: 15% 0.02 150;
+  --raw-color-scrim: 15% 0.02 150;
+
+  --raw-color-text: 96% 0.01 150;
+  --raw-color-text-muted: 82% 0.02 150;
+
+  --raw-color-accent: 30% 0.05 150;
+  --raw-color-on-accent: 94% 0.02 150;
+
+  --raw-color-primary: 75% 0.14 150;
+  --raw-color-primary-hover: 80% 0.14 150;
+  --raw-color-on-primary: 15% 0.03 150;
+
+  --raw-color-secondary: 30% 0.04 150;
+  --raw-color-on-secondary: 94% 0.02 150;
+
+  --raw-color-selected: 25% 0.05 150;
+  --raw-color-on-selected: 94% 0.02 150;
+
+  --raw-color-link: 80% 0.1 150;
+  --raw-color-on-link: 15% 0.03 150;
+}
+
+[data-theme="dark"][data-theme-palette="cozy-coral"] {
+  /* Cozy Coral: 따뜻한 모닥불 - Hue 35 */
+  --raw-color-background: 22% 0.02 35;
+  --raw-color-surface: 27% 0.025 35;
+  --raw-color-surface-hover: 32% 0.03 35;
+  --raw-color-border: 30% 0.02 35;
+  --raw-color-input: 34% 0.02 35;
+  --raw-color-sidebar: 20% 0.02 35;
+  --raw-color-overlay: 15% 0.02 35;
+  --raw-color-scrim: 15% 0.02 35;
+
+  --raw-color-text: 96% 0.01 35;
+  --raw-color-text-muted: 82% 0.02 35;
+
+  --raw-color-accent: 30% 0.05 35;
+  --raw-color-on-accent: 94% 0.02 35;
+
+  --raw-color-primary: 75% 0.14 35;
+  --raw-color-primary-hover: 80% 0.14 35;
+  --raw-color-on-primary: 15% 0.03 35;
+
+  --raw-color-secondary: 30% 0.04 35;
+  --raw-color-on-secondary: 94% 0.02 35;
+
+  --raw-color-selected: 25% 0.05 35;
+  --raw-color-on-selected: 94% 0.02 35;
+
+  --raw-color-link: 80% 0.1 35;
+  --raw-color-on-link: 15% 0.03 35;
+}

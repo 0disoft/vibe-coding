@@ -889,9 +889,17 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
   - **inline type export는 default보다 앞에 배치:**
 
     ```typescript
-    // Before (경고)
-    export { default as ApiEndpointCard, type ApiExample } from './ApiEndpointCard.svelte';
-
     // After (해결)
     export { type ApiExample, default as ApiEndpointCard } from './ApiEndpointCard.svelte';
     ```
+
+---
+
+## [Markdown / Lint]
+
+### 1. MD051/link-fragments: 유효하지 않은 링크 프래그먼트 (Link fragments should be valid)
+
+- **증상:** 마크다운 내에서 내부 섹션으로 연결되는 링크(`[텍스트](#앵커)`)가 작동하지 않거나, `markdownlint`에서 `MD051` 오류가 발생함.
+- **원인:** 헤더 제목에 마침표(`.`) 등 특수문자가 포함되어 있으면, 마크다운 파서가 생성하는 앵커 ID와 실제 링크 경로가 불일치하게 됨 (대부분의 파서는 ID 생성 시 마침표를 제거하거나 생략함).
+- **해결:** 링크 대상이 되는 헤더 제목에서 마침표를 제거하거나, 링크 프래그먼트(`#...`)가 실제 생성된 ID와 일치하도록 수정함.
+- **적용 시점:** `REQUESTS.md` 등 문서 내에서 목차나 상세 보기 링크가 린트 에러를 일으킬 때.

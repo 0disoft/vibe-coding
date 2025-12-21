@@ -7,6 +7,7 @@
 		resolveLanguageOrText,
 	} from "$lib/components/code-block/shiki";
 	import { DsCopyButton, DsTooltip } from "$lib/components/design-system";
+	import * as m from "$lib/paraglide/messages.js";
 
 	interface Props {
 		id?: string;
@@ -24,7 +25,7 @@
 		code,
 		language = "typescript",
 		theme = "catppuccin-mocha",
-		ariaLabel = "Source code",
+		ariaLabel = m.codeblock_aria_label(),
 		showLanguageBadge = true,
 	}: Props = $props();
 
@@ -35,6 +36,10 @@
 	);
 	let ariaLabelledBy = $derived(showLanguageBadge ? badgeId : undefined);
 	let ariaLabelValue = $derived(showLanguageBadge ? undefined : ariaLabel);
+	let copyLabel = $derived(m.codeblock_copy());
+	let copiedLabel = $derived(m.codeblock_copied());
+	let loadingLabel = $derived(m.codeblock_loading());
+	let loadingId = $derived(`${id}-loading`);
 
 	let highlightedHtml = $state("");
 
@@ -95,7 +100,7 @@
 	{#if highlightedHtml}
 		<!-- Shiki wrapper color override -->
 		<div
-			class="ds-code-block-content overflow-auto [&>pre]:!m-0 [&>pre]:!p-[1.125rem] [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
+			class="ds-code-block-content ds-focus-ring overflow-auto [&>pre]:!m-0 [&>pre]:!p-[1.125rem] [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
 			data-lenis-prevent
 			tabindex="0"
 			role="textbox"
@@ -112,7 +117,7 @@
 				{/if}
 				<DsTooltip
 					as="div"
-					content="Copy code"
+					content={copyLabel}
 					class="ds-code-block-copy"
 				>
 					{#snippet children(trigger)}
@@ -121,8 +126,8 @@
 							variant="ghost"
 							intent="neutral"
 							touchTarget={false}
-							label="Copy code"
-							copiedLabel="Copied to clipboard"
+							label={copyLabel}
+							copiedLabel={copiedLabel}
 							text={code}
 							describedBy={trigger["aria-describedby"]}
 							style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
@@ -135,7 +140,7 @@
 	{:else}
 		<!-- Fallback: 하이라이팅 로딩 중에도 코드는 즉시 노출 (테스트/UX 안정성) -->
 		<div
-			class="ds-code-block-content overflow-auto"
+			class="ds-code-block-content ds-focus-ring overflow-auto"
 			data-lenis-prevent
 			tabindex="0"
 			role="textbox"
@@ -144,7 +149,11 @@
 			aria-label={ariaLabelValue}
 			aria-labelledby={ariaLabelledBy}
 			aria-busy="true"
+			aria-describedby={loadingId}
 		>
+			<span id={loadingId} class="sr-only" aria-live="polite">
+				{loadingLabel}
+			</span>
 			<div class="ds-code-block-header">
 				{#if showLanguageBadge}
 					<span id={badgeId} class="ds-code-block-badge">
@@ -153,7 +162,7 @@
 				{/if}
 				<DsTooltip
 					as="div"
-					content="Copy code"
+					content={copyLabel}
 					class="ds-code-block-copy"
 				>
 					{#snippet children(trigger)}
@@ -162,8 +171,8 @@
 							variant="ghost"
 							intent="neutral"
 							touchTarget={false}
-							label="Copy code"
-							copiedLabel="Copied to clipboard"
+							label={copyLabel}
+							copiedLabel={copiedLabel}
 							text={code}
 							describedBy={trigger["aria-describedby"]}
 							style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"

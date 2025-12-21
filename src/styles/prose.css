@@ -4,19 +4,19 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .prose {
-	color: oklch(var(--color-text-muted)) !important;
-	font-size: var(--font-size-prose) !important;
-	line-height: var(--line-height-body) !important;
+	color: oklch(var(--color-text));
+	font-size: var(--font-size-prose);
+	line-height: var(--line-height-body);
 }
 
 .prose :where(p, ul, ol, li) {
-	color: oklch(var(--color-text-muted)) !important;
-	font-size: inherit !important;
-	line-height: inherit !important;
+	color: oklch(var(--color-text));
+	font-size: inherit;
+	line-height: inherit;
 }
 
 .prose :where(h1, h2, h3, h4, h5, h6, strong, b, th) {
-	color: oklch(var(--color-text)) !important;
+	color: oklch(var(--color-text));
 }
 
 .prose h1 {
@@ -40,71 +40,118 @@
 }
 
 .prose :where(a) {
-	color: oklch(var(--color-link)) !important;
-	text-decoration-line: underline !important;
-	text-decoration-thickness: 1px !important;
-	text-decoration-color: oklch(var(--color-link) / 0.45) !important;
-	text-underline-offset: 0.18em !important;
+	color: oklch(var(--color-link));
+	text-decoration-line: underline;
+	text-decoration-thickness: 1px;
+	text-decoration-color: oklch(var(--color-link) / 0.45);
+	text-underline-offset: 0.18em;
 	text-decoration-skip-ink: auto;
 	font-weight: 500;
 }
 
 .prose :where(a:hover) {
-	color: oklch(var(--color-link) / 0.9) !important;
-	text-decoration-color: oklch(var(--color-link) / 0.75) !important;
+	color: oklch(var(--color-link) / 0.9);
+	text-decoration-color: oklch(var(--color-link) / 0.75);
+	text-underline-offset: 0.22em;
+}
+
+.prose :where(a:focus-visible) {
+	outline: var(--focus-ring-width) var(--focus-ring-style) oklch(var(--focus-ring-color));
+	outline-offset: var(--focus-ring-offset);
+	border-radius: 0.2em;
+	text-decoration-thickness: 2px;
+	text-decoration-color: oklch(var(--color-link) / 0.85);
 }
 
 .prose :where(code) {
-	color: oklch(var(--color-on-accent)) !important;
-	background-color: oklch(var(--color-accent) / 0.3) !important;
-	font-size: var(--font-size-inline-code) !important;
-	padding: 0.1em 0.3em !important;
-	border-radius: 0.25em !important;
-	font-weight: var(--font-weight-regular) !important;
+	color: oklch(var(--color-on-accent));
+	background-color: oklch(var(--color-accent) / 0.3);
+	font-size: var(--font-size-inline-code);
+	padding: 0.1em 0.3em;
+	border-radius: 0.25em;
+	font-weight: var(--font-weight-regular);
 }
 
 .prose :where(pre code) {
-	color: inherit !important;
-	background-color: transparent !important;
-	font-size: inherit !important;
-	padding: 0 !important;
-	border-radius: 0 !important;
+	color: inherit;
+	background-color: transparent;
+	font-size: inherit;
+	padding: 0;
+	border-radius: 0;
 	font-weight: inherit;
 }
 
-
 .prose :where(blockquote) {
-	color: oklch(var(--color-text)) !important;
-	background-color: oklch(var(--color-surface) / 0.6) !important;
-	border-left: 4px solid oklch(var(--color-primary)) !important;
+	color: oklch(var(--color-text));
+	background-color: oklch(var(--color-surface) / 0.6);
+	border-inline-start: 4px solid oklch(var(--color-primary));
 	border-radius: var(--radius-md);
-	padding: var(--spacing-3) var(--spacing-4);
-	line-height: var(--line-height-body) !important;
+	padding-block: var(--spacing-3);
+	padding-inline: var(--spacing-4);
+	line-height: var(--line-height-body);
 }
 
 .prose :where(blockquote p) {
-	margin: 0 !important;
-	font-size: inherit !important;
-	line-height: inherit !important;
+	margin: 0;
+	font-size: inherit;
+	line-height: inherit;
 }
 
 .prose :where(blockquote p + p) {
-	margin-top: var(--spacing-2) !important;
+	margin-top: var(--spacing-2);
 }
 
 .prose ul {
 	list-style-type: disc;
-	padding-left: 1.625em;
+	padding-inline-start: 1.625em;
 }
 
 .prose ol {
 	list-style-type: decimal;
-	padding-left: 1.625em;
+	padding-inline-start: 1.625em;
 }
 
 .prose li {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
+	margin-block: 0.5em;
+}
+
+.prose :where(p) {
+	margin-block: var(--spacing-3);
+}
+
+.prose :where(ul, ol) {
+	margin-block: var(--spacing-3);
+}
+
+.prose :where(kbd) {
+	background-color: oklch(var(--color-surface));
+	border: 1px solid oklch(var(--color-border));
+	border-radius: 0.35em;
+	box-shadow: 0 1px 0 0 oklch(var(--color-border));
+	color: oklch(var(--color-text));
+	font-family: var(--font-family-mono);
+	font-size: 0.85em;
+	padding: 0.1em 0.4em;
+	white-space: nowrap;
+}
+
+.prose :where(abbr[title]) {
+	cursor: help;
+	text-decoration: underline dotted;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+.prose :where(mark) {
+	background-color: oklch(var(--color-warning) / 0.3);
+	border-radius: 0.25em;
+	color: oklch(var(--color-warning-text));
+	padding: 0.05em 0.2em;
+}
+
+.prose :where(cite) {
+	color: oklch(var(--color-text));
+	font-style: italic;
 }
 
 /* 개인정보처리방침 테이블 스타일 조정 */

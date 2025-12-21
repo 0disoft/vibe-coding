@@ -1,7 +1,0 @@
-src/lib/components/design-system/payment-types.ts
-src/lib/components/design-system/PaymentOptionSelector.svelte
-src/lib/components/design-system/PaymentOptionDetails.svelte
-src/lib/components/design-system/PaymentFlowSummary.svelte
-src/routes/design-system/_sections/CommerceSection.svelte
-src/lib/components/design-system/index.ts
-src/styles/design-system.css

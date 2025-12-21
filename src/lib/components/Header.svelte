@@ -88,6 +88,44 @@
 	}
 </script>
 
+{#snippet NavItems(variant: "desktop" | "mobile")}
+	{#each navItems as item, index (item.href)}
+		{@const active = isActive(item.href)}
+		{#if variant === "desktop"}
+			<a
+				href={localizeUrl(item.href, { locale: currentLocale }).href}
+				aria-current={active ? "page" : undefined}
+				class="ds-no-select ds-focus-ring rounded-md px-1 py-1 transition-colors hover:text-foreground focus-visible:text-foreground {active
+					? 'text-foreground font-medium underline underline-offset-4 decoration-foreground/40'
+					: 'text-muted-foreground'}"
+			>
+				{item.label(currentLocale)}
+			</a>
+			{#if index < navItems.length - 1}
+				<span
+					aria-hidden="true"
+					class="ds-no-select mx-2 text-[0.65rem] text-muted-foreground/60 leading-none"
+				>
+					•
+				</span>
+			{/if}
+		{:else}
+			<li>
+				<a
+					href={localizeUrl(item.href, { locale: currentLocale }).href}
+					onclick={() => closeMobileMenu()}
+					aria-current={active ? "page" : undefined}
+					class="ds-no-select ds-focus-ring ds-touch-target block rounded-md px-3 py-2 text-menu transition-colors hover:bg-accent focus-visible:bg-accent {active
+						? 'bg-accent text-foreground font-medium'
+						: 'text-muted-foreground'}"
+				>
+					{item.label(currentLocale)}
+				</a>
+			</li>
+		{/if}
+	{/each}
+{/snippet}
+
 <header
 	class="ds-safe-area-top sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
 >
@@ -111,26 +149,7 @@
 			{#if nav}
 				{@render nav()}
 			{:else}
-				{#each navItems as item, index (item.href)}
-					{@const active = isActive(item.href)}
-					<a
-						href={localizeUrl(item.href, { locale: currentLocale }).href}
-						aria-current={active ? "page" : undefined}
-						class="ds-no-select ds-focus-ring rounded-md px-1 py-1 transition-colors hover:text-foreground focus-visible:text-foreground {active
-							? 'text-foreground font-medium'
-							: 'text-muted-foreground'}"
-					>
-						{item.label(currentLocale)}
-					</a>
-					{#if index < navItems.length - 1}
-						<span
-							aria-hidden="true"
-							class="ds-no-select mx-2 text-[0.65rem] text-muted-foreground/60 leading-none"
-						>
-							•
-						</span>
-					{/if}
-				{/each}
+				{@render NavItems("desktop")}
 			{/if}
 		</nav>
 
@@ -186,21 +205,7 @@
 		class="flex flex-col gap-1"
 	>
 		<ul class="flex flex-col gap-1">
-			{#each navItems as item (item.href)}
-				{@const active = isActive(item.href)}
-				<li>
-					<a
-						href={localizeUrl(item.href, { locale: currentLocale }).href}
-						onclick={() => closeMobileMenu()}
-						aria-current={active ? "page" : undefined}
-						class="ds-no-select ds-focus-ring ds-touch-target block rounded-md px-3 py-2 text-menu transition-colors hover:bg-accent focus-visible:bg-accent {active
-							? 'bg-accent text-foreground font-medium'
-							: 'text-muted-foreground'}"
-					>
-						{item.label(currentLocale)}
-					</a>
-				</li>
-			{/each}
+			{@render NavItems("mobile")}
 		</ul>
 	</nav>
 </DsSheet>

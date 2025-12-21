@@ -1,12 +1,23 @@
 <script lang="ts">
-	import * as m from "$lib/paraglide/messages.js";
-	import { type FontSize, fontSize } from "$lib/stores";
+import * as m from "$lib/paraglide/messages.js";
+import { type FontSize, fontSize } from "$lib/stores";
 
-	import { DsDropdown, DsDropdownItem, DsIconButton } from "$lib/components/design-system";
+import {
+	DsDropdown,
+	DsDropdownItem,
+	DsIconButton,
+	DsLiveRegion,
+} from "$lib/components/design-system";
 
-	function selectFontSize(level: FontSize) {
-		fontSize.set(level);
-	}
+const groupLabelId = $props.id();
+
+let liveRegion: { announce: (message: string) => void } | null = null;
+
+function selectFontSize(level: FontSize) {
+	if (fontSize.current === level) return;
+	fontSize.set(level);
+	liveRegion?.announce(m.font_size_changed({ value: level }));
+}
 
 	// 메뉴 내부 키보드 탐색 (3x3 그리드용)
 	function handleMenuKeyDown(event: KeyboardEvent) {
@@ -59,6 +70,8 @@
 	}
 </script>
 
+<DsLiveRegion bind:this={liveRegion} politeness="polite" />
+
 <DsDropdown
 	align="end"
 	menuClass="w-56"
@@ -81,8 +94,12 @@
 		<div
 			class="grid grid-cols-3 gap-1"
 			role="group"
+			aria-labelledby={groupLabelId}
 			onkeydown={handleMenuKeyDown}
 		>
+			<span id={groupLabelId} class="sr-only">
+				{m.font_size_group_label()}
+			</span>
 			{#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as const as level (level)}
 				<DsDropdownItem
 					onclick={() => {
@@ -91,6 +108,7 @@
 					}}
 					class="justify-center"
 					aria-checked={fontSize.current === level}
+					aria-label={m.font_size_level_label({ value: level })}
 					role="menuitemradio"
 				>
 					{level}
