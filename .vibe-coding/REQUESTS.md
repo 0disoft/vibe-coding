@@ -38,6 +38,7 @@
 | 순번 | 요청 유형 | 대상 파일/항목 | 상태 | 비고 |
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | 코드 개선 제안 | `src/styles/design-system/components/remote-control.css` | ✅ 완료 | [상세 보기](#1-remote-controlcss-리팩토링) |
+| 2 | 코드 개선 제안 | `src/lib/components/CodeBlock.svelte` | ✅ 완료 | [상세 보기](#2-codeblocksvelte-리팩토링) |
 
 ---
 
@@ -59,3 +60,20 @@
   - ✅ **터치 타깃 보장**: `pointer: coarse`에서 최소 크기를 보강했습니다.
   - 🔵 **포커스 스타일/대비**: 기존 토큰 기반 포커스 링이 충분하다고 판단해 유지했습니다.
   - 🔵 **RTL 논리적 속성**: 논리적 inset 사용으로 RTL 자동 반전이 가능해 유지했습니다.
+
+### 2. CodeBlock.svelte 리팩토링
+
+- **대상**: `src/lib/components/CodeBlock.svelte`
+- **관점**: `A11Y_UX_COPILOT` (접근성, 가독성, Svelte 5 최적화)
+- **제안 내용**:
+  - **ARIA Role 및 시맨틱 보강 (A11y)**: 현재 `role="textbox"`는 입력 필드로 오인될 수 있습니다. `role="region"` 및 `aria-roledescription="code snippet"`으로 변경하고, RTL 환경 보호를 위해 `dir="ltr"`을 명시합니다.
+  - **Svelte 5 Snippet 기반 구조 단일화 (UX)**: 하이라이트 상태(`if/else`)에 따라 중복 정의된 헤더와 컨테이너 코드를 `{#snippet}`으로 통합하여 일관성을 유지하고 유지보수 리스크를 줄입니다.
+  - **논리적 속성 적용 (UX)**: 뱃지와 복사 버튼의 절대 위치 지정 시 `right` 대신 `inset-inline-end` 등 논리적 속성을 사용하여 RTL 환경 대응력을 높입니다.
+  - **부드러운 상태 전환 (UX)**: 하이라이팅이 완료되어 원본 코드에서 하이라이트된 HTML로 교체될 때 시각적 깜빡임을 최소화하기 위한 부드러운 전환(Fade-in)을 추가합니다.
+  - **에러 격리 (Stability)**: `$effect` 내 비동기 작업 중 발생할 수 있는 잠재적 오류로부터 앱을 보호하기 위해 `svelte:boundary` 적용을 검토합니다.
+- **처리 결과**:
+  - ✅ **ARIA 시맨틱 보강**: `role="region"`과 `aria-roledescription="code snippet"`, `dir="ltr"`로 정리했습니다.
+  - 🔄 **스니펫 구조 단일화**: 헤더 영역을 스니펫으로 통합하고, 콘텐츠는 로딩/완료 상태 차이로 인해 분리 유지했습니다.
+  - 🔵 **논리적 속성**: 절대 위치 지정이 없어 RTL 충돌 요소가 확인되지 않아 유지했습니다.
+  - ✅ **부드러운 전환**: 하이라이트 완료 시 페이드 인 애니메이션과 `prefers-reduced-motion` 대응을 추가했습니다.
+  - ⏭️ **에러 격리**: 하이라이트 실패 시 이미 안전한 폴백이 있어 `svelte:boundary`는 제외했습니다.

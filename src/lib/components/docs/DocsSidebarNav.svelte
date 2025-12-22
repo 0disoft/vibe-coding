@@ -18,20 +18,54 @@
 		/** 활성 경로(예: page.url.pathname). 미지정 시 href 매칭 비활성 */
 		activePath?: string;
 		actions?: Snippet;
+		onNavigate?: () => void;
 	}
 
+	const generatedId = $props.id();
+
 	let {
+		id: idProp,
 		title = m.nav_docs(),
 		items,
 		activePath,
 		actions,
+		onNavigate,
 		class: className = "",
 		...rest
 	}: Props = $props();
 
+	let rootId = $derived(idProp ?? generatedId);
+	let navRef: HTMLElement | null = null;
+
+	const baseLinkClass =
+		"w-full !justify-start rounded-md px-2 py-0 leading-tight text-[0.72rem] !min-h-0";
+	const activeLinkClass = "!bg-primary/10 !text-primary !font-medium";
+	const inactiveLinkClass =
+		"text-muted-foreground hover:bg-surface-hover hover:text-foreground";
+
+	function slugify(value: string) {
+		return value
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, "-")
+			.replace(/(^-|-$)/g, "");
+	}
+
+	function getItemId(href: string, index: number) {
+		const safe = slugify(href || "item");
+		return `${rootId}-nav-${safe}-${index}`;
+	}
+
 	function isActive(href: string) {
 		if (!activePath) return false;
 		return activePath === href;
+	}
+
+	function handleNavigate(event?: MouseEvent) {
+		if (!onNavigate) return;
+		if (event && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey))
+			return;
+		if (event && event.button !== 0) return;
+		onNavigate();
 	}
 
 	function handleWheel(e: WheelEvent) {
@@ -48,10 +82,34 @@
 			e.stopPropagation();
 		}
 	}
+
+	$effect(() => {
+		if (!activePath) return;
+		if (typeof window === "undefined") return;
+		if (!navRef) return;
+
+		const escaped = typeof CSS !== "undefined" && CSS.escape
+			? CSS.escape(activePath)
+			: activePath.replace(/["\\]/g, "\\$&");
+		const target = navRef.querySelector<HTMLAnchorElement>(
+			`a[href="${escaped}"]`,
+		);
+		if (!target) return;
+
+		const prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+
+		target.scrollIntoView({
+			block: "nearest",
+			behavior: prefersReducedMotion ? "auto" : "smooth",
+		});
+	});
 </script>
 
 <nav
 	{...rest}
+	bind:this={navRef}
 	class={[
 		"rounded-lg border border-border bg-surface flex flex-col h-full overflow-hidden",
 		className,
@@ -60,7 +118,7 @@
 		.join(" ")}
 	aria-label={title}
 >
-	<div class="p-4 pb-0 shrink-0">
+	<div class="p-3 pb-0 shrink-0">
 		<div class="flex items-center justify-between gap-2">
 			<div class="text-menu-sm font-semibold text-foreground">{title}</div>
 			{#if actions}
@@ -71,41 +129,45 @@
 	</div>
 
 	<div
-		class="flex-1 overflow-y-auto overscroll-y-contain thin-scrollbar p-4 pt-3"
+		class="flex-1 overflow-y-auto overscroll-y-contain thin-scrollbar p-3 pt-2"
 		onwheel={handleWheel}
 	>
 		<ul class="grid gap-0">
-			{#each items as item (item.href)}
+			{#each items as item, itemIndex (item.href)}
+				{@const isItemActive = isActive(item.href)}
+				{@const itemId = getItemId(item.href, itemIndex)}
 				<li>
 					<DsLinkButton
+						id={itemId}
 						href={item.href}
 						variant="ghost"
 						intent="secondary"
 						class={[
-							"w-full !justify-start rounded-md px-2 py-0.5 text-[11px] !min-h-0",
-							isActive(item.href)
-								? "!bg-primary/10 !text-primary !font-medium"
-								: "text-muted-foreground hover:bg-surface-hover hover:text-foreground",
+							baseLinkClass,
+							isItemActive ? activeLinkClass : inactiveLinkClass,
 						].join(" ")}
-						aria-current={isActive(item.href) ? "page" : undefined}
+						aria-current={isItemActive ? "page" : undefined}
+						onclick={handleNavigate}
 					>
 						{item.label}
 					</DsLinkButton>
 					{#if item.items?.length}
-						<ul class="mt-1 grid gap-0 ps-4">
-							{#each item.items as sub (sub.href)}
+						<ul class="mt-0.5 grid gap-0.5 ps-3" aria-labelledby={itemId}>
+							{#each item.items as sub, subIndex (sub.href)}
+								{@const isSubActive = isActive(sub.href)}
+								{@const subId = getItemId(sub.href, subIndex)}
 								<li>
 									<DsLinkButton
+										id={subId}
 										href={sub.href}
 										variant="ghost"
 										intent="secondary"
 										class={[
-											"w-full !justify-start rounded-md px-2 py-0.5 text-[11px] !min-h-0",
-											isActive(sub.href)
-												? "!bg-primary/10 !text-primary !font-medium"
-												: "text-muted-foreground hover:bg-surface-hover hover:text-foreground",
+											baseLinkClass,
+											isSubActive ? activeLinkClass : inactiveLinkClass,
 										].join(" ")}
-										aria-current={isActive(sub.href) ? "page" : undefined}
+										aria-current={isSubActive ? "page" : undefined}
+										onclick={handleNavigate}
 									>
 										{sub.label}
 									</DsLinkButton>

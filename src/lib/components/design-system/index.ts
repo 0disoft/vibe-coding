@@ -73,8 +73,16 @@ export { default as DsPricingTable } from './PricingTable.svelte';
 export { default as DsProgress } from './Progress.svelte';
 export type {
 	CurrencyCode,
+	PaymentAvailabilityConfig,
+	PaymentAvailabilityRemedy,
 	PaymentAvailabilityResult,
+	PaymentAvailabilityRule,
+	PaymentAvailabilityRuleMode,
 	PaymentContext,
+	PaymentMetaDescriptor,
+	PaymentMetaItem,
+	PaymentMethodLabelKey,
+	PaymentMethodMeta,
 	PaymentMethodType,
 	PaymentOption,
 	PaymentOptionAvailability,
@@ -82,7 +90,14 @@ export type {
 	RegionCode,
 	UnavailabilityReason
 } from './payment-types';
-export { checkPaymentOptionAvailability, isPaymentOptionAvailable } from './payment-types';
+export {
+	checkPaymentOptionAvailability,
+	DEFAULT_PAYMENT_AVAILABILITY_RULES,
+	getPaymentMethodMeta,
+	isPaymentOptionAvailable,
+	normalizePaymentMeta,
+	PAYMENT_METHOD_META
+} from './payment-types';
 export { default as DsQuote } from './Quote.svelte';
 export { default as DsRadioGroup } from './RadioGroup.svelte';
 export { default as DsRadioItem } from './RadioItem.svelte';

@@ -11,6 +11,7 @@
 		activeId?: string;
 		title?: string;
 		actions?: Snippet;
+		onNavigate?: () => void;
 	}
 
 	let {
@@ -18,9 +19,29 @@
 		activeId,
 		title = m.docs_on_this_page(),
 		actions,
+		onNavigate,
 		class: className = "",
 		...rest
 	}: Props = $props();
+
+	const tocItemRefs = new Map<string, HTMLAnchorElement>();
+
+	function trackItem(node: HTMLAnchorElement, id: string) {
+		tocItemRefs.set(id, node);
+
+		return {
+			update(nextId: string) {
+				if (id !== nextId) {
+					tocItemRefs.delete(id);
+					id = nextId;
+					tocItemRefs.set(id, node);
+				}
+			},
+			destroy() {
+				tocItemRefs.delete(id);
+			},
+		};
+	}
 
 	function indent(level?: number) {
 		if (!level || level <= 2) return "ps-0";
@@ -40,6 +61,62 @@
 			e.stopPropagation();
 		}
 	}
+
+	function focusTarget(id: string) {
+		if (typeof document === "undefined") return;
+
+		const target = document.getElementById(id) as HTMLElement | null;
+		if (!target) return;
+
+		const hasTabIndex = target.hasAttribute("tabindex");
+
+		if (!hasTabIndex) {
+			target.setAttribute("tabindex", "-1");
+			target.setAttribute("data-toc-temp-tabindex", "true");
+		}
+
+		const restoreTabIndex = () => {
+			if (target.getAttribute("data-toc-temp-tabindex") === "true") {
+				target.removeAttribute("tabindex");
+				target.removeAttribute("data-toc-temp-tabindex");
+			}
+		};
+
+		target.addEventListener("blur", restoreTabIndex, { once: true });
+
+		requestAnimationFrame(() => {
+			try {
+				target.focus({ preventScroll: true });
+			} catch {
+				target.focus();
+			}
+		});
+	}
+
+	function handleNavigate(event?: MouseEvent) {
+		if (!onNavigate) return;
+		if (event && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey))
+			return;
+		if (event && event.button !== 0) return;
+		onNavigate();
+	}
+
+	$effect(() => {
+		if (!activeId) return;
+		if (typeof window === "undefined") return;
+
+		const target = tocItemRefs.get(activeId);
+		if (!target) return;
+
+		const prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+
+		target.scrollIntoView({
+			block: "nearest",
+			behavior: prefersReducedMotion ? "auto" : "smooth",
+		});
+	});
 </script>
 
 <nav
@@ -66,17 +143,31 @@
 	>
 		<ul class="grid gap-1">
 			{#each items as item (item.id)}
+				{@const isActive = activeId === item.id}
 				<li class={indent(item.level)}>
 					<a
 						href={`#${item.id}`}
+						use:trackItem={item.id}
+						onclick={(event) => {
+							focusTarget(item.id);
+							handleNavigate(event);
+						}}
 						class={[
-							"block rounded px-2 py-1 text-xs transition-colors",
-							activeId === item.id
+							"block rounded px-2 py-1 text-xs transition-colors relative",
+							isActive
 								? "!bg-primary/10 !text-primary !font-medium"
-								: "text-muted-foreground hover:text-foreground hover:bg-surface-hover",
+							: "text-muted-foreground hover:text-foreground hover:bg-surface-hover",
 						].join(" ")}
-						aria-current={activeId === item.id ? "location" : undefined}
+						aria-current={isActive ? "location" : undefined}
 					>
+						<span
+							aria-hidden="true"
+							class={[
+								"absolute rounded-full bg-primary transition-opacity pointer-events-none",
+								isActive ? "opacity-100" : "opacity-0",
+							].join(" ")}
+							style="inset-inline-start: 0.25rem; inset-block: 0.35rem; width: 2px;"
+						></span>
 						{item.label}
 					</a>
 				</li>

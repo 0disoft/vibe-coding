@@ -28,6 +28,7 @@
 		confirmDisabled?: boolean;
 		confirmLoading?: boolean;
 		confirmLoadingLabel?: string;
+		confirmDelayMs?: number;
 		size?: Size;
 		closeOnOutsideClick?: boolean;
 		closeOnEscape?: boolean;
@@ -57,6 +58,7 @@
 		confirmDisabled = false,
 		confirmLoading = false,
 		confirmLoadingLabel,
+		confirmDelayMs,
 		size = "sm",
 		closeOnOutsideClick = false,
 		closeOnEscape = true,
@@ -94,12 +96,53 @@
 
 	let cancelButtonRef = $state<HTMLButtonElement | null>(null);
 
+	let resolvedConfirmDelayMs = $derived(
+		confirmDelayMs ?? (confirmIntent === "danger" ? 1200 : 0),
+	);
+	let confirmReady = $state(true);
+	let bodyId = $derived(`${id}-body`);
+	let dialogDescId = $derived(`${id}-desc`);
+	let bodyContent = $derived(children ?? content);
+	let resolvedAriaDescribedBy = $derived.by(() => {
+		const ids: string[] = [];
+		if (description) ids.push(dialogDescId);
+		if (bodyContent) ids.push(bodyId);
+		return ids.length > 0 ? ids.join(" ") : undefined;
+	});
+
 	let resolvedInitialFocus = $derived.by(() => {
 		if (initialFocus !== undefined) return initialFocus;
 		return confirmIntent === "danger" ? cancelButtonRef : null;
 	});
+	let isConfirmDisabled = $derived(
+		confirmDisabled || confirmLoading || !confirmReady,
+	);
 
-	let bodyContent = $derived(children ?? content);
+	$effect(() => {
+		if (!open) {
+			confirmReady = true;
+			return;
+		}
+
+		if (typeof window === "undefined") {
+			confirmReady = true;
+			return;
+		}
+
+		if (resolvedConfirmDelayMs <= 0) {
+			confirmReady = true;
+			return;
+		}
+
+		confirmReady = false;
+		const timer = window.setTimeout(() => {
+			confirmReady = true;
+		}, resolvedConfirmDelayMs);
+
+		return () => {
+			window.clearTimeout(timer);
+		};
+	});
 
 	function setOpen(next: boolean, reason?: CloseReason) {
 		if (open === next) return;
@@ -113,6 +156,7 @@
 	}
 
 	function handleConfirm() {
+		if (isConfirmDisabled) return;
 		onConfirm?.();
 		setOpen(false, "confirm");
 	}
@@ -132,6 +176,7 @@
 	{closeOnOutsideClick}
 	{closeOnEscape}
 	onOpenChange={handleOpenChange}
+	aria-describedby={resolvedAriaDescribedBy}
 	role={dialogRole}
 	initialFocus={resolvedInitialFocus}
 	{returnFocusTo}
@@ -140,7 +185,7 @@
 >
 	{#snippet children()}
 		{#if bodyContent}
-			<div class="ds-confirm-dialog-body">
+			<div class="ds-confirm-dialog-body" id={bodyId}>
 				{@render bodyContent()}
 			</div>
 		{/if}
@@ -164,7 +209,7 @@
 					intent={confirmIntent}
 					loading={confirmLoading}
 					loadingLabel={resolvedConfirmLoadingLabel}
-					disabled={confirmDisabled}
+					disabled={isConfirmDisabled}
 					onclick={handleConfirm}
 				>
 					{resolvedConfirmLabel}

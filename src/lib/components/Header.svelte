@@ -75,6 +75,13 @@
 		// { href: '/dashboard', label: (locale: Locale) => m.nav_dashboard({}, { locale }) },
 	];
 
+	let resolvedNavItems = $derived.by(() => {
+		return navItems.map((item) => ({
+			href: item.href,
+			label: item.label(currentLocale),
+		}));
+	});
+
 	// 현재 경로와 일치하는지 확인
 	function isActive(path: string): boolean {
 		const localizedPath = localizeUrl(path, { locale: currentLocale }).pathname;
@@ -97,10 +104,18 @@
 			mobileMenuButtonRef?.focus();
 		}
 	}
+
+	function handleMobileMenuChange(next: boolean) {
+		if (next) {
+			mobileMenuOpen = true;
+			return;
+		}
+		closeMobileMenu({ focusButton: true });
+	}
 </script>
 
 {#snippet NavItems(variant: "desktop" | "mobile")}
-	{#each navItems as item, index (item.href)}
+	{#each resolvedNavItems as item, index (item.href)}
 		{@const active = isActive(item.href)}
 		{#if variant === "desktop"}
 			<a
@@ -110,7 +125,7 @@
 					? 'text-foreground font-medium underline underline-offset-4 decoration-foreground/40'
 					: 'text-muted-foreground'}"
 			>
-				{item.label(currentLocale)}
+				{item.label}
 			</a>
 			{#if index < navItems.length - 1}
 				<span
@@ -130,7 +145,7 @@
 						? 'bg-accent text-foreground font-medium'
 						: 'text-muted-foreground'}"
 				>
-					{item.label(currentLocale)}
+					{item.label}
 				</a>
 			</li>
 		{/if}
@@ -200,7 +215,7 @@
 	id="ds-mobile-nav"
 	title={m.header_menu_title({}, { locale: currentLocale })}
 	open={mobileMenuOpen}
-	onOpenChange={(next) => (mobileMenuOpen = next)}
+	onOpenChange={handleMobileMenuChange}
 	returnFocusTo={mobileMenuButtonRef}
 	initialFocus="a"
 	side="right"

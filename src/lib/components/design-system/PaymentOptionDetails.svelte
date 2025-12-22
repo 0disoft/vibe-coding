@@ -7,40 +7,44 @@
 	import * as m from "$lib/paraglide/messages.js";
 
 	import type {
+		PaymentAvailabilityResult,
 		PaymentMethodType,
 		PaymentOption,
 		UnavailabilityReason,
 	} from "./payment-types";
-	import { checkPaymentOptionAvailability } from "./payment-types";
+	import {
+		checkPaymentOptionAvailability,
+		normalizePaymentMeta,
+	} from "./payment-types";
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
 		option?: PaymentOption | null;
 		title?: string;
 		emptyText?: string;
-		children?: Snippet<[PaymentOption]>;
+		children?: Snippet<[PaymentOption, PaymentAvailabilityResult | null]>;
 		/** Heading level for the option label (default: 4) */
 		headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+		/** When true, move focus to the details container on option change */
+		autoFocusOnChange?: boolean;
 	}
 
-	const getMethodLabel = (type: PaymentMethodType): string => {
-		switch (type) {
-			case "card":
-				return m.payment_method_card();
-			case "bank":
-				return m.payment_method_bank();
-			case "crypto":
-				return m.payment_method_crypto();
-			case "wallet":
-				return m.payment_method_wallet();
-			case "mobile":
-				return m.payment_method_mobile();
-			case "virtual":
-				return m.payment_method_virtual();
-			case "transfer":
-				return m.payment_method_transfer();
-			default:
-				return m.payment_method_other();
-		}
+	const METHOD_LABELS: Record<PaymentMethodType, () => string> = {
+		card: m.payment_method_card,
+		bank: m.payment_method_bank,
+		crypto: m.payment_method_crypto,
+		wallet: m.payment_method_wallet,
+		mobile: m.payment_method_mobile,
+		virtual: m.payment_method_virtual,
+		transfer: m.payment_method_transfer,
+		other: m.payment_method_other,
+	};
+
+	const resolveMethodLabel = (
+		type?: PaymentMethodType,
+	): string | undefined => {
+		if (!type) return undefined;
+		const resolver = METHOD_LABELS[type] ?? METHOD_LABELS.other;
+		return resolver();
 	};
 
 	const getReasonLabel = (
@@ -66,6 +70,7 @@
 		emptyText,
 		children: childrenSnippet,
 		headingLevel = 4,
+		autoFocusOnChange = false,
 		class: className = "",
 		...rest
 	}: Props = $props();
@@ -86,9 +91,12 @@
 	let badgeIntent = $derived(
 		option?.badgeIntent ?? (option?.recommended ? "primary" : "secondary"),
 	);
-	let methodLabel = $derived(
-		option?.methodType ? getMethodLabel(option.methodType) : undefined,
-	);
+	let selectedAnnouncement = $derived.by(() => {
+		void page.url;
+		if (!option) return resolvedEmptyText;
+		return `${option.label} ${m.commerce_selected_label()}`;
+	});
+	let methodLabel = $derived(resolveMethodLabel(option?.methodType));
 	let availabilityNote = $derived.by(() => {
 		if (!option || !checkResult) return undefined;
 		if (checkResult.available) return undefined;
@@ -101,8 +109,9 @@
 
 	let metaItems = $derived.by(() => {
 		if (!option) return [];
-		const meta = option.meta ? [...option.meta] : [];
-		if (methodLabel && !meta.includes(methodLabel)) meta.unshift(methodLabel);
+		const meta = normalizePaymentMeta(option.meta);
+		if (methodLabel && !meta.some((item) => item.text === methodLabel))
+			meta.unshift({ text: methodLabel });
 		return meta;
 	});
 
@@ -110,9 +119,27 @@
 	let rootClass = $derived(
 		["ds-payment-details", className].filter(Boolean).join(" "),
 	);
+	let rootRef: HTMLDivElement | null = null;
+	let lastOptionId: string | null = null;
+
+	$effect(() => {
+		if (!autoFocusOnChange) return;
+		if (!option) return;
+		if (option.id === lastOptionId) return;
+		lastOptionId = option.id;
+		rootRef?.focus();
+	});
 </script>
 
-<div {...rest} class={rootClass} aria-live="polite">
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<div
+	{...rest}
+	bind:this={rootRef}
+	class={rootClass}
+	tabindex={-1}
+	aria-atomic="true"
+>
+	<span class="sr-only" aria-live="polite">{selectedAnnouncement}</span>
 	{#if option}
 		{#if title}
 			<div class="ds-payment-details-title text-label text-muted-foreground">
@@ -129,6 +156,9 @@
 				</DsBadge>
 			{/if}
 		</div>
+		{#if option.ariaHint}
+			<span class="sr-only">{option.ariaHint}</span>
+		{/if}
 
 		{#if availabilityNote}
 			<div
@@ -156,7 +186,7 @@
 
 		{#if childrenSnippet}
 			<div class="ds-payment-details-custom mt-4">
-				{@render childrenSnippet(option)}
+				{@render childrenSnippet(option, checkResult)}
 			</div>
 		{:else}
 			{#if metaItems.length}
@@ -164,11 +194,19 @@
 					class="ds-payment-details-meta list-none p-0 flex flex-wrap gap-2 mt-4"
 					aria-label={m.payment_details_meta_label()}
 				>
-					{#each metaItems as item (item)}
+					{#each metaItems as item (item.text)}
 						<li
 							class="text-xs bg-muted/50 px-2 py-0.5 rounded-full border border-border"
 						>
-							{item}
+							{#if item.icon}
+								<DsIcon
+									name={item.icon}
+									size="xs"
+									class="mr-1 inline-block"
+									aria-hidden="true"
+								/>
+							{/if}
+							{item.text}
 						</li>
 					{/each}
 				</ul>
@@ -194,6 +232,8 @@
 	{:else}
 		<div
 			class="ds-payment-details-empty text-helper text-muted-foreground py-8 text-center border-2 border-dashed border-border rounded-lg"
+			role="status"
+			aria-live="polite"
 		>
 			{emptyText}
 		</div>

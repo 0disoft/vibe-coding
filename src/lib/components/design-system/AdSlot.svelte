@@ -84,6 +84,7 @@
 
 	let id = $derived(idProp ?? generatedId);
 	let labelId = $derived(`${id}-label`);
+	let placeholderId = $derived(`${id}-placeholder`);
 
 	// Reactively update messages when page.url changes (language switch)
 	let resolvedLabel = $derived.by(() => {
@@ -103,7 +104,17 @@
 		return m.common_ad_placeholder();
 	});
 
-	let resolvedInfoLabel = $derived(infoLabel ?? resolvedLabel);
+	let resolvedInfoLabel = $derived.by(() => {
+		void page.url;
+		const baseLabel = infoLabel ?? resolvedLabel;
+		if (infoTarget === "_blank") {
+			return `${baseLabel} (${m.common_opens_new_window()})`;
+		}
+		return baseLabel;
+	});
+	let resolvedInfoRel = $derived(
+		infoRel ?? (infoTarget === "_blank" ? "noopener noreferrer" : undefined),
+	);
 	let shouldReserveRatio = $derived(reserveRatio ?? showPlaceholder);
 	let resolvedRatio = $derived(
 		ratio ?? (shouldReserveRatio ? DEFAULT_RATIOS[variant] : undefined),
@@ -143,6 +154,10 @@
 	let rootEl = $state<HTMLDivElement | null>(null);
 	let intersected = $state(false);
 	let isVisible = $derived(!lazy || intersected);
+	let isLoading = $derived(lazy && !isVisible);
+	let resolvedDescribedBy = $derived(
+		isLoading && showPlaceholder ? placeholderId : undefined,
+	);
 
 	$effect(() => {
 		if (!lazy) return;
@@ -175,7 +190,9 @@
 	{role}
 	aria-label={resolvedAriaLabel}
 	aria-labelledby={resolvedLabelledBy}
+	aria-describedby={resolvedDescribedBy}
 	aria-roledescription={roleDescription}
+	aria-busy={isLoading ? "true" : undefined}
 >
 	{#if showLabel}
 		<div class="ds-ad-slot-header">
@@ -187,7 +204,7 @@
 					class="ds-ad-slot-info ds-focus-ring"
 					href={infoHref}
 					target={infoTarget}
-					rel={infoRel}
+					rel={resolvedInfoRel}
 					aria-label={resolvedInfoLabel}
 					title={resolvedInfoLabel}
 				>
@@ -201,7 +218,13 @@
 			{@render children()}
 		{:else if showPlaceholder}
 			<div class="ds-ad-slot-placeholder-box">
-				<span class="ds-ad-slot-placeholder-text">{placeholderText}</span>
+				<span
+					id={placeholderId}
+					class="ds-ad-slot-placeholder-text"
+					aria-live="polite"
+				>
+					{placeholderText}
+				</span>
 			</div>
 		{/if}
 	</div>

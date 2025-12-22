@@ -13,7 +13,7 @@
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
 		title: string;
 		description?: string;
-		sidebar?: Snippet<[{ close: () => void }]>;
+		sidebar?: Snippet<[{ close: () => void; onNavigate?: () => void }]>;
 		tocItems?: ReadonlyArray<TocItem>;
 		/**
 		 * 부모 레이아웃(예: /design-system 쇼케이스) 안에 "임베드"되는 경우,
@@ -40,10 +40,14 @@
 	let rootId = $derived(providedId ?? generatedId);
 	let sidebarId = $derived(`${rootId}-docs-sidebar`);
 	let tocId = $derived(`${rootId}-docs-toc`);
+	const sidebarVisibilityStorageKey = "docs.sidebar.visible";
+	const tocVisibilityStorageKey = "docs.toc.visible";
 
 	/* State for Sheet (Mobile) */
 	let isSheetSidebarOpen = $state(false);
 	let isSheetTocOpen = $state(false);
+	let lastFocus: HTMLElement | null = null;
+	let hasLoadedVisibility = $state(false);
 
 	/* State for Column Visibility (Desktop) */
 	let isDesktopSidebarVisible = $state(true);
@@ -53,8 +57,8 @@
 	/* Scroll Spy: Active ToC Section */
 	let activeTocId = $state<string | undefined>(undefined);
 
-	let rootClass = $derived(
-		[
+	let rootClass = $derived.by(() => {
+		return [
 			"grid gap-4 lg:gap-6",
 			embedded
 				? ""
@@ -62,27 +66,62 @@
 			className,
 		]
 			.filter(Boolean)
-			.join(" "),
-	);
+			.join(" ");
+	});
 
-	let rootStyle = $derived(
-		embedded
-			? ""
-			: `
+	let rootStyle = $derived.by(() => {
+		if (embedded) return "";
+		return `
 				--col-nav: ${isDesktopSidebarVisible ? "240px" : "48px"};
 				--col-toc: ${isDesktopTocVisible ? "200px" : "48px"};
 				transition: grid-template-columns 0.3s ease;
-			`,
-	);
+			`;
+	});
 
 	let desktopOnlyClass = $derived(embedded ? "hidden" : "hidden lg:block");
 	let mobileOnlyClass = $derived(embedded ? "" : "lg:hidden");
+
+	function rememberFocus() {
+		if (typeof document === "undefined") return;
+		lastFocus = document.activeElement as HTMLElement | null;
+	}
+
+	function restoreFocus() {
+		if (!lastFocus || typeof document === "undefined") return;
+		if (!document.contains(lastFocus)) return;
+
+		requestAnimationFrame(() => {
+			lastFocus?.focus();
+		});
+	}
+
+	function readStoredVisibility(key: string, fallback: boolean) {
+		if (typeof window === "undefined") return fallback;
+		try {
+			const value = window.localStorage.getItem(key);
+			if (value === null) return fallback;
+			return value === "true" || value === "1";
+		} catch {
+			return fallback;
+		}
+	}
+
+	function storeVisibility(key: string, value: boolean) {
+		if (typeof window === "undefined") return;
+		try {
+			window.localStorage.setItem(key, value ? "true" : "false");
+		} catch {
+			// no-op
+		}
+	}
 
 	// Desktop Toggle Handlers
 	function toggleSidebar() {
 		if (window.matchMedia("(min-width: 1024px)").matches) {
 			isDesktopSidebarVisible = !isDesktopSidebarVisible;
+			storeVisibility(sidebarVisibilityStorageKey, isDesktopSidebarVisible);
 		} else {
+			rememberFocus();
 			isSheetSidebarOpen = true;
 		}
 	}
@@ -90,10 +129,37 @@
 	function toggleToc() {
 		if (window.matchMedia("(min-width: 1024px)").matches) {
 			isDesktopTocVisible = !isDesktopTocVisible;
+			storeVisibility(tocVisibilityStorageKey, isDesktopTocVisible);
 		} else {
+			rememberFocus();
 			isSheetTocOpen = true;
 		}
 	}
+
+	function handleSidebarSheetChange(next: boolean) {
+		isSheetSidebarOpen = next;
+		if (!next) restoreFocus();
+	}
+
+	function handleTocSheetChange(next: boolean) {
+		isSheetTocOpen = next;
+		if (!next) restoreFocus();
+	}
+
+	$effect(() => {
+		if (embedded || typeof window === "undefined") return;
+		if (hasLoadedVisibility) return;
+
+		hasLoadedVisibility = true;
+		isDesktopSidebarVisible = readStoredVisibility(
+			sidebarVisibilityStorageKey,
+			true,
+		);
+		isDesktopTocVisible = readStoredVisibility(
+			tocVisibilityStorageKey,
+			true,
+		);
+	});
 
 	$effect(() => {
 		if (embedded || typeof window === "undefined") return;
@@ -149,8 +215,8 @@
 				}
 			},
 			{
-				rootMargin: "-80px 0px -60% 0px",
-				threshold: [0, 0.25, 0.5, 0.75, 1],
+				rootMargin: "-72px 0px -65% 0px",
+				threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
 			},
 		);
 
@@ -173,10 +239,10 @@
 		<aside
 			class={[
 				desktopOnlyClass,
-				"fixed left-4 top-16 z-40",
+				"fixed top-16 z-40",
 				"h-[calc(100vh-8rem)]",
 			].join(" ")}
-			style={`width: ${isDesktopSidebarVisible ? "240px" : "48px"}; transition: width 0.3s ease;`}
+			style={`width: ${isDesktopSidebarVisible ? "240px" : "48px"}; transition: width 0.3s ease; inset-inline-start: 1rem;`}
 			aria-hidden={!isDesktopSidebarVisible}
 		>
 			<!-- Collapsed State: Open Button -->
@@ -223,7 +289,7 @@
 		class="min-w-0 pt-1 lg:pt-2"
 		style={embedded || !isDesktop
 			? ""
-			: `margin-left: ${isDesktopSidebarVisible ? "264px" : "72px"}; margin-right: ${isDesktopTocVisible ? "224px" : "72px"}; transition: margin 0.3s ease;`}
+			: `margin-inline-start: ${isDesktopSidebarVisible ? "264px" : "72px"}; margin-inline-end: ${isDesktopTocVisible ? "224px" : "72px"}; transition: margin 0.3s ease;`}
 	>
 		<header class="space-y-2 lg:space-y-3">
 			<div class="flex flex-wrap items-center justify-between gap-2">
@@ -283,10 +349,10 @@
 		<aside
 			class={[
 				desktopOnlyClass,
-				"fixed right-4 top-16 z-40",
+				"fixed top-16 z-40",
 				"h-[calc(100vh-8rem)]",
 			].join(" ")}
-			style={`width: ${isDesktopTocVisible ? "200px" : "48px"}; transition: width 0.3s ease;`}
+			style={`width: ${isDesktopTocVisible ? "200px" : "48px"}; transition: width 0.3s ease; inset-inline-end: 1rem;`}
 			aria-hidden={!isDesktopTocVisible}
 		>
 			<!-- Collapsed State: Open Button -->
@@ -350,14 +416,17 @@
 		id={sidebarId}
 		title={m.docs_menu_title()}
 		open={isSheetSidebarOpen}
-		onOpenChange={(next) => (isSheetSidebarOpen = next)}
+		onOpenChange={handleSidebarSheetChange}
 		side="left"
 		size="sm"
 		closeOnOutsideClick
 		closeOnEscape
 		class={mobileOnlyClass}
 	>
-		{@render sidebar({ close: () => (isSheetSidebarOpen = false) })}
+		{@render sidebar({
+			close: () => (isSheetSidebarOpen = false),
+			onNavigate: () => (isSheetSidebarOpen = false),
+		})}
 	</DsSheet>
 {/if}
 
@@ -366,13 +435,17 @@
 		id={tocId}
 		title={m.docs_on_this_page()}
 		open={isSheetTocOpen}
-		onOpenChange={(next) => (isSheetTocOpen = next)}
+		onOpenChange={handleTocSheetChange}
 		side="right"
 		size="sm"
 		closeOnOutsideClick
 		closeOnEscape
 		class={mobileOnlyClass}
 	>
-		<DocsToc items={tocItems} class="border-0 bg-transparent p-0" />
+		<DocsToc
+			items={tocItems}
+			class="border-0 bg-transparent p-0"
+			onNavigate={() => (isSheetTocOpen = false)}
+		/>
 	</DsSheet>
 {/if}

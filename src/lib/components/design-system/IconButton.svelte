@@ -133,6 +133,7 @@
 	aria-busy={loading || undefined}
 	aria-label={computedAriaLabel}
 	aria-pressed={pressed === undefined ? undefined : pressed}
+	data-ds-loading={loading || undefined}
 	data-ds-size={size}
 	data-ds-variant={variant}
 	data-ds-intent={intentCss}
@@ -140,7 +141,8 @@
 	onkeydown={handleKeyDown}
 >
 	{#if loading}
-		<DsIcon name="loader-circle" {size} class="animate-spin" />
+		<DsIcon name="loader-circle" {size} class="animate-spin" aria-hidden="true" />
+		<span class="sr-only" aria-live="polite">{resolvedLoadingLabel}</span>
 	{:else}
 		{#if icon}
 			<DsIcon name={icon} {size} {flipInRtl} />

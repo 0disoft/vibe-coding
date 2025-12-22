@@ -14,12 +14,17 @@
 	import { createControllableState } from "$lib/shared/utils/controllable-state.svelte";
 
 	import type {
+		PaymentAvailabilityResult,
 		PaymentContext,
 		PaymentMethodType,
 		PaymentOption,
 		UnavailabilityReason,
 	} from "./payment-types";
-	import { checkPaymentOptionAvailability } from "./payment-types";
+	import {
+		checkPaymentOptionAvailability,
+		getPaymentMethodMeta,
+		normalizePaymentMeta,
+	} from "./payment-types";
 
 	type Layout = "grid" | "list";
 
@@ -39,28 +44,35 @@
 		context?: PaymentContext;
 		availabilityMode?: "hide" | "disable";
 		emptyText?: string;
-		renderOption?: Snippet<[PaymentOption, boolean]>;
+		renderOption?: Snippet<[PaymentOption, boolean, OptionContext]>;
 	}
 
-	const getMethodLabel = (type: PaymentMethodType): string => {
-		switch (type) {
-			case "card":
-				return m.payment_method_card();
-			case "bank":
-				return m.payment_method_bank();
-			case "crypto":
-				return m.payment_method_crypto();
-			case "wallet":
-				return m.payment_method_wallet();
-			case "mobile":
-				return m.payment_method_mobile();
-			case "virtual":
-				return m.payment_method_virtual();
-			case "transfer":
-				return m.payment_method_transfer();
-			default:
-				return m.payment_method_other();
-		}
+	type OptionContext = {
+		id: string;
+		checked: boolean;
+		disabled: boolean;
+		describedBy?: string;
+		layout: Layout;
+		availability: PaymentAvailabilityResult;
+	};
+
+	const METHOD_LABELS: Record<PaymentMethodType, () => string> = {
+		card: m.payment_method_card,
+		bank: m.payment_method_bank,
+		crypto: m.payment_method_crypto,
+		wallet: m.payment_method_wallet,
+		mobile: m.payment_method_mobile,
+		virtual: m.payment_method_virtual,
+		transfer: m.payment_method_transfer,
+		other: m.payment_method_other,
+	};
+
+	const resolveMethodLabel = (
+		type?: PaymentMethodType,
+	): string | undefined => {
+		if (!type) return undefined;
+		const resolver = METHOD_LABELS[type] ?? METHOD_LABELS.other;
+		return resolver();
 	};
 
 	const getReasonLabel = (
@@ -79,6 +91,11 @@
 				return undefined;
 		}
 	};
+
+	const generatedId = $props.id();
+
+	const normalizeOptionId = (value: string) =>
+		value.trim().replace(/[^a-zA-Z0-9_-]/g, "-");
 
 	let {
 		options,
@@ -119,6 +136,7 @@
 	let rootClass = $derived(
 		["ds-payment-option-group", className].filter(Boolean).join(" "),
 	);
+	let optionIdPrefix = $derived(idProp ?? generatedId);
 	let normalizedId = $derived(idProp ?? undefined);
 	let optionStates = $derived.by(() => {
 		void page.url; // React to locale changes for labels logic
@@ -139,6 +157,12 @@
 	let selectableOptions = $derived.by(() =>
 		optionStates.filter((state) => !state.disabledResolved),
 	);
+	let optionsAnnouncement = $derived.by(() => {
+		void page.url;
+		if (!optionStates.length) return resolvedEmptyText;
+		const base = resolvedAriaLabel ?? "";
+		return base ? `${base} ${optionStates.length}` : `${optionStates.length}`;
+	});
 
 	$effect(() => {
 		if (valueState.isControlled) return;
@@ -163,14 +187,13 @@
 	});
 
 	function resolveMeta(option: PaymentOption, availabilityNote?: string) {
-		const meta = option.meta ? [...option.meta] : [];
-		if (option.methodType) {
-			const label = getMethodLabel(option.methodType);
-			if (label && !meta.includes(label)) meta.unshift(label);
-		}
+		const meta = normalizePaymentMeta(option.meta);
+		const methodLabel = resolveMethodLabel(option.methodType);
+		if (methodLabel && !meta.some((item) => item.text === methodLabel))
+			meta.unshift({ text: methodLabel });
 		// Only add availabilityNote if it's NOT a critical error (which is handled separately)
-		if (availabilityNote && !meta.includes(availabilityNote))
-			meta.unshift(availabilityNote);
+		if (availabilityNote && !meta.some((item) => item.text === availabilityNote))
+			meta.unshift({ text: availabilityNote, intent: "danger" });
 		return meta;
 	}
 </script>
@@ -180,6 +203,9 @@
 		{resolvedEmptyText}
 	</div>
 {:else}
+	{#if optionsAnnouncement}
+		<span class="sr-only" aria-live="polite">{optionsAnnouncement}</span>
+	{/if}
 	<DsRadioGroup
 		{...rest}
 		id={normalizedId}
@@ -197,6 +223,7 @@
 		{#each optionStates as state (state.option.id)}
 			{@const option = state.option}
 			{@const isSelected = currentValue === option.id}
+			{@const optionDomId = `${optionIdPrefix}-${normalizeOptionId(option.id)}`}
 			{@const badgeLabel =
 				option.badge ??
 				(option.recommended ? m.payment_recommended() : undefined)}
@@ -208,13 +235,33 @@
 					? (state.check.message ?? reasonLabel ?? option.availabilityNote)
 					: undefined}
 			{@const metaItems = resolveMeta(option, availabilityNote)}
+			{@const methodMeta = getPaymentMethodMeta(option.methodType)}
+			{@const resolvedIcon = option.icon ?? methodMeta?.icon}
 
 			<!-- Connect description and availabilityNote to aria-describedby via DsRadioItem's description prop -->
-			{@const combinedDescription = [option.description, availabilityNote]
+			{@const combinedDescription = [
+				option.description,
+				option.ariaHint,
+				availabilityNote,
+			]
 				.filter(Boolean)
 				.join(". ")}
+			{@const optionDescriptionId = combinedDescription
+				? `${optionDomId}-desc`
+				: undefined}
+			{@const optionContext = {
+				id: optionDomId,
+				checked: isSelected,
+				disabled: state.disabledResolved,
+				describedBy: [ariaDescribedby, optionDescriptionId]
+					.filter(Boolean)
+					.join(" ") || undefined,
+				layout,
+				availability: state.check,
+			}}
 
 			<DsRadioItem
+				id={optionDomId}
 				value={option.id}
 				disabled={state.disabledResolved}
 				aria-label={option.ariaLabel}
@@ -224,14 +271,14 @@
 					.join(" ")}
 			>
 				{#if renderOption}
-					{@render renderOption(option, isSelected)}
+					{@render renderOption(option, isSelected, optionContext)}
 				{:else}
 					<div class="ds-payment-option-content">
 						<div class="ds-payment-option-title-row">
 							<div class="ds-payment-option-title">
-								{#if option.icon}
+								{#if resolvedIcon}
 									<DsIcon
-										name={option.icon}
+										name={resolvedIcon}
 										size="sm"
 										class="ds-payment-option-icon"
 									/>
@@ -242,6 +289,14 @@
 								<DsBadge intent={badgeIntent} variant="soft" size="sm">
 									{badgeLabel}
 								</DsBadge>
+							{/if}
+							{#if isSelected}
+								<DsIcon
+									name="check-circle-2"
+									size="xs"
+									class="ds-payment-option-selected-icon"
+									aria-hidden="true"
+								/>
 							{/if}
 						</div>
 						{#if option.provider}
@@ -277,10 +332,22 @@
 
 						{#if metaItems.length}
 							<div class="ds-payment-option-meta">
-								{#each metaItems as meta (meta)}
-									{#if meta !== availabilityNote}
-										<DsTag size="sm" variant="outline" intent="neutral">
-											{meta}
+								{#each metaItems as item (item.text)}
+									{#if item.text !== availabilityNote}
+										<DsTag
+											size="sm"
+											variant="outline"
+											intent={item.intent ?? "neutral"}
+										>
+											{#if item.icon}
+												<DsIcon
+													name={item.icon}
+													size="xs"
+													class="mr-1 inline-block"
+													aria-hidden="true"
+												/>
+											{/if}
+											{item.text}
 										</DsTag>
 									{/if}
 								{/each}

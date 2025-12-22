@@ -17,7 +17,7 @@
 		DsLiveRegion,
 	} from "$lib/components/design-system";
 
-	type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+	import { getApiMethodIntent, type HttpMethod } from "./api";
 
 	export type ApiExample = {
 		label: string;
@@ -30,6 +30,7 @@
 		path: string;
 		description?: string;
 		examples?: ApiExample[];
+		activeExampleIndex?: number;
 		onExampleSelect?: (index: number) => void;
 		children?: Snippet;
 	}
@@ -39,25 +40,26 @@
 		path,
 		description,
 		examples = [],
+		activeExampleIndex = $bindable(0),
 		onExampleSelect,
 		children,
 	}: Props = $props();
 
-	let activeExampleIndex = $state(0);
 	let liveRegion: { announce: (message: string) => void } | null = null;
-
-	function methodIntent(m: HttpMethod) {
-		if (m === "GET") return "secondary";
-		if (m === "POST") return "primary";
-		if (m === "DELETE") return "danger";
-		return "warning";
-	}
 
 	function selectExample(index: number) {
 		activeExampleIndex = index;
 		onExampleSelect?.(index);
 		const selected = examples[index];
-		if (selected) liveRegion?.announce(selected.label);
+		if (selected) {
+			const position = index + 1;
+			const total = examples.length;
+			const label = selected.label?.trim();
+			const announcement = label
+				? `${label} (${position}/${total})`
+				: `${position}/${total}`;
+			liveRegion?.announce(announcement);
+		}
 	}
 
 	let resolvedExampleIndex = $derived(
@@ -90,7 +92,7 @@
 
 <DsCard class="space-y-4">
 	<div class="flex flex-wrap items-center gap-2">
-		<DsBadge intent={methodIntent(method)} variant="solid" size="sm"
+		<DsBadge intent={getApiMethodIntent(method)} variant="solid" size="sm"
 			>{method}</DsBadge
 		>
 		<code class="text-code">{path}</code>
@@ -113,7 +115,7 @@
 	{#if examples.length}
 		<DsDropdown
 			align="start"
-			menuClass="w-64"
+			menuClass="w-[min(16rem,100%)]"
 			itemSelector={'[role="menuitemradio"]'}
 		>
 			{#snippet trigger(props)}
@@ -144,7 +146,7 @@
 	{/if}
 
 	{#if children}
-		<div class="pt-2">
+		<div style="padding-block-start: var(--spacing-2);">
 			{@render children()}
 		</div>
 	{/if}

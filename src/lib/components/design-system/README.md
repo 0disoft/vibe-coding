@@ -722,12 +722,14 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - 파일: `src/lib/components/design-system/PaymentOptionSelector.svelte`
 - 역할: 결제 옵션 선택 UI(그리드/리스트, 데이터 기반)
 - Props: `options`, `value`, `defaultValue`, `onValueChange`, `layout`, `name`, `disabled`, `required`, `label`, `ariaLabel`, `ariaLabelledby`, `ariaDescribedby`, `context`, `availabilityMode`, `emptyText`, `renderOption`
+- `renderOption` 시그니처: `(option, isSelected, context)` (context: `id`, `checked`, `disabled`, `describedBy`, `layout`, `availability`)
 
 #### `DsPaymentOptionDetails`
 
 - 파일: `src/lib/components/design-system/PaymentOptionDetails.svelte`
 - 역할: 선택된 결제 옵션의 상세/제약/수수료 표시
-- Props: `option`, `title`, `emptyText`, `children`
+- Props: `option`, `title`, `emptyText`, `children`, `headingLevel`, `autoFocusOnChange`
+- `children` 시그니처: `(option, availability)`
 
 #### `DsPaymentFlowSummary`
 

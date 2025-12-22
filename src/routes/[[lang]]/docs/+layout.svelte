@@ -150,11 +150,12 @@
 	description="DocsLayout 데스크톱(좌측 메뉴 + 우측 ToC) / 모바일(Sheet) 동작 확인"
 	{tocItems}
 >
-	{#snippet sidebar({ close })}
+	{#snippet sidebar({ close, onNavigate })}
 		<DocsSidebarNav
 			title="Docs"
 			items={navItems}
 			activePath={page.url.pathname}
+			onNavigate={onNavigate}
 		>
 			{#snippet actions()}
 				<div class="flex items-center">

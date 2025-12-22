@@ -128,3 +128,22 @@
 	z-index: 2;
 }
 
+@media (max-width: 768px) {
+	.ds-content-card--compact .ds-content-card-title,
+	.ds-content-card--compact .ds-content-card-excerpt {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.ds-content-card--compact .ds-content-card-title {
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+	}
+
+	.ds-content-card--compact .ds-content-card-excerpt {
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+	}
+}
+

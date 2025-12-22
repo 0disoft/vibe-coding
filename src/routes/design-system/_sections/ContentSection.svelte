@@ -82,14 +82,15 @@
 
 	<DsCard class="space-y-6">
 		<div class="space-y-2">
-			<div class="text-label text-muted-foreground">ContentCard</div>
+			<h3 class="text-label text-muted-foreground">ContentCard</h3>
 			<div class="grid gap-3 md:grid-cols-2">
 				<DsContentCard
+					class="ds-content-card--compact"
 					title="Guides: Build a better docs layout"
 					href="/docs"
 					excerpt="A practical checklist for navigation, TOC, and readable line-length."
 					{imageSrc}
-					imageAlt="Decorative gradient"
+					imageAlt="Gradient banner with Design System title"
 					status="published"
 					author="Zerodi"
 					category="Guides"
@@ -98,6 +99,7 @@
 					tags={["docs", "layout", "a11y", "tokens"]}
 				/>
 				<DsContentCard
+					class="ds-content-card--compact"
 					title="Community: Share your build log"
 					href="/community"
 					excerpt="Small experiments, big learnings. Post updates and get feedback."
@@ -107,23 +109,14 @@
 					date="2025-12-16"
 					readingMinutes={3}
 					tags={["community", "progress", "shipping"]}
-				>
-					{#snippet children()}
-						<div class="flex flex-wrap items-center gap-2">
-							<DsTag data-ds-intent="primary" data-ds-variant="soft">New</DsTag>
-							<DsTag data-ds-intent="neutral" data-ds-variant="outline"
-								>WIP</DsTag
-							>
-						</div>
-					{/snippet}
-				</DsContentCard>
+				/>
 			</div>
 		</div>
 
 		<div class="space-y-2">
-			<div class="text-label text-muted-foreground">
+			<h3 class="text-label text-muted-foreground">
 				FilterBar + FacetFilter
-			</div>
+			</h3>
 			<DsFilterBar
 				bind:query
 				bind:sort
@@ -182,18 +175,24 @@
 
 				<div class="rounded-lg border border-border bg-surface p-4">
 					<div class="text-helper text-muted-foreground">state</div>
-					<pre
-						class="mt-2 whitespace-pre-wrap rounded-md bg-surface-hover p-3 text-xs text-foreground">{JSON.stringify(
-							{ query, sort, facetValues },
-							null,
-							2,
-						)}</pre>
+					<div
+						class="mt-2 rounded-md bg-surface-hover p-3"
+						role="status"
+						aria-live="polite"
+						aria-atomic="true"
+					>
+						<pre class="whitespace-pre-wrap text-xs text-foreground">{JSON.stringify(
+								{ query, sort, facetValues },
+								null,
+								2,
+							)}</pre>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="space-y-2">
-			<div class="text-label text-muted-foreground">AdSlot</div>
+			<h3 class="text-label text-muted-foreground">AdSlot</h3>
 			<div class="grid gap-4 md:grid-cols-3">
 				<DsAdSlot
 					variant="banner"
@@ -239,7 +238,11 @@
 					{#snippet children()}
 						<div use:markLazyRendered class="ds-ad-slot-placeholder-box">
 							<div class="text-label">{adLabel}</div>
-							<div class="text-helper text-muted-foreground">
+							<div
+								class="text-helper text-muted-foreground"
+								aria-live="polite"
+								aria-atomic="true"
+							>
 								Lazy render: {lazyRenderedAt ?? "…"}
 							</div>
 						</div>
@@ -249,13 +252,13 @@
 		</div>
 
 		<div class="space-y-2">
-			<div class="text-label text-muted-foreground">MediaPicker</div>
+			<h3 class="text-label text-muted-foreground">MediaPicker</h3>
 			<DsMediaPicker bind:files onFilesChange={(next) => (files = next)} />
 			<div class="text-helper text-muted-foreground">files: {files.length}</div>
 		</div>
 
 		<div class="space-y-2">
-			<div class="text-label text-muted-foreground">Callout / Quote</div>
+			<h3 class="text-label text-muted-foreground">Callout / Quote</h3>
 			<div class="grid gap-3 md:grid-cols-2">
 				<DsCallout intent="primary" title="Tip">
 					{#snippet children()}

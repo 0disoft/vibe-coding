@@ -30,6 +30,9 @@
 		headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 	}
 
+	const generatedId = $props.id();
+	const FLASH_DURATION = 900;
+
 	let {
 		title,
 		subtitle,
@@ -44,6 +47,7 @@
 		children: childrenSnippet,
 		footer,
 		headingLevel = 4,
+		id: idProp,
 		class: className = "",
 		...rest
 	}: Props = $props();
@@ -69,12 +73,15 @@
 		return totalLabel ?? m.payment_summary_total();
 	});
 
-	let definitionItems = $derived(
-		items?.map((item) => ({
-			term: item.label,
-			description: item.value ?? "-",
-		})) ?? [],
-	);
+	let definitionItems = $derived.by(() => {
+		void page.url;
+		return (
+			items?.map((item) => ({
+				term: item.label,
+				description: item.value ?? "-",
+			})) ?? []
+		);
+	});
 	let showHeader = $derived(!!resolvedTitle || !!subtitle);
 	let showLines = $derived(
 		discountValue !== undefined || taxValue !== undefined,
@@ -88,18 +95,72 @@
 	);
 
 	let headingTag = $derived(`h${headingLevel}`);
+	let summaryId = $derived(idProp ?? generatedId);
+	let summaryTitleId = $derived.by(() =>
+		resolvedTitle ? `${summaryId}-title` : undefined,
+	);
+
+	let flashTotal = $state(false);
+	let flashLines = $state(false);
+	let lastTotalValue: string | null | undefined = undefined;
+	let lastDiscountValue: string | number | null | undefined = undefined;
+	let lastTaxValue: string | number | null | undefined = undefined;
+	let isInitialized = false;
+	let totalFlashTimer: ReturnType<typeof setTimeout> | null = null;
+	let linesFlashTimer: ReturnType<typeof setTimeout> | null = null;
+
+	$effect(() => {
+		if (!isInitialized) {
+			isInitialized = true;
+			lastTotalValue = totalValue ?? null;
+			lastDiscountValue = discountValue ?? null;
+			lastTaxValue = taxValue ?? null;
+			return;
+		}
+
+		const nextTotal = totalValue ?? null;
+		const nextDiscount = discountValue ?? null;
+		const nextTax = taxValue ?? null;
+
+		if (nextTotal !== lastTotalValue) {
+			flashTotal = true;
+			if (totalFlashTimer) clearTimeout(totalFlashTimer);
+			totalFlashTimer = setTimeout(() => {
+				flashTotal = false;
+			}, FLASH_DURATION);
+		}
+
+		if (nextDiscount !== lastDiscountValue || nextTax !== lastTaxValue) {
+			flashLines = true;
+			if (linesFlashTimer) clearTimeout(linesFlashTimer);
+			linesFlashTimer = setTimeout(() => {
+				flashLines = false;
+			}, FLASH_DURATION);
+		}
+
+		lastTotalValue = nextTotal;
+		lastDiscountValue = nextDiscount;
+		lastTaxValue = nextTax;
+	});
 </script>
 
 <DsCard
 	{...rest}
+	tag="section"
+	id={summaryId}
+	aria-labelledby={summaryTitleId}
 	class={["ds-payment-summary", className].filter(Boolean).join(" ")}
 >
 	{#if showHeader}
 		{#snippet header()}
 			<div class="ds-payment-summary-header">
-				{#if title}
-					<svelte:element this={headingTag} class="text-h4 font-semibold">
-						{title}
+				{#if resolvedTitle}
+					<svelte:element
+						this={headingTag}
+						class="text-h4 font-semibold"
+						id={summaryTitleId}
+					>
+						{resolvedTitle}
 					</svelte:element>
 				{/if}
 				{#if subtitle}
@@ -117,7 +178,7 @@
 				{#if definitionItems.length}
 					<div class="ds-payment-summary-items">
 						<DsDefinitionList items={definitionItems} variant="stacked" />
-					</div>
+						</div>
 				{/if}
 
 				{#if showLines || totalValue}
@@ -128,14 +189,24 @@
 
 						<dl class="ds-payment-summary-lines space-y-2 text-body-secondary">
 							{#if discountValue !== undefined && discountValue !== null}
-								<div class="flex justify-between items-center">
-									<dt>{discountLabel}</dt>
+								<div
+									class="ds-payment-summary-line"
+									role="group"
+									aria-label={`${resolvedDiscountLabel}: ${discountValue}`}
+									data-flash={flashLines ? "true" : undefined}
+								>
+									<dt>{resolvedDiscountLabel}</dt>
 									<dd class="font-medium text-success">{discountValue}</dd>
 								</div>
 							{/if}
 							{#if taxValue !== undefined && taxValue !== null}
-								<div class="flex justify-between items-center">
-									<dt>{taxLabel}</dt>
+								<div
+									class="ds-payment-summary-line"
+									role="group"
+									aria-label={`${resolvedTaxLabel}: ${taxValue}`}
+									data-flash={flashLines ? "true" : undefined}
+								>
+									<dt>{resolvedTaxLabel}</dt>
 									<dd class="font-medium">{taxValue}</dd>
 								</div>
 							{/if}
@@ -146,9 +217,12 @@
 								<DsSeparator class="mb-3" />
 								<dl
 									class="ds-payment-summary-total flex justify-between items-center"
+									data-flash={flashTotal ? "true" : undefined}
 								>
-									<dt class="text-body font-semibold">{totalLabel}</dt>
-									<dd class="text-h3 font-bold text-primary">{totalValue}</dd>
+									<dt class="text-body font-semibold">{resolvedTotalLabel}</dt>
+									<dd class="ds-payment-summary-total-value text-h3 font-bold">
+										{totalValue}
+									</dd>
 								</dl>
 							</div>
 						{/if}

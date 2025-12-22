@@ -126,6 +126,7 @@
 .ds-payment-option.is-selected {
 	border-color: oklch(var(--color-primary));
 	box-shadow: 0 0 0 3px oklch(var(--color-primary) / 0.12);
+	background: oklch(var(--color-primary) / 0.06);
 }
 
 .ds-payment-option .ds-radio-control {
@@ -143,6 +144,10 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--spacing-2);
+}
+
+.ds-payment-option-selected-icon {
+	color: oklch(var(--color-primary));
 }
 
 .ds-payment-option-title {
@@ -168,6 +173,13 @@
 	gap: var(--spacing-1);
 }
 
+@media (pointer: coarse) {
+	.ds-payment-option {
+		padding-block: var(--spacing-4);
+		padding-inline: var(--spacing-5);
+	}
+}
+
 .ds-payment-option-empty {
 	padding: var(--spacing-3);
 	border-radius: var(--radius-md);
@@ -178,6 +190,11 @@
 .ds-payment-details {
 	display: grid;
 	gap: var(--spacing-2);
+}
+
+.ds-payment-details-list {
+	line-height: 1.55;
+	letter-spacing: 0.01em;
 }
 
 .ds-payment-details-title {
@@ -241,19 +258,50 @@
 	margin-block-start: var(--spacing-2);
 }
 
+.ds-payment-summary-total-value {
+	padding-inline: var(--spacing-2);
+	padding-block: 0.2rem;
+	border-radius: var(--radius-md);
+	background: oklch(var(--color-primary) / 0.12);
+	color: oklch(var(--color-primary));
+}
+
 .ds-payment-summary-lines {
 	display: grid;
-	gap: 0.35rem;
+	gap: var(--spacing-2);
 	margin-block-start: var(--spacing-2);
 	font-size: var(--font-size-sm);
 	color: oklch(var(--color-text));
 }
 
 .ds-payment-summary-line {
-	display: flex;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
-	justify-content: space-between;
+	column-gap: var(--spacing-3);
 	color: oklch(var(--color-text-muted));
+}
+
+.ds-payment-summary-line dt {
+	text-wrap: balance;
+}
+
+.ds-payment-summary-line[data-flash="true"],
+.ds-payment-summary-total[data-flash="true"] {
+	animation: ds-summary-flash var(--motion-duration-slow) var(--motion-ease);
+}
+
+.ds-payment-summary-total[data-flash="true"] .ds-payment-summary-total-value {
+	background: oklch(var(--color-primary) / 0.2);
+}
+
+@keyframes ds-summary-flash {
+	0% {
+		box-shadow: 0 0 0 0 oklch(var(--color-primary) / 0.4);
+	}
+	100% {
+		box-shadow: 0 0 0 8px oklch(var(--color-primary) / 0);
+	}
 }
 
 .ds-payment-summary-note {

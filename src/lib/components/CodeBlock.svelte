@@ -3,6 +3,7 @@
 	import type { BundledTheme } from "shiki";
 
 	import { page } from "$app/state";
+
 	import {
 		getHighlighterForLanguage,
 		resolveLanguageOrText,
@@ -109,7 +110,7 @@
 </script>
 
 <div {id} class="ds-code-block-shell group w-full">
-	{#if highlightedHtml}
+	{#snippet header()}
 		<!-- Shiki wrapper color override -->
 		<div class="ds-code-block-header">
 			{#if showLanguageBadge}
@@ -133,53 +134,38 @@
 				{/snippet}
 			</DsTooltip>
 		</div>
+	{/snippet}
+
+	{#if highlightedHtml}
+		{@render header()}
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		<div
-			class="ds-code-block-content ds-focus-ring overflow-auto [&>pre]:!m-0 [&>pre]:!p-[1.125rem] [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
+			class="ds-code-block-content ds-code-block-content--highlighted ds-focus-ring overflow-auto [&>pre]:!m-0 [&>pre]:!p-[1.125rem] [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
 			data-lenis-prevent
 			tabindex="0"
-			role="textbox"
-			aria-readonly="true"
-			aria-multiline="true"
+			role="region"
+			aria-roledescription="code snippet"
 			aria-label={ariaLabelValue}
 			aria-labelledby={ariaLabelledBy}
+			dir="ltr"
 		>
 			{@html highlightedHtml}<!-- security-ignore: xss-svelte-html -->
 		</div>
 	{:else}
 		<!-- Fallback: 하이라이팅 로딩 중에도 코드는 즉시 노출 (테스트/UX 안정성) -->
-		<div class="ds-code-block-header">
-			{#if showLanguageBadge}
-				<span id={badgeId} class="ds-code-block-badge">
-					{badgeLabel}
-				</span>
-			{/if}
-			<DsTooltip as="div" content={copyLabel} class="ds-code-block-copy">
-				{#snippet children(trigger)}
-					<DsCopyButton
-						size="xs"
-						variant="ghost"
-						intent="neutral"
-						touchTarget={false}
-						label={copyLabel}
-						{copiedLabel}
-						text={code}
-						describedBy={trigger["aria-describedby"]}
-						style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
-					/>
-				{/snippet}
-			</DsTooltip>
-		</div>
+		{@render header()}
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		<div
 			class="ds-code-block-content ds-focus-ring overflow-auto"
 			data-lenis-prevent
 			tabindex="0"
-			role="textbox"
-			aria-readonly="true"
-			aria-multiline="true"
+			role="region"
+			aria-roledescription="code snippet"
 			aria-label={ariaLabelValue}
 			aria-labelledby={ariaLabelledBy}
 			aria-busy="true"
 			aria-describedby={loadingId}
+			dir="ltr"
 		>
 			<span id={loadingId} class="sr-only" aria-live="polite">
 				{loadingLabel}

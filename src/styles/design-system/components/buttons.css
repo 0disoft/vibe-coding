@@ -23,7 +23,8 @@
 		background-color var(--motion-duration-fast) var(--motion-ease),
 		color var(--motion-duration-fast) var(--motion-ease),
 		border-color var(--motion-duration-fast) var(--motion-ease),
-		box-shadow var(--motion-duration-fast) var(--motion-ease);
+		box-shadow var(--motion-duration-fast) var(--motion-ease),
+		opacity var(--motion-duration-fast) var(--motion-ease);
 }
 
 .ds-button:disabled,
