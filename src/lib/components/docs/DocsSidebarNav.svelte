@@ -62,7 +62,10 @@
 
 	function handleNavigate(event?: MouseEvent) {
 		if (!onNavigate) return;
-		if (event && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey))
+		if (
+			event &&
+			(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+		)
 			return;
 		if (event && event.button !== 0) return;
 		onNavigate();
@@ -88,9 +91,10 @@
 		if (typeof window === "undefined") return;
 		if (!navRef) return;
 
-		const escaped = typeof CSS !== "undefined" && CSS.escape
-			? CSS.escape(activePath)
-			: activePath.replace(/["\\]/g, "\\$&");
+		const escaped =
+			typeof CSS !== "undefined" && CSS.escape
+				? CSS.escape(activePath)
+				: activePath.replace(/["\\]/g, "\\$&");
 		const target = navRef.querySelector<HTMLAnchorElement>(
 			`a[href="${escaped}"]`,
 		);
@@ -129,7 +133,7 @@
 	</div>
 
 	<div
-		class="flex-1 overflow-y-auto overscroll-y-contain thin-scrollbar p-3 pt-2"
+		class="mt-1 mb-2 flex-1 overflow-y-auto overscroll-y-contain thin-scrollbar p-3 pt-2"
 		onwheel={handleWheel}
 	>
 		<ul class="grid gap-0">

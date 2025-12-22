@@ -95,7 +95,10 @@
 
 	function handleNavigate(event?: MouseEvent) {
 		if (!onNavigate) return;
-		if (event && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey))
+		if (
+			event &&
+			(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+		)
 			return;
 		if (event && event.button !== 0) return;
 		onNavigate();
@@ -138,7 +141,7 @@
 		</div>
 	</div>
 	<div
-		class="flex-1 overflow-y-auto overscroll-y-contain thin-scrollbar p-4 pt-3"
+		class="mt-1 mb-2 flex-1 overflow-y-auto overscroll-y-contain thin-scrollbar p-4 pt-3"
 		onwheel={handleWheel}
 	>
 		<ul class="grid gap-1">
@@ -156,18 +159,10 @@
 							"block rounded px-2 py-1 text-xs transition-colors relative",
 							isActive
 								? "!bg-primary/10 !text-primary !font-medium"
-							: "text-muted-foreground hover:text-foreground hover:bg-surface-hover",
+								: "text-muted-foreground hover:text-foreground hover:bg-surface-hover",
 						].join(" ")}
 						aria-current={isActive ? "location" : undefined}
 					>
-						<span
-							aria-hidden="true"
-							class={[
-								"absolute rounded-full bg-primary transition-opacity pointer-events-none",
-								isActive ? "opacity-100" : "opacity-0",
-							].join(" ")}
-							style="inset-inline-start: 0.25rem; inset-block: 0.35rem; width: 2px;"
-						></span>
 						{item.label}
 					</a>
 				</li>

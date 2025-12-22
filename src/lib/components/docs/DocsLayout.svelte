@@ -155,10 +155,7 @@
 			sidebarVisibilityStorageKey,
 			true,
 		);
-		isDesktopTocVisible = readStoredVisibility(
-			tocVisibilityStorageKey,
-			true,
-		);
+		isDesktopTocVisible = readStoredVisibility(tocVisibilityStorageKey, true);
 	});
 
 	$effect(() => {
@@ -294,41 +291,6 @@
 		<header class="space-y-2 lg:space-y-3">
 			<div class="flex flex-wrap items-center justify-between gap-2">
 				<h1 class="text-2xl lg:text-h1 font-semibold">{title}</h1>
-				<!-- Toggle Buttons (Visible on Mobile ONLY) -->
-				<div class={mobileOnlyClass}>
-					<div class="flex items-center gap-1.5">
-						{#if sidebar}
-							<DsButton
-								size="sm"
-								variant="outline"
-								intent="secondary"
-								onclick={toggleSidebar}
-								title="Show Sidebar"
-							>
-								<span
-									class="i-lucide-panel-left-open h-4 w-4"
-									aria-hidden="true"
-								></span>
-								<span class="sr-only">{m.docs_menu_button()}</span>
-							</DsButton>
-						{/if}
-						{#if tocItems.length > 0}
-							<DsButton
-								size="sm"
-								variant="outline"
-								intent="secondary"
-								onclick={toggleToc}
-								title="Show ToC"
-							>
-								<span
-									class="i-lucide-panel-right-open h-4 w-4"
-									aria-hidden="true"
-								></span>
-								<span class="sr-only">{m.docs_on_this_page()}</span>
-							</DsButton>
-						{/if}
-					</div>
-				</div>
 			</div>
 			{#if description}
 				<p class="text-xs lg:text-body-secondary text-muted-foreground">
@@ -336,6 +298,45 @@
 				</p>
 			{/if}
 		</header>
+
+		<!-- Toggle Buttons (Visible on Mobile ONLY) -->
+		<div
+			class={[
+				mobileOnlyClass,
+				"sticky top-14 z-30 -mx-1 mt-2 mb-2 lg:hidden flex justify-end",
+			].join(" ")}
+		>
+			<div
+				class="flex items-center gap-1.5 rounded-md bg-background/80 p-1 backdrop-blur"
+			>
+				{#if sidebar}
+					<DsButton
+						size="sm"
+						variant="outline"
+						intent="secondary"
+						onclick={toggleSidebar}
+						title="Show Sidebar"
+					>
+						<span class="i-lucide-panel-left-open h-4 w-4" aria-hidden="true"
+						></span>
+						<span class="sr-only">{m.docs_menu_button()}</span>
+					</DsButton>
+				{/if}
+				{#if tocItems.length > 0}
+					<DsButton
+						size="sm"
+						variant="outline"
+						intent="secondary"
+						onclick={toggleToc}
+						title="Show ToC"
+					>
+						<span class="i-lucide-panel-right-open h-4 w-4" aria-hidden="true"
+						></span>
+						<span class="sr-only">{m.docs_on_this_page()}</span>
+					</DsButton>
+				{/if}
+			</div>
+		</div>
 
 		<div class="mt-4 lg:mt-6 min-w-0">
 			{#if children}

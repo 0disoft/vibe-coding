@@ -158,7 +158,12 @@
 	];
 
 	const sideNavItems = [
-		{ id: "overview", label: "Overview", href: "/docs", icon: "layout-dashboard" },
+		{
+			id: "overview",
+			label: "Overview",
+			href: "/docs",
+			icon: "layout-dashboard",
+		},
 		{ id: "guides", label: "Guides", href: "/docs/guides", icon: "book-open" },
 		{ id: "api", label: "API", href: "/docs/api", icon: "brackets" },
 		{
@@ -225,7 +230,16 @@
 			<DsBreadcrumb
 				items={[
 					{ label: "Home", href: "/" },
-					{ label: "Docs", href: "/docs" },
+					{
+						label: "Docs",
+						href: "/docs",
+						menuItems: [
+							{ label: "Overview", href: "/docs" },
+							{ label: "Getting Started", href: "/docs/getting-started" },
+							{ label: "API Reference", href: "/docs/api" },
+						],
+						menuLabel: "Select Doc",
+					},
 					{ label: "API" },
 				]}
 			/>
