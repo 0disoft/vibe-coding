@@ -1,0 +1,130 @@
+/* ───────────────────────────────────────────────────────────
+   Component: ContentMeta / TagList / ContentCard
+   ─────────────────────────────────────────────────────────── */
+
+.ds-content-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--content-meta-gap);
+	color: oklch(var(--content-meta-color));
+	font-size: var(--font-size-helper);
+	line-height: 1.45;
+}
+
+.ds-content-meta.is-compact {
+	font-size: var(--font-size-xs);
+}
+
+.ds-content-meta-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	min-inline-size: 0;
+}
+
+.ds-content-meta-icon {
+	inline-size: var(--content-meta-icon-size);
+	block-size: var(--content-meta-icon-size);
+	opacity: 0.75;
+}
+
+.ds-content-meta-sep {
+	opacity: 0.6;
+}
+
+.ds-tag-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--tag-list-gap);
+}
+
+.ds-content-actions {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--content-actions-gap);
+}
+
+.ds-content-card-inner {
+	display: flex;
+	flex-direction: column;
+	block-size: 100%;
+	text-decoration: none;
+	color: inherit;
+	position: relative;
+}
+
+.ds-content-card-media {
+	inline-size: 100%;
+	block-size: var(--content-card-media-height);
+	overflow: hidden;
+	background: oklch(var(--color-surface-hover));
+	aspect-ratio: 16 / 9;
+}
+
+.ds-content-card-image {
+	inline-size: 100%;
+	block-size: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.ds-content-card-body {
+	display: grid;
+	gap: var(--content-card-gap);
+	padding: var(--spacing-4);
+	min-inline-size: 0;
+}
+
+.ds-content-card-top {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--spacing-2);
+}
+
+.ds-content-card-actions {
+	flex-shrink: 0;
+	position: relative;
+	z-index: 2;
+}
+
+.ds-content-card-title {
+	font-weight: 850;
+	font-size: var(--font-size-h4);
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+}
+
+.ds-content-card-link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.ds-content-card-link::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+
+.ds-content-card-link:focus-visible {
+	outline: var(--border-width) solid oklch(var(--color-ring));
+	outline-offset: 3px;
+}
+
+.ds-content-card-excerpt {
+	color: oklch(var(--content-card-excerpt-color));
+	line-height: 1.55;
+}
+
+.ds-content-card-extra {
+	border-block-start: var(--border-width) solid oklch(var(--color-border));
+	padding-block-start: var(--spacing-3);
+}
+
+.ds-content-card .ds-tag-list {
+	position: relative;
+	z-index: 2;
+}
+

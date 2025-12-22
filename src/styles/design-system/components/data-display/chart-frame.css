@@ -1,0 +1,87 @@
+/* ───────────────────────────────────────────────────────────
+   Component: Chart
+   ─────────────────────────────────────────────────────────── */
+
+.ds-chart-frame {
+	display: grid;
+	gap: var(--chart-gap);
+	padding: var(--chart-padding);
+	border-radius: var(--chart-radius);
+	background: oklch(var(--chart-surface));
+	border: var(--border-width) solid oklch(var(--chart-border));
+}
+
+.ds-chart-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--spacing-3);
+}
+
+.ds-chart-heading {
+	min-inline-size: 0;
+	display: grid;
+	gap: 0.15rem;
+}
+
+.ds-chart-title {
+	font-size: var(--font-size-sm);
+	font-weight: 800;
+	color: oklch(var(--chart-title));
+}
+
+.ds-chart-desc {
+	font-size: var(--font-size-helper);
+	color: oklch(var(--chart-desc));
+}
+
+.ds-chart-actions {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-2);
+}
+
+.ds-chart-body {
+	min-inline-size: 0;
+}
+
+.ds-chart-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-2);
+	color: oklch(var(--color-text-muted));
+	font-size: var(--font-size-helper);
+}
+
+.ds-chart-footer {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.ds-chart-table {
+	display: grid;
+	gap: var(--spacing-2);
+	overflow-x: auto;
+}
+
+.ds-sparkline {
+	color: oklch(var(--sparkline-neutral));
+}
+
+.ds-sparkline[data-ds-intent="primary"] {
+	color: oklch(var(--sparkline-primary));
+}
+
+.ds-sparkline[data-ds-intent="success"] {
+	color: oklch(var(--sparkline-success));
+}
+
+.ds-sparkline[data-ds-intent="warning"] {
+	color: oklch(var(--sparkline-warning));
+}
+
+.ds-sparkline[data-ds-intent="error"] {
+	color: oklch(var(--sparkline-error));
+}
+

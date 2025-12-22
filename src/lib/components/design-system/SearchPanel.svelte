@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from "$app/state";
 	import { tick } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
@@ -31,14 +32,35 @@
 		onQueryChange,
 		items,
 		onSelect,
-		label = m.search_panel_label(),
-		placeholder = m.search_panel_placeholder(),
-		emptyText = m.search_panel_empty(),
+		label,
+		placeholder,
+		emptyText,
 		maxResults = 30,
 		showCount = true,
 		class: className = "",
 		...rest
 	}: Props = $props();
+
+	// Reactive i18n defaults
+	let resolvedLabel = $derived.by(() => {
+		void page.url;
+		return label ?? m.search_panel_label();
+	});
+
+	let resolvedPlaceholder = $derived.by(() => {
+		void page.url;
+		return placeholder ?? m.search_panel_placeholder();
+	});
+
+	let resolvedEmptyText = $derived.by(() => {
+		void page.url;
+		return emptyText ?? m.search_panel_empty();
+	});
+
+	let resultsLabel = $derived.by(() => {
+		void page.url;
+		return m.search_panel_results();
+	});
 
 	const generatedId = $props.id();
 	let inputId = $derived(rest.id ?? generatedId);
@@ -175,10 +197,10 @@
 		<div class="ds-search-input flex-1 min-w-0">
 			<DsInput
 				id={inputId}
-				{placeholder}
+				placeholder={resolvedPlaceholder}
 				clearable
 				bind:value={query}
-				aria-label={label}
+				aria-label={resolvedLabel}
 				role="combobox"
 				aria-autocomplete="list"
 				aria-controls={listboxId}
@@ -201,7 +223,7 @@
 					class="ds-search-count-badge rounded-full bg-surface-hover px-2 py-0.5 text-xs font-semibold text-text"
 					>{filtered.length.toLocaleString()}</span
 				>
-				<span class="ds-search-count-label">{m.search_panel_results()}</span>
+				<span class="ds-search-count-label">{resultsLabel}</span>
 			</div>
 		{/if}
 	</div>
@@ -211,14 +233,14 @@
 			<div
 				class="ds-search-empty flex min-h-[100px] items-center justify-center text-body-secondary text-muted-foreground"
 			>
-				{emptyText}
+				{resolvedEmptyText}
 			</div>
 		{:else}
 			<ul
 				id={listboxId}
 				class="ds-search-list"
 				role="listbox"
-				aria-label={`${label} ${m.search_panel_results()}`}
+				aria-label={`${resolvedLabel} ${resultsLabel}`}
 				onpointermove={() => {
 					lastInteraction = "pointer";
 				}}

@@ -18,7 +18,7 @@
 	/>
 </svelte:head>
 
-<div class="container py-16">
+<div class="container mx-auto py-16">
 	<MarketingHero
 		kicker="Local Template Sandbox"
 		title={m.meta_site_title({ siteName: site.name })}
@@ -29,7 +29,8 @@
 		}}
 		secondary={{
 			label: "Coverage",
-			href: localizeUrl("/design-system#coverage", { locale: currentLocale }).href,
+			href: localizeUrl("/design-system#coverage", { locale: currentLocale })
+				.href,
 		}}
 	/>
 </div>

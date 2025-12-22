@@ -54,7 +54,9 @@
 		page.url.pathname === "/offline" || page.url.pathname.endsWith("/offline"),
 	);
 
-	let isDocsPage = $derived(/(^|\/)docs(\/|$)/.test(page.url.pathname));
+	let isDocsPage = $derived(
+		/(^|\/)(docs|design-system)(\/|$)/.test(page.url.pathname),
+	);
 
 	let mainClass = $derived(
 		[

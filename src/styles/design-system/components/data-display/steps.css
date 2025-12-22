@@ -1,0 +1,98 @@
+/* ───────────────────────────────────────────────────────────
+   Component: Steps
+   ─────────────────────────────────────────────────────────── */
+
+.ds-steps {
+	inline-size: 100%;
+}
+
+.ds-steps-list {
+	display: grid;
+	gap: var(--steps-gap);
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.ds-steps-item {
+	display: grid;
+	grid-template-columns: var(--steps-dot-size) 1fr;
+	gap: var(--spacing-2);
+	align-items: start;
+	min-inline-size: 0;
+	position: relative;
+}
+
+.ds-steps-dot {
+	inline-size: var(--steps-dot-size);
+	block-size: var(--steps-dot-size);
+	display: grid;
+	place-items: center;
+	border-radius: 9999px;
+	border: var(--border-width) solid oklch(var(--steps-dot-border));
+	background: oklch(var(--steps-dot-bg));
+	color: oklch(var(--color-text-muted));
+	font-size: var(--font-size-sm);
+	font-weight: 700;
+	position: relative;
+}
+
+.ds-steps-dot::after {
+	content: "";
+	position: absolute;
+	inset-inline-start: 50%;
+	transform: translateX(-50%);
+	inset-block-start: calc(var(--steps-dot-size) + var(--spacing-2));
+	inline-size: 2px;
+	block-size: calc(100% + var(--steps-gap) - var(--steps-dot-size));
+	background: oklch(var(--steps-connector));
+	opacity: 0.9;
+}
+
+.ds-steps-item:last-child .ds-steps-dot::after {
+	display: none;
+}
+
+.ds-steps-item[data-state="current"] .ds-steps-dot {
+	border-color: oklch(var(--steps-dot-active));
+	color: oklch(var(--steps-dot-active));
+}
+
+.ds-steps-item[data-state="completed"] .ds-steps-dot {
+	background: oklch(var(--steps-dot-active));
+	border-color: oklch(var(--steps-dot-active));
+	color: oklch(var(--color-on-primary));
+}
+
+.ds-steps-body {
+	display: grid;
+	gap: 0.15rem;
+	min-inline-size: 0;
+}
+
+.ds-steps-title {
+	font-size: var(--font-size-sm);
+	font-weight: 700;
+	color: oklch(var(--color-text));
+}
+
+.ds-steps-description {
+	font-size: var(--font-size-helper);
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-steps-action {
+	inline-size: 100%;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background: transparent;
+	text-align: start;
+	cursor: pointer;
+}
+
+.ds-steps-action[aria-disabled="true"] {
+	cursor: not-allowed;
+	opacity: var(--opacity-disabled);
+}
+

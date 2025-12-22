@@ -1,0 +1,81 @@
+/* ───────────────────────────────────────────────────────────
+   Component: DsAccordion
+   ─────────────────────────────────────────────────────────── */
+
+.ds-accordion {
+	display: grid;
+	gap: var(--spacing-2);
+}
+
+.ds-accordion[data-disabled="true"] {
+	opacity: var(--opacity-muted);
+}
+
+.ds-accordion-item {
+	border-radius: var(--radius-md);
+	border: var(--border-width) solid oklch(var(--color-border));
+	background: oklch(var(--color-surface));
+	overflow: hidden;
+}
+
+.ds-accordion-heading {
+	margin: 0;
+}
+
+.ds-accordion-trigger {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-3);
+	padding: var(--spacing-3) var(--spacing-4);
+	min-height: 2.75rem;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	color: oklch(var(--color-text));
+	font-size: var(--font-size-sm);
+	font-weight: 700;
+	text-align: start;
+	transition: background-color var(--motion-duration-fast) var(--motion-ease), box-shadow var(--motion-duration-fast) var(--motion-ease);
+}
+
+.ds-accordion-trigger:hover {
+	background: oklch(var(--color-surface-hover));
+}
+
+.ds-accordion-item[data-disabled="true"] .ds-accordion-trigger:hover {
+	background: transparent;
+}
+
+.ds-accordion-trigger:focus-visible {
+	outline: none;
+	box-shadow:
+		0 0 0 var(--focus-ring-offset) oklch(var(--focus-ring-offset-color)),
+		0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) oklch(var(--focus-ring-color));
+}
+
+.ds-accordion-item[data-disabled="true"] .ds-accordion-trigger {
+	cursor: not-allowed;
+	opacity: var(--opacity-disabled);
+}
+
+.ds-accordion-trigger-icon .ds-icon {
+	transition: transform var(--motion-duration-fast) var(--motion-ease);
+}
+
+.ds-accordion-trigger[data-state="open"] .ds-accordion-trigger-icon .ds-icon {
+	transform: rotate(180deg);
+}
+
+.ds-accordion-content {
+	padding: 0 var(--spacing-4) var(--spacing-4);
+	color: oklch(var(--color-text-muted));
+	font-size: var(--font-size-sm);
+	line-height: 1.55;
+}
+
+.ds-accordion-content-inner {
+	padding-top: var(--spacing-2);
+}
+

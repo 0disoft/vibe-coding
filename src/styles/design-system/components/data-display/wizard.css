@@ -1,0 +1,15 @@
+/* ───────────────────────────────────────────────────────────
+   Component: Wizard
+   ─────────────────────────────────────────────────────────── */
+
+.ds-wizard {
+	display: grid;
+	gap: var(--wizard-gap);
+}
+
+.ds-wizard-footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--wizard-footer-gap);
+}
+

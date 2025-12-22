@@ -174,6 +174,7 @@
             variant="ghost"
             intent="secondary"
             label={clearLabel}
+            touchTarget={false}
             onclick={handleClear}
           />
         {/if}
@@ -187,6 +188,7 @@
             icon={isRevealed ? "eye-off" : "eye"}
             label={isRevealed ? hideLabel : revealLabel}
             pressed={isRevealed}
+            touchTarget={false}
             onclick={toggleReveal}
           />
         {/if}

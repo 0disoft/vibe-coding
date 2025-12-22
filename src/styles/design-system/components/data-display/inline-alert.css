@@ -1,0 +1,53 @@
+/* ───────────────────────────────────────────────────────────
+   Component: DsInlineAlert
+   ─────────────────────────────────────────────────────────── */
+
+.ds-inline-alert {
+	display: inline-flex;
+	align-items: flex-start;
+	gap: var(--inline-alert-gap);
+	font-size: var(--font-size-helper);
+	line-height: 1.4;
+	color: oklch(var(--ds-inline-alert-fg));
+	--ds-inline-alert-fg: var(--color-text-muted);
+	--ds-inline-alert-accent: var(--color-text-muted);
+}
+
+.ds-inline-alert-icon {
+	width: var(--inline-alert-icon-size);
+	height: var(--inline-alert-icon-size);
+	flex-shrink: 0;
+	margin-top: 0.05rem;
+	color: oklch(var(--ds-inline-alert-accent));
+}
+
+.ds-inline-alert[data-ds-intent="neutral"] {
+	--ds-inline-alert-fg: var(--color-text-muted);
+	--ds-inline-alert-accent: var(--color-text-muted);
+}
+
+.ds-inline-alert[data-ds-intent="primary"] {
+	--ds-inline-alert-fg: var(--color-primary);
+	--ds-inline-alert-accent: var(--color-primary);
+}
+
+.ds-inline-alert[data-ds-intent="secondary"] {
+	--ds-inline-alert-fg: var(--color-text-muted);
+	--ds-inline-alert-accent: var(--color-text-muted);
+}
+
+.ds-inline-alert[data-ds-intent="success"] {
+	--ds-inline-alert-fg: var(--color-success);
+	--ds-inline-alert-accent: var(--color-success);
+}
+
+.ds-inline-alert[data-ds-intent="warning"] {
+	--ds-inline-alert-fg: var(--color-warning);
+	--ds-inline-alert-accent: var(--color-warning);
+}
+
+.ds-inline-alert[data-ds-intent="error"] {
+	--ds-inline-alert-fg: var(--color-error);
+	--ds-inline-alert-accent: var(--color-error);
+}
+

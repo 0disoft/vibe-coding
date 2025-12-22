@@ -1,18 +1,19 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 
+	import { DsIconButton } from "$lib/components/design-system";
 	import { DocsToc } from "$lib/components/docs";
 
 	import AdvancedSection from "./_sections/AdvancedSection.svelte";
 	import ButtonsSection from "./_sections/ButtonsSection.svelte";
-	import CoverageSection from "./_sections/CoverageSection.svelte";
-	import ContentSection from "./_sections/ContentSection.svelte";
 	import CommerceSection from "./_sections/CommerceSection.svelte";
+	import ContentSection from "./_sections/ContentSection.svelte";
+	import CoverageSection from "./_sections/CoverageSection.svelte";
 	import DataSection from "./_sections/DataSection.svelte";
 	import DocsSection from "./_sections/DocsSection.svelte";
+	import EditorSection from "./_sections/EditorSection.svelte";
 	import FeedbackSection from "./_sections/FeedbackSection.svelte";
 	import FormsSection from "./_sections/FormsSection.svelte";
-	import EditorSection from "./_sections/EditorSection.svelte";
 	import NavigationSection from "./_sections/NavigationSection.svelte";
 	import OverlaysSection from "./_sections/OverlaysSection.svelte";
 	import PagesSection from "./_sections/PagesSection.svelte";
@@ -40,6 +41,8 @@
 
 	type TocId = (typeof tocItems)[number]["id"];
 	let activeSectionId = $state<TocId>(tocItems[0]?.id ?? "pages");
+	let isTocVisible = $state(true);
+	let isDesktop = $state(false);
 	let setLabReady: (() => void) | null = null;
 
 	onMount(() => {
@@ -94,16 +97,35 @@
 			});
 		});
 
+		// Desktop detection
+		const mq = window.matchMedia("(min-width: 1024px)");
+		const handleMq = (e: MediaQueryListEvent | MediaQueryList) => {
+			isDesktop = e.matches;
+		};
+		handleMq(mq);
+		mq.addEventListener("change", handleMq);
+
 		return () => {
 			io.disconnect();
 			window.removeEventListener("hashchange", updateFromHash);
+			mq.removeEventListener("change", handleMq);
 			setLabReady = null;
 		};
 	});
+
+	function toggleToc() {
+		isTocVisible = !isTocVisible;
+	}
 </script>
 
-<div class="grid gap-6 lg:grid-cols-[1fr_280px]">
-	<div class="min-w-0 space-y-10">
+<div class="relative">
+	<!-- Main Content -->
+	<section
+		class="min-w-0 space-y-10"
+		style={isDesktop
+			? `margin-right: ${isTocVisible ? "240px" : "64px"}; transition: margin 0.3s ease;`
+			: ""}
+	>
 		<PagesSection />
 		<TokensSection />
 		<CoverageSection />
@@ -119,15 +141,58 @@
 		<CommerceSection />
 		<FeedbackSection />
 		<AdvancedSection />
-		<DocsSection tocItems={tocItems} />
-	</div>
+		<DocsSection {tocItems} />
+	</section>
 
-	<aside class="hidden lg:block" aria-label="Table of Contents">
-		<div class="sticky top-6 space-y-3">
-			<DocsToc items={tocItems} activeId={activeSectionId} title="Sections" />
+	<!-- Fixed Right Sidebar -->
+	<aside
+		class="hidden lg:block fixed right-4 top-16 z-40 h-[calc(100vh-8rem)]"
+		style={`width: ${isTocVisible ? "220px" : "48px"}; transition: width 0.3s ease;`}
+		aria-label="Table of Contents"
+	>
+		<!-- Collapsed State: Open Button -->
+		<div
+			class={[
+				"absolute inset-0 flex justify-center py-2 transition-opacity duration-300",
+				isTocVisible ? "pointer-events-none opacity-0" : "opacity-100",
+			].join(" ")}
+		>
+			<DsIconButton
+				onclick={toggleToc}
+				label="Show Sections"
+				icon="panel-right-open"
+				variant="ghost"
+				intent="secondary"
+			/>
+		</div>
+
+		<!-- Expanded State -->
+		<div
+			class={[
+				"h-full space-y-3 transition-opacity duration-300",
+				isTocVisible
+					? "opacity-100 delay-150"
+					: "pointer-events-none opacity-0 overflow-hidden",
+			].join(" ")}
+		>
+			<DocsToc items={tocItems} activeId={activeSectionId} title="Sections">
+				{#snippet actions()}
+					<DsIconButton
+						onclick={toggleToc}
+						label="Close Sections"
+						icon="panel-right-close"
+						variant="ghost"
+						intent="secondary"
+						size="sm"
+					/>
+				{/snippet}
+			</DocsToc>
+
 			<div class="rounded-lg border border-border bg-surface p-4">
 				<div class="text-label font-semibold text-foreground">상태</div>
-				<div class="mt-2 flex items-center gap-2 text-helper text-muted-foreground">
+				<div
+					class="mt-2 flex items-center gap-2 text-helper text-muted-foreground"
+				>
 					<span class="i-lucide-flask-conical h-4 w-4"></span>
 					임시 페이지(추후 삭제 예정)
 				</div>

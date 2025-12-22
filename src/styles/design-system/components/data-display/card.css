@@ -1,0 +1,76 @@
+/* ───────────────────────────────────────────────────────────
+   Pattern: Card
+   ─────────────────────────────────────────────────────────── */
+
+.ds-card {
+	display: flex;
+	flex-direction: column;
+	border-radius: var(--card-radius, var(--radius-md));
+	background: oklch(var(--card-bg));
+	color: oklch(var(--card-fg));
+}
+
+/* Variants */
+.ds-card[data-ds-variant="outline"] {
+	background: oklch(var(--color-surface));
+	border: var(--border-width) solid oklch(var(--color-border));
+	--card-bg: var(--color-surface);
+	--card-fg: var(--color-text);
+}
+
+.ds-card[data-ds-variant="filled"] {
+	/* TODO: 다크모드 대응을 위한 시맨틱 토큰(muted 등)으로 교체 권장 */
+	background: oklch(var(--color-neutral-100));
+	border: none;
+	--card-bg: var(--color-neutral-100);
+	--card-fg: var(--color-text);
+}
+
+.ds-card[data-ds-variant="elevated"] {
+	background: oklch(var(--color-surface));
+	border: none;
+	box-shadow: var(--elevation-1);
+	--card-bg: var(--color-surface);
+	--card-fg: var(--color-text);
+}
+
+.ds-card[data-ds-variant="ghost"] {
+	background: transparent;
+	border: none;
+	--card-bg: transparent;
+	--card-fg: var(--color-text);
+}
+
+/* Padding Sizes */
+.ds-card[data-ds-padding="none"] {
+	--card-padding: var(--card-padding-none, 0);
+}
+
+.ds-card[data-ds-padding="sm"] {
+	--card-padding: var(--card-padding-sm, var(--spacing-3));
+}
+
+.ds-card[data-ds-padding="md"] {
+	--card-padding: var(--card-padding-md, var(--spacing-4));
+}
+
+.ds-card[data-ds-padding="lg"] {
+	--card-padding: var(--card-padding-lg, var(--spacing-6));
+}
+
+/* Child Layout */
+.ds-card-header {
+	padding: var(--card-padding);
+	padding-block-end: 0;
+}
+
+.ds-card-body {
+	padding: var(--card-padding);
+	flex: 1;
+}
+
+.ds-card-footer {
+	padding: var(--card-padding);
+	padding-block-start: 0;
+}
+

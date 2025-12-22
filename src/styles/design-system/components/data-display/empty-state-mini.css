@@ -1,0 +1,47 @@
+/* ───────────────────────────────────────────────────────────
+   Component: EmptyStateMini
+   ─────────────────────────────────────────────────────────── */
+
+.ds-empty-state-mini {
+	display: grid;
+	gap: var(--spacing-1);
+	--empty-mini-title-size: var(--font-size-body-secondary);
+	--empty-mini-desc-size: var(--font-size-helper);
+}
+
+.ds-empty-state-mini[data-ds-size="md"] {
+	--empty-mini-title-size: var(--font-size-body);
+	--empty-mini-desc-size: var(--font-size-body-secondary);
+}
+
+.ds-empty-state-mini[data-ds-align="center"] {
+	text-align: center;
+	justify-items: center;
+}
+
+.ds-empty-state-mini-icon {
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-empty-state-mini-title {
+	font-size: var(--empty-mini-title-size);
+	font-weight: 600;
+	color: oklch(var(--color-text));
+}
+
+.ds-empty-state-mini-description {
+	font-size: var(--empty-mini-desc-size);
+	color: oklch(var(--color-text-muted));
+	margin: 0;
+}
+
+.ds-empty-state-mini-actions {
+	display: flex;
+	gap: var(--spacing-2);
+	flex-wrap: wrap;
+}
+
+.ds-empty-state-mini[data-ds-align="center"] .ds-empty-state-mini-actions {
+	justify-content: center;
+}
+

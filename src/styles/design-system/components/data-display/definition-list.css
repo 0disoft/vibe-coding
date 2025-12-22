@@ -1,0 +1,48 @@
+/* ───────────────────────────────────────────────────────────
+   Component: DefinitionList
+   ─────────────────────────────────────────────────────────── */
+
+.ds-definition-list {
+	display: grid;
+	gap: var(--spacing-4);
+	margin: 0;
+}
+
+.ds-definition-item {
+	display: grid;
+	gap: 0.35rem;
+	padding-block-end: var(--spacing-4);
+	border-block-end: var(--border-width) solid oklch(var(--color-border));
+}
+
+.ds-definition-list .ds-definition-item:last-child {
+	padding-block-end: 0;
+	border-block-end: 0;
+}
+
+.ds-definition-list[data-ds-variant="columns"] .ds-definition-item {
+	grid-template-columns: minmax(10rem, 0.35fr) 1fr;
+	gap: var(--spacing-3);
+	align-items: start;
+}
+
+@media (max-width: 640px) {
+	.ds-definition-list[data-ds-variant="columns"] .ds-definition-item {
+		grid-template-columns: 1fr;
+		gap: 0.35rem;
+	}
+}
+
+.ds-definition-term {
+	font-size: var(--font-size-sm);
+	font-weight: 700;
+	color: oklch(var(--color-text));
+}
+
+.ds-definition-desc {
+	margin: 0;
+	font-size: var(--font-size-sm);
+	color: oklch(var(--color-text-muted));
+	line-height: 1.55;
+}
+

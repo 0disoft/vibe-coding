@@ -321,6 +321,52 @@ pnpm dlx sv create ./
 
 - **적용 시점:** 최신 Paraglide 라이브러리 연동 시 타입 오류가 발생할 때.
 
+### 23. Svelte 5: `$props.id()` 사용 위치 오류
+
+- **증상:** `$props.id()` can only be used at the top level of components as a variable declaration initializer 에러 발생.
+- **원인:** `$props.id()`를 `$props()` destructuring 내부에서 기본값으로 사용함 (예: `id = $props.id()`).
+- **해결:**
+
+  ```svelte
+  <!-- Before (오류) -->
+  let {
+    id = $props.id(),
+    ...rest
+  }: Props = $props();
+
+  <!-- After (해결) -->
+  const generatedId = $props.id();
+
+  let {
+    id: idProp,
+    ...rest
+  }: Props = $props();
+
+  let id = $derived(idProp ?? generatedId);
+  ```
+
+- **주의사항:** `idProp`은 reactive prop이므로 `const`가 아닌 `$derived`를 사용해야 `state_referenced_locally` 경고가 발생하지 않음.
+- **적용 시점:** Svelte 5 컴포넌트에서 자동 생성 ID와 사용자 제공 ID를 병합해야 할 때.
+
+### 24. Paraglide 메시지 함수가 언어 변경 시 반응하지 않음
+
+- **증상:** `CodeBlock`의 툴팁 텍스트("코드복사")나 `AdSlot`의 라벨("광고")이 언어를 변경해도 즉시 바뀌지 않고, 새로고침해야만 반영됨.
+- **원인:** Paraglide의 `m.message()` 함수는 순수 함수이며, Svelte의 `page.url`이나 상태 변경을 자동으로 구독하지 않음. 따라서 `$derived(m.message())`로 작성해도 언어 변경(URL 변경) 시 재계산 트리거가 없음.
+- **해결:** `$derived.by`를 사용하여 `page.url`에 대한 명시적 의존성을 주입.
+
+  ```svelte
+  <!-- Before (오류) -->
+  let copyLabel = $derived(m.codeblock_copy());
+
+  <!-- After (해결) -->
+  let copyLabel = $derived.by(() => {
+    void page.url; // 의존성 주입
+    return m.codeblock_copy();
+  });
+  ```
+
+- **적용 시점:** 컴포넌트 내부에서 Paraglide 메시지가 동적으로 업데이트되어야 하는데 반응하지 않을 때.
+
 ### 2. localizeUrl() 반환 타입이 URL 객체라 href에 할당 불가
 
 - **증상:** `Type 'URL' is not assignable to type 'string'` 오류가 `<a href={localizeUrl('/')}>` 사용 시 발생.
@@ -789,32 +835,24 @@ format ━━━━━━━━━━━━━━━━━━━━━━━
 - **원인:** `design-system.css`에 **`.ds-slider:focus-within .ds-slider-track { box-shadow: ... }`** 규칙이 있어서, 슬라이더 내부 Input이 포커스를 얻으면 부모 컨테이너(`.ds-slider`)의 `:focus-within`이 트리거되어 트랙 전체에 `box-shadow` 포커스 링이 적용됨.
 - **해결:** **해당 규칙을 주석 처리(REMOVED)**함. 포커스 링은 썸(Thumb)에만 `:focus-visible::-webkit-slider-thumb`를 통해 적용하는 것이 올바른 방식임.
 
-### 23. Svelte 5: `$props.id()` 사용 위치 오류
+### 5. Paraglide 메시지 함수가 언어 변경 시 반응하지 않음
 
-- **증상:** `$props.id()` can only be used at the top level of components as a variable declaration initializer 에러 발생.
-- **원인:** `$props.id()`를 `$props()` destructuring 내부에서 기본값으로 사용함 (예: `id = $props.id()`).
-- **해결:**
+- **증상:** `CodeBlock`의 툴팁 텍스트("코드복사")나 `AdSlot`의 라벨("광고")이 언어를 변경해도 즉시 바뀌지 않고, 새로고침해야만 반영됨.
+- **원인:** Paraglide의 `m.message()` 함수는 순수 함수이며, Svelte의 `page.url`이나 상태 변경을 자동으로 구독하지 않음. 따라서 `$derived(m.message())`로 작성해도 언어 변경(URL 변경) 시 재계산 트리거가 없음.
+- **해결:** `$derived.by`를 사용하여 `page.url`에 대한 명시적 의존성을 주입.
 
   ```svelte
   <!-- Before (오류) -->
-  let {
-    id = $props.id(),
-    ...rest
-  }: Props = $props();
+  let copyLabel = $derived(m.codeblock_copy());
 
   <!-- After (해결) -->
-  const generatedId = $props.id();
-
-  let {
-    id: idProp,
-    ...rest
-  }: Props = $props();
-
-  let id = $derived(idProp ?? generatedId);
+  let copyLabel = $derived.by(() => {
+    void page.url; // 의존성 주입
+    return m.codeblock_copy();
+  });
   ```
 
-- **주의사항:** `idProp`은 reactive prop이므로 `const`가 아닌 `$derived`를 사용해야 `state_referenced_locally` 경고가 발생하지 않음.
-- **적용 시점:** Svelte 5 컴포넌트에서 자동 생성 ID와 사용자 제공 ID를 병합해야 할 때.
+- **적용 시점:** 컴포넌트 내부에서 Paraglide 메시지가 동적으로 업데이트되어야 하는데 반응하지 않을 때.
 
 ### 24. Svelte 5: `{@const}` 배치 위치 오류
 

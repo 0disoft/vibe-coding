@@ -1,0 +1,97 @@
+/* ───────────────────────────────────────────────────────────
+   Component: Ad Slot
+   ─────────────────────────────────────────────────────────── */
+
+.ds-ad-slot {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-2);
+	padding: var(--spacing-2) var(--spacing-3);
+	border-radius: var(--radius-md);
+	border: var(--border-width) solid oklch(var(--color-border));
+	background: oklch(var(--color-surface));
+	color: oklch(var(--color-text));
+	/* CLS 방지를 위한 기본 최소 높이 확보 */
+	min-height: var(--ad-slot-min-height, 10rem);
+}
+
+.ds-ad-slot[data-variant="native"] {
+	padding: 0;
+	border: none;
+	background: transparent;
+}
+
+.ds-ad-slot[data-sticky="true"] {
+	position: sticky;
+	inset-block-start: var(--ad-slot-sticky-top, var(--spacing-6));
+	z-index: 10;
+}
+
+.ds-ad-slot-label {
+	font-size: var(--font-size-caption);
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: oklch(var(--color-text-muted));
+	line-height: 1.2;
+}
+
+.ds-ad-slot-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-2);
+}
+
+.ds-ad-slot-info {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--spacing-6);
+	height: var(--spacing-6);
+	border-radius: var(--radius-sm);
+	color: oklch(var(--color-text-muted));
+	background: transparent;
+	text-decoration: none;
+}
+
+.ds-ad-slot-info:hover {
+	color: oklch(var(--color-text));
+	background-color: oklch(var(--color-surface-hover));
+}
+
+.ds-ad-slot-body {
+	flex: 1;
+	width: 100%;
+	height: var(--ad-slot-height, auto);
+	aspect-ratio: var(--ad-slot-ratio, auto);
+	display: flex;
+	flex-direction: column;
+}
+
+.ds-ad-slot[data-placeholder="true"] .ds-ad-slot-body {
+	min-block-size: var(--ad-slot-min-height, 10rem);
+}
+
+.ds-ad-slot-placeholder-box {
+	flex: 1;
+	display: grid;
+	place-items: center;
+	padding: var(--spacing-3);
+	border-radius: var(--radius-sm);
+	border: var(--border-width) dashed oklch(var(--color-border));
+	background-color: oklch(var(--color-surface-hover) / 0.5);
+}
+
+.ds-ad-slot-placeholder-text {
+	font-size: var(--font-size-sm);
+	color: oklch(var(--color-text-muted));
+	text-align: center;
+}
+
+[data-theme="dark"] .ds-code-block-badge {
+	background-color: oklch(var(--color-surface) / 0.2);
+	border-color: oklch(var(--color-border));
+}
+
+

@@ -1,0 +1,112 @@
+/* ───────────────────────────────────────────────────────────
+   Docs UI: Kbd / Search Results (temporary)
+   ─────────────────────────────────────────────────────────── */
+
+.ds-kbd {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+.ds-kbd-key {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-xs);
+	padding: 0.1rem 0.35rem;
+	border-radius: 0.35rem;
+	border: var(--border-width) solid oklch(var(--color-border));
+	background: oklch(var(--color-surface));
+	color: oklch(var(--color-text));
+}
+
+.ds-kbd-plus {
+	font-size: var(--font-size-xs);
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-search-results-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--spacing-3);
+}
+
+.ds-search-results-empty {
+	margin-top: var(--spacing-3);
+	padding: var(--spacing-4);
+	border-radius: var(--radius-md);
+	border: var(--border-width) solid oklch(var(--color-border));
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-search-results-list {
+	list-style: none;
+	padding: 0;
+	margin: var(--spacing-3) 0 0;
+	display: grid;
+	gap: var(--spacing-2);
+}
+
+.ds-search-results-link {
+	display: block;
+	padding: var(--spacing-3) var(--spacing-4);
+	border-radius: var(--radius-md);
+	border: var(--border-width) solid oklch(var(--color-border));
+	background: oklch(var(--color-surface));
+	text-decoration: none;
+}
+
+.ds-search-results-link:hover {
+	background: oklch(var(--color-surface-hover));
+}
+
+.ds-sparkline {
+	color: oklch(var(--color-text));
+}
+
+.ds-sparkline[data-ds-intent="neutral"] {
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-sparkline[data-ds-intent="primary"] {
+	color: oklch(var(--color-primary));
+}
+
+.ds-sparkline[data-ds-intent="secondary"] {
+	color: oklch(var(--color-secondary));
+}
+
+.ds-sparkline[data-ds-intent="success"] {
+	color: oklch(var(--color-success));
+}
+
+.ds-sparkline[data-ds-intent="warning"] {
+	color: oklch(var(--color-warning));
+}
+
+.ds-sparkline[data-ds-intent="error"] {
+	color: oklch(var(--color-error));
+}
+
+.ds-sparkline-fill {
+	opacity: 0.12;
+}
+
+.ds-search-results-title {
+	font-size: var(--font-size-sm);
+	font-weight: 800;
+	color: oklch(var(--color-text));
+}
+
+.ds-search-results-excerpt {
+	margin-top: 0.25rem;
+	font-size: var(--font-size-sm);
+	color: oklch(var(--color-text-muted));
+	line-height: 1.45;
+}
+
+.ds-search-results-meta {
+	margin-top: 0.35rem;
+	font-size: var(--font-size-xs);
+	color: oklch(var(--color-text-muted));
+}
+

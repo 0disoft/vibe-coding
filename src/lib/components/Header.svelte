@@ -4,7 +4,6 @@
 	import LanguagePicker from "$lib/components/header-actions/LanguagePicker.svelte";
 	import ThemeToggle from "$lib/components/header-actions/ThemeToggle.svelte";
 	import UserMenu from "$lib/components/header-actions/UserMenu.svelte";
-	import { onMount } from "svelte";
 
 	import { DsIconButton, DsSheet } from "$lib/components/design-system";
 	import * as m from "$lib/paraglide/messages.js";
@@ -36,7 +35,10 @@
 		// { href: '/team', label: (locale: Locale) => m.nav_team({}, { locale }) },
 		// { href: '/careers', label: (locale: Locale) => m.nav_careers({}, { locale }) },
 		// ─── 제품/서비스 (Products & Services) ───────────────────
-		{ href: "/products", label: (locale: Locale) => m.nav_products({}, { locale }) },
+		{
+			href: "/products",
+			label: (locale: Locale) => m.nav_products({}, { locale }),
+		},
 		// { href: '/services', label: (locale: Locale) => m.nav_services({}, { locale }) },
 		// { href: '/enterprise', label: (locale: Locale) => m.nav_enterprise({}, { locale }) },
 		// { href: '/compare', label: (locale: Locale) => m.nav_compare({}, { locale }) },
@@ -51,15 +53,24 @@
 		// { href: '/docs', label: (locale: Locale) => m.nav_docs({}, { locale }) },
 		// { href: '/blog', label: (locale: Locale) => m.nav_blog({}, { locale }) },
 		// { href: '/portfolio', label: (locale: Locale) => m.nav_portfolio({}, { locale }) },
-		{ href: "/gallery", label: (locale: Locale) => m.nav_gallery({}, { locale }) },
+		{
+			href: "/gallery",
+			label: (locale: Locale) => m.nav_gallery({}, { locale }),
+		},
 		// { href: '/resources', label: (locale: Locale) => m.nav_resources({}, { locale }) },
 		// { href: '/research', label: (locale: Locale) => m.nav_research({}, { locale }) },
 		// ─── 뉴스/이벤트 (News & Events) ─────────────────────────
 		{ href: "/news", label: (locale: Locale) => m.nav_news({}, { locale }) },
 		// { href: '/events', label: (locale: Locale) => m.nav_events({}, { locale }) },
-		{ href: "/changelog", label: (locale: Locale) => m.nav_changelog({}, { locale }) },
+		{
+			href: "/changelog",
+			label: (locale: Locale) => m.nav_changelog({}, { locale }),
+		},
 		// ─── 커뮤니티 (Community) ────────────────────────────────
-		{ href: "/community", label: (locale: Locale) => m.nav_community({}, { locale }) },
+		{
+			href: "/community",
+			label: (locale: Locale) => m.nav_community({}, { locale }),
+		},
 		// ─── 사용자 영역 (User) ──────────────────────────────────
 		// { href: '/dashboard', label: (locale: Locale) => m.nav_dashboard({}, { locale }) },
 	];
@@ -130,7 +141,7 @@
 	class="ds-safe-area-top sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
 >
 	<div
-		class="mx-auto flex h-12 max-w-5xl items-center justify-between px-4 md:px-6"
+		class="mx-auto flex h-12 max-w-5xl items-center justify-between px-3 md:px-6"
 	>
 		<!-- 로고/사이트명 -->
 		<a
@@ -163,11 +174,9 @@
 			<DsIconButton
 				bind:ref={mobileMenuButtonRef}
 				onclick={toggleMobileMenu}
-				label={
-					mobileMenuOpen
-						? m.header_menu_close({}, { locale: currentLocale })
-						: m.header_menu_open({}, { locale: currentLocale })
-				}
+				label={mobileMenuOpen
+					? m.header_menu_close({}, { locale: currentLocale })
+					: m.header_menu_open({}, { locale: currentLocale })}
 				aria-expanded={mobileMenuOpen}
 				class="md:!hidden"
 			>

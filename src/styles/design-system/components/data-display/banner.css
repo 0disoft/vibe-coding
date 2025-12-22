@@ -1,0 +1,67 @@
+/* ───────────────────────────────────────────────────────────
+   Component: DsBanner
+   ─────────────────────────────────────────────────────────── */
+
+.ds-banner {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	gap: var(--banner-gap);
+	padding: var(--banner-padding-y) var(--banner-padding-x);
+	border-radius: var(--banner-radius);
+	border: var(--border-width) solid oklch(var(--banner-border));
+	background: oklch(var(--banner-surface));
+	color: oklch(var(--color-text));
+}
+
+.ds-banner[data-ds-intent="neutral"] {
+	--ds-banner-accent: var(--color-text);
+}
+
+.ds-banner[data-ds-intent="primary"] {
+	--ds-banner-accent: var(--color-primary);
+}
+
+.ds-banner[data-ds-intent="secondary"] {
+	--ds-banner-accent: var(--color-text);
+}
+
+.ds-banner[data-ds-intent="success"] {
+	--ds-banner-accent: var(--color-success);
+}
+
+.ds-banner[data-ds-intent="warning"] {
+	--ds-banner-accent: var(--color-warning);
+}
+
+.ds-banner[data-ds-intent="error"] {
+	--ds-banner-accent: var(--color-error);
+}
+
+.ds-banner-icon {
+	color: oklch(var(--ds-banner-accent));
+	margin-top: 0.125rem;
+}
+
+.ds-banner-body {
+	min-width: 0;
+}
+
+.ds-banner-title {
+	font-size: var(--font-size-sm);
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.ds-banner-description,
+.ds-banner-content {
+	font-size: var(--font-size-sm);
+	color: oklch(var(--color-text-muted));
+	margin-top: 0.25rem;
+	line-height: 1.45;
+}
+
+.ds-banner-actions {
+	align-self: start;
+	justify-self: end;
+}
+

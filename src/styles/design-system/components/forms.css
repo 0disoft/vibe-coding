@@ -731,8 +731,8 @@
 /* 다크모드 가시성 보강 - Cap.js subtle styles */
 [data-theme="dark"] .ds-captcha cap-widget {
 	--cap-checkbox-background: transparent;
-	--cap-checkbox-border: var(--border-width) solid oklch(31.5% 0.01 240);
-	--cap-border-color: oklch(27% 0.01 240);
+	--cap-checkbox-border: var(--border-width) solid oklch(var(--color-border));
+	--cap-border-color: oklch(var(--color-border));
 }
 
 .ds-captcha cap-widget[data-hide-credits="true"]::part(attribution) {
@@ -1038,7 +1038,7 @@
 
 /* 다크모드 가시성 보강 - extremely subtle contrast (border-box & subtle background tint) */
 [data-theme="dark"] .ds-radio-control {
-	border: var(--border-width) solid oklch(31.5% 0.01 240);
+	border: var(--border-width) solid oklch(var(--color-border));
 	background: oklch(var(--color-background) / 0.3);
 }
 

@@ -2,10 +2,16 @@
 	import type { Snippet } from "svelte";
 	import type { HTMLAttributes } from "svelte/elements";
 
+	import { page } from "$app/state";
 	import { DsIcon } from "$lib/components/design-system";
 	import * as m from "$lib/paraglide/messages.js";
 
-	type AdSlotVariant = "sidebar" | "infeed" | "infeed-wide" | "banner" | "native";
+	type AdSlotVariant =
+		| "sidebar"
+		| "infeed"
+		| "infeed-wide"
+		| "banner"
+		| "native";
 	type CSSLength = string | number;
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
@@ -78,18 +84,40 @@
 
 	let id = $derived(idProp ?? generatedId);
 	let labelId = $derived(`${id}-label`);
-	let resolvedLabel = $derived(label ?? m.common_advertisement());
+
+	// Reactively update messages when page.url changes (language switch)
+	let resolvedLabel = $derived.by(() => {
+		void page.url;
+		return label ?? m.common_advertisement();
+	});
+
+	// New derived for role description to ensure reactivity
+	let roleDescription = $derived.by(() => {
+		void page.url;
+		return m.common_advertisement();
+	});
+
+	// New derived for placeholder text
+	let placeholderText = $derived.by(() => {
+		void page.url;
+		return m.common_ad_placeholder();
+	});
+
 	let resolvedInfoLabel = $derived(infoLabel ?? resolvedLabel);
 	let shouldReserveRatio = $derived(reserveRatio ?? showPlaceholder);
-	let resolvedRatio = $derived(ratio ?? (shouldReserveRatio ? DEFAULT_RATIOS[variant] : undefined));
+	let resolvedRatio = $derived(
+		ratio ?? (shouldReserveRatio ? DEFAULT_RATIOS[variant] : undefined),
+	);
 	let resolvedLabelledBy = $derived(
 		ariaLabelledBy ?? (showLabel && !ariaLabel ? labelId : undefined),
 	);
 	let resolvedAriaLabel = $derived(
 		ariaLabel ?? (!showLabel ? resolvedLabel : undefined),
 	);
+
+	// Fix: Use boolean or null/undefined for aria-hidden to match Booleanish
 	let labelAriaHidden = $derived(
-		!resolvedLabelledBy || resolvedLabelledBy !== labelId ? "true" : undefined,
+		!resolvedLabelledBy || resolvedLabelledBy !== labelId ? true : undefined,
 	);
 
 	let defaultStyles = $derived.by(() => {
@@ -113,19 +141,17 @@
 	);
 
 	let rootEl = $state<HTMLDivElement | null>(null);
-	let isVisible = $state(!lazy);
+	let intersected = $state(false);
+	let isVisible = $derived(!lazy || intersected);
 
 	$effect(() => {
-		if (!lazy) {
-			isVisible = true;
-			return;
-		}
+		if (!lazy) return;
 		if (typeof window === "undefined" || !rootEl) return;
 
 		const observer = new IntersectionObserver(
 			(entries) => {
 				if (!entries.some((entry) => entry.isIntersecting)) return;
-				isVisible = true;
+				intersected = true;
 				observer.disconnect();
 			},
 			{ rootMargin: lazyMargin },
@@ -149,7 +175,7 @@
 	{role}
 	aria-label={resolvedAriaLabel}
 	aria-labelledby={resolvedLabelledBy}
-	aria-roledescription={m.common_advertisement()}
+	aria-roledescription={roleDescription}
 >
 	{#if showLabel}
 		<div class="ds-ad-slot-header">
@@ -175,7 +201,7 @@
 			{@render children()}
 		{:else if showPlaceholder}
 			<div class="ds-ad-slot-placeholder-box">
-				<span class="ds-ad-slot-placeholder-text">{m.common_ad_placeholder()}</span>
+				<span class="ds-ad-slot-placeholder-text">{placeholderText}</span>
 			</div>
 		{/if}
 	</div>

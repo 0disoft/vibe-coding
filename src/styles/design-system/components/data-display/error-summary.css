@@ -1,0 +1,121 @@
+/* ───────────────────────────────────────────────────────────
+   Component: Error Summary
+   ─────────────────────────────────────────────────────────── */
+
+.ds-error-summary {
+	--focus-ring-color: var(--color-error);
+	border: var(--border-width) solid oklch(var(--color-border));
+	background: oklch(var(--color-surface));
+	border-radius: var(--radius-lg);
+	padding: var(--spacing-4);
+}
+
+.ds-error-summary__header {
+	display: flex;
+	gap: var(--spacing-2);
+	align-items: flex-start;
+}
+
+.ds-error-summary__header .ds-icon {
+	color: oklch(var(--color-error));
+	margin-block-start: 0.125rem;
+}
+
+.ds-error-summary__title {
+	margin: 0;
+	font-size: var(--font-size-body);
+	line-height: var(--line-height-heading);
+	font-weight: var(--font-weight-semibold);
+}
+
+.ds-error-summary__list {
+	margin-block-start: var(--spacing-2);
+	margin-block-end: 0;
+	margin-inline: 0;
+	padding-inline-start: 1.25rem;
+	display: grid;
+	gap: var(--spacing-1);
+}
+
+.ds-error-summary__link {
+	color: oklch(var(--color-link));
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.ds-error-summary__link:hover {
+	opacity: var(--opacity-hover);
+}
+
+.ds-separator {
+	background-color: oklch(var(--color-border));
+	flex-shrink: 0;
+}
+
+.ds-separator--labeled {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-2);
+	width: 100%;
+	block-size: auto;
+	background: transparent;
+}
+
+.ds-separator--labeled[data-ds-orientation="horizontal"] {
+	width: 100%;
+	block-size: auto;
+}
+
+.ds-separator-line {
+	flex: 1;
+	block-size: 1px;
+	background-color: oklch(var(--color-border));
+}
+
+.ds-separator-text {
+	font-size: var(--font-size-xs);
+	font-weight: 600;
+	color: oklch(var(--color-text-muted));
+	white-space: nowrap;
+}
+
+.ds-separator[data-ds-orientation="horizontal"] {
+	width: 100%;
+	block-size: 1px;
+}
+
+.ds-separator[data-ds-orientation="vertical"] {
+	inline-size: 1px;
+	height: 100%;
+}
+
+.ds-table-toolbar {
+	display: flex;
+	gap: var(--spacing-4);
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.ds-table-toolbar-controls {
+	display: grid;
+	gap: var(--spacing-2);
+	inline-size: min(520px, 100%);
+}
+
+.ds-table-toolbar-controls .ds-input-group {
+	width: 100%;
+}
+
+@media (max-width: 767px) {
+
+	.ds-table-toolbar {
+		flex-direction: column;
+	}
+
+	.ds-table-toolbar-controls {
+		inline-size: 100%;
+	}
+}
+
+

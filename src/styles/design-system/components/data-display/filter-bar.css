@@ -1,0 +1,132 @@
+/* ───────────────────────────────────────────────────────────
+   Component: FilterBar / FacetFilter
+   ─────────────────────────────────────────────────────────── */
+
+.ds-filter-bar {
+	display: flex;
+	flex-direction: column;
+	gap: var(--filter-bar-gap);
+	padding: var(--filter-bar-padding);
+	border-radius: var(--filter-bar-radius);
+	background: oklch(var(--filter-bar-surface));
+	border: var(--border-width) solid oklch(var(--filter-bar-border));
+	container-type: inline-size;
+}
+
+.ds-filter-bar-main {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--filter-bar-gap);
+	min-inline-size: 0;
+}
+
+.ds-filter-bar-query {
+	flex: 1;
+	min-inline-size: min(260px, 100%);
+}
+
+.ds-filter-bar-sort {
+	inline-size: min(240px, 100%);
+}
+
+.ds-filter-bar-filters {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--spacing-2);
+}
+
+.ds-filter-bar-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-end;
+	gap: var(--spacing-2);
+}
+
+.ds-filter-bar-clear {
+	display: inline-flex;
+	align-items: center;
+	transition: opacity 160ms ease;
+}
+
+.ds-filter-bar-clear[data-hidden="true"] {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+@container (min-width: 768px) {
+	.ds-filter-bar {
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+
+	.ds-filter-bar-actions {
+		flex-shrink: 0;
+	}
+}
+
+.ds-facet-filter {
+	display: grid;
+	gap: var(--facet-filter-gap);
+}
+
+.ds-facet-group {
+	display: grid;
+	gap: var(--spacing-2);
+}
+
+.ds-facet-summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-2);
+	cursor: pointer;
+	list-style: none;
+	padding-block: 0.15rem;
+	padding-inline: 0;
+}
+
+.ds-facet-summary::-webkit-details-marker {
+	display: none;
+}
+
+.ds-facet-title {
+	margin: 0;
+	font-size: var(--font-size-sm);
+	font-weight: 850;
+	color: oklch(var(--color-text));
+}
+
+.ds-facet-summary-icon {
+	color: oklch(var(--color-text-muted));
+	transition: transform 0.2s ease;
+}
+
+.ds-facet-group[open] .ds-facet-summary-icon {
+	transform: rotate(180deg);
+}
+
+.ds-facet-options {
+	display: grid;
+	gap: var(--facet-option-gap);
+	padding-inline-start: var(--spacing-1);
+}
+
+.ds-facet-option .ds-checkbox-label {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	inline-size: 100%;
+	gap: var(--spacing-2);
+}
+
+.ds-facet-option-count {
+	flex-shrink: 0;
+	color: oklch(var(--color-text-muted));
+	font-size: var(--font-size-xs);
+}
+

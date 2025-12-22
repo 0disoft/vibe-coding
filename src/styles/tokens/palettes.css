@@ -139,11 +139,11 @@
   /* Primitive (Raw) */
   --raw-color-accent: 42% 0.06 240;
   --raw-color-background: 22% 0.01 240;
-  --raw-color-border: 30% 0.012 240;
+  --raw-color-border: 45% 0.012 240;
   --raw-color-code-card: 27% 0.0314 274;
   --raw-color-danger: 72% 0.18 25;
   --raw-color-error: 72% 0.18 25;
-  --raw-color-input: 34% 0.012 240;
+  --raw-color-input: 38% 0.012 240;
   --raw-color-link: 88% 0.1 240;
   --raw-color-neutral-100: 85% 0.004 255;
   --raw-color-neutral-200: 72% 0.004 255;
@@ -199,8 +199,8 @@
   --raw-color-background: 22% 0.02 240;
   --raw-color-surface: 27% 0.025 240;
   --raw-color-surface-hover: 32% 0.03 240;
-  --raw-color-border: 30% 0.02 240;
-  --raw-color-input: 34% 0.02 240;
+  --raw-color-border: 45% 0.02 240;
+  --raw-color-input: 38% 0.02 240;
   --raw-color-sidebar: 20% 0.02 240;
   --raw-color-overlay: 15% 0.02 240;
   --raw-color-scrim: 15% 0.02 240;
@@ -230,8 +230,8 @@
   --raw-color-background: 22% 0.02 290;
   --raw-color-surface: 27% 0.025 290;
   --raw-color-surface-hover: 32% 0.03 290;
-  --raw-color-border: 30% 0.02 290;
-  --raw-color-input: 34% 0.02 290;
+  --raw-color-border: 45% 0.02 290;
+  --raw-color-input: 38% 0.02 290;
   --raw-color-sidebar: 20% 0.02 290;
   --raw-color-overlay: 15% 0.02 290;
   --raw-color-scrim: 15% 0.02 290;
@@ -261,8 +261,8 @@
   --raw-color-background: 22% 0.02 150;
   --raw-color-surface: 27% 0.025 150;
   --raw-color-surface-hover: 32% 0.03 150;
-  --raw-color-border: 30% 0.02 150;
-  --raw-color-input: 34% 0.02 150;
+  --raw-color-border: 45% 0.02 150;
+  --raw-color-input: 38% 0.02 150;
   --raw-color-sidebar: 20% 0.02 150;
   --raw-color-overlay: 15% 0.02 150;
   --raw-color-scrim: 15% 0.02 150;
@@ -292,8 +292,8 @@
   --raw-color-background: 22% 0.02 35;
   --raw-color-surface: 27% 0.025 35;
   --raw-color-surface-hover: 32% 0.03 35;
-  --raw-color-border: 30% 0.02 35;
-  --raw-color-input: 34% 0.02 35;
+  --raw-color-border: 45% 0.02 35;
+  --raw-color-input: 38% 0.02 35;
   --raw-color-sidebar: 20% 0.02 35;
   --raw-color-overlay: 15% 0.02 35;
   --raw-color-scrim: 15% 0.02 35;

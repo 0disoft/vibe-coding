@@ -29,7 +29,7 @@
 
 ```css
 @import "./styles/design-system.tokens.css";
-@import "./styles/design-system.css";
+@import "./styles/design-system.core.css";
 ```
 
 ## Import 예시

@@ -24,3 +24,7 @@
 	min-block-size: var(--touch-target-min);
 	min-inline-size: var(--touch-target-min);
 }
+
+.ds-safe-area-top {
+	padding-block-start: var(--safe-area-top);
+}

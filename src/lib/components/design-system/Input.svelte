@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from "$app/state";
 	import { DsIconButton } from "$lib/components/design-system";
 	import * as m from "$lib/paraglide/messages.js";
 	import type { Snippet } from "svelte";
@@ -31,13 +32,19 @@
 		clearable = false,
 		value = $bindable(""),
 		ref = $bindable(null),
-		clearLabel = m.ds_clear_value(),
+		clearLabel,
 		class: className = "",
 		start,
 		end,
 		onkeydown,
 		...rest
 	}: Props = $props();
+
+	// Reactive i18n
+	let resolvedClearLabel = $derived.by(() => {
+		void page.url;
+		return clearLabel ?? m.ds_clear_value();
+	});
 
 	async function handleClear(e?: Event) {
 		e?.stopPropagation();
@@ -130,7 +137,7 @@
 					variant="ghost"
 					intent="secondary"
 					touchTarget={false}
-					label={clearLabel}
+					label={resolvedClearLabel}
 					onclick={handleClear}
 					onmousedown={(e) => e.preventDefault()}
 				/>

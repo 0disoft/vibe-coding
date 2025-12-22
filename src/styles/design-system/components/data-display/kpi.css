@@ -1,0 +1,193 @@
+/* ───────────────────────────────────────────────────────────
+   Pattern: KPI / StatCard
+   ─────────────────────────────────────────────────────────── */
+
+.ds-kpi {
+	display: grid;
+	gap: var(--spacing-1);
+}
+
+.ds-kpi-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--spacing-2);
+}
+
+.ds-kpi-label-row {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-2);
+	min-inline-size: 0;
+}
+
+.ds-kpi-label {
+	font-size: var(--font-size-menu-sm);
+	color: oklch(var(--color-text-muted));
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ds-kpi-value {
+	font-size: var(--font-size-stat);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+	color: oklch(var(--color-text));
+}
+
+.ds-kpi[data-ds-size="sm"] .ds-kpi-value {
+	font-size: var(--font-size-xl);
+}
+
+.ds-kpi[data-ds-size="lg"] .ds-kpi-value {
+	font-size: var(--font-size-3xl);
+}
+
+.ds-kpi-helper {
+	font-size: var(--font-size-helper);
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-kpi-delta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: var(--font-size-menu-sm);
+	font-variant-numeric: tabular-nums;
+}
+
+.ds-kpi-delta[data-ds-trend="up"] {
+	color: oklch(var(--color-success));
+}
+
+.ds-kpi-delta[data-ds-trend="down"] {
+	color: oklch(var(--color-error));
+}
+
+.ds-kpi-delta[data-ds-trend="neutral"] {
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-stat-card .ds-card-body {
+	display: grid;
+	gap: var(--spacing-2);
+}
+
+.ds-stat-card-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-2);
+}
+
+.ds-stat-card-label {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-2);
+	min-inline-size: 0;
+	font-size: var(--font-size-menu-sm);
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-stat-card-label>span {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ds-stat-card-value {
+	font-size: var(--font-size-stat);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+	color: oklch(var(--color-text));
+}
+
+.ds-stat-card-meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-2);
+}
+
+.ds-stat-card-helper {
+	font-size: var(--font-size-helper);
+	color: oklch(var(--color-text-muted));
+	white-space: nowrap;
+}
+
+.ds-stat-card-delta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: var(--font-size-menu-sm);
+	font-variant-numeric: tabular-nums;
+}
+
+.ds-stat-card-delta[data-ds-trend="up"] {
+	color: oklch(var(--color-success));
+}
+
+.ds-stat-card-delta[data-ds-trend="down"] {
+	color: oklch(var(--color-error));
+}
+
+.ds-stat-card-delta[data-ds-trend="neutral"] {
+	color: oklch(var(--color-text-muted));
+}
+
+.ds-stat-card-bottom {
+	margin-block-start: var(--spacing-2);
+	padding-block-start: var(--spacing-2);
+	border-block-start: var(--border-width) solid oklch(var(--color-border));
+}
+
+.ds-status-badge {
+	gap: 0.35rem;
+}
+
+.ds-status-badge-dot-wrap {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 0.6rem;
+	height: 0.6rem;
+}
+
+.ds-status-badge-dot {
+	width: 0.4rem;
+	height: 0.4rem;
+	border-radius: 9999px;
+	background: currentColor;
+}
+
+.ds-status-badge-dot-pulse {
+	position: absolute;
+	inset: 0;
+	border-radius: 9999px;
+	background: currentColor;
+	opacity: 0.35;
+	animation: ds-status-badge-pulse 1.5s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ds-status-badge-dot-pulse {
+		animation: none;
+		opacity: 0.5;
+	}
+}
+
+@keyframes ds-status-badge-pulse {
+	0% {
+		transform: scale(0.6);
+		opacity: 0.5;
+	}
+
+	100% {
+		transform: scale(1.6);
+		opacity: 0;
+	}
+}

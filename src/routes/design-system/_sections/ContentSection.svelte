@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from "$app/state";
 	import {
 		DsAdSlot,
 		DsButton,
@@ -24,6 +25,17 @@
 
 	let files = $state<File[]>([]);
 	let lazyRenderedAt = $state<string | null>(null);
+
+	// Make labels reactive to language changes
+	let privacyLabel = $derived.by(() => {
+		void page.url;
+		return m.footer_privacy();
+	});
+
+	let adLabel = $derived.by(() => {
+		void page.url;
+		return m.common_advertisement();
+	});
 
 	function markLazyRendered(_node: HTMLElement) {
 		if (!lazyRenderedAt) {
@@ -185,29 +197,26 @@
 			<div class="grid gap-4 md:grid-cols-3">
 				<DsAdSlot
 					variant="banner"
-					label={m.common_advertisement()}
 					showPlaceholder
 					reserveRatio
 					infoHref="/privacy"
-					infoLabel={m.footer_privacy()}
+					infoLabel={privacyLabel}
 				/>
 				<DsAdSlot
 					variant="infeed-wide"
-					label={m.common_advertisement()}
 					showPlaceholder
 					reserveRatio
 					infoHref="/privacy"
-					infoLabel={m.footer_privacy()}
+					infoLabel={privacyLabel}
 				/>
 				<div class="min-h-[20rem]">
 					<DsAdSlot
 						variant="sidebar"
-						label={m.common_advertisement()}
 						showPlaceholder
 						reserveRatio
 						sticky
 						infoHref="/privacy"
-						infoLabel={m.footer_privacy()}
+						infoLabel={privacyLabel}
 					/>
 				</div>
 			</div>
@@ -225,11 +234,11 @@
 					lazy
 					lazyMargin="0px"
 					infoHref="/privacy"
-					infoLabel={m.footer_privacy()}
+					infoLabel={privacyLabel}
 				>
 					{#snippet children()}
 						<div use:markLazyRendered class="ds-ad-slot-placeholder-box">
-							<div class="text-label">{m.common_advertisement()}</div>
+							<div class="text-label">{adLabel}</div>
 							<div class="text-helper text-muted-foreground">
 								Lazy render: {lazyRenderedAt ?? "…"}
 							</div>

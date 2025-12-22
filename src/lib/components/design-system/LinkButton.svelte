@@ -1,15 +1,17 @@
 <script lang="ts">
+	import { page } from "$app/state";
+	import * as m from "$lib/paraglide/messages.js";
 	import type { Snippet } from "svelte";
 	import type { HTMLAnchorAttributes } from "svelte/elements";
-
-	import * as m from "$lib/paraglide/messages.js";
 
 	import { DsIcon } from "$lib/components/design-system";
 
 	import type { ButtonVariant, Intent, Size } from "./types";
 	import { toIntentCss } from "./types";
 
-	type AnchorClickEvent = Parameters<NonNullable<HTMLAnchorAttributes["onclick"]>>[0];
+	type AnchorClickEvent = Parameters<
+		NonNullable<HTMLAnchorAttributes["onclick"]>
+	>[0];
 
 	interface Props extends HTMLAnchorAttributes {
 		size?: Size;
@@ -32,7 +34,7 @@
 		disabled = false,
 		fullWidth = false,
 		loading = false,
-		loadingLabel = m.ds_navigating(),
+		loadingLabel,
 		href,
 		tabindex,
 		class: className = "",
@@ -42,6 +44,12 @@
 		onclick,
 		...rest
 	}: Props = $props();
+
+	// Reactive i18n
+	let resolvedLoadingLabel = $derived.by(() => {
+		void page.url;
+		return loadingLabel ?? m.ds_navigating();
+	});
 
 	let intentCss = $derived(toIntentCss(intent));
 	let isDisabled = $derived(disabled || loading);
@@ -91,7 +99,7 @@
 			class="ds-link-button__loader animate-spin"
 			aria-hidden="true"
 		/>
-		<span class="sr-only" aria-live="polite">{loadingLabel}</span>
+		<span class="sr-only" aria-live="polite">{resolvedLoadingLabel}</span>
 	{:else if start}
 		{@render start()}
 	{/if}

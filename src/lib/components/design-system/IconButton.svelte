@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from "$app/state";
 	import type { Snippet } from "svelte";
 	import type { HTMLButtonAttributes } from "svelte/elements";
 
@@ -45,7 +46,7 @@
 		loading = false,
 		disabled = false,
 		flipInRtl = false,
-		loadingLabel = m.ds_loading(),
+		loadingLabel,
 		type = "button",
 		ref = $bindable(null),
 		class: className = "",
@@ -56,12 +57,18 @@
 		...rest
 	}: Props = $props();
 
+	// Reactive i18n
+	let resolvedLoadingLabel = $derived.by(() => {
+		void page.url;
+		return loadingLabel ?? m.ds_loading();
+	});
+
 	let intentCss = $derived(toIntentCss(intent));
 	// 로딩 중에도 포커스 유지를 위해 native disabled는 disabled prop만 반영
 	let isNativeDisabled = $derived(disabled);
 	let isSoftDisabled = $derived(disabled || loading);
 	let computedAriaLabel = $derived(
-		loading ? `${label} (${loadingLabel})` : label,
+		loading ? `${label} (${resolvedLoadingLabel})` : label,
 	);
 
 	// 클래스 조합

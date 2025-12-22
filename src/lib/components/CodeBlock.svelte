@@ -2,6 +2,7 @@
 	// 동적 import를 위해 타입만 import (런타임 번들에 포함되지 않음)
 	import type { BundledTheme } from "shiki";
 
+	import { page } from "$app/state";
 	import {
 		getHighlighterForLanguage,
 		resolveLanguageOrText,
@@ -36,9 +37,20 @@
 	);
 	let ariaLabelledBy = $derived(showLanguageBadge ? badgeId : undefined);
 	let ariaLabelValue = $derived(showLanguageBadge ? undefined : ariaLabel);
-	let copyLabel = $derived(m.codeblock_copy());
-	let copiedLabel = $derived(m.codeblock_copied());
-	let loadingLabel = $derived(m.codeblock_loading());
+
+	// page.url에 의존성을 추가하여 언어 변경 시 메시지 갱신 강제
+	let copyLabel = $derived.by(() => {
+		void page.url;
+		return m.codeblock_copy();
+	});
+	let copiedLabel = $derived.by(() => {
+		void page.url;
+		return m.codeblock_copied();
+	});
+	let loadingLabel = $derived.by(() => {
+		void page.url;
+		return m.codeblock_loading();
+	});
 	let loadingId = $derived(`${id}-loading`);
 
 	let highlightedHtml = $state("");
@@ -99,6 +111,28 @@
 <div {id} class="ds-code-block-shell group w-full">
 	{#if highlightedHtml}
 		<!-- Shiki wrapper color override -->
+		<div class="ds-code-block-header">
+			{#if showLanguageBadge}
+				<span id={badgeId} class="ds-code-block-badge">
+					{badgeLabel}
+				</span>
+			{/if}
+			<DsTooltip as="div" content={copyLabel} class="ds-code-block-copy">
+				{#snippet children(trigger)}
+					<DsCopyButton
+						size="xs"
+						variant="ghost"
+						intent="neutral"
+						touchTarget={false}
+						label={copyLabel}
+						{copiedLabel}
+						text={code}
+						describedBy={trigger["aria-describedby"]}
+						style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
+					/>
+				{/snippet}
+			</DsTooltip>
+		</div>
 		<div
 			class="ds-code-block-content ds-focus-ring overflow-auto [&>pre]:!m-0 [&>pre]:!p-[1.125rem] [&>pre]:!bg-transparent [&>pre]:!rounded-[inherit]"
 			data-lenis-prevent
@@ -109,36 +143,32 @@
 			aria-label={ariaLabelValue}
 			aria-labelledby={ariaLabelledBy}
 		>
-			<div class="ds-code-block-header">
-				{#if showLanguageBadge}
-					<span id={badgeId} class="ds-code-block-badge">
-						{badgeLabel}
-					</span>
-				{/if}
-				<DsTooltip
-					as="div"
-					content={copyLabel}
-					class="ds-code-block-copy"
-				>
-					{#snippet children(trigger)}
-						<DsCopyButton
-							size="xs"
-							variant="ghost"
-							intent="neutral"
-							touchTarget={false}
-							label={copyLabel}
-							copiedLabel={copiedLabel}
-							text={code}
-							describedBy={trigger["aria-describedby"]}
-							style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
-						/>
-					{/snippet}
-				</DsTooltip>
-			</div>
 			{@html highlightedHtml}<!-- security-ignore: xss-svelte-html -->
 		</div>
 	{:else}
 		<!-- Fallback: 하이라이팅 로딩 중에도 코드는 즉시 노출 (테스트/UX 안정성) -->
+		<div class="ds-code-block-header">
+			{#if showLanguageBadge}
+				<span id={badgeId} class="ds-code-block-badge">
+					{badgeLabel}
+				</span>
+			{/if}
+			<DsTooltip as="div" content={copyLabel} class="ds-code-block-copy">
+				{#snippet children(trigger)}
+					<DsCopyButton
+						size="xs"
+						variant="ghost"
+						intent="neutral"
+						touchTarget={false}
+						label={copyLabel}
+						{copiedLabel}
+						text={code}
+						describedBy={trigger["aria-describedby"]}
+						style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
+					/>
+				{/snippet}
+			</DsTooltip>
+		</div>
 		<div
 			class="ds-code-block-content ds-focus-ring overflow-auto"
 			data-lenis-prevent
@@ -154,32 +184,6 @@
 			<span id={loadingId} class="sr-only" aria-live="polite">
 				{loadingLabel}
 			</span>
-			<div class="ds-code-block-header">
-				{#if showLanguageBadge}
-					<span id={badgeId} class="ds-code-block-badge">
-						{badgeLabel}
-					</span>
-				{/if}
-				<DsTooltip
-					as="div"
-					content={copyLabel}
-					class="ds-code-block-copy"
-				>
-					{#snippet children(trigger)}
-						<DsCopyButton
-							size="xs"
-							variant="ghost"
-							intent="neutral"
-							touchTarget={false}
-							label={copyLabel}
-							copiedLabel={copiedLabel}
-							text={code}
-							describedBy={trigger["aria-describedby"]}
-							style="background-color: oklch(var(--color-surface) / 0.8); color: oklch(var(--color-text)); backdrop-filter: blur(4px);"
-						/>
-					{/snippet}
-				</DsTooltip>
-			</div>
 			<pre class="!m-0 !p-[1.125rem] !bg-transparent !rounded-[inherit]"><code
 					>{code}</code
 				></pre>

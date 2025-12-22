@@ -1,15 +1,20 @@
 <script lang="ts">
+	import { page } from "$app/state";
 	import type { Snippet } from "svelte";
 	import type { HTMLButtonAttributes } from "svelte/elements";
 
-	import * as m from "$lib/paraglide/messages.js";
 	import { DsIcon } from "$lib/components/design-system";
+	import * as m from "$lib/paraglide/messages.js";
 
 	import type { ButtonVariant, Intent, Size } from "./types";
 	import { toIntentCss } from "./types";
 
-	type ButtonClickEvent = Parameters<NonNullable<HTMLButtonAttributes["onclick"]>>[0];
-	type ButtonKeyDownEvent = Parameters<NonNullable<HTMLButtonAttributes["onkeydown"]>>[0];
+	type ButtonClickEvent = Parameters<
+		NonNullable<HTMLButtonAttributes["onclick"]>
+	>[0];
+	type ButtonKeyDownEvent = Parameters<
+		NonNullable<HTMLButtonAttributes["onkeydown"]>
+	>[0];
 
 	interface Props extends HTMLButtonAttributes {
 		size?: Size;
@@ -32,7 +37,7 @@
 		intent = "primary",
 		loading = false,
 		fullWidth = false,
-		loadingLabel = m.ds_loading(),
+		loadingLabel,
 		disabled = false,
 		type = "button",
 		ref = $bindable(null),
@@ -44,6 +49,12 @@
 		onkeydown,
 		...rest
 	}: Props = $props();
+
+	// Reactive i18n
+	let resolvedLoadingLabel = $derived.by(() => {
+		void page.url;
+		return loadingLabel ?? m.ds_loading();
+	});
 
 	let intentCss = $derived(toIntentCss(intent));
 	// 로딩 중에도 포커스 유지를 위해 native disabled는 disabled prop만 반영
@@ -104,7 +115,7 @@
 <button
 	{...rest}
 	use:refAction
-	type={type}
+	{type}
 	class={buttonClass}
 	disabled={isNativeDisabled}
 	aria-busy={loading || undefined}
@@ -126,7 +137,7 @@
 			aria-hidden="true"
 		/>
 		<!-- SR용 로딩 상태 안내 -->
-		<span class="sr-only" aria-live="polite">{loadingLabel}</span>
+		<span class="sr-only" aria-live="polite">{resolvedLoadingLabel}</span>
 	{:else if start}
 		{@render start()}
 	{/if}

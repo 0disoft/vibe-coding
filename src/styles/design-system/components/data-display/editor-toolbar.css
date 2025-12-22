@@ -1,0 +1,52 @@
+/* ───────────────────────────────────────────────────────────
+   Component: Editor
+   ─────────────────────────────────────────────────────────── */
+
+.ds-editor-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: var(--editor-toolbar-gap);
+	padding: var(--editor-toolbar-padding);
+	border-radius: var(--editor-toolbar-radius);
+	background: oklch(var(--editor-toolbar-surface));
+	border: var(--border-width) solid oklch(var(--editor-toolbar-border));
+}
+
+.ds-editor-toolbar-left {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-3);
+	flex-wrap: wrap;
+	min-inline-size: 0;
+}
+
+.ds-editor-toolbar-block {
+	min-inline-size: 12rem;
+}
+
+.ds-editor-toolbar-buttons {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-1);
+	flex-wrap: wrap;
+}
+
+.ds-editor-toolbar-sep {
+	inline-size: 1px;
+	block-size: 1.1rem;
+	background: oklch(var(--color-border));
+	margin-inline: var(--spacing-1);
+}
+
+.ds-editor-inline {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--editor-inline-gap);
+	padding: var(--editor-inline-padding);
+	border-radius: var(--editor-inline-radius);
+	background: oklch(var(--editor-inline-surface));
+	border: var(--border-width) solid oklch(var(--editor-inline-border));
+	box-shadow: var(--editor-inline-shadow);
+}
