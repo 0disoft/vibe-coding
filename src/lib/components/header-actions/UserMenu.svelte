@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { page } from "$app/state";
+
   import * as m from '$lib/paraglide/messages.js';
   import { localizeUrl } from '$lib/paraglide/runtime.js';
 
@@ -8,6 +10,7 @@
     DsIconButton,
     DsLiveRegion
   } from '$lib/components/design-system';
+  import { getLocaleFromUrl, type Locale } from "$lib/shared/utils/locale";
   import { maskEmail } from '$lib/shared/utils/privacy';
 
   // TODO: Better-Auth 연동 시 실제 인증 상태로 교체
@@ -37,11 +40,14 @@
   }
 
   let liveRegion: { announce: (message: string) => void } | null = null;
+  let currentLocale = $derived<Locale>(getLocaleFromUrl(page.url));
 
   function toggleEmailVisibility() {
     showEmail = !showEmail;
     liveRegion?.announce(
-      showEmail ? m.user_menu_email_revealed() : m.user_menu_email_hidden()
+      showEmail
+        ? m.user_menu_email_revealed({}, { locale: currentLocale })
+        : m.user_menu_email_hidden({}, { locale: currentLocale })
     );
   }
 </script>
@@ -58,7 +64,7 @@
     <DsIconButton
       {...props}
       intent={isLoggedIn ? 'success' : 'warning'}
-      label={m.user_menu()}
+      label={m.user_menu({}, { locale: currentLocale })}
       data-testid="header-user-menu"
     >
       <span class="i-lucide-user h-4 w-4"></span>
@@ -77,7 +83,9 @@
           <DsIconButton
             size="sm"
             variant="ghost"
-            label={showEmail ? m.user_menu_hide_email() : m.user_menu_show_email()}
+            label={showEmail
+              ? m.user_menu_hide_email({}, { locale: currentLocale })
+              : m.user_menu_show_email({}, { locale: currentLocale })}
             icon={showEmail ? 'eye-off' : 'eye'}
             role="menuitemcheckbox"
             aria-checked={showEmail}
@@ -97,14 +105,14 @@
           onclick={() => close()}
         >
           <span class="i-lucide-user h-4 w-4"></span>
-          {m.menu_profile()}
+          {m.menu_profile({}, { locale: currentLocale })}
         </DsDropdownItem>
         <DsDropdownItem
           href={localizeUrl('/settings').href}
           onclick={() => close()}
         >
           <span class="i-lucide-settings h-4 w-4"></span>
-          {m.menu_settings()}
+          {m.menu_settings({}, { locale: currentLocale })}
         </DsDropdownItem>
 
         <div class="my-1 border-t border-border"></div>
@@ -117,7 +125,7 @@
           intent="destructive"
         >
           <span class="i-lucide-log-out h-4 w-4"></span>
-          {m.menu_logout()}
+          {m.menu_logout({}, { locale: currentLocale })}
         </DsDropdownItem>
       </div>
     {:else}
@@ -128,14 +136,14 @@
           onclick={() => close()}
         >
           <span class="i-lucide-log-in h-4 w-4"></span>
-          {m.menu_login()}
+          {m.menu_login({}, { locale: currentLocale })}
         </DsDropdownItem>
         <DsDropdownItem
           href={localizeUrl('/signup').href}
           onclick={() => close()}
         >
           <span class="i-lucide-user-plus h-4 w-4"></span>
-          {m.menu_signup()}
+          {m.menu_signup({}, { locale: currentLocale })}
         </DsDropdownItem>
       </div>
     {/if}

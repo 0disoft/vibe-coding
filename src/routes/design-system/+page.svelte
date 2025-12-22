@@ -40,6 +40,7 @@
 
 	type TocId = (typeof tocItems)[number]["id"];
 	let activeSectionId = $state<TocId>(tocItems[0]?.id ?? "pages");
+	let setLabReady: (() => void) | null = null;
 
 	onMount(() => {
 		const ids = tocItems.map((i) => i.id) as TocId[];
@@ -57,6 +58,10 @@
 		updateFromHash();
 		window.addEventListener("hashchange", updateFromHash);
 
+		setLabReady = () => {
+			document.documentElement.dataset.dsLabReady = "1";
+		};
+
 		const targets = ids
 			.map((id) => document.getElementById(id))
 			.filter((el): el is HTMLElement => !!el);
@@ -69,7 +74,10 @@
 
 				const top = visible[0]?.target as HTMLElement | undefined;
 				const id = top?.id;
-				if (id && isTocId(id)) activeSectionId = id;
+				if (id && isTocId(id)) {
+					activeSectionId = id;
+					history.replaceState(null, "", `#${id}`);
+				}
 			},
 			{
 				root: null,
@@ -80,9 +88,16 @@
 
 		for (const t of targets) io.observe(t);
 
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				setLabReady?.();
+			});
+		});
+
 		return () => {
 			io.disconnect();
 			window.removeEventListener("hashchange", updateFromHash);
+			setLabReady = null;
 		};
 	});
 </script>
@@ -107,7 +122,7 @@
 		<DocsSection tocItems={tocItems} />
 	</div>
 
-	<aside class="hidden lg:block">
+	<aside class="hidden lg:block" aria-label="Table of Contents">
 		<div class="sticky top-6 space-y-3">
 			<DocsToc items={tocItems} activeId={activeSectionId} title="Sections" />
 			<div class="rounded-lg border border-border bg-surface p-4">

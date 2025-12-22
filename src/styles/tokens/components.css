@@ -1,1 +1,28 @@
 /* Component tokens */
+
+:root {
+  --remote-control-gap: var(--spacing-1);
+  --remote-control-padding: var(--spacing-2);
+  --remote-control-radius: var(--radius-lg);
+  --remote-control-border: var(--color-border);
+  --remote-control-bg: var(--color-surface);
+  --remote-control-shadow: var(--elevation-2);
+  --remote-control-z: var(--z-sticky);
+  --remote-control-offset-inline: var(--spacing-4);
+  --remote-control-offset-block: var(--spacing-4);
+
+  --remote-item-size-sm: var(--touch-target-dense);
+  --remote-item-size-md: var(--touch-target-min);
+  --remote-item-size-lg: calc(var(--touch-target-min) + var(--spacing-1));
+  --remote-item-radius: var(--radius-md);
+  --remote-item-gap: var(--spacing-1);
+  --remote-item-padding-inline: var(--spacing-2);
+  --remote-item-label-size: var(--font-size-xs);
+  --remote-item-bg-hover: var(--color-surface-hover);
+  --remote-item-bg-active: var(--color-selected);
+  --remote-item-active-color: var(--color-on-selected);
+  --remote-item-solid-bg: var(--color-primary);
+  --remote-item-solid-fg: var(--color-on-primary);
+  --remote-item-solid-active-bg: var(--color-primary);
+  --remote-item-solid-active-fg: var(--color-on-primary);
+}

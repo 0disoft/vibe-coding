@@ -10,6 +10,7 @@ export const policy = {
 		privacy: '2025-12-07',
 		cookie: '2025-12-08',
 		security: '2025-12-11',
+		accessibility: '2025-12-22',
 		bugBounty: '2025-12-11'
 	},
 	cpoName: 'Sewon Lim (Founder & Engineer)',

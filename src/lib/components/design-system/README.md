@@ -423,6 +423,19 @@ Overlay/Selection 계열은 보통 아래 패턴을 지원합니다.
 - Props: `items`, `activeId`, `defaultActiveId`, `onActiveChange`, `collapsed`, `label`
 - 참고: `items[].isAction`을 사용하면 `aria-pressed` 상태로 동작합니다.
 
+#### `DsRemoteControl` / `DsRemoteItem` / `DsRemoteSeparator`
+
+- 파일: `src/lib/components/design-system/RemoteControl.svelte`, `src/lib/components/design-system/RemoteItem.svelte`, `src/lib/components/design-system/RemoteSeparator.svelte`
+- 역할: 상세 콘텐츠 화면용 플로팅 액션 바(리모컨) 조립
+- `DsRemoteControl` Props: `items`, `placement`, `align`, `floating`, `responsive`, `size`, `showLabels`, `showTooltips`, `label`, `children`, `onItemSelect`
+- `DsRemoteItem` Props: `label`, `icon`, `href`, `active`, `disabled`, `variant`, `size`, `showLabel`, `tooltip`, `tooltipPlacement`, `onSelect`
+- `DsRemoteSeparator` Props: (없음)
+- 참고:
+  - `items` 배열 또는 슬롯 조합 방식 모두 지원합니다.
+  - `items`에서 `{ kind: "separator" }`를 넣으면 구분선을 렌더합니다.
+  - `placement=right/left/bottom`에 따라 툴팁 기본 방향이 자동 설정됩니다.
+  - 모바일은 `responsive=true`일 때 하단 바 형태로 자동 전환됩니다.
+
 #### `DsTabs` / `DsTabsList` / `DsTabsTrigger` / `DsTabsContent`
 
 - 파일: `src/lib/components/design-system/Tabs.svelte`, `src/lib/components/design-system/TabsList.svelte`, `src/lib/components/design-system/TabsTrigger.svelte`, `src/lib/components/design-system/TabsContent.svelte`

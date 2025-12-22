@@ -12,6 +12,7 @@
 		DsLinkButton,
 		DsNavigationMenu,
 		DsPagination,
+		DsRemoteControl,
 		DsSideNav,
 		DsSidebar,
 		DsTabs,
@@ -20,11 +21,13 @@
 		DsTabsTrigger,
 		DsTreeView,
 	} from "$lib/components/design-system";
+	import type { RemoteControlEntry } from "$lib/components/design-system/RemoteControl.svelte";
 
 	let pageNum = $state(5);
 	let treeSelectedId = $state<string | null>("docs");
 	let treeExpandedIds = $state<string[]>(["docs", "getting-started"]);
 	let anchorActive = $state("anchor-intro");
+	let remoteActive = $state("like");
 
 	const navMenuItems = [
 		{
@@ -177,6 +180,34 @@
 		{ id: "anchor-details", label: "Details", level: 2 },
 		{ id: "anchor-usage", label: "Usage", level: 2 },
 	] as const;
+
+	const remoteItems = $derived<RemoteControlEntry[]>([
+		{
+			id: "like",
+			label: "좋아요",
+			icon: "heart",
+			active: remoteActive === "like",
+		},
+		{
+			id: "bookmark",
+			label: "북마크",
+			icon: "bookmark",
+			active: remoteActive === "bookmark",
+		},
+		{ kind: "separator" as const },
+		{
+			id: "toc",
+			label: "목차",
+			icon: "list",
+			active: remoteActive === "toc",
+		},
+		{
+			id: "top",
+			label: "TOP",
+			icon: "arrow-up",
+			variant: "solid",
+		},
+	]);
 </script>
 
 <section id="ds-navigation" class="space-y-4">
@@ -212,6 +243,23 @@
 				<div class="rounded-lg border border-border bg-surface p-3">
 					<DsSideNav items={sideNavItems} collapsed />
 				</div>
+			</div>
+		</div>
+
+		<div class="space-y-2">
+			<div class="text-label text-muted-foreground">RemoteControl</div>
+			<div class="text-helper text-muted-foreground">
+				플로팅 액션 바를 컨테이너 안에서 고정 해제 상태로 보여줍니다.
+			</div>
+			<div class="rounded-lg border border-border bg-surface p-4">
+				<DsRemoteControl
+					items={remoteItems}
+					floating={false}
+					placement="right"
+					onItemSelect={(id) => {
+						remoteActive = id;
+					}}
+				/>
 			</div>
 		</div>
 

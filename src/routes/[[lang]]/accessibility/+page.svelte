@@ -1,40 +1,87 @@
 <script lang="ts">
-  import { DsCard, DsLinkButton } from "$lib/components/design-system";
-  import { site } from "$lib/constants";
+	import { DsBreadcrumb } from "$lib/components/design-system";
+	import { PolicyLayout } from "$lib/components/policy";
+	import { policy, site, type PolicyNavId } from "$lib/constants";
+	import * as m from "$lib/paraglide/messages.js";
+	import type { PageData } from "./$types";
 
-  // NOTE: 스텁 페이지이므로, 실제 구현 시 컴포넌트/데이터 로딩을 추가하세요.
+	// 서버에서 로드된 HTML 컨텐츠
+	let { data }: { data: PageData } = $props();
+	const currentId: PolicyNavId = "accessibility";
+	const isCurrent = (id: PolicyNavId) => currentId === id;
+
+	let docTitle = $derived(m.footer_accessibility({}, { locale: data.lang }));
+	let headTitle = $derived(`${docTitle} | ${site.name}`);
+	let description = $derived(`${site.name} ${docTitle}`);
+	let updatedAt = $derived(
+		new Intl.DateTimeFormat(data.lang, { dateStyle: "long" }).format(
+			new Date(policy.effectiveDate.accessibility),
+		),
+	);
+	let updatedAtLabel = $derived(
+		m.policy_effective_date_label({}, { locale: data.lang }),
+	);
+	let policySectionLabel = $derived(
+		m.policy_breadcrumb_section({}, { locale: data.lang }),
+	);
+	let policyMenuItems = $derived([
+		{
+			label: m.footer_terms({}, { locale: data.lang }),
+			href: `/${data.lang}/terms`,
+			disabled: isCurrent("terms"),
+		},
+		{
+			label: m.footer_privacy({}, { locale: data.lang }),
+			href: `/${data.lang}/privacy`,
+			disabled: isCurrent("privacy"),
+		},
+		{
+			label: m.footer_cookie_policy({}, { locale: data.lang }),
+			href: `/${data.lang}/cookie`,
+			disabled: isCurrent("cookie"),
+		},
+		{
+			label: m.footer_security({}, { locale: data.lang }),
+			href: `/${data.lang}/security`,
+			disabled: isCurrent("security"),
+		},
+		{
+			label: m.footer_gdpr({}, { locale: data.lang }),
+			href: `/${data.lang}/gdpr`,
+			disabled: isCurrent("gdpr"),
+		},
+		{
+			label: m.footer_accessibility({}, { locale: data.lang }),
+			href: `/${data.lang}/accessibility`,
+			disabled: isCurrent("accessibility"),
+		},
+		{
+			label: m.footer_bug_bounty({}, { locale: data.lang }),
+			href: `/${data.lang}/bug-bounty`,
+			disabled: isCurrent("bug-bounty"),
+		},
+	]);
+	let breadcrumbs = $derived([
+		{ label: site.name, href: `/${data.lang}` },
+		{
+			label: policySectionLabel,
+			menuItems: policyMenuItems,
+			menuLabel: policySectionLabel,
+		},
+		{ label: docTitle },
+	]);
 </script>
 
-<svelte:head>
-  <title>웹사이트 접근성 | {site.name}</title>
-  <meta name="description" content="웹사이트 접근성 - {site.name}" />
-</svelte:head>
-
-<div class="container py-12">
-  <div class="mx-auto max-w-4xl space-y-6">
-    <div class="space-y-2">
-      <p class="text-label text-muted-foreground">Page Stub</p>
-      <h1 class="text-h1 font-semibold">웹사이트 접근성</h1>
-      <p class="text-body-secondary text-muted-foreground">이 페이지는 템플릿 스캐폴딩 단계에서 자동 생성된 스텁입니다.</p>
-      <div class="flex flex-wrap gap-2 pt-2">
-        <DsLinkButton href="/design-system" variant="outline" intent="secondary">
-          Design System
-        </DsLinkButton>
-      </div>
-    </div>
-
-    <DsCard class="space-y-3" padding="lg">
-      <div class="text-label text-muted-foreground">Route</div>
-      <div class="text-body">
-        <code class="text-code">/accessibility</code>
-      </div>
-
-      <div class="text-label text-muted-foreground pt-4">Next</div>
-      <ul class="list-disc ps-6 space-y-1 text-body">
-        <li>페이지 목적/콘텐츠 구조 확정</li>
-        <li>필요한 DS/Docs 컴포넌트 조합 적용</li>
-        <li>데이터 로딩/폼/검증/에러 상태 추가</li>
-      </ul>
-    </DsCard>
-  </div>
-</div>
+<PolicyLayout
+	title={docTitle}
+	{headTitle}
+	{description}
+	lang={data.lang}
+	content={data.content}
+	{updatedAt}
+	{updatedAtLabel}
+>
+	{#snippet header()}
+		<DsBreadcrumb items={breadcrumbs} />
+	{/snippet}
+</PolicyLayout>

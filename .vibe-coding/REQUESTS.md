@@ -37,41 +37,25 @@
 
 | 순번 | 요청 유형 | 대상 파일/항목 | 상태 | 비고 |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | 코드 개선 제안 | `src/lib/components/header-actions/ThemeToggle.svelte` | ✅ 완료 | [상세 보기](#1-themetoggle-리팩토링) |
-| 2 | 코드 개선 제안 | `src/lib/components/footer-actions/FooterMenu.svelte` | ✅ 완료 | [상세 보기](#2-footermenu-리팩토링) |
+| 1 | 코드 개선 제안 | `src/styles/design-system/components/remote-control.css` | ✅ 완료 | [상세 보기](#1-remote-controlcss-리팩토링) |
 
 ---
 
 ## 📋 작업 상세 내용
 
-### 1. ThemeToggle 리팩토링
+### 1. remote-control.css 리팩토링
 
-- **대상**: `src/lib/components/header-actions/ThemeToggle.svelte`
-- **관점**: `A11Y_UX_COPILOT` (테마 전환의 접근성 및 상태 피드백)
+- **대상**: `src/styles/design-system/components/remote-control.css`
+- **관점**: `A11Y_UX_COPILOT` (플로팅 UI의 시각적 안정성 및 접근성)
 - **제안 내용**:
-  - **스크린 리더 상태 안내 (A11y)**: 테마 모드나 팔레트가 변경될 때, 시각적 변화뿐만 아니라 스크린 리더 사용자에게 "다크 모드로 변경됨", "에어리 블루 팔레트 적용됨"과 같은 명확한 피드백을 제공하도록 개선합니다. `aria-live` 영역을 활용하거나 적절한 상태 메시지 안내 메커니즘을 검토합니다.
-  - **모션 감수성 대응 (UX)**: 테마 전환 시 발생하는 시각적 트랜지션 효과가 사용자의 OS 설정(`prefers-reduced-motion: reduce`)을 존중하도록 보강합니다. 애니메이션 시간을 0으로 설정하거나 전환 효과를 생략하여 사용자 불편을 최소화합니다.
-  - **초기 상태 동기화 및 안정성**: SSR에서 주입된 테마 설정과 클라이언트 사이드 스토어 상태 간의 동기화 로직을 점검하여, 페이지 로드 시 발생하는 깜빡임(FOUC)을 방지하고 일관된 테마 경험을 보장합니다.
-  - **인터랙션 레이블 정교화**: `DsThemeControlCenter`에 전달되는 `label`이 현재의 컨텍스트(테마 및 팔레트 통합 제어)를 충분히 설명하는지 검토하고, 필요한 경우 접근성 레이블을 더욱 명확하게 보강합니다.
+  - **모션 감수성 대응 (A11y)**: `transition` 속성에 대해 `prefers-reduced-motion: reduce` 미디어 쿼리를 추가하여 모션에 민감한 사용자를 보호합니다.
+  - **세이프 에어리어 환경 변수 고도화 (UX)**: `--safe-area-bottom` 등을 직접 연산하는 대신 CSS `env(safe-area-inset-*)`를 활용한 폴백 패턴을 강화하여 다양한 기기(노치 디자인 등)에서 최적의 간격을 유지합니다.
+  - **터치 타깃 보장 (UX)**: 터치 환경(`pointer: coarse`)에서 리모컨 아이템의 최소 크기가 접근성 표준(44x44px 이상)을 충족하도록 `@media (pointer: coarse)` 스타일을 보강합니다.
+  - **포커스 스타일 및 대비 (A11y)**: `.ds-focus-ring`의 포커스 링이 플로팅 배경색과 충분한 대비(WCAG AA 이상)를 갖도록 검토하고, 필요한 경우 명시적인 `outline-offset`을 조정합니다.
+  - **RTL 논리적 속성 강화**: `inset-inline-end` 등을 이미 사용 중이나, `is-floating` 모드의 레이아웃이 RTL 반전 시 레이아웃 엔진 부하 없이 매끄럽게 동작하는지 재검토합니다.
 - **처리 결과**:
-  - ✅ **스크린 리더 상태 안내**: 모드/팔레트 변경 시 라이브 리전으로 상태를 안내합니다.
-  - 🔵 **모션 감수성 대응**: 전역 CSS에 `prefers-reduced-motion` 대응이 존재하여 추가 변경 없이 유지했습니다.
-  - 🔵 **초기 상태 동기화**: `+layout.svelte`에서 `theme.init()`으로 동기화가 이미 구현되어 있어 유지했습니다.
-  - 🔵 **인터랙션 레이블 정교화**: 기존 `theme_toggle_label`이 목적을 충분히 설명한다고 판단했습니다.
-
----
-
-### 2. FooterMenu 리팩토링
-
-- **대상**: `src/lib/components/footer-actions/FooterMenu.svelte`
-- **관점**: `A11Y_UX_COPILOT` (하단 보조 내비게이션의 접근성 및 구조적 명확성)
-- **제안 내용**:
-  - **시맨틱 역할(Role) 보정 (A11y)**: 현재 `role="menuitemradio"`를 사용하고 있으나, 푸터 메뉴는 상태 선택보다는 페이지 이동이 주 목적인 내비게이션 링크 집합이므로 일반적인 `role="menuitem"`으로 변경하거나, 현재 위치 강조를 위해 `aria-current="page"`를 사용하도록 보강합니다.
-  - **반응형 가시성 및 공백 관리 (UX)**: `mobileOnly` 항목들이 숨겨질 때(`sm:!hidden`) 드롭다운 내부의 아이템 간격(Gap)이나 구분선(Separator)이 깨지지 않고 시각적으로 자연스럽게 유지되도록 레이아웃 로직을 정교화합니다.
-  - **아이콘 접근성**: 장식용으로 사용된 각 메뉴의 아이콘에 `aria-hidden="true"`를 명시하여 스크린 리더가 중복된 정보를 읽지 않도록 방어합니다.
-  - **중첩 내비게이션 정책**: 데스크톱의 고정 푸터 링크와 모바일 드롭다운 메뉴 간의 데이터 일관성을 유지하면서도, 스크린 리더 사용자가 중복된 내비게이션 랜드마크를 마주하지 않도록 `aria-label`을 통한 맥락 구분을 명확히 합니다.
-- **처리 결과**:
-  - ✅ **시맨틱 역할 보정**: `menuitemradio`를 `menuitem`으로 변경하고 `aria-current`로 현재 위치를 표시했습니다.
-  - 🔵 **반응형 가시성/공백**: `sm:!hidden`으로 레이아웃 흐름이 깨지지 않아 유지했습니다.
-  - ✅ **아이콘 접근성**: 장식 아이콘에 `aria-hidden="true"`를 추가했습니다.
-  - 🔵 **중첩 내비게이션**: 별도 nav 랜드마크가 없고 트리거 레이블이 있어 추가 변경 없이 유지했습니다.
+  - ✅ **모션 감수성 대응**: `prefers-reduced-motion: reduce`에서 전환을 제거했습니다.
+  - 🔄 **세이프 에어리어 대응**: 하단 고정/반응형 모드에 `env(safe-area-inset-bottom)` 패딩을 추가했습니다.
+  - ✅ **터치 타깃 보장**: `pointer: coarse`에서 최소 크기를 보강했습니다.
+  - 🔵 **포커스 스타일/대비**: 기존 토큰 기반 포커스 링이 충분하다고 판단해 유지했습니다.
+  - 🔵 **RTL 논리적 속성**: 논리적 inset 사용으로 RTL 자동 반전이 가능해 유지했습니다.

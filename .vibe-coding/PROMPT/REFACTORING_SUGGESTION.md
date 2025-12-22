@@ -5,7 +5,7 @@
 > [!TIP]
 > 이용자가 아래 내용을 직접 수정하여 작업 대상을 지정할 수 있습니다.
 
-- **리팩토링 참조 파일/폴더**: `src\styles\tokens\a11y-motion.css`
+- **리팩토링 참조 파일/폴더**: `src\routes\design-system\+page.svelte`
 - **적용할 페르소나**: @[.vibe-coding/PERSONA/A11Y_UX_COPILOT.md]
 
 ---
