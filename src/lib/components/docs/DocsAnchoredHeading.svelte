@@ -1,92 +1,92 @@
 <script lang="ts">
-  import { replaceState } from "$app/navigation";
-  import { page } from "$app/state";
-  import type { Snippet } from "svelte";
-  import type { HTMLAttributes } from "svelte/elements";
+	import { replaceState } from "$app/navigation";
+	import { page } from "$app/state";
+	import type { Snippet } from "svelte";
+	import type { HTMLAttributes } from "svelte/elements";
 
-  import * as m from "$lib/paraglide/messages.js";
+	import * as m from "$lib/paraglide/messages.js";
 
-  import { DsLiveRegion } from "$lib/components/design-system";
+	import { DsLiveRegion } from "$lib/components/design-system";
 
-  type HeadingLevel = 2 | 3 | 4;
+	type HeadingLevel = 2 | 3 | 4;
 
-  interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
-    id: string;
-    level?: HeadingLevel;
-    /** 단순 텍스트 헤딩(스니펫 생략용) */
-    text?: string;
-    /** URL 복사 버튼 레이블(i18n) */
-    copyLabel?: string;
-    copiedLabel?: string;
-    children?: Snippet;
-  }
+	interface Props extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+		id: string;
+		level?: HeadingLevel;
+		/** 단순 텍스트 헤딩(스니펫 생략용) */
+		text?: string;
+		/** URL 복사 버튼 레이블(i18n) */
+		copyLabel?: string;
+		copiedLabel?: string;
+		children?: Snippet;
+	}
 
-  let {
-    id,
-    level = 2,
-    text,
-    copyLabel = m.docs_copy_link(),
-    copiedLabel = m.docs_copied_link(),
-    class: className = "",
-    children,
-    ...rest
-  }: Props = $props();
+	let {
+		id,
+		level = 2,
+		text,
+		copyLabel = m.docs_copy_link(),
+		copiedLabel = m.docs_copied_link(),
+		class: className = "",
+		children,
+		...rest
+	}: Props = $props();
 
-  let copied = $state(false);
-  let timer: number | null = null;
-  let liveRegion: { announce: (message: string) => void } | null = null;
+	let copied = $state(false);
+	let timer: number | null = null;
+	let liveRegion: { announce: (message: string) => void } | null = null;
 
-  let headingTag = $derived(`h${level}`);
+	let headingTag = $derived(`h${level}`);
 
-  async function copyLink(e: MouseEvent) {
-    e.preventDefault();
+	async function copyLink(e: MouseEvent) {
+		e.preventDefault();
 
-    const url = new URL(window.location.href);
-    url.hash = id;
-    replaceState(url.toString(), page.state);
+		const url = new URL(window.location.href);
+		url.hash = id;
+		replaceState(url.toString(), page.state);
 
-    try {
-      await navigator.clipboard?.writeText?.(url.toString());
-      copied = true;
-      liveRegion?.announce(copiedLabel);
-      if (timer) window.clearTimeout(timer);
-      timer = window.setTimeout(() => (copied = false), 1200);
-    } catch {
-      // clipboard 미지원/권한 거부: 해시만 이동
-      location.hash = id;
-    }
-  }
+		try {
+			await navigator.clipboard?.writeText?.(url.toString());
+			copied = true;
+			liveRegion?.announce(copiedLabel);
+			if (timer) window.clearTimeout(timer);
+			timer = window.setTimeout(() => (copied = false), 1200);
+		} catch {
+			// clipboard 미지원/권한 거부: 해시만 이동
+			location.hash = id;
+		}
+	}
 </script>
 
 <DsLiveRegion bind:this={liveRegion} politeness="polite" duration={1200} />
 
 <svelte:element
-  this={headingTag}
-  {...rest}
-  id={id}
-  class={[
-    "group flex scroll-mt-20 items-center gap-2",
-    level === 2 ? "text-h2 font-semibold" : "",
-    level === 3 ? "text-h3 font-semibold" : "",
-    level === 4 ? "text-h4 font-semibold" : "",
-    className
-  ]
-    .filter(Boolean)
-    .join(" ")}
+	this={headingTag}
+	{...rest}
+	{id}
+	class={[
+		"group flex scroll-mt-20 lg:scroll-mt-12 items-center gap-2",
+		level === 2 ? "text-h2 font-semibold" : "",
+		level === 3 ? "text-h3 font-semibold" : "",
+		level === 4 ? "text-h4 font-semibold" : "",
+		className,
+	]
+		.filter(Boolean)
+		.join(" ")}
 >
-  <span class="min-w-0">
-    {#if children}
-      {@render children()}
-    {:else if text}
-      {text}
-    {/if}
-  </span>
-  <a
-    href={`#${id}`}
-    class="ds-focus-ring inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100"
-    aria-label={copied ? copiedLabel : copyLabel}
-    onclick={copyLink}
-  >
-    <span class="i-lucide-link h-4 w-4" aria-hidden="true"></span>
-  </a>
+	<span class="min-w-0">
+		{#if children}
+			{@render children()}
+		{:else if text}
+			{text}
+		{/if}
+	</span>
+	<a
+		href={`#${id}`}
+		class="ds-focus-ring inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100"
+		aria-label={copied ? copiedLabel : copyLabel}
+		onclick={copyLink}
+	>
+		<span class="i-lucide-link h-4 w-4" aria-hidden="true"></span>
+	</a>
 </svelte:element>

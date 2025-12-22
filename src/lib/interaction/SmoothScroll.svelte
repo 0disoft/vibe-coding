@@ -76,6 +76,17 @@
 			return options;
 		}
 
+		/** scroll-margin-top을 고려한 목표 스크롤 위치 계산 */
+		function getTargetScrollPosition(el: HTMLElement): number {
+			const scrollMarginTop = parseFloat(
+				window.getComputedStyle(el).scrollMarginTop || "0",
+			);
+			const rect = el.getBoundingClientRect();
+			const currentScroll =
+				window.scrollY || document.documentElement.scrollTop;
+			return currentScroll + rect.top - scrollMarginTop;
+		}
+
 		function isKeyboardOverrideBlocked(target: HTMLElement | null) {
 			if (!keyboardOverrides) return true;
 			if (!target) return false;
@@ -90,7 +101,7 @@
 				return true;
 			if (
 				target.closest(
-					"[data-lenis-prevent], [data-lenis-prevent-keyboard], [role=\"dialog\"], [role=\"menu\"], [role=\"listbox\"], [role=\"combobox\"]"
+					'[data-lenis-prevent], [data-lenis-prevent-keyboard], [role="dialog"], [role="menu"], [role="listbox"], [role="combobox"]',
 				)
 			)
 				return true;
@@ -100,7 +111,9 @@
 				const style = window.getComputedStyle(node);
 				const overflowY = style.overflowY;
 				if (
-					(overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay") &&
+					(overflowY === "auto" ||
+						overflowY === "scroll" ||
+						overflowY === "overlay") &&
 					node.scrollHeight > node.clientHeight
 				)
 					return true;
@@ -150,7 +163,7 @@
 			const previousTabIndex = element.getAttribute("tabindex");
 			const isNaturallyFocusable =
 				element.matches(
-					"a[href], button, input, textarea, select, [tabindex], [contenteditable=\"true\"]"
+					'a[href], button, input, textarea, select, [tabindex], [contenteditable="true"]',
 				) || element.isContentEditable;
 
 			if (!isNaturallyFocusable) element.setAttribute("tabindex", "-1");
@@ -181,7 +194,13 @@
 			const el = document.getElementById(id);
 			if (!el) return;
 
-			lenis.scrollTo(el, getScrollToOptions());
+			const targetY = getTargetScrollPosition(el);
+			console.log("[SmoothScroll] scrollToHash", {
+				hash,
+				targetY,
+				currentY: window.scrollY,
+			});
+			lenis.scrollTo(targetY, getScrollToOptions());
 			scheduleFocusAfterScroll(el);
 		}
 
@@ -235,7 +254,8 @@
 				pushState(url.toString(), page.state);
 				window.dispatchEvent(new HashChangeEvent("hashchange"));
 			}
-			lenis.scrollTo(el, getScrollToOptions());
+			const targetY = getTargetScrollPosition(el);
+			lenis.scrollTo(targetY, getScrollToOptions());
 			scheduleFocusAfterScroll(el);
 		}
 

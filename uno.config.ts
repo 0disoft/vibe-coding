@@ -1,4 +1,5 @@
 import lucideIcons from '@iconify-json/lucide/icons.json';
+import simpleIcons from '@iconify-json/simple-icons/icons.json';
 import presetTypography from '@unocss/preset-typography';
 import presetWind4 from '@unocss/preset-wind4';
 import {
@@ -520,7 +521,9 @@ export default defineConfig({
 		presetIcons({
 			collections: {
 				// @ts-expect-error: IconifyJSON type mismatch with explicit import
-				lucide: lucideIcons
+				lucide: lucideIcons,
+				// @ts-expect-error: IconifyJSON type mismatch
+				'simple-icons': simpleIcons
 			},
 			scale: 1.2
 		}),
@@ -583,6 +586,29 @@ export default defineConfig({
 		'i-lucide-bookmark',
 		'i-lucide-bookmark-check',
 		'i-lucide-inbox',
+		// Payment Icons
+		'i-lucide-credit-card',
+		'i-lucide-landmark',
+		'i-lucide-coins',
+		'i-lucide-wallet',
+		'i-lucide-smartphone',
+		'i-lucide-qr-code',
+		'i-lucide-arrow-left-right',
+		'i-lucide-help-circle',
+		'i-lucide-alert-circle',
+		'i-lucide-settings-2',
+		'i-lucide-check-circle-2',
+		// Brand Icons
+		'i-simple-icons-paypal',
+		'i-simple-icons-googlepay',
+		'i-simple-icons-applepay',
+		'i-simple-icons-alipay',
+		'i-simple-icons-wechat',
+		// Navigation Icons
+		'i-lucide-terminal',
+		'i-lucide-rocket',
+		'i-lucide-newspaper',
+		'i-lucide-palette',
 		...semanticColors.flatMap((c) => [
 			`bg-${c}`,
 			`text-${c}`,

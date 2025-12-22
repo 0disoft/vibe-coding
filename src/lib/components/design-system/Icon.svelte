@@ -42,7 +42,10 @@
 				: strokeWidth,
 	);
 	let styleAttr = $derived(
-		[styleValue, strokeWidthValue ? `--icon-stroke-width: ${strokeWidthValue}` : ""]
+		[
+			styleValue,
+			strokeWidthValue ? `--icon-stroke-width: ${strokeWidthValue}` : "",
+		]
 			.filter(Boolean)
 			.join("; "),
 	);
@@ -50,7 +53,7 @@
 
 <span
 	{...rest}
-	class={`ds-icon i-lucide-${name} ${className}`.trim()}
+	class={`ds-icon ${name.startsWith("i-") ? name : `i-lucide-${name}`} ${className}`.trim()}
 	{role}
 	aria-label={hasLabel ? label : undefined}
 	aria-hidden={hasLabel ? undefined : true}

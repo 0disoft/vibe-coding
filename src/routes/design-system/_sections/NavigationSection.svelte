@@ -134,11 +134,13 @@
 							id: "install",
 							label: "Install",
 							description: "/docs/getting-started#install",
+							icon: "terminal",
 						},
 						{
 							id: "first-run",
 							label: "First run",
 							description: "/docs/getting-started#run",
+							icon: "rocket",
 						},
 					],
 				},
@@ -151,8 +153,18 @@
 			description: "/community",
 			icon: "users",
 			children: [
-				{ id: "posts", label: "Posts", description: "/community" },
-				{ id: "showcase", label: "Showcase", description: "/showcase" },
+				{
+					id: "posts",
+					label: "Posts",
+					description: "/community",
+					icon: "newspaper",
+				},
+				{
+					id: "showcase",
+					label: "Showcase",
+					description: "/showcase",
+					icon: "palette",
+				},
 			],
 		},
 	];
