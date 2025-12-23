@@ -6,7 +6,8 @@
 
 - `README.md`: 페르소나 시스템 설명
 - `A11Y_UX_COPILOT.md`: 접근성 및 UI/UX 전문 가이드
-- `LEAD_ENGINEER.md`: 전략적 의사결정 및 특성(1-9) 기반 리드 엔지니어 (의사결정 프로세스 포함)
+- `LEAD_ENGINEER.md`: 전략적 의사결정 기반 리드 엔지니어
+- `FULLSTACK_AUDITOR.md`: 전체 스택 리스크 감사 전문 체크리스트
 
 ## 사용 방법
 
@@ -15,6 +16,7 @@
 예:
 
 - [A11Y_UX_COPILOT.md](./A11Y_UX_COPILOT.md): 접근성 및 UI/UX 전문 가이드
-- [LEAD_ENGINEER.md](./LEAD_ENGINEER.md): 전략적 의사결정 및 특성(1-9) 기반 리드 엔지니어
+- [LEAD_ENGINEER.md](./LEAD_ENGINEER.md): 전략적 의사결정 기반 리드 엔지니어
+- [FULLSTACK_AUDITOR.md](./FULLSTACK_AUDITOR.md): 전체 스택 리스크 감사 체크리스트
 
 "LEAD_ENGINEER.md 페르소나 관점에서 이 컴포넌트를 리뷰해줘."
