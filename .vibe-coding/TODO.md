@@ -82,7 +82,8 @@ SPEC 내용이 확정된 후 진행합니다.
        - Icons 설정
          - collections:
            - lucide 컬렉션을 비동기 로드로 연결
-           - 예시: `lucide: () => import('@iconify-json/lucide/icons.json').then(m => m.default)`
+           - 예시: `lucide: () =>
+                      import('@iconify-json/lucide/icons.json').then(m => m.default)`
          - scale: 1.2
          - cdn: `https://esm.sh/` (아이콘 폴백용)
     3. reset 관련 주의사항
@@ -97,14 +98,18 @@ SPEC 내용이 확정된 후 진행합니다.
 >
 > - **Rule:** 모든 기능 구현은 반드시 **프론트엔드 화면(UI)**&#8203;부터 시작한다. DB 설계나 백엔드 로직은 나중이다.
 > - **Why:** 눈에 보이는 결과물이 없으면 방향을 잃기 쉽다.
-> - **How:** 복잡한 로직 대신 **하드코딩된 목업(Mock) 데이터**를 사용하여 UI를 먼저 완성하고, 시각적으로 확정된 후에 실제 데이터를 연동한다.
+> - **How:** 복잡한 로직 대신 **하드코딩된 목업(Mock) 데이터**를 사용하여
+>   UI를 먼저 완성하고, 시각적으로 확정된 후에 실제 데이터를 연동한다.
 >
 > **⚡ 작업 루틴 (Cycle Protocol)**
 >
 > 1. **업데이트 (Pre-work):** 작업 시작 전 `bun update`를 실행하여 모든 패키지를 최신 상태로 동기화한다.
-> 2. **현행화 (Sync):** 업데이트된 패키지 버전을 확인하고 `.vibe-coding/SPEC.md`의 `Technical Architecture` 섹션에 변경 사항을 즉시 반영한다.
+> 2. **현행화 (Sync):** 업데이트된 패키지 버전을 확인하고
+>    `.vibe-coding/SPEC.md`의 `Technical Architecture` 섹션에 변경 사항을
+>    즉시 반영한다.
 > 3. **구현 (Coding):** 위 [개발 전략]에 따라 **목업 데이터 기반의 UI**를 우선 구현한다.
-> 4. **검수 (Post-work):** 구현 완료 직후 `.vibe-coding/REVIEW.md` 파일을 로드하여 체크리스트를 점검하고, 통과 시 완료 처리한다.
+> 4. **검수 (Post-work):** 구현 완료 직후 `.vibe-coding/REVIEW.md` 파일을
+>    로드하여 체크리스트를 점검하고, 통과 시 완료 처리한다.
 
 - [ ] (1단계 완료 후 생성될 세부 작업 목록)
 

@@ -49,31 +49,58 @@
 - **대상**: `src/styles/design-system/components/remote-control.css`
 - **관점**: `A11Y_UX_COPILOT` (플로팅 UI의 시각적 안정성 및 접근성)
 - **제안 내용**:
-  - **모션 감수성 대응 (A11y)**: `transition` 속성에 대해 `prefers-reduced-motion: reduce` 미디어 쿼리를 추가하여 모션에 민감한 사용자를 보호합니다.
-  - **세이프 에어리어 환경 변수 고도화 (UX)**: `--safe-area-bottom` 등을 직접 연산하는 대신 CSS `env(safe-area-inset-*)`를 활용한 폴백 패턴을 강화하여 다양한 기기(노치 디자인 등)에서 최적의 간격을 유지합니다.
-  - **터치 타깃 보장 (UX)**: 터치 환경(`pointer: coarse`)에서 리모컨 아이템의 최소 크기가 접근성 표준(44x44px 이상)을 충족하도록 `@media (pointer: coarse)` 스타일을 보강합니다.
-  - **포커스 스타일 및 대비 (A11y)**: `.ds-focus-ring`의 포커스 링이 플로팅 배경색과 충분한 대비(WCAG AA 이상)를 갖도록 검토하고, 필요한 경우 명시적인 `outline-offset`을 조정합니다.
-  - **RTL 논리적 속성 강화**: `inset-inline-end` 등을 이미 사용 중이나, `is-floating` 모드의 레이아웃이 RTL 반전 시 레이아웃 엔진 부하 없이 매끄럽게 동작하는지 재검토합니다.
+  - **모션 감수성 대응 (A11y)**: `transition` 속성에 대해
+    `prefers-reduced-motion: reduce` 미디어 쿼리를 추가하여 모션에 민감한
+    사용자를 보호합니다.
+  - **세이프 에어리어 환경 변수 고도화 (UX)**: `--safe-area-bottom` 등을
+    직접 연산하는 대신 CSS `env(safe-area-inset-*)`를 활용한 폴백 패턴을
+    강화하여 다양한 기기(노치 디자인 등)에서 최적의 간격을 유지합니다.
+  - **터치 타깃 보장 (UX)**: 터치 환경(`pointer: coarse`)에서 리모컨
+    아이템의 최소 크기가 접근성 표준(44x44px 이상)을 충족하도록
+    `@media (pointer: coarse)` 스타일을 보강합니다.
+  - **포커스 스타일 및 대비 (A11y)**: `.ds-focus-ring`의 포커스 링이
+    플로팅 배경색과 충분한 대비(WCAG AA 이상)를 갖도록 검토하고, 필요한 경우
+    명시적인 `outline-offset`을 조정합니다.
+  - **RTL 논리적 속성 강화**: `inset-inline-end` 등을 이미 사용 중이나,
+    `is-floating` 모드의 레이아웃이 RTL 반전 시 레이아웃 엔진 부하 없이
+    매끄럽게 동작하는지 재검토합니다.
 - **처리 결과**:
-  - ✅ **모션 감수성 대응**: `prefers-reduced-motion: reduce`에서 전환을 제거했습니다.
-  - 🔄 **세이프 에어리어 대응**: 하단 고정/반응형 모드에 `env(safe-area-inset-bottom)` 패딩을 추가했습니다.
+  - ✅ **모션 감수성 대응**: `prefers-reduced-motion: reduce`에서 전환을
+    제거했습니다.
+  - 🔄 **세이프 에어리어 대응**: 하단 고정/반응형 모드에
+    `env(safe-area-inset-bottom)` 패딩을 추가했습니다.
   - ✅ **터치 타깃 보장**: `pointer: coarse`에서 최소 크기를 보강했습니다.
-  - 🔵 **포커스 스타일/대비**: 기존 토큰 기반 포커스 링이 충분하다고 판단해 유지했습니다.
-  - 🔵 **RTL 논리적 속성**: 논리적 inset 사용으로 RTL 자동 반전이 가능해 유지했습니다.
+  - 🔵 **포커스 스타일/대비**: 기존 토큰 기반 포커스 링이 충분하다고 판단해
+    유지했습니다.
+  - 🔵 **RTL 논리적 속성**: 논리적 inset 사용으로 RTL 자동 반전이 가능해
+    유지했습니다.
 
 ### 2. CodeBlock.svelte 리팩토링
 
 - **대상**: `src/lib/components/CodeBlock.svelte`
 - **관점**: `A11Y_UX_COPILOT` (접근성, 가독성, Svelte 5 최적화)
 - **제안 내용**:
-  - **ARIA Role 및 시맨틱 보강 (A11y)**: 현재 `role="textbox"`는 입력 필드로 오인될 수 있습니다. `role="region"` 및 `aria-roledescription="code snippet"`으로 변경하고, RTL 환경 보호를 위해 `dir="ltr"`을 명시합니다.
-  - **Svelte 5 Snippet 기반 구조 단일화 (UX)**: 하이라이트 상태(`if/else`)에 따라 중복 정의된 헤더와 컨테이너 코드를 `{#snippet}`으로 통합하여 일관성을 유지하고 유지보수 리스크를 줄입니다.
-  - **논리적 속성 적용 (UX)**: 뱃지와 복사 버튼의 절대 위치 지정 시 `right` 대신 `inset-inline-end` 등 논리적 속성을 사용하여 RTL 환경 대응력을 높입니다.
-  - **부드러운 상태 전환 (UX)**: 하이라이팅이 완료되어 원본 코드에서 하이라이트된 HTML로 교체될 때 시각적 깜빡임을 최소화하기 위한 부드러운 전환(Fade-in)을 추가합니다.
-  - **에러 격리 (Stability)**: `$effect` 내 비동기 작업 중 발생할 수 있는 잠재적 오류로부터 앱을 보호하기 위해 `svelte:boundary` 적용을 검토합니다.
+  - **ARIA Role 및 시맨틱 보강 (A11y)**: 현재 `role="textbox"`는 입력 필드로
+    오인될 수 있습니다. `role="region"` 및 `aria-roledescription="code snippet"`으로
+    변경하고, RTL 환경 보호를 위해 `dir="ltr"`을 명시합니다.
+  - **Svelte 5 Snippet 기반 구조 단일화 (UX)**: 하이라이트 상태(`if/else`)에
+    따라 중복 정의된 헤더와 컨테이너 코드를 `{#snippet}`으로 통합하여 일관성을
+    유지하고 유지보수 리스크를 줄입니다.
+  - **논리적 속성 적용 (UX)**: 뱃지와 복사 버튼의 절대 위치 지정 시 `right` 대신
+    `inset-inline-end` 등 논리적 속성을 사용하여 RTL 환경 대응력을 높립니다.
+  - **부드러운 상태 전환 (UX)**: 하이라이팅이 완료되어 원본 코드에서 하이라이트된
+    HTML로 교체될 때 시각적 깜빡임을 최소화하기 위한 부드러운 전환(Fade-in)을
+    추가합니다.
+  - **에러 격리 (Stability)**: `$effect` 내 비동기 작업 중 발생할 수 있는 잠재적
+    오류로부터 앱을 보호하기 위해 `svelte:boundary` 적용을 검토합니다.
 - **처리 결과**:
-  - ✅ **ARIA 시맨틱 보강**: `role="region"`과 `aria-roledescription="code snippet"`, `dir="ltr"`로 정리했습니다.
-  - 🔄 **스니펫 구조 단일화**: 헤더 영역을 스니펫으로 통합하고, 콘텐츠는 로딩/완료 상태 차이로 인해 분리 유지했습니다.
-  - 🔵 **논리적 속성**: 절대 위치 지정이 없어 RTL 충돌 요소가 확인되지 않아 유지했습니다.
-  - ✅ **부드러운 전환**: 하이라이트 완료 시 페이드 인 애니메이션과 `prefers-reduced-motion` 대응을 추가했습니다.
-  - ⏭️ **에러 격리**: 하이라이트 실패 시 이미 안전한 폴백이 있어 `svelte:boundary`는 제외했습니다.
+  - ✅ **ARIA 시맨틱 보강**: `role="region"`과 `aria-roledescription="code snippet"`,
+    `dir="ltr"`로 정리했습니다.
+  - 🔄 **스니펫 구조 단일화**: 헤더 영역을 스니펫으로 통합하고, 콘텐츠는
+    로딩/완료 상태 차이로 인해 분리 유지했습니다.
+  - 🔵 **논리적 속성**: 절대 위치 지정이 없어 RTL 충돌 요소가 확인되지 않아
+    유지했습니다.
+  - ✅ **부드러운 전환**: 하이라이트 완료 시 페이드 인 애니메이션과
+    `prefers-reduced-motion` 대응을 추가했습니다.
+  - ⏭️ **에러 격리**: 하이라이트 실패 시 이미 안전한 폴백이 있어
+    `svelte:boundary`는 제외했습니다.

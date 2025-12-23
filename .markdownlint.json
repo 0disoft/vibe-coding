@@ -6,6 +6,7 @@
 		"indent": 2
 	},
 	"MD012": true,
+	"MD013": false,
 	"MD022": true,
 	"MD024": {
 		"siblings_only": true
