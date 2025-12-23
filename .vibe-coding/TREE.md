@@ -74,10 +74,6 @@
     │   └── transitions.css
     ├── routes/                    # SvelteKit 페이지 라우트
     │   ├── offline/
-    │   ├── design-system/          # DS/Docs 컴포넌트 쇼케이스 (임시)
-    │   │   ├── +page.server.ts
-    │   │   ├── +page.svelte
-    │   │   └── _sections/          # 섹션 컴포넌트 (조립용)
     │   ├── [[lang]]/
     │   ├── +error.svelte
     │   ├── +layout.svelte
@@ -248,8 +244,6 @@
 | 파일/폴더 | 역할 |
 | --- | --- |
 | `routes/offline/+page.svelte` | 오프라인 폴백 페이지 |
-| `routes/design-system/+page.svelte` | DS/Docs 컴포넌트 쇼케이스 (조립용, 임시) |
-| `routes/design-system/_sections/` | `/design-system` 섹션 컴포넌트 모음 |
 | `routes/[[lang]]/` | i18n 로케일 파라미터 루트 (Optional) |
 | `routes/+layout.server.ts` | 라우팅 옵션(예: trailingSlash) 등 서버 전용 설정 |
 | `routes/[[lang]]/terms/+page.svelte` | 이용약관 페이지 |
