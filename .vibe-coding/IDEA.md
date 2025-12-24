@@ -42,6 +42,7 @@
         - *Payload*: `iss`(발급자 고정), `sub`(userId), `tier`, `exp`(1h), `aud`(site domain).
         - *Header*: `kid` 포함 (Key Rotation 대응).
         - *Security*: `Secure`, `Path=/`, `SameSite=Lax` 필수.
+        - *XSS 억제*: 토큰 TTL 1h 고정 + 키 로테이션(kid) + CSP/nonce로 최대 방어.
         - *쿠키 정책*: **host-only**(각 사이트 도메인별)로 발급하며, SSO 콜백(로그인 완료 리다이렉트)에서 해당 도메인에 세팅.
     3. 1st-party `ad-bootstrap.js`가 **Public Key(`/.well-known/jwks.json` 캐시)로 로컬 검증**:
         - *검증 항목*: `signature`, `iss`, `aud`, `exp` (만료 토큰 무효).
@@ -55,6 +56,7 @@
 ### B. 포인트 정책 (Point Policy)
 
 - **환산율**: **1 USD (100 Cents) = 100 Points** (1 Cent = 1 Point).
+  - *통화 정책*: 초기에는 **USD 결제만 허용**. 타 통화 결제 시 `moneyCentsUSD`로 환율 스냅샷 저장 (향후 과제).
 - **적립 (Earn)**:
   - **원칙**: 구독 결제와 포인트 충전에만 발생. 소수점은 **내림(Floor)** 처리.
   - **구독**: `floor(cashPaidMoneyCents * TierRate)` 적립 (`EARN_SUB`).
@@ -69,7 +71,7 @@
 - **50% 한도 기준**: 쿠폰/할인 적용 후 금액(`capBaseMoneyCents`) 기준. **`pointsDiscountTotal`에만 적용.**
 - **유효기간**: 최종 활동 기준 1년 연장. **단, 잔액이 양수(>0)일 때만 만료일을 갱신.**
 - **악용 방지 (Rate Limiting)**:
-  - *충전 한도*: 일 $100 / 월 $500 최대.
+  - *충전 한도*: `dailyTopupLimitMoneyCents=10000` (일 $100) / `monthlyTopupLimitMoneyCents=50000` (월 $500).
   - *연속 환불 탐지*: 7일 내 3회 이상 환불 시 자동 플래그 및 수동 검토.
   - *Balance Freeze*: 이상 거래 탐지 시 `UserBalance.frozenAt` 설정, 포인트 사용 차단.
 - **환불/회수**:
@@ -77,17 +79,19 @@
   - **`REFUND_CLAWBACK`**: 결제(구독/충전) 취소 시 적립받았던 포인트를 회수함 (-). 잔액 부족 시 **마이너스 상계**.
 - **안전장치 (Safety & Integrity)**:
   - **원자성 구현(Atomicity) - 표준**:
-    - `UPDATE UserBalance SET ... WHERE currentPoints >= needed;`
+    - `UPDATE UserBalance SET currentPoints = currentPoints - :needed, updatedAt = :now WHERE userId = :userId AND frozenAt IS NULL AND currentPoints >= :needed;`
     - `INSERT INTO PointLog ... SELECT ... WHERE changes() > 0;` (조건부 실행).
     - *주의*: `changes()`는 **직전 UPDATE 바로 다음 statement**에서만 사용 (중간에 다른 write 금지).
     - *동시성*: Reserve 단계의 UPDATE+INSERT는 **항상 동일 batch/트랜잭션 컨텍스트**에서 실행.
     - *실패 처리*: `changes() == 0`이면 아무것도 실행되지 않으며, 서버는 이를 감지해 실패 응답.
   - **Saga Flow (3-Phase)**:
     1. **Reserve**: `UserBalance` 선차감(Hold) + `PointLog(PENDING)` 생성.
+        - *Hold 정의*: 별도 `heldPoints` 필드가 아니라 **currentPoints에서 선차감**, 실패 시 복구.
         - *needed 정의*: `needed = (mode=='POINT') ? pointsPaidTotal : pointsDiscountTotal`
+        - *amount 규칙*: `USE_ORDER`는 **항상 음수(-needed)**로 기록.
     2. **Order**: `DB4 Order` 생성 및 결제(PAID).
     3. **Confirm**: `UPDATE PointLog SET status='CONFIRMED' WHERE eventKey=? AND status='PENDING'`.
-    - *보상(Compensation)*: 실패 시 `UserBalance` 환불 + `PointLog(CANCELLED)` (단, `status='PENDING'`일 때만).
+    - *보상(Compensation)*: 실패 시 `UserBalance`에 `restore = -PointLog.amount`로 복구 + `PointLog(CANCELLED)` (단, `status='PENDING'`일 때만). 복구 금액은 **요청 파라미터가 아닌 PointLog.amount 기준**.
   - **PENDING 청소**: Cron 배치 + User Action 시 Lazy Cleanup 병행. 만료(`expiresAt`) 시 자동 취소.
   - **멱등성(EventKey 표준)**:
     - Reserve/Confirm/Cancel: `ORDER_RESERVE:<orderId>` (동일 키로 **status만 전환**)
@@ -100,7 +104,7 @@
 
 DB1: Identity Core (인증/권한)
 
-- **User**: `id`, `email`, `createdAt`, `updatedAt` (포인트 잔액은 DB2로 이동)
+- **User**: `id`, `email`, `createdAt`, `updatedAt`, `deletedAt`(Soft Delete), `anonymizedAt`
 - **Subscription**:
   - `id`, `userId`, `tier`, `status`
   - `currentPeriodStart/End`, `cancelAtPeriodEnd`, `pendingTier/EffectiveAt`
@@ -117,14 +121,15 @@ DB1: Identity Core (인증/권한)
   - *Unique Constraint*: `(userId, kind, targetType, targetId, siteId, source)` (**source 포함**).
   - *효력 판정*: **`expiresAt IS NULL OR expiresAt > now`인 행이 하나라도 존재하면 유효.** (`expiresAt=NULL`은 무기한)
   - *수량 판정*: 유효한 Entitlement들의 `attributes.count`를 **합산(SUM)**. (`count` 없으면 0으로 간주)
-  - *갱신 규칙*: 중복 권한 부여 시 **UPSERT로 `expiresAt` 연장**.
+  - *갱신 규칙*: 중복 권한 부여 시 **UPSERT로 `expiresAt` 연장 + `attributes.count` 누적(+=)**.
 
 DB2: Ledger Core (포인트/결제 원장)
 
 - **UserBalance** (잔액 원본):
   - `userId` (PK), `currentPoints`, `pointsExpiresAt`, `updatedAt`
+  - `frozenAt`, `frozenReason`(optional): 이상 거래 탐지 시 설정. `frozenAt IS NOT NULL`이면 **Reserve/Confirm 차단**.
 - **PointLog**:
-  - `id`, `userId`, `siteId` (발생 사이트)
+  - `id`, `userId`, `siteId` (발생 사이트), `createdAt`
   - `amount`, `balanceAfter` (디버깅/리포팅용, Nullable)
   - `type`: 'EARN_SUB', 'EARN_TOPUP', 'USE_ORDER', 'REFUND_RETURN', 'REFUND_CLAWBACK', 'ADMIN'
   - `status` ('PENDING', 'CONFIRMED', 'CANCELLED')
@@ -133,6 +138,7 @@ DB2: Ledger Core (포인트/결제 원장)
   - *Unique Constraint*: `(eventKey)` **(단독 유니크)**.
 - **PaymentEventCore** (전역 결제 조회용 최소 이력 - **Source of Truth**):
   - `id`, `userId`, `kind`, `provider`, `providerAccountId`, `providerPaymentId`, `moneyCents`, `currency`(ISO 4217, 기본 'USD'), `status`, `createdAt`, `siteId`, `shardKey`, `domainRefId`
+  - `retryCount`, `nextRetryAt`, `lastError`(Webhook 재시도용, optional)
   - *Unique Constraint*: `(provider, providerAccountId, providerPaymentId)`
   - *내부 결제 규칙*: 포인트 결제 등은 `provider='INTERNAL'`, `providerPaymentId='POINT:' + orderId` 사용.
   - *Webhook 재시도*: 외부 결제 이벤트 실패 시 Exponential Backoff (5s → 30s → 2m → 10m), 최대 5회. Dead Letter Queue 후 수동 처리.
@@ -166,7 +172,7 @@ DB3: Support Core (운영 인덱스)
 ### Layer 3: Meta (Site-Specific)
 
 - **SiteConfig**: `siteId`, `config` (JSON)
-  - `config.ads` 예시:
+  - `SiteConfig.config` 예시:
 
     ```json
     {
@@ -184,11 +190,11 @@ DB3: Support Core (운영 인덱스)
 ## 4. 사이트별 운영 전략 (시나리오)
 
 - **Site A (강의) - AdSense 사용**:
-  - `SiteConfig`: `provider='generic_adapter_a'` (예: adsense).
+  - `SiteConfig.config.ads.provider = 'generic_adapter_a'` (예: adsense).
   - Pro 유저 방문 -> `__Host-adfree` 쿠키(서명됨, `iss`/`aud`/`exp` 검증) -> `ad-bootstrap.js` 로컬 검증 성공 -> 스크립트 로드 차단.
   - 일반 유저 방문 -> `__Host-adfree` 없음/검증실패 -> `ad-bootstrap.js`가 어댑터 로드 (`ADS` 동의 O, `PERSONALIZED_ADS` 동의 X면 NPA 모드).
 - **Site B (스터디카페) - 광고 없음**:
-  - `SiteConfig`: `enabled=false`.
+  - `SiteConfig.config.ads.enabled = false`.
 - **Site C (커뮤니티) - 할인 & 역할**:
   - **성격**: 커뮤니티 중심, Pro 이상 광고 제거.
   - **역할**: 운영자 `Entitlement(targetType='SYSTEM_ROLE', targetId='MODERATOR', siteId='siteC')`.
@@ -210,10 +216,11 @@ DB3: Support Core (운영 인덱스)
 ## 5. 데이터 보존 정책 (Data Retention)
 
 - **Soft Delete**: `User.deletedAt` 설정 시 로그인 차단, 관련 데이터 익명화 예약.
+  - *익명화 주체*: 일일 배치 워커가 `deletedAt` 기준 30일 경과 사용자 익명화 실행.
 - **보관 기간**:
   - `PointLog`, `Order`: 삭제 후 **5년** 보관 (세금/감사 대응).
   - `PaymentEventCore`: 삭제 후 **7년** 보관.
-  - 미동의 데이터(`UserConsent` 거부): 즉시 삭제.
+- **동의 거부 처리**: `UserConsent`는 `status='REJECTED'`로 기록하고, 관련 목적의 처리(광고 개인화 등)는 즉시 중단. 미동의로 수집된 부가 데이터(트래킹/광고 식별자)는 삭제.
 - **익명화**: `email` → `deleted_{ulid}@anon.local`, 개인정보 필드 널 처리.
 - **GDPR 요청**: 30일 내 완료 목표, 사전 포인트 잔액 소멸 안내.
 
